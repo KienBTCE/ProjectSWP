@@ -9,5 +9,7 @@ package Models;
  * @author KienBTCE180180
  */
 public class Laptop {
+    String id, name;
+    double price;
     
 }
