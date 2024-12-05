@@ -75,9 +75,13 @@ CREATE TABLE Laptop (
     lt_brandId VARCHAR(20),
     lt_categoryId VARCHAR(20)
 )
-CREATE TABLE CART (
+CREATE TABLE Cart (
 	userName VARCHAR(100),
 	productId VARCHAR(20),
 	primary key (userName, productId),
 	quantity INT
+)
+
+CREATE TABLE Order (
+	
 )
