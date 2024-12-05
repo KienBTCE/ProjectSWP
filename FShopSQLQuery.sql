@@ -34,7 +34,7 @@ CREATE TABLE Accounts (
 	a_phoneNumber VARCHAR(15),
 	a_address VARCHAR(500),
 	a_birthday DATE,
-	a_gender CHAR(5) CHECK (a_Gender IN ('Mal', 'Female', 'Other')),
+	a_gender CHAR(5) CHECK (a_Gender IN ('Male', 'Female', 'Other')),
 	a_createAt DATETIME DEFAULT GETDATE(),
 	a_status VARCHAR(20) DEFAULT 'Active',
 	a_avatar TEXT
@@ -74,4 +74,10 @@ CREATE TABLE Laptop (
     lt_description TEXT,
     lt_brandId VARCHAR(20),
     lt_categoryId VARCHAR(20)
+)
+CREATE TABLE CART (
+	userName VARCHAR(100),
+	productId VARCHAR(20),
+	primary key (userName, productId),
+	quantity INT
 )
