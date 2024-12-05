@@ -25,16 +25,16 @@ GO
 ********************************************************************************/
 
 CREATE TABLE Accounts (
-	a_role VARCHAR(10) PRIMARY KEY,
+	a_role VARCHAR(10) ,
 	a_ID VARCHAR(10),
 	a_fullName VARCHAR(255),
-	a_userName VARCHAR(100),
+	a_userName VARCHAR(100) PRIMARY KEY,
 	a_password VARCHAR(500),
 	a_email VARCHAR(254),
 	a_phoneNumber VARCHAR(15),
 	a_address VARCHAR(500),
 	a_birthday DATE,
-	a_gender CHAR(5) CHECK (a_Gender IN ('Male', 'Female', 'Other')),
+	a_gender CHAR(6) CHECK (a_Gender IN ('Male', 'Female', 'Other')),
 	a_createAt DATETIME DEFAULT GETDATE(),
 	a_status VARCHAR(20) DEFAULT 'Active',
 	a_avatar TEXT
@@ -76,12 +76,34 @@ CREATE TABLE Laptop (
     lt_categoryId VARCHAR(20)
 )
 CREATE TABLE Cart (
-	userName VARCHAR(100),
+	username VARCHAR(100) ,
 	productId VARCHAR(20),
 	primary key (userName, productId),
-	quantity INT
+	quantity INT,
+	FOREIGN KEY (username) REFERENCES Accounts(a_userName)
 )
 
-CREATE TABLE Order (
-	
+CREATE TABLE [Order] (
+    orderID INT PRIMARY KEY IDENTITY(1,1),
+    username VARCHAR(100) NOT NULL,
+    fullname VARCHAR(100) NOT NULL,
+    address TEXT NOT NULL,
+    productID INT, -- Consider removing if not required at the order level
+    orderedDate DATE NOT NULL,
+    orderShippedDate DATE,
+    paymentMethod VARCHAR(20) NOT NULL,
+    status VARCHAR(20) NOT NULL,
+    totalAmount DECIMAL(10, 2) NOT NULL,
+    discount DECIMAL(10, 2),
+    FOREIGN KEY (username) REFERENCES Accounts(a_userName)
 )
+CREATE TABLE OrderDetail (
+    OrderID INT NOT NULL ,
+    ProductID INT NOT NULL,
+	PRIMARY KEY (OrderID, ProductID),
+    Quantity INT NOT NULL,
+    Price DECIMAL(10, 2) NOT NULL,
+    FOREIGN KEY (OrderID) REFERENCES [Order](OrderID)
+)
+
+
