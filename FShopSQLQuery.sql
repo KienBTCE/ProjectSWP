@@ -116,18 +116,20 @@ CREATE TABLE Categories (
 
 CREATE TABLE Carts (
 	a_ID VARCHAR(20),
-	productId VARCHAR(20),
-	PRIMARY KEY (a_ID, productId),
+	pd_SKU INT,
+	PRIMARY KEY (a_ID, pd_SKU),
 	quantity INT NOT NULL,
 	FOREIGN KEY (a_ID) REFERENCES Accounts(a_ID)
 )
 
 CREATE TABLE [Orders] (
     orderID INT PRIMARY KEY IDENTITY(1,1),
+
     a_ID VARCHAR(20) NOT NULL,
     fullName VARCHAR(100) NOT NULL,
     [address] TEXT NOT NULL,
-    productID VARCHAR(20), -- Consider removing if not required at the order level
+    pd_SKU INT NOT NULL,
+	a_phoneNumber VARCHAR(15) NOT NULL,
     orderedDate DATE NOT NULL,
     orderShippedDate DATE,
     paymentMethod VARCHAR(20) NOT NULL,
@@ -139,8 +141,8 @@ CREATE TABLE [Orders] (
 
 CREATE TABLE OrderDetails (
     OrderID INT NOT NULL ,
-    ProductID VARCHAR(20) NOT NULL,
-	PRIMARY KEY (OrderID, ProductID),
+    pd_SKU INT NOT NULL,
+	PRIMARY KEY (OrderID, pd_SKU),
     Quantity INT NOT NULL,
     Price DECIMAL(10, 2) NOT NULL,
     FOREIGN KEY (OrderID) REFERENCES [Orders](OrderID)
