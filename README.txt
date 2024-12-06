@@ -1,5 +1,6 @@
 REGULATIONS !!!!!!!!!
-AFTER CLONE REPOSITORY, YOU MUST GO TO ProjectSWP folder and RUN THIS CODE "git update-index --assume-unchanged FShop\src\main\java\DB\DBContext.java"
+AFTER CLONE REPOSITORY, YOU MUST GO TO ProjectSWP folder and RUN THIS CODE
+"git update-index --assume-unchanged FShop\src\main\java\DB\DBContext.java"
 to stop commit DBContext.java from your repository side
 
 INFORMATION

@@ -26,9 +26,9 @@ GO
 
 CREATE TABLE Accounts (
 	a_role VARCHAR(10) ,
-	a_ID VARCHAR(10),
+	a_ID VARCHAR(10) PRIMARY KEY,
 	a_fullName VARCHAR(255),
-	a_userName VARCHAR(100) PRIMARY KEY,
+	a_userName VARCHAR(100),
 	a_password VARCHAR(500),
 	a_email VARCHAR(254),
 	a_phoneNumber VARCHAR(15),
@@ -40,8 +40,13 @@ CREATE TABLE Accounts (
 	a_avatar TEXT
 )
 
+CREATE TABLE Products (
+	pd_ID VARCHAR(20) PRIMARY KEY,
+	pd_fullName VARCHAR(255)
+)
+
 CREATE TABLE Phone (
-    p_ID VARCHAR(10) PRIMARY KEY,
+    p_ID VARCHAR(20) PRIMARY KEY,
     p_fullName VARCHAR(255) NOT NULL,
     p_screen VARCHAR(100),
     p_camera VARCHAR(100),
@@ -53,7 +58,8 @@ CREATE TABLE Phone (
     p_image VARCHAR(255),
     p_description TEXT,
     p_brandId VARCHAR(20),
-    p_categoryId VARCHAR(20)
+    p_categoryId VARCHAR(20),
+	FOREIGN KEY (p_ID) REFERENCES Products(pd_ID)
 )
 
 CREATE TABLE Laptop (
@@ -73,19 +79,28 @@ CREATE TABLE Laptop (
     lt_image VARCHAR(255),
     lt_description TEXT,
     lt_brandId VARCHAR(20),
-    lt_categoryId VARCHAR(20)
+    lt_categoryId VARCHAR(20),
+	FOREIGN KEY (lt_ID) REFERENCES Products(pd_ID)
 )
+
+CREATE TABLE Categories (
+	ct_ID VARCHAR(20) PRIMARY KEY,
+	pd_ID VARCHAR(20),
+	ct_name VARCHAR(100),
+	FOREIGN KEY (pd_ID) REFERENCES Products(pd_ID)
+)
+
 CREATE TABLE Cart (
-	username VARCHAR(100) ,
+	a_ID VARCHAR(10) ,
 	productId VARCHAR(20),
-	primary key (userName, productId),
+	primary key (a_ID, productId),
 	quantity INT,
-	FOREIGN KEY (username) REFERENCES Accounts(a_userName)
+	FOREIGN KEY (a_ID) REFERENCES Accounts(a_ID)
 )
 
 CREATE TABLE [Order] (
     orderID INT PRIMARY KEY IDENTITY(1,1),
-    username VARCHAR(100) NOT NULL,
+    a_ID VARCHAR(10) NOT NULL,
     fullname VARCHAR(100) NOT NULL,
     address TEXT NOT NULL,
     productID INT, -- Consider removing if not required at the order level
@@ -95,8 +110,9 @@ CREATE TABLE [Order] (
     status VARCHAR(20) NOT NULL,
     totalAmount DECIMAL(10, 2) NOT NULL,
     discount DECIMAL(10, 2),
-    FOREIGN KEY (username) REFERENCES Accounts(a_userName)
+    FOREIGN KEY (a_ID) REFERENCES Accounts(a_ID)
 )
+
 CREATE TABLE OrderDetail (
     OrderID INT NOT NULL ,
     ProductID INT NOT NULL,
@@ -105,5 +121,3 @@ CREATE TABLE OrderDetail (
     Price DECIMAL(10, 2) NOT NULL,
     FOREIGN KEY (OrderID) REFERENCES [Order](OrderID)
 )
-
-
