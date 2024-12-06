@@ -102,8 +102,9 @@ CREATE TABLE [Order] (
     orderID INT PRIMARY KEY IDENTITY(1,1),
     a_ID VARCHAR(10) NOT NULL,
     fullname VARCHAR(100) NOT NULL,
+	a_phoneNumber VARCHAR(15) NOT NULL,
     address TEXT NOT NULL,
-    productID INT, -- Consider removing if not required at the order level
+    productID INT NOT NULL,
     orderedDate DATE NOT NULL,
     orderShippedDate DATE,
     paymentMethod VARCHAR(20) NOT NULL,
