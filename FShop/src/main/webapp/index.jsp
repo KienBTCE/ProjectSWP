@@ -11,9 +11,10 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>JSP Page</title>
+        <title>F Shop</title>
     </head>
     <body>
+        <jsp:include page="header.jsp"></jsp:include>
         <h1>Show all products here</h1>
         <ul>
             <li>first</li>
