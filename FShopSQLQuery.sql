@@ -27,19 +27,25 @@ GO
 CREATE TABLE Accounts (
 	a_ID VARCHAR(20) PRIMARY KEY, -- As a role
 
-	a_userName VARCHAR(100) NOT NULL,
-	a_password VARCHAR(500) NOT NULL,
+	phoneNumber VARCHAR(15) UNIQUE NOT NULL,
+	email VARCHAR(254),
 
-	a_fullName VARCHAR(255),
+	[password] VARCHAR(500) NOT NULL,
+
+	fullName VARCHAR(255) NOT NULL,
 	birthday DATE,
 	gender CHAR(6) CHECK (gender IN ('Male', 'Female', 'Other')),
 
-	phoneNumber VARCHAR(15),
-	email VARCHAR(254),
 	createAt DATETIME DEFAULT GETDATE(),
 	[status] VARCHAR(20) DEFAULT 'Active',
 	avatar TEXT
 )
+
+-- email can null, and null is not unique, but email is unique
+CREATE UNIQUE INDEX UQ_Email 
+ON Accounts(email) 
+WHERE email IS NOT NULL;
+
 
 CREATE TABLE Addresses (
 	a_ID VARCHAR(20),
@@ -48,20 +54,27 @@ CREATE TABLE Addresses (
 )
 
 CREATE TABLE Products (
-	pd_ID VARCHAR(20),
-	brand VARCHAR(20),
-	pd_SKU INT UNIQUE IDENTITY(1,1),
+	pd_ID VARCHAR(20) NOT NULL,
+	brand VARCHAR(20) NOT NULL,
+	pd_SKU INT UNIQUE IDENTITY(1,1) NOT NULL,
 
 	PRIMARY KEY (pd_ID, brand),
 
-	[status] VARCHAR(20) CHECK ([status] IN ('Available', 'Comming Soon', 'Sold Out')),
+	[status] VARCHAR(20) CHECK ([status] IN ('Available', 'Comming Soon', 'Sold Out')) DEFAULT 'Available',
 	note VARCHAR(500),
 	quantity INT NOT NULL
 )
 
+CREATE TABLE Categories (
+	ct_ID INT IDENTITY(1,1), -- this attribute will not change, follow to product to present type of product
+	pd_SKU INT,
+	typeName VARCHAR(100),
+	PRIMARY KEY (pd_SKU, typeName),
+	FOREIGN KEY (pd_SKU) REFERENCES Products(pd_SKU)
+)
+
 CREATE TABLE Phones (
-    pd_ID VARCHAR(20),
-	brand VARCHAR(20),
+	pd_SKU INT PRIMARY KEY,
 
     fullName VARCHAR(255) NOT NULL,
     screen VARCHAR(100),
@@ -72,17 +85,15 @@ CREATE TABLE Phones (
     size VARCHAR(50),
     [weight] FLOAT,
 
-    price DECIMAL(10, 2) NOT NULL, 
+    price DECIMAL(10, 2) NOT NULL,
 
     [image] VARCHAR(255),
     [description] TEXT,
-    categoryId VARCHAR(20),
-	FOREIGN KEY (pd_ID, brand) REFERENCES Products(pd_ID, brand)
+	FOREIGN KEY (pd_SKU) REFERENCES Products(pd_SKU)
 )
 
 CREATE TABLE Laptops (
-    pd_ID VARCHAR(20),
-	brand VARCHAR(20),
+	pd_SKU INT  PRIMARY KEY,
 
     fullName VARCHAR(255) NOT NULL,
     screen VARCHAR(100),
@@ -100,26 +111,16 @@ CREATE TABLE Laptops (
 
     [image] VARCHAR(255),
     [description] TEXT,
-    categoryId VARCHAR(20),
-	FOREIGN KEY (pd_ID, brand) REFERENCES Products(pd_ID, brand)
-)
-
-CREATE TABLE Categories (
-	ct_ID VARCHAR(20), -- this attribute will not change, follow to product to present type of product
-	pd_SKU INT,
-	PRIMARY KEY (ct_ID, pd_SKU),
-	typeName VARCHAR(100),
 	FOREIGN KEY (pd_SKU) REFERENCES Products(pd_SKU)
 )
-
--- KIEN DA CHECK DEN CHO NAY HEHE :D MAI CHECK TIEP KEKE
 
 CREATE TABLE Carts (
 	a_ID VARCHAR(20),
 	pd_SKU INT,
 	PRIMARY KEY (a_ID, pd_SKU),
 	quantity INT NOT NULL,
-	FOREIGN KEY (a_ID) REFERENCES Accounts(a_ID)
+	FOREIGN KEY (a_ID) REFERENCES Accounts(a_ID),
+	FOREIGN KEY (pd_SKU) REFERENCES Products(pd_SKU)
 )
 
 CREATE TABLE [Orders] (
