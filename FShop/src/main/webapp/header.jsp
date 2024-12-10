@@ -75,7 +75,7 @@
                 <p class="">Call Us: (+84) 012 345 6789</p>
             </div>
             <h1 id="name-shop">F Shop</h1>
-            <button id="cartBtn">Cart</button>
+            <button id="cartBtn"><a href="shoppingCart.jsp">Cart</a></button>
             <button id="loginBtn">Login</button>
         </div>
 
