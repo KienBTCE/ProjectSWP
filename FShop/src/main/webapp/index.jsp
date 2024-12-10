@@ -14,13 +14,13 @@
         <title>F Shop</title>
     </head>
     <body>
-        <jsp:include page="header.jsp"></jsp:include>
-        <h1>Show all products here</h1>
-        <ul>
-            <li>first</li>
-            <li>second</li>
-            <li>third</li>
-        </ul>
-
+        <header> <jsp:include page="header.jsp"></jsp:include></header>
+            <h1>Show all products here</h1>
+            <ul>
+                <li>first</li>
+                <li>second</li>
+                <li>third</li>
+            </ul>
+            <footer> <jsp:include page="footer.jsp"></jsp:include></footer>
     </body>
 </html>
