@@ -14,7 +14,7 @@
         <title>F Shop</title>
     </head>
     <body>
-        <header> <jsp:include page="header.jsp"></jsp:include></header>
+        <jsp:include page="header.jsp"></jsp:include>
             <h1>Show all products here</h1>
             <ul>
                 <li>first</li>

@@ -11,113 +11,159 @@
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>JSP Page</title>
         <link rel="stylesheet" href="assets/css/bootstrap.css"/>
+        <link href="assets/fonts/themify-icons/themify-icons.css" rel="stylesheet">
         <style>
-            body{
-                margin: 0;
-                padding: 0;
+            i{
+                margin: 5px;
             }
-            .header-infor{
+
+            header{
                 width: 100%;
                 height: 44px;
                 background-color: #D10000;
-                text-align: right;
+            }
+            .header-container{
+                height: 100%;
+            }
+            .header-infor{
+                background-color: #D10000;
+                padding: 0 !important;
+                height: 100%;
                 display: flex;
                 align-items: center;
-                justify-content: right;
+                justify-content: center;
             }
-            .header-infor > p{
-                display: inline;
-                color: white;
+            .infor-content{
+                display: flex;
+                align-items: center;
+                justify-content: center;
             }
-            .header-content{
-                width: 100%;
-                height: 136px;
-            }
-            .header-content{
-                /*margin-bottom: 50px;*/
-            }
-            .header-content h1{
-                color: white;
+            .infor-content p{
                 margin: 0;
             }
-            #name-shop{
-                display: inline-block;
+            .infor-content:nth-child(1){
+                justify-content: left;
             }
-            #cartBtn, #loginBtn{
-                float: right;
+            .infor-content:nth-child(3){
+                justify-content: right;
             }
-            #login-form{
-                position: fixed;
-                top: 50%;
-                left: 50%;
-                transform: translate(-50%, -50%);
-                padding: 20px;
-                background-color: #fff;
-                border: 1px solid #ccc;
-                width: 300px;
-                box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-                z-index: 1000;
+            .infor-content:nth-child(3) *{
+                margin-left: 5px
             }
-            #modal-overlay {
-                position: fixed;
-                top: 0;
-                left: 0;
+            .infor-content a{
+                text-decoration: none;
+                color: black;
+            }
+            .infor-content a:hover{
+                color: black;
+                opacity: 0.7;
+                font-size: 105%;
+                text-decoration: none;
+            }
+
+            nav{
+                width: 100%;
+                height: 92px;
+                border-bottom: 1.5px solid rgba(0, 0, 1, 0.1);
+            }
+            .nav-container{
+                height: 100%;
+            }
+            .nav-infor{
+                padding: 0 !important;
+                height: 100%;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+            }
+            .nav-infor-content{
+                display: flex;
+                align-items: center;
+                justify-content: center;
+            }
+            .nav-infor-content:nth-child(1){
+                flex-basis: 100px;
+            }
+            .nav-infor-content:nth-child(2){
+                flex-basis: 50%;
+            }
+            .nav-infor-content:nth-child(3){
+                flex-basis: 100px;
+            }
+            .list-categories{
+                margin: 0;
+                padding: 0;
                 width: 100%;
                 height: 100%;
-                background-color: rgba(0, 0, 0, 0.5);
-                z-index: 999;
+                list-style: none;
+                display: flex;
+                justify-content: space-between;
+            }
+            li a{
+                text-decoration: none;
+                color: black;
+                font-weight: bold;
+            }
+            li a:hover{
+                color: black;
+                opacity: 0.7;
+                text-decoration: none;
             }
         </style>
     </head>
     <body>
-        <div class="header-content">
-            <div class="header-infor">
-                <p class="">Call Us: (+84) 012 345 6789</p>
+        <header>
+            <div class="header-container container">
+                <div class="header-infor row">
+                    <div class="infor-content col-md-4">
+                        <p class="text-dark">Mon-Thu 9:00AM - 5:30PM</p>
+                    </div>
+                    <div class="infor-content col-md-4">
+                        <p class="text-dark">Visit our showroom in Nguyen Van Cu, Ninh Kieu, Can Tho</p>
+                    </div>
+                    <div class="infor-content col-md-4">
+                        <p class="text-dark">Call Us: (+84) 12 345 6789</p>
+                        <a href="#"><img src="assets/imgs/SystemImg/Vector-Header-FB.svg" alt="Facebook" style="width: 23px; height: 23px;"></a>
+                        <a href="#"><img src="assets/imgs/SystemImg/Vector-Header-IG.svg" alt="Instagram" style="width: 23px; height: 23px;"></a>
+                    </div>
+                </div>
             </div>
-            <h1 id="name-shop">F Shop</h1>
-            <button id="cartBtn">Cart</button>
-            <button id="loginBtn">Login</button>
-        </div>
+        </header>
 
-        <div id="modal-overlay" style="display: none;">
-            <div id="login-form" style="display: none;">
-                <h2>Login</h2>
-                <form>
-                    <label for="username">Username:</label>
-                    <input type="text" id="username" name="username" required><br><br>
-
-                    <label for="password">Password:</label>
-                    <input type="password" id="password" name="password" required><br><br>
-
-                    <button type="submit">Submit</button>
-                </form>
+        <nav>
+            <div class="nav-container container">
+                <div class="nav-infor row">
+                    <div class="nav-infor-content col-md-4">
+                        <a href="#"><img src="assets/imgs/SystemImg/Vector-Header-Logo.svg" alt="Shop Logo" style="width: 50px; height: 50px;"></a>
+                    </div>
+                    <div class="nav-infor-content col-md-4">
+                        <ul class="list-categories">
+                            <li>
+                                <a href="#">Asus</a>
+                            </li>
+                            <li>
+                                <a href="#">Apple</a>
+                            </li>
+                            <li>
+                                <a href="#">Lenovo</a>
+                            </li>
+                            <li>
+                                <a href="#">Intel</a>
+                            </li>
+                            <li>
+                                <a href="#">Nvidia</a>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="nav-infor-content col-md-4">
+                        <i class="ti-search" style="font-size: 150%; color: black;"></i>
+                        <i class="ti-shopping-cart" style="font-size: 150%; color: black;"></i>
+                        <i class="ti-user" style="font-size: 150%; color: black; margin-left: 20px;"></i>
+                    </div>
+                </div>
             </div>
-        </div>
+        </nav>
 
-        <script src="assets/js/bootstrap.min.js">
-            // show modal and its children when click login button
-            document.getElementById("loginBtn").onclick = function () {
-                var form = document.getElementById("login-form");
-                var modal = document.getElementById("modal-overlay");
-
-                if (form.style.display === "none") {
-                    modal.style.display = "block";
-                    form.style.display = "block";
-                } else {
-                    modal.style.display = "none";
-                    form.style.display = "none";
-                }
-            };
-
-            // close modal when click out
-            document.getElementById("modal-overlay").onclick = function (event) {
-                if (this === event.target) {
-                    var modal = document.getElementById("modal-overlay");
-                    var form = document.getElementById("login-form");
-                    modal.style.display = "none";
-                    form.style.display = "none";
-                }
-            };
-        </script>
+        <script src="assets/js/bootstrap.min.js"></script>
     </body>
 </html>
