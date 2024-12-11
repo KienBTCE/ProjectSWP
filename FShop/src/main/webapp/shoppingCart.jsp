@@ -25,10 +25,10 @@
                             <table style="width: 100%; border-collapse: collapse; ">
                                 <tr style="height: 60px;">
                                     <th class="th" style="width: 17%;">Item</th>
-                                    <th class="th" style="width: 35%;"></th>
+                                    <th class="th" style="width: 37%;"></th>
                                     <th class="th" style="width: 13%;">Price</th>
                                     <th class="th" style="width: 15%;">Qty</th>
-                                    <th class="th" style="width: 15%;">Subtotal</th>
+                                    <th class="th" style="width: 13%;">Subtotal</th>
                                     <th class="th" style="width: 5%;"></th>
                                 </tr>
                                 <tr>
@@ -41,7 +41,7 @@
                                     <td class="th">
                                         <h6>$4,349.00</h6>
                                     </td>
-                                    <td class="th"><input style=" width: 45%;
+                                    <td class="th"><input style=" width: 60%;
                                                           height: 40px;
                                                           padding-left: 10px;
                                                           font-weight: bold;
