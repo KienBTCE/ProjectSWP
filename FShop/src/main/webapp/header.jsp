@@ -128,7 +128,14 @@
                     </div>
                 </div>
             </div>
+<<<<<<< HEAD
         </header>
+=======
+            <h1 id="name-shop">F Shop</h1>
+            <button id="cartBtn"><a href="shoppingCart.jsp">Cart</a></button>
+            <button id="loginBtn">Login</button>
+        </div>
+>>>>>>> df78a73f84830d618e32f4612ecc263d5d1d7962
 
         <nav>
             <div class="nav-container container">

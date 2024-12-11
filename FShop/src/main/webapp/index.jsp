@@ -21,6 +21,6 @@
                 <li>second</li>
                 <li>third</li>
             </ul>
-            <footer> <jsp:include page="footer.jsp"></jsp:include></footer>
+        <jsp:include page="footer.jsp"></jsp:include>
     </body>
 </html>

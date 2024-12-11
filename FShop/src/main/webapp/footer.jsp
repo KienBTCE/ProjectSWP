@@ -5,6 +5,7 @@
 --%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -13,28 +14,30 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
               integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
-        <link rel="stylesheet" href="./assets/css/footerStyle.css">
     </head>
 
     <body>
-        <footer>
-            <div class="container">
-                <div class="row">
-                    <div class="col-md-6">
+        <footer style="background-color: #1f1a1a; color: white;">
+            <div class="container" style="color: white;">
+                <div class="row" style="display: flex; align-items: center; justify-content: space-between;">
+                    <div class="col-md-6" style="padding: 10px;">
                         <h1>Sign Up To Our Newsletter.</h1>
                         <p>Be the first to hear about the latest offers.</p>
                     </div>
-                    <div class="col-md-6">
-                        <form action="" class="subForm">
-                            <input type="text" placeholder="Your Email" class="styled-input">
-                            <button type="submit" class="subscribe-button">Subscribe</button>
+                    <div class="col-md-6" style="padding: 10px;">
+                        <form action="" style="display: flex; column-gap: 20px; align-items: center;">
+                            <input type="text" placeholder="Your Email" 
+                                   style="width: 380px; height: 40px; border: solid white 1px; background-color: black; color: white; padding-left: 10px; opacity: 0.8;">
+                            <button type="submit" 
+                                    style="background-color: #0156ff; color: white; border-radius: 20px; width: 140px; height: 40px; border: #0156ff 1px;">
+                                Subscribe
+                            </button>
                         </form>
                     </div>
                 </div>
             </div>
-            <div class="container">
-                <table
-                    style="font-size: 13px;width: 100%; border-collapse: collapse; border: 1px solid #1f1a1a; color: white;">
+            <div class="container" style="color: white;">
+                <table style="font-size: 13px; width: 100%; border-collapse: collapse; border: 1px solid #1f1a1a; color: white;">
                     <tr style="color: #898686; height: 50px;">
                         <th style="width: 15%; border: 1px solid #1f1a1a; text-align: left;">Information</th>
                         <th style="width: 25%; border: 1px solid #1f1a1a; text-align: left;">PC Parts</th>
@@ -117,23 +120,23 @@
                     </tr>
                 </table>
             </div>
-            <div class="container">
-                <div class="row lastFooter">
-                    <div class="col-md-4 footer-icons">
-                        <img src="./assets/imgs/SystemImg/z6116371726666_cbbf6ee34516c774226f5f87890a30e4.jpg" alt="" width="27px">
-                        <img src="./assets/imgs/SystemImg/z6116372812657_8765105253e69e58580e781208f33a24.jpg" alt="" width="30px">
+            <div class="container" style="color: white;">
+                <div class="row lastFooter" style="display: flex; align-items: center; padding: 20px 0;">
+                    <div class="col-md-4 footer-icons" style="display: flex; align-items: center;">
+                        <img src="assets/imgs/FooterImg/z6116371726666_cbbf6ee34516c774226f5f87890a30e4.jpg" alt="" style="width: 27px; margin-right: 5px;">
+                        <img src="assets/imgs/FooterImg/z6116372812657_8765105253e69e58580e781208f33a24.jpg" alt="" style="width: 30px; margin-right: 5px;">
                     </div>
-                    <div class="col-md-4 text-center">
-                        <div class="payment">
-                            <img src="./assets/imgs/SystemImg/paypal.jpg" alt="">
-                            <img src="./assets/imgs/SystemImg/visa.jpg" alt="">
-                            <img src="./assets/imgs/SystemImg/2Tron.jpg" alt="">
-                            <img src="./assets/imgs/SystemImg/dissco.jpg" alt="">
-                            <img src="./assets/imgs/SystemImg/ame.jpg" alt="">
+                    <div class="col-md-4 text-center" style="text-align: center;">
+                        <div class="payment" style="display: flex; justify-content: center; column-gap: 10px;">
+                            <img src="./assets/imgs/FooterImg/paypal.jpg" alt="" style="border-radius: 5px; width: 50px; height: auto; margin: 0 5px;">
+                            <img src="./assets/imgs/FooterImg/visa.jpg" alt="" style="border-radius: 5px; width: 50px; height: auto; margin: 0 5px;">
+                            <img src="./assets/imgs/FooterImg/2Tron.jpg" alt="" style="border-radius: 5px; width: 50px; height: auto; margin: 0 5px;">
+                            <img src="./assets/imgs/FooterImg/dissco.jpg" alt="" style="border-radius: 5px; width: 50px; height: auto; margin: 0 5px;">
+                            <img src="./assets/imgs/FooterImg/ame.jpg" alt="" style="border-radius: 5px; width: 50px; height: auto; margin: 0 5px;">
                         </div>
                     </div>
-                    <div class="col-md-4">
-                        <p class="copyright">Copyright © 2020 Shop Pty. Ltd.</p>
+                    <div class="col-md-4" style="text-align: right;">
+                        <p class="copyright" style="color: gray; font-size: 13px;">Copyright © 2020 Shop Pty. Ltd.</p>
                     </div>
                 </div>
             </div>
@@ -142,4 +145,5 @@
                 integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
         crossorigin="anonymous"></script>
     </body>
+
 </html>
