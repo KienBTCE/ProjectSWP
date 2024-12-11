@@ -12,13 +12,12 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
               integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
-        <link rel="stylesheet" href="./assets/css/cart.css">
+        <link rel="stylesheet" href="./assets/css/cart.css"/>
         <title>Shopping Cart</title>
     </head>
 
     <body>
-        <header><jsp:include page="header.jsp"></jsp:include></header>
-
+        <jsp:include page="header.jsp"></jsp:include>
             <main>
                 <div class="container">
                     <div class="row">
@@ -27,54 +26,36 @@
                         <div class="col-md-8">
                             <table style="width: 100%; border-collapse: collapse; ">
                                 <tr style="height: 60px;">
-                                    <th style="width: 17%;  padding: 20px 0px 20px 0px;
-                                        border-bottom: gray solid 1px;">Item</th>
-                                    <th style="width: 35%;  padding: 20px 0px 20px 0px;
-                                        border-bottom: gray solid 1px;"></th>
-                                    <th style="width: 13%;  padding: 20px 0px 20px 0px;
-                                        border-bottom: gray solid 1px;">Price</th>
-                                    <th style="width: 15%;  padding: 20px 0px 20px 0px;
-                                        border-bottom: gray solid 1px;">Qty</th>
-                                    <th style="width: 15%;  padding: 20px 0px 20px 0px;
-                                        border-bottom: gray solid 1px;">Subtotal</th>
-                                    <th style="width: 15%;  padding: 20px 0px 20px 0px;
-                                        border-bottom: gray solid 1px;"></th>
+                                    <th style="width: 17%;">Item</th>
+                                    <th style="width: 35%;"></th>
+                                    <th style="width: 13%;">Price</th>
+                                    <th style="width: 15%;">Qty</th>
+                                    <th style="width: 15%;">Subtotal</th>
+                                    <th style="width: 5%;"></th>
                                 </tr>
                                 <tr>
-                                    <td style=" padding: 20px 0px 20px 0px;
-                                        border-bottom: gray solid 1px; vertical-align: top;
-                                        font-size: 13px;"><img src="./assets/imgs/ShoppingCartImg/z6117255602466_41a821476ad82f7bf0f521d8b1b7fec3.jpg" alt=""
-                                           width="105px"></td>
-                                    <td style=" padding: 20px 0px 20px 0px;
-                                        border-bottom: gray solid 1px; vertical-align: top;
-                                        font-size: 13px;">MSI MEG Trident X 10SD-1012AU Intel i7 10700K, 2070 SUPER, 32GB RAM, 1TB SSD, Windows 10
+                                    <td><img src="./assets/imgs/ShoppingCartImg/z6117255602466_41a821476ad82f7bf0f521d8b1b7fec3.jpg" alt=""
+                                             width="105px"></td>
+                                    <td>MSI MEG Trident X 10SD-1012AU Intel i7 10700K, 2070 SUPER, 32GB RAM, 1TB SSD, Windows 10
                                         Home, Gaming Keyboard and Mouse 3 Years Warranty</td>
-                                    <td style=" padding: 20px 0px 20px 0px;
-                                        border-bottom: gray solid 1px;vertical-align: top;
-                                        font-size: 13px;">
+                                    <td>
                                         <h6>$4,349.00</h6>
                                     </td>
-                                    <td style=" padding: 20px 0px 20px 0px;
-                                        border-bottom: gray solid 1px; vertical-align: top;
-                                        font-size: 13px;"><input type="number" min="1" value="1" name="" id="" style=" width: 45%;
-                                             height: 40px;
-                                             padding-left: 10px;
-                                             font-weight: bold;
-                                             background-color: #f5f7ff;
-                                             border: #f5f7ff solid 1px;"></td>
-                                    <td style=" padding: 20px 0px 20px 0px;
-                                        border-bottom: gray solid 1px; vertical-align: top;
-                                        font-size: 13px;">
+                                    <td><input type="number" min="1" value="1" name="" style="width: 45%;
+                                               height: 40px;
+                                               padding-left: 10px;
+                                               font-weight: bold;
+                                               background-color: #f5f7ff;
+                                               border: #f5f7ff solid 1px;"></td>
+                                    <td>
                                         <h6>$13,047.00</h6>
                                     </td>
-                                    <td style=" padding: 20px 0px 20px 0px;
-                                        border-bottom: gray solid 1px;vertical-align: top;
-                                        font-size: 13px;">
+                                    <td>
                                         <a href=""><img src="./assets/imgs/ShoppingCartImg/x.jpg" alt="" width="25px"></a>
                                         <a href=""><img src="./assets/imgs/ShoppingCartImg/pen.jpg" alt="" width="25px"
                                                         style="margin-top: 5px;"></a>
                                     </td>
-                                </tr> 
+                                </tr>
                             </table>
                             <br>
                             <div class="btnControl">
@@ -110,7 +91,6 @@
                                     <p>Enter your destination to get a shipping estimate.</p>
                                 </div>
                             </div>
-
                             <svg width="385" height="2" viewBox="0 0 385 2" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <path d="M0 1.00003L385 0.999997" stroke="#CACDD8" />
                             </svg>
@@ -196,10 +176,7 @@
                     </div>
                 </div>
             </main>
-
-            <footer> 
-            <jsp:include page="footer.jsp"></jsp:include>
-        </footer>
+        <jsp:include page="footer.jsp"></jsp:include>
         <script>
             function toggleDisplay(divId) {
                 var x = document.getElementById(divId);
