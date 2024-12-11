@@ -50,14 +50,13 @@
             .infor-content:nth-child(3) *{
                 margin-left: 5px
             }
-            .infor-content a{
+            .infor-content a, .nav-infor-content a{
                 text-decoration: none;
                 color: black;
             }
-            .infor-content a:hover{
+            .infor-content a:hover, .nav-infor-content a:hover{
                 color: black;
-                opacity: 0.7;
-                font-size: 105%;
+                opacity: 0.6;
                 text-decoration: none;
             }
 
@@ -89,6 +88,9 @@
             }
             .nav-infor-content:nth-child(3){
                 flex-basis: 100px;
+            }
+            .nav-infor-content:nth-child(3) *{
+                margin-left: 5px
             }
             .list-categories{
                 margin: 0;
@@ -123,25 +125,17 @@
                     </div>
                     <div class="infor-content col-md-4">
                         <p class="text-dark">Call Us: (+84) 12 345 6789</p>
-                        <a href="#"><img src="assets/imgs/SystemImg/Vector-Header-FB.svg" alt="Facebook" style="width: 23px; height: 23px;"></a>
-                        <a href="#"><img src="assets/imgs/SystemImg/Vector-Header-IG.svg" alt="Instagram" style="width: 23px; height: 23px;"></a>
+                        <a href="#"><img src="assets/imgs/HeaderImgs/Vector-Header-FB.svg" alt="Facebook" style="width: 23px; height: 23px;"></a>
+                        <a href="#"><img src="assets/imgs/HeaderImgs/Vector-Header-IG.svg" alt="Instagram" style="width: 23px; height: 23px;"></a>
                     </div>
                 </div>
             </div>
-<<<<<<< HEAD
         </header>
-=======
-            <h1 id="name-shop">F Shop</h1>
-            <button id="cartBtn"><a href="shoppingCart.jsp">Cart</a></button>
-            <button id="loginBtn">Login</button>
-        </div>
->>>>>>> df78a73f84830d618e32f4612ecc263d5d1d7962
-
         <nav>
             <div class="nav-container container">
                 <div class="nav-infor row">
                     <div class="nav-infor-content col-md-4">
-                        <a href="#"><img src="assets/imgs/SystemImg/Vector-Header-Logo.svg" alt="Shop Logo" style="width: 50px; height: 50px;"></a>
+                        <a href="#"><img src="assets/imgs/HeaderImgs/Vector-Header-Logo.svg" alt="Shop Logo" style="width: 50px; height: 50px;"></a>
                     </div>
                     <div class="nav-infor-content col-md-4">
                         <ul class="list-categories">
@@ -164,13 +158,12 @@
                     </div>
                     <div class="nav-infor-content col-md-4">
                         <i class="ti-search" style="font-size: 150%; color: black;"></i>
-                        <i class="ti-shopping-cart" style="font-size: 150%; color: black;"></i>
+                        <a href="shoppingCart.jsp"><i class="ti-shopping-cart" style="font-size: 150%; color: black;"></i></a>
                         <i class="ti-user" style="font-size: 150%; color: black; margin-left: 20px;"></i>
                     </div>
                 </div>
             </div>
         </nav>
-
         <script src="assets/js/bootstrap.min.js"></script>
     </body>
 </html>
