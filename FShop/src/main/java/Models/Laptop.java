@@ -151,4 +151,14 @@ public class Laptop extends Product {
         this.description = description;
     }
 
+    @Override
+    public String getFullName() {
+        return super.getFullName(); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/OverriddenMethodBody
+    }
+
+    @Override
+    public String getPriceFormatted() {
+        return super.getPriceFormatted(); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/OverriddenMethodBody
+    }
+
 }

@@ -3,6 +3,10 @@
     <welcome-file-list>
         <welcome-file>HomeServlet</welcome-file>
     </welcome-file-list>
+    <servlet>
+        <servlet-name>ViewLaptopServlet</servlet-name>
+        <servlet-class>Controllers.ViewLaptopServlet</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>default</servlet-name>
         <url-pattern>/assets/*</url-pattern>
@@ -14,6 +18,10 @@
     <servlet-mapping>
         <servlet-name>HomeServlet</servlet-name>
         <url-pattern>/HomeServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ViewLaptopServlet</servlet-name>
+        <url-pattern>/ViewLaptopServlet</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>
