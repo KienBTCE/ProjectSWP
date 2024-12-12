@@ -28,7 +28,7 @@
             .section-content{
                 display: flex;
                 align-items: center;
-                justify-content: space-between;
+                justify-content: space-around;
             }
             .frame-represent{
                 width: 234px;
@@ -61,49 +61,76 @@
                     </div>
                 </div>
                 <div class="row">
-                    <h4 class="title-content">New Products</h4>
+                    <h4 class="title-content">Laptop</h4> 
                     <div class="gap-section section-content">
+                    <c:set var="count" value="${0}" scope="page"></c:set>
                     <c:forEach items="${dataProducts}" var="p">
                         <c:choose>
-                            <c:when test="${p.isLaptop()}">
-                                <div class="frame-represent">
-                                    <img src="assets/imgs/Laptop/${p.getImage()}" width="150px" height="150px" alt="alt"/>
-                                    <div class="star-rating">
-                                        <!-- Các ngôi sao -->
-                                        <span class="star">★</span>
-                                        <span class="star">★</span>
-                                        <span class="star">★</span>
-                                        <span class="star">★</span>
-                                        <span class="star">☆</span>
-                                        <!-- Số lượng đánh giá -->
-                                        <span class="count">Reviews(4)</span>
-                                    </div>
-                                    <h6>${p.getFullName()}</h6>
-                                    <p>${p.getPriceFormatted()}</p>
-                                </div>
+                            <c:when test="${count lt 5}">
+                                <c:choose>
+                                    <c:when test="${p.isLaptop()}">
+                                        <div class="frame-represent">
+                                            <img src="assets/imgs/Laptop/${p.getImage()}" width="150px" height="150px" alt="alt"/>
+                                            <div class="star-rating">
+                                                <!-- Các ngôi sao -->
+                                                <span class="star">★</span>
+                                                <span class="star">★</span>
+                                                <span class="star">★</span>
+                                                <span class="star">★</span>
+                                                <span class="star">☆</span>
+                                                <!-- Số lượng đánh giá -->
+                                                <span class="count">Reviews(4)</span>
+                                            </div>
+                                            <h6>${p.getFullName()}</h6>
+                                            <p>${p.getPriceFormatted()}</p>
+                                        </div>
+                                    </c:when>
+                                </c:choose>
+                                <%--<c:set var="count" value="${count + 1}"></c:set>--%>
                             </c:when>
-                            <c:when test="${p.isPhone()}">
-                                <div class="frame-represent">
-                                    <img src="assets/imgs/SmartPhone/${p.getImage()}" width="150px" height="150px" alt="alt"/>
-                                    <div class="star-rating">
-                                        <!-- Các ngôi sao -->
-                                        <span class="star">★</span>
-                                        <span class="star">★</span>
-                                        <span class="star">★</span>
-                                        <span class="star">★</span>
-                                        <span class="star">☆</span>
-                                        <!-- Số lượng đánh giá -->
-                                        <span class="count">Reviews(4)</span>
-                                    </div>
-                                    <h6>${p.getFullName()}</h6>
-                                    <p>${p.getPriceFormatted()}</p>
-                                </div>
-                            </c:when>
+                            <c:otherwise>
+                                
+                            </c:otherwise>
                         </c:choose>
                     </c:forEach>
                 </div>
             </div>
 
+            <div class="row">
+                <h4 class="title-content">Smart Phone</h4>
+                <div class="gap-section section-content">
+                    <c:set var="count" value="${0}" scope="page"></c:set>
+                    <c:forEach items="${dataProducts}" var="p">
+                        <c:choose>
+                            <c:when test="${count lt 5}">
+                                <c:choose>
+                                    <c:when test="${p.isPhone()}">
+                                        <div class="frame-represent">
+                                            <img src="assets/imgs/SmartPhone/${p.getImage()}" width="150px" height="150px" alt="alt"/>
+                                            <div class="star-rating">
+                                                <!-- Các ngôi sao -->
+                                                <span class="star">★</span>
+                                                <span class="star">★</span>
+                                                <span class="star">★</span>
+                                                <span class="star">★</span>
+                                                <span class="star">☆</span>
+                                                <!-- Số lượng đánh giá -->
+                                                <span class="count">Reviews(4)</span>
+                                            </div>
+                                            <h6>${p.getFullName()}</h6>
+                                            <p>${p.getPriceFormatted()}</p>
+                                        </div>
+                                    </c:when>
+                                </c:choose>
+                                <%--<c:set var="count" value="${count + 1}"></c:set>--%>
+                            </c:when>
+                            <c:otherwise>
+                                
+                            </c:otherwise>
+                        </c:choose>
+                    </c:forEach>
+                </div>
+            </div>
 
             <div class="row">
                 <h5 class="title-content">Follow us on Instagram for News, Offers & More</h5>
