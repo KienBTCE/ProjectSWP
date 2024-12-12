@@ -4,12 +4,18 @@
  */
 package Controllers;
 
+import DAOs.LaptopDAO;
+import DAOs.PhoneDAO;
+import DAOs.ProductDAO;
+import Models.Laptop;
+import Models.Phone;
+import Models.Product;
 import java.io.IOException;
-import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import java.util.ArrayList;
 
 /**
  *
@@ -41,7 +47,29 @@ public class HomeServlet extends HttpServlet {
 //            out.println("</body>");
 //            out.println("</html>");
 //        }
-        request.getRequestDispatcher("index.jsp").forward(request, response);
+        ArrayList<Product> productList = null;
+
+//        ProductDAO pD = new ProductDAO();
+//        ArrayList<Product> products = pD.GetAllProducts();
+        LaptopDAO lD = new LaptopDAO();
+        ArrayList<Laptop> laptops = lD.GetAllLaptops();
+        PhoneDAO phD = new PhoneDAO();
+        ArrayList<Phone> phones = phD.GetAllPhones();
+        
+        if (laptops != null) {
+            productList = new ArrayList<>();
+            for (Laptop laptop : laptops) {
+                productList.add(laptop);
+            }
+            for (Phone phone : phones) {
+                productList.add(phone);
+            }
+        }
+        
+        if (productList != null) {
+            request.setAttribute("dataProducts", productList);
+            request.getRequestDispatcher("index.jsp").forward(request, response);
+        }
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

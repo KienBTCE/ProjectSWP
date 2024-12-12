@@ -4,6 +4,9 @@
     Author     : KienBTCE180180
 --%>
 
+<%@page import="Models.Laptop"%>
+<%@page import="Models.Product"%>
+<%@page import="java.util.ArrayList"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@ taglib prefix = "c" uri = "http://java.sun.com/jsp/jstl/core" %>
 
@@ -60,132 +63,96 @@
                 <div class="row">
                     <h4 class="title-content">New Products</h4>
                     <div class="gap-section section-content">
-                        <div class="frame-represent">
-                            <img src="assets/imgs/Laptop/0yp3jx9d-1090-lenovo-legion-pro-5-y9000p-2023-core-i9-13900hx-16gb-1tb-rtx-4050-6gb-16-wqxga-240hz-new.jpg" width="150px" height="150px" alt="alt"/>
-                            <div class="star-rating">
-                                <!-- Các ngôi sao -->
-                                <span class="star">★</span>
-                                <span class="star">★</span>
-                                <span class="star">★</span>
-                                <span class="star">★</span>
-                                <span class="star">☆</span>
-                                <!-- Số lượng đánh giá -->
-                                <span class="count">Reviews(4)</span>
-                            </div>
-                            <h6>Lenovo Legion 5 Pro</h6>
-                            <p>28.990.000</p>
-                        </div>
-                        <div class="frame-represent">
-                            <img src="assets/imgs/SmartPhone/iphone-16-pro-max-black-thumb-600x600.jpg" width="150px" height="150px" alt="alt"/>
-                            <div class="star-rating">
-                                <!-- Các ngôi sao -->
-                                <span class="star">★</span>
-                                <span class="star">★</span>
-                                <span class="star">★</span>
-                                <span class="star">★</span>
-                                <span class="star">☆</span>
-                                <!-- Số lượng đánh giá -->
-                                <span class="count">Reviews(4)</span>
-                            </div>
-                            <h6>Lenovo Legion 5 Pro</h6>
-                            <p>28.990.000</p>
-                        </div>
-                        <div class="frame-represent">
-                            <img src="assets/imgs/Laptop/0yp3jx9d-1090-lenovo-legion-pro-5-y9000p-2023-core-i9-13900hx-16gb-1tb-rtx-4050-6gb-16-wqxga-240hz-new.jpg" width="150px" height="150px" alt="alt"/>
-                            <div class="star-rating">
-                                <!-- Các ngôi sao -->
-                                <span class="star">★</span>
-                                <span class="star">★</span>
-                                <span class="star">★</span>
-                                <span class="star">★</span>
-                                <span class="star">☆</span>
-                                <!-- Số lượng đánh giá -->
-                                <span class="count">Reviews(4)</span>
-                            </div>
-                            <h6>Lenovo Legion 5 Pro</h6>
-                            <p>28.990.000</p>
-                        </div>
-                        <div class="frame-represent">
-                            <img src="assets/imgs/SmartPhone/iphone-16-pro-max-black-thumb-600x600.jpg" width="150px" height="150px" alt="alt"/>
-                            <div class="star-rating">
-                                <!-- Các ngôi sao -->
-                                <span class="star">★</span>
-                                <span class="star">★</span>
-                                <span class="star">★</span>
-                                <span class="star">★</span>
-                                <span class="star">☆</span>
-                                <!-- Số lượng đánh giá -->
-                                <span class="count">Reviews(4)</span>
-                            </div>
-                            <h6>Lenovo Legion 5 Pro</h6>
-                            <p>28.990.000</p>
-                        </div>
-                        <div class="frame-represent">
-                            <img src="assets/imgs/Laptop/0yp3jx9d-1090-lenovo-legion-pro-5-y9000p-2023-core-i9-13900hx-16gb-1tb-rtx-4050-6gb-16-wqxga-240hz-new.jpg" width="150px" height="150px" alt="alt"/>
-                            <div class="star-rating">
-                                <!-- Các ngôi sao -->
-                                <span class="star">★</span>
-                                <span class="star">★</span>
-                                <span class="star">★</span>
-                                <span class="star">★</span>
-                                <span class="star">☆</span>
-                                <!-- Số lượng đánh giá -->
-                                <span class="count">Reviews(4)</span>
-                            </div>
-                            <h6>Lenovo Legion 5 Pro</h6>
-                            <p>28.990.000</p>
+                    <c:forEach items="${dataProducts}" var="p">
+                        <c:choose>
+                            <c:when test="${p.isLaptop()}">
+                                <div class="frame-represent">
+                                    <img src="assets/imgs/Laptop/${p.getImage()}" width="150px" height="150px" alt="alt"/>
+                                    <div class="star-rating">
+                                        <!-- Các ngôi sao -->
+                                        <span class="star">★</span>
+                                        <span class="star">★</span>
+                                        <span class="star">★</span>
+                                        <span class="star">★</span>
+                                        <span class="star">☆</span>
+                                        <!-- Số lượng đánh giá -->
+                                        <span class="count">Reviews(4)</span>
+                                    </div>
+                                    <h6>${p.getFullName()}</h6>
+                                    <p>${p.getPriceFormatted()}</p>
+                                </div>
+                            </c:when>
+                            <c:when test="${p.isPhone()}">
+                                <div class="frame-represent">
+                                    <img src="assets/imgs/SmartPhone/${p.getImage()}" width="150px" height="150px" alt="alt"/>
+                                    <div class="star-rating">
+                                        <!-- Các ngôi sao -->
+                                        <span class="star">★</span>
+                                        <span class="star">★</span>
+                                        <span class="star">★</span>
+                                        <span class="star">★</span>
+                                        <span class="star">☆</span>
+                                        <!-- Số lượng đánh giá -->
+                                        <span class="count">Reviews(4)</span>
+                                    </div>
+                                    <h6>${p.getFullName()}</h6>
+                                    <p>${p.getPriceFormatted()}</p>
+                                </div>
+                            </c:when>
+                        </c:choose>
+                    </c:forEach>
+                </div>
+            </div>
+
+
+            <div class="row">
+                <h5 class="title-content">Follow us on Instagram for News, Offers & More</h5>
+                <div class="gap-section section-content">
+                    <div class="frame-represent">
+                        <img src="assets/imgs/Magazines/news-1.svg" width="235px" height="150px" alt="alt"/>
+                        <div class="magazine-paragraph">
+                            <p style="width: 100%">
+                                If you’ve recently made a desktop PC or laptop purchase, you might want to consider adding peripherals to enhance your home office setup, your gaming rig, or your business workspace...
+                            </p>
                         </div>
                     </div>
-                </div>
-
-
-                <div class="row">
-                    <h5 class="title-content">Follow us on Instagram for News, Offers & More</h5>
-                    <div class="gap-section section-content">
-                        <div class="frame-represent">
-                            <img src="assets/imgs/Magazines/news-1.svg" width="235px" height="150px" alt="alt"/>
-                            <div class="magazine-paragraph">
-                                <p style="width: 100%">
-                                    If you’ve recently made a desktop PC or laptop purchase, you might want to consider adding peripherals to enhance your home office setup, your gaming rig, or your business workspace...
-                                </p>
-                            </div>
+                    <div class="frame-represent">
+                        <img src="assets/imgs/Magazines/news-2.svg" width="235px" height="150px" alt="alt"/>
+                        <div class="magazine-paragraph">
+                            <p style="width: 100%">
+                                As a gamer, superior sound counts for a lot. You need to hear enemies tiptoeing up behind you for a sneak attack or a slight change in the atmospheric music signaling a new challenge or task...
+                            </p>
                         </div>
-                        <div class="frame-represent">
-                            <img src="assets/imgs/Magazines/news-2.svg" width="235px" height="150px" alt="alt"/>
-                            <div class="magazine-paragraph">
-                                <p style="width: 100%">
-                                    As a gamer, superior sound counts for a lot. You need to hear enemies tiptoeing up behind you for a sneak attack or a slight change in the atmospheric music signaling a new challenge or task...
-                                </p>
-                            </div>
+                    </div>
+                    <div class="frame-represent">
+                        <img src="assets/imgs/Magazines/news-3.svg" width="235px" height="150px" alt="alt"/>
+                        <div class="magazine-paragraph">
+                            <p style="width: 100%">
+                                If you’ve recently made a desktop PC or laptop purchase, you might want to consider adding peripherals to enhance your home office setup, your gaming rig, or your business workspace...
+                            </p>
                         </div>
-                        <div class="frame-represent">
-                            <img src="assets/imgs/Magazines/news-3.svg" width="235px" height="150px" alt="alt"/>
-                            <div class="magazine-paragraph">
-                                <p style="width: 100%">
-                                    If you’ve recently made a desktop PC or laptop purchase, you might want to consider adding peripherals to enhance your home office setup, your gaming rig, or your business workspace...
-                                </p>
-                            </div>
+                    </div>
+                    <div class="frame-represent">
+                        <img src="assets/imgs/Magazines/news-4.svg" width="235px" height="150px" alt="alt"/>
+                        <div class="magazine-paragraph">
+                            <p style="width: 100%">
+                                If you’ve recently made a desktop PC or laptop purchase, you might want to consider adding peripherals to enhance your home office setup, your gaming rig, or your business workspace...
+                            </p>
                         </div>
-                        <div class="frame-represent">
-                            <img src="assets/imgs/Magazines/news-4.svg" width="235px" height="150px" alt="alt"/>
-                            <div class="magazine-paragraph">
-                                <p style="width: 100%">
-                                    If you’ve recently made a desktop PC or laptop purchase, you might want to consider adding peripherals to enhance your home office setup, your gaming rig, or your business workspace...
-                                </p>
-                            </div>
-                        </div>
-                        <div class="frame-represent">
-                            <img src="assets/imgs/Magazines/news-5.svg" width="235px" height="150px" alt="alt"/>
-                            <div class="magazine-paragraph">
-                                <p style="width: 100%">
-                                    If you’ve recently made a desktop PC or laptop purchase, you might want to consider adding peripherals to enhance your home office setup, your gaming rig, or your business workspace...
-                                </p>
-                            </div>
+                    </div>
+                    <div class="frame-represent">
+                        <img src="assets/imgs/Magazines/news-5.svg" width="235px" height="150px" alt="alt"/>
+                        <div class="magazine-paragraph">
+                            <p style="width: 100%">
+                                If you’ve recently made a desktop PC or laptop purchase, you might want to consider adding peripherals to enhance your home office setup, your gaming rig, or your business workspace...
+                            </p>
                         </div>
                     </div>
                 </div>
             </div>
+        </div>
         <jsp:include page="footer.jsp"></jsp:include>
+
         <script src="assets/js/bootstrap.min.js"></script>
     </body>
 </html>

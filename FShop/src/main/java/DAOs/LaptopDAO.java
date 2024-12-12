@@ -4,10 +4,94 @@
  */
 package DAOs;
 
+import DB.DBContext;
+import Models.Laptop;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.util.ArrayList;
+
 /**
  *
  * @author KienBTCE180180
  */
-public class LaptopDAO {
-    
+public class LaptopDAO extends DBContext {
+
+    public LaptopDAO() {
+        super();
+    }
+
+    public ArrayList<Laptop> GetAllLaptops() {
+        ArrayList<Laptop> list = new ArrayList<>();
+
+        String query = "SELECT * FROM Products JOIN Laptops ON Products.pd_SKU = Laptops.pd_SKU";
+
+        try ( PreparedStatement ps = connector.prepareStatement(query)) {
+            try ( ResultSet rs = ps.executeQuery()) {
+                while (rs.next()) {
+                    list.add(new Laptop(
+                            rs.getInt("pd_SKU"),
+                            rs.getString("fullName"),
+                            rs.getString("screen"),
+                            rs.getString("camera"),
+                            rs.getInt("RAM"),
+                            rs.getInt("ROM"),
+                            rs.getString("CPU"),
+                            rs.getString("GPU"),
+                            rs.getString("size"),
+                            rs.getString("connectionPort"),
+                            rs.getBoolean("lightKeyboard"), // Assuming lightKeyboard is a BIT or BOOLEAN in the database
+                            rs.getFloat("weight"),
+                            rs.getString("image"),
+                            rs.getString("description"),
+                            rs.getInt("price")
+                    ));
+                }
+                return list;
+            } catch (Exception e) {
+                System.out.println(e);
+            }
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+
+        return null;
+    }
+
+    public Laptop GetLaptop(int SKU) {
+        Laptop lt;
+        String query = "SELECT * FROM Products JOIN Laptops ON Products.pd_SKU = Laptops.pd_SKU WHERE pd_SKU = ?";
+
+        try ( PreparedStatement ps = connector.prepareStatement(query)) {
+            ps.setInt(1, SKU);
+            try ( ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    lt = new Laptop(
+                            rs.getInt("pdSKU"),
+                            rs.getString("fullName"),
+                            rs.getString("screen"),
+                            rs.getString("camera"),
+                            rs.getInt("RAM"),
+                            rs.getInt("ROM"),
+                            rs.getString("CPU"),
+                            rs.getString("GPU"),
+                            rs.getString("size"),
+                            rs.getString("connectionPort"),
+                            rs.getBoolean("lightKeyboard"), // Assuming lightKeyboard is a BIT or BOOLEAN in the database
+                            rs.getFloat("weight"),
+                            rs.getString("image"),
+                            rs.getString("description"),
+                            rs.getInt("price")
+                    );
+                    return lt;
+                }
+            } catch (Exception e) {
+                System.out.println(e);
+            }
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+
+        return null;
+    }
+
 }

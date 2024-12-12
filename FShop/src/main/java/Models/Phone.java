@@ -8,11 +8,9 @@ package Models;
  *
  * @author KienBTCE180180
  */
-public class Phone {
+public class Phone extends Product {
 
-    private String pd_ID;
-    private String brand;
-    private String fullName;
+    private int SKU;
     private String screen;
     private String camera;
     private int RAM;
@@ -20,7 +18,6 @@ public class Phone {
     private String chip;
     private String size;
     private float weight;
-    private double price; // To handle DECIMAL(10, 2)
     private String image;
     private String description;
     private String categoryId;
@@ -28,10 +25,9 @@ public class Phone {
     public Phone() {
     }
 
-    public Phone(String pd_ID, String brand, String fullName, String screen, String camera, int RAM, int ROM, String chip, String size, float weight, double price, String image, String description, String categoryId) {
-        this.pd_ID = pd_ID;
-        this.brand = brand;
-        this.fullName = fullName;
+    public Phone(int SKU, String fullName, String screen, String camera, int RAM, int ROM, String chip, String size, float weight, String image, String description, int price) {
+        this.SKU = SKU;
+        super.setFullName(fullName);
         this.screen = screen;
         this.camera = camera;
         this.RAM = RAM;
@@ -39,34 +35,19 @@ public class Phone {
         this.chip = chip;
         this.size = size;
         this.weight = weight;
-        this.price = price;
         this.image = image;
         this.description = description;
-        this.categoryId = categoryId;
+        super.setPrice(price);
     }
 
-    public String getPd_ID() {
-        return pd_ID;
+    @Override
+    public int getSKU() {
+        return SKU;
     }
 
-    public void setPd_ID(String pd_ID) {
-        this.pd_ID = pd_ID;
-    }
-
-    public String getBrand() {
-        return brand;
-    }
-
-    public void setBrand(String brand) {
-        this.brand = brand;
-    }
-
-    public String getFullName() {
-        return fullName;
-    }
-
-    public void setFullName(String fullName) {
-        this.fullName = fullName;
+    @Override
+    public void setSKU(int SKU) {
+        this.SKU = SKU;
     }
 
     public String getScreen() {
@@ -123,14 +104,6 @@ public class Phone {
 
     public void setWeight(float weight) {
         this.weight = weight;
-    }
-
-    public double getPrice() {
-        return price;
-    }
-
-    public void setPrice(double price) {
-        this.price = price;
     }
 
     public String getImage() {
