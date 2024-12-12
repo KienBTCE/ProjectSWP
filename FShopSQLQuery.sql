@@ -40,7 +40,6 @@ CREATE TABLE Accounts (
 	[status] VARCHAR(20) DEFAULT 'Active',
 	avatar TEXT
 )
-
 -- email can null, and null is not unique, but email is unique
 CREATE UNIQUE INDEX UQ_Email 
 ON Accounts(email) 
@@ -121,7 +120,6 @@ CREATE TABLE Carts (
 	FOREIGN KEY (a_ID) REFERENCES Accounts(a_ID),
 	FOREIGN KEY (pd_SKU) REFERENCES Products(pd_SKU)
 )
-
 CREATE TABLE [Orders] (
     orderID INT PRIMARY KEY IDENTITY(1,1),
 
@@ -157,12 +155,13 @@ SET IDENTITY_INSERT Products ON;
 INSERT INTO Products(pd_SKU, brand, pd_ID, fullName, quantity, [status], [productType], price) VALUES (1, 'Asus', '14XHMY', 'Zenbook 14XHMY', 10, 'Available', 'Laptop', 28909000)
 INSERT INTO Laptops(pd_SKU, [image]) VALUES (1, '250-8562-line-laptop.png')
 
-INSERT INTO Products(pd_SKU, brand, pd_ID, fullName, quantity, [status], [productType], price) VALUES (2, 'Apple', '12XHMY', 'iPhone 15 Pro Max 256GB', 10, 'Available', 'Smart Phone', 32529000)
+INSERT INTO Products(pd_SKU, brand, pd_ID, fullName, quantity, [status], [productType], price) VALUES (2, 'Apple', '12XHMY', 'iPhone 15 Pro Max 256GB', 10, 'Available', 'SmartPhone', 32529000)
 INSERT INTO Phones(pd_SKU, [image]) VALUES (2, 'iphone-16-pro-max-black-thumb-600x600.jpg')
 
-INSERT INTO Products(pd_SKU, brand, pd_ID, fullName, quantity, [status], [productType], price) VALUES (3, 'Samsung', '7XGLX', 'Galaxy S23 512GB', 10, 'Available', 'Smart Phone', 25899000)
+INSERT INTO Products(pd_SKU, brand, pd_ID, fullName, quantity, [status], [productType], price) VALUES (3, 'Samsung', '7XGLX', 'Galaxy S23 512GB', 10, 'Available', 'SmartPhone', 25899000)
 INSERT INTO Phones(pd_SKU, [image]) VALUES (3, 'samsung-galaxy-s23-xanh-600x600-1.jpg')
 
+<<<<<<< HEAD
 INSERT INTO Products(pd_SKU, brand, pd_ID, fullName, quantity, [status], [productType], price) VALUES (4, 'Lenovo', '15LGXHYM', 'Legion Pro 15GXH', 10, 'Available', 'Laptop', 38909000)
 INSERT INTO Laptops(pd_SKU, [image]) VALUES (4, '0yp3jx9d-1090-lenovo-legion-pro-5-y9000p-2023-core-i9-13900hx-16gb-1tb-rtx-4050-6gb-16-wqxga-240hz-new.jpg')
 
@@ -177,5 +176,17 @@ INSERT INTO Laptops(pd_SKU, [image]) VALUES (7, '250-7038-macbook-pro-2021-apple
 
 INSERT INTO Products(pd_SKU, brand, pd_ID, fullName, quantity, [status], [productType], price) VALUES (8, 'Dell', 'D9C72G1', 'Dell Gamming G15 551', 10, 'Available', 'Laptop', 35909000)
 INSERT INTO Laptops(pd_SKU, [image]) VALUES (8, '45606_dell_gaming_5511_dark_grey_ha3.jpg')
+=======
+INSERT INTO Accounts(a_ID, phoneNumber, email, [password], fullName, birthday, gender, avatar)
+VALUES ('user1', '0888888888', 'abc123@gmail.com', 'user1', 'User NoName', '2004-01-01', 'Male', 'avatar')
+
+INSERT INTO Carts VALUES ('user1', 1, 5),
+('user1', 2, 5)
+
+
+SELECT * FROM Carts
+SELECT * FROM Accounts
+SELECT * FROM Products
+>>>>>>> 5a7b0f3943c9935c874da2ad4bd34009d8c849e3
 
 SET IDENTITY_INSERT Products OFF;
