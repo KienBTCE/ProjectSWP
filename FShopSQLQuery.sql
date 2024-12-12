@@ -161,7 +161,6 @@ INSERT INTO Phones(pd_SKU, [image]) VALUES (2, 'iphone-16-pro-max-black-thumb-60
 INSERT INTO Products(pd_SKU, brand, pd_ID, fullName, quantity, [status], [productType], price) VALUES (3, 'Samsung', '7XGLX', 'Galaxy S23 512GB', 10, 'Available', 'SmartPhone', 25899000)
 INSERT INTO Phones(pd_SKU, [image]) VALUES (3, 'samsung-galaxy-s23-xanh-600x600-1.jpg')
 
-<<<<<<< HEAD
 INSERT INTO Products(pd_SKU, brand, pd_ID, fullName, quantity, [status], [productType], price) VALUES (4, 'Lenovo', '15LGXHYM', 'Legion Pro 15GXH', 10, 'Available', 'Laptop', 38909000)
 INSERT INTO Laptops(pd_SKU, [image]) VALUES (4, '0yp3jx9d-1090-lenovo-legion-pro-5-y9000p-2023-core-i9-13900hx-16gb-1tb-rtx-4050-6gb-16-wqxga-240hz-new.jpg')
 
@@ -176,17 +175,11 @@ INSERT INTO Laptops(pd_SKU, [image]) VALUES (7, '250-7038-macbook-pro-2021-apple
 
 INSERT INTO Products(pd_SKU, brand, pd_ID, fullName, quantity, [status], [productType], price) VALUES (8, 'Dell', 'D9C72G1', 'Dell Gamming G15 551', 10, 'Available', 'Laptop', 35909000)
 INSERT INTO Laptops(pd_SKU, [image]) VALUES (8, '45606_dell_gaming_5511_dark_grey_ha3.jpg')
-=======
+
+SET IDENTITY_INSERT Products OFF;
+
 INSERT INTO Accounts(a_ID, phoneNumber, email, [password], fullName, birthday, gender, avatar)
 VALUES ('user1', '0888888888', 'abc123@gmail.com', 'user1', 'User NoName', '2004-01-01', 'Male', 'avatar')
 
 INSERT INTO Carts VALUES ('user1', 1, 5),
 ('user1', 2, 5)
-
-
-SELECT * FROM Carts
-SELECT * FROM Accounts
-SELECT * FROM Products
->>>>>>> 5a7b0f3943c9935c874da2ad4bd34009d8c849e3
-
-SET IDENTITY_INSERT Products OFF;
