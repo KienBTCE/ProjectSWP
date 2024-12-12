@@ -158,7 +158,7 @@
                     </div>
                     <div class="nav-infor-content col-md-4">
                         <i class="ti-search" style="font-size: 150%; color: black;"></i>
-                        <a href="shoppingCart.jsp"><i class="ti-shopping-cart" style="font-size: 150%; color: black;"></i></a>
+                        <a href="cart"><i class="ti-shopping-cart" style="font-size: 150%; color: black;"></i></a>
                         <i class="ti-user" style="font-size: 150%; color: black; margin-left: 20px;"></i>
                     </div>
                 </div>
