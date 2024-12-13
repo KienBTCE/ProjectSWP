@@ -181,5 +181,7 @@ SET IDENTITY_INSERT Products OFF;
 INSERT INTO Accounts(a_ID, phoneNumber, email, [password], fullName, birthday, gender, avatar)
 VALUES ('user1', '0888888888', 'abc123@gmail.com', 'user1', 'User NoName', '2004-01-01', 'Male', 'avatar')
 
-INSERT INTO Carts VALUES ('user1', 1, 5),
-('user1', 2, 5)
+INSERT INTO Carts VALUES ('user1', 1, 1),
+('user1', 2, 1),
+('user1', 5, 1),
+('user1', 7, 1)

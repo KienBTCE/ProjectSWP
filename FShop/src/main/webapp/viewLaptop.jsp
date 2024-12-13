@@ -49,54 +49,56 @@
     </head>
     <body>
         <jsp:include page="header.jsp"></jsp:include>
-
-            <div class="container">
-                <div class="row">
-                    <div class="gap-section banner-content">
-                        <img src="assets/imgs/Banners/banner-laptop.svg" alt="alt"/>
+            <<main>
+                <div class="container">
+                    <div class="row">
+                        <div class="gap-section banner-content">
+                            <img src="assets/imgs/Banners/banner-laptop.svg" alt="alt"/>
+                        </div>
                     </div>
-                </div>
-                <div class="row">
-                    <h4 class="title-content">Type Laptop</h4>
-                </div>
-                <div class="view-content">
-
-                    <div class="filte-table col-md-2">
-
+                    <div class="row">
+                        <h4 class="title-content">Type Laptop</h4>
                     </div>
+                    <div class="view-content">
 
-                    <div class="show-product row col-md-10">
-                        <!--===================================================-->
-                    <c:forEach var="i" begin="1" end="${numberRow}" step="1">
-
-                        <div class="section-content">
-
-                            <c:forEach items="${laptopProducts}" var="p" varStatus="status">
-                                <c:if test="${status.index >= (i * 4 - 4) && status.index < (i * 4)}">
-                                    <div class="frame-represent">
-                                        <img src="assets/imgs/Laptop/${p.getImage()}" width="150px" height="150px" alt="alt"/>
-                                        <div class="star-rating">
-                                            <!-- Các ngôi sao -->
-                                            <span class="star">★</span>
-                                            <span class="star">★</span>
-                                            <span class="star">★</span>
-                                            <span class="star">★</span>
-                                            <span class="star">☆</span>
-                                            <!-- Số lượng đánh giá -->
-                                            <span class="count">Reviews(4)</span>
-                                        </div>
-                                        <h6>${p.getFullName()}</h6>
-                                        <p>${p.getPriceFormatted()}</p>
-                                    </div>
-                                </c:if>
-                            </c:forEach>
+                        <div class="filte-table col-md-2">
 
                         </div>
-                    </c:forEach>
-                    <!--===================================================-->
+
+                        <div class="show-product row col-md-10">
+                            <!--===================================================-->
+                        <c:forEach var="i" begin="1" end="${numberRow}" step="1">
+
+                            <div class="section-content">
+
+                                <c:forEach items="${laptopProducts}" var="p" varStatus="status">
+                                    <c:if test="${status.index >= (i * 4 - 4) && status.index < (i * 4)}">
+                                        <div class="frame-represent">
+                                            <img src="assets/imgs/Laptop/${p.getImage()}" width="150px" height="150px" alt="alt"/>
+                                            <div class="star-rating">
+                                                <!-- Các ngôi sao -->
+                                                <span class="star">★</span>
+                                                <span class="star">★</span>
+                                                <span class="star">★</span>
+                                                <span class="star">★</span>
+                                                <span class="star">☆</span>
+                                                <!-- Số lượng đánh giá -->
+                                                <span class="count">Reviews(4)</span>
+                                            </div>
+                                            <h6>${p.getFullName()}</h6>
+                                            <p>${p.getPriceFormatted()}</p>
+                                        </div>
+                                    </c:if>
+                                </c:forEach>
+
+                            </div>
+                        </c:forEach>
+                        <!--===================================================-->
+                    </div>
                 </div>
             </div>
-            <jsp:include page="footer.jsp"></jsp:include>
-            <script src="assets/js/bootstrap.min.js"></script>
+        </main>
+        <jsp:include page="footer.jsp"></jsp:include>
+        <script src="assets/js/bootstrap.min.js"></script>
     </body>
 </html>
