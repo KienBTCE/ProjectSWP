@@ -126,9 +126,14 @@ CREATE TABLE [Orders] (
     a_ID VARCHAR(20) NOT NULL,
     fullName VARCHAR(100) NOT NULL,
     [address] TEXT NOT NULL,
+<<<<<<< HEAD
     pd_SKU INT NOT NULL,
     a_phoneNumber VARCHAR(15) NOT NULL,
     orderedDate DATE NOT NULL,
+=======
+	a_phoneNumber VARCHAR(15) NOT NULL,
+    orderedDate DATETIME DEFAULT GETDATE(),
+>>>>>>> 4af1bda726202d181b98b8f0a5fb49fe13a862eb
     orderShippedDate DATE,
     paymentMethod VARCHAR(20) NOT NULL,
     [status] VARCHAR(20) NOT NULL,
