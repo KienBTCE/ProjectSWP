@@ -127,7 +127,7 @@ CREATE TABLE [Orders] (
     fullName VARCHAR(100) NOT NULL,
     [address] TEXT NOT NULL,
     pd_SKU INT NOT NULL,
-	a_phoneNumber VARCHAR(15) NOT NULL,
+    a_phoneNumber VARCHAR(15) NOT NULL,
     orderedDate DATE NOT NULL,
     orderShippedDate DATE,
     paymentMethod VARCHAR(20) NOT NULL,
@@ -185,3 +185,7 @@ INSERT INTO Carts VALUES ('user1', 1, 1),
 ('user1', 2, 1),
 ('user1', 5, 1),
 ('user1', 7, 1)
+
+SELECT * FROM Laptops JOIN Products
+ON Laptops.pd_SKU = Products.pd_SKU
+WHERE Laptops.pd_SKU IN (SELECT pd_SKU FROM Products WHERE pd_SKU IN (SELECT pd_SKU FROM Laptops) AND brand IN ('Apple', 'Asus'))

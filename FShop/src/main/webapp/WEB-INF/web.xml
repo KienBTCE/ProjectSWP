@@ -21,7 +21,7 @@
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>ViewLaptopServlet</servlet-name>
-        <url-pattern>/ViewLaptopServlet</url-pattern>
+        <url-pattern>/Laptop</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

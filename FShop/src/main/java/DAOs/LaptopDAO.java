@@ -94,4 +94,71 @@ public class LaptopDAO extends DBContext {
         return null;
     }
 
+    public ArrayList<String> GetAllBrandLaptop() {
+        ArrayList<String> list = null;
+
+        String query = "SELECT DISTINCT brand FROM Products WHERE [productType] = 'Laptop'";
+
+        try ( PreparedStatement ps = connector.prepareStatement(query)) {
+            try ( ResultSet rs = ps.executeQuery()) {
+                list = new ArrayList<>();
+                while (rs.next()) {
+                    list.add(rs.getString("brand"));
+                }
+            } catch (Exception e) {
+            }
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+
+        return list;
+    }
+
+    public ArrayList<Laptop> GetFilterLaptops(ArrayList<String> filters) {
+        ArrayList<Laptop> list = null;
+
+        String query = "SELECT * FROM Laptops JOIN Products\n"
+                + "ON Laptops.pd_SKU = Products.pd_SKU\n"
+                + "WHERE Laptops.pd_SKU IN (SELECT pd_SKU FROM Products WHERE pd_SKU IN (SELECT pd_SKU FROM Laptops) AND ";
+
+        for (String filter : filters) {
+            query += filter;
+        }
+
+        query += ")";
+
+        System.out.println(query);
+
+        try ( PreparedStatement ps = connector.prepareStatement(query)) {
+            try ( ResultSet rs = ps.executeQuery()) {
+                list = new ArrayList<>();
+                while (rs.next()) {
+                    list.add(new Laptop(
+                            rs.getInt("pd_SKU"),
+                            rs.getString("fullName"),
+                            rs.getString("screen"),
+                            rs.getString("camera"),
+                            rs.getInt("RAM"),
+                            rs.getInt("ROM"),
+                            rs.getString("CPU"),
+                            rs.getString("GPU"),
+                            rs.getString("size"),
+                            rs.getString("connectionPort"),
+                            rs.getBoolean("lightKeyboard"), // Assuming lightKeyboard is a BIT or BOOLEAN in the database
+                            rs.getFloat("weight"),
+                            rs.getString("image"),
+                            rs.getString("description"),
+                            rs.getInt("price")
+                    ));
+                }
+                return list;
+            } catch (Exception e) {
+            }
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+
+        return list;
+    }
+
 }

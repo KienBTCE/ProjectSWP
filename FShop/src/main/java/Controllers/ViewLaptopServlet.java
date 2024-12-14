@@ -7,7 +7,6 @@ package Controllers;
 import DAOs.LaptopDAO;
 import Models.Laptop;
 import java.io.IOException;
-import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
@@ -31,30 +30,65 @@ public class ViewLaptopServlet extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-//        response.setContentType("text/html;charset=UTF-8");
-//        try (PrintWriter out = response.getWriter()) {
-//            /* TODO output your page here. You may use following sample code. */
-//            out.println("<!DOCTYPE html>");
-//            out.println("<html>");
-//            out.println("<head>");
-//            out.println("<title>Servlet ViewLaptopServlet</title>");  
-//            out.println("</head>");
-//            out.println("<body>");
-//            out.println("<h1>Servlet ViewLaptopServlet at " + request.getContextPath () + "</h1>");
-//            out.println("</body>");
-//            out.println("</html>");
-//        }
         LaptopDAO lD = new LaptopDAO();
-        ArrayList<Laptop> laptops = lD.GetAllLaptops();
+        ArrayList<Laptop> laptops = null;
+        ArrayList<String> filters = new ArrayList<>();
+        boolean isFilter = false;
 
-        int numberRow = laptops.size() / 4;
-        if (laptops.size() % 4 != 0) {
-            numberRow++;
+        String brand = request.getParameter("brand");
+        if (brand != null && !brand.isEmpty()) {
+            String[] brandFilters = brand.split(",");
+
+            for (int i = 0; i < brandFilters.length; i++) {
+                if (brandFilters.length == 1) {
+                    filters.add("brand IN ('" + brandFilters[i].trim() + "')");
+                } else if (i == 0) {
+                    filters.add("brand IN ('" + brandFilters[i].trim() + "', ");
+                } else if (i == brandFilters.length - 1) {
+                    filters.add("'" + brandFilters[i].trim() + "')");
+                } else {
+                    filters.add("'" + brandFilters[i].trim() + "', ");
+                }
+            }
+
         }
-        if (laptops != null) {
+
+        for (String filter : filters) {
+            System.out.println(filter);
+        }
+
+        String price = request.getParameter("price");
+
+        if (price != null) {
+            filters.add("price = " + "\'" + price + "\'");
+        }
+
+        if (!filters.isEmpty()) {
+            laptops = lD.GetFilterLaptops(filters);
+            isFilter = true;
+        }
+        if (!isFilter) {
+            laptops = lD.GetAllLaptops();
+        }
+
+        try {
+            int numberRow = 0;
+            if (laptops != null) {
+                numberRow = laptops.size() / 4;
+                if (laptops.size() % 4 != 0) {
+                    numberRow++;
+                }
+            }
+
+            ArrayList<String> brands = lD.GetAllBrandLaptop();
             request.setAttribute("laptopProducts", laptops);
+            request.setAttribute("brands", brands);
             request.setAttribute("numberRow", numberRow);
+            request.setAttribute("uri", request.getServletPath().substring(1));
+            request.setAttribute("filters", filters);
             request.getRequestDispatcher("viewLaptop.jsp").forward(request, response);
+        } catch (NullPointerException e) {
+            System.out.println(e);
         }
     }
 

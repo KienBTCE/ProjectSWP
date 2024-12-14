@@ -75,7 +75,7 @@
                     </div>
                 </div>
                 <div class="row">
-                    <h4 class="title-content"><a href="ViewLaptopServlet">Laptop</a></h4>
+                    <h4 class="title-content"><a href="Laptop">Laptop</a></h4>
                     <div class="gap-section section-content">
 
                     <c:set var="count" value="0" scope="page"></c:set>
