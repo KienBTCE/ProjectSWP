@@ -4,7 +4,7 @@
  */
 package Controllers;
 
-import DAOs.CartDAO;
+import Models.Order;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -18,8 +18,8 @@ import jakarta.servlet.http.HttpSession;
  *
  * @author nhutb
  */
-@WebServlet(name = "ViewCart", urlPatterns = {"/cart"})
-public class ViewCart extends HttpServlet {
+@WebServlet(name = "Checkout", urlPatterns = {"/checkout"})
+public class Checkout extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -38,10 +38,10 @@ public class ViewCart extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet ViewCart</title>");
+            out.println("<title>Servlet Checkout</title>");
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet ViewCart at " + request.getContextPath() + "</h1>");
+            out.println("<h1>Servlet Checkout at " + request.getContextPath() + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }
@@ -59,11 +59,9 @@ public class ViewCart extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        HttpSession session = request.getSession();
-        String accountID = "user1";
-        CartDAO c = new CartDAO();
-        session.setAttribute("cartList", c.getCartOfAccountID(accountID));
-        request.getRequestDispatcher("shoppingCart.jsp").forward(request, response);
+//        long total = Long.parseLong(request.getParameter("total"));
+//        request.setAttribute("total", total);
+        request.getRequestDispatcher("checkout.jsp").forward(request, response);
     }
 
     /**
@@ -77,6 +75,17 @@ public class ViewCart extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        String fullname = request.getParameter("fullname");
+        String phone = request.getParameter("phone");
+        String address = request.getParameter("address");
+        String city = request.getParameter("cityName");
+        String district = request.getParameter("districtName");
+        String town = request.getParameter("wardName");
+        String way = request.getParameter("way");
+        String totalAddress = address + ", " + town + ", " + district + ", " + city;
+        HttpSession session = request.getSession();
+        session.setAttribute("order", new Order(fullname, phone, totalAddress, way));
+        request.getRequestDispatcher("payment.jsp").forward(request, response);
 
     }
 

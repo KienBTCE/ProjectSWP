@@ -4,7 +4,9 @@
  */
 package Controllers;
 
-import DAOs.CartDAO;
+import DAOs.OrderDAO;
+import Models.Cart;
+import Models.Order;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -13,13 +15,14 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
+import java.util.List;
 
 /**
  *
  * @author nhutb
  */
-@WebServlet(name = "ViewCart", urlPatterns = {"/cart"})
-public class ViewCart extends HttpServlet {
+@WebServlet(name = "Order", urlPatterns = {"/order"})
+public class OrderServlet extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -38,10 +41,10 @@ public class ViewCart extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet ViewCart</title>");
+            out.println("<title>Servlet Order</title>");
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet ViewCart at " + request.getContextPath() + "</h1>");
+            out.println("<h1>Servlet Order at " + request.getContextPath() + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }
@@ -59,11 +62,7 @@ public class ViewCart extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        HttpSession session = request.getSession();
-        String accountID = "user1";
-        CartDAO c = new CartDAO();
-        session.setAttribute("cartList", c.getCartOfAccountID(accountID));
-        request.getRequestDispatcher("shoppingCart.jsp").forward(request, response);
+        processRequest(request, response);
     }
 
     /**
@@ -77,7 +76,18 @@ public class ViewCart extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-
+        HttpSession session = request.getSession();
+        long totalAmount = Long.parseLong(request.getParameter("totalAmount"));
+        Order o = (Order)session.getAttribute("order");
+        OrderDAO od = new OrderDAO();
+        o.setAccountID("user1");
+        o.setTotalAmount(totalAmount);
+        od.createNewOrderWihoutDiscount(o);
+        List<Cart> cartList = (List<Cart>) session.getAttribute("cartList");
+        for (Cart c : cartList) {
+            od.addOrderDetail(od.getNewestOrderID(), c.getProductSKU(), c.getQuantity(), c.getPrice());
+        }
+        request.getRequestDispatcher("HomeServlet").forward(request, response);
     }
 
     /**

@@ -4,7 +4,6 @@
 <%@ taglib prefix = "c" uri = "http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <fmt:setLocale value="vi_VN" />
-
 <%@page import="DAOs.CartDAO" %>
 <!DOCTYPE html>
 <html lang="en">
@@ -16,7 +15,6 @@
               integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH"
               crossorigin="anonymous">
         <link rel="stylesheet" href="./assets/css/cart.css">
-
         <title>Shopping Cart</title>
     </head>
 
@@ -49,9 +47,6 @@
                                             <fmt:formatNumber value="${p.getPrice()}" type="currency" />
                                         </h6>
                                     </td>
-
-
-
                                     <td class="th"><input style=" width: 60%;
                                                           height: 40px;
                                                           padding-left: 10px;
@@ -483,9 +478,9 @@
                         </div>
                         <div class="btnSummary">
                             <button
-                                style="background-color: #0156ff; border: #0156ff solid 1px; color: white;">Proceed
-                                to
-                                Checkout</button>
+                                style="background-color: #0156ff; border: #0156ff solid 1px; color: white;"><a style="text-decoration: none; color: white;" href="checkout">Proceed
+                                    to
+                                    Checkout</a></button>
                             <button
                                 style="background-color: #ffb800; border: #0156ff solid 1px; color: black;">Check
                                 out

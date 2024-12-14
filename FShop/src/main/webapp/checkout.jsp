@@ -4,7 +4,13 @@
     Author     : nhutb
 --%>
 
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@page import="Models.Cart"%>
+<%@page import="java.util.List"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+<fmt:setLocale value="vi_VN" />
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -21,7 +27,11 @@
         <jsp:include page="header.jsp"></jsp:include>
             <main>
                 <div class="container">
-                    <p>Home › Shopping Cart › Checkout Process</p>
+                    <p><a style=" text-decoration: none;
+                          color: black;" href="HomeServlet">Home</a> › 
+                        <a style=" text-decoration: none;
+                           color: black;" href="shoppingCart.jsp">Shopping Cart</a> › 
+                        Checkout Process</p>
                     <div class="row">
                         <div class="col-md-8">
                             <div class="title">
@@ -50,63 +60,55 @@
                     </div>
                     <div class="row">
                         <div class="col-md-8">
-                            <form action="" class="infor">
+                            <form action="checkout" method="post" class="infor">
+
                                 <div class="form-group">
-                                    <div class="control-label">Email Address *</div>
+                                    <div class="control-label">Fullname</div>
                                     <div class="">
-                                        <input id="text" type="text" class="form-control" value="" placeholder="" />
-                                    </div>
-                                </div>
-                                You can create an account after checkout.
-                                <div class="form-group">
-                                    <div class="control-label">First Name *</div>
-                                    <div class="">
-                                        <input id="text" type="text" class="form-control" value="" placeholder="" />
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <div class="control-label">Last Name *</div>
-                                    <div class="">
-                                        <input id="text" type="text" class="form-control" value="" placeholder="" />
+                                        <input style="width: 70%; border: black solid 1px;" name="fullname" type="text" class="form-control" value="" placeholder="" required/>
                                     </div>
                                 </div>
                                 <div class="form-group">
                                     <div class="control-label">Phone Number *</div>
                                     <div class="">
-                                        <input id="text" type="text" class="form-control" value="" placeholder="" />
+                                        <input style="width: 70%; border: black solid 1px;" name="phone" type="text" class="form-control" value="" placeholder="" required/>
                                     </div>
                                 </div>
                                 <div class="form-group">
                                     <div class="control-label">Street Address *</div>
                                     <div class="">
-                                        <input id="text" type="text" class="form-control" value="" placeholder="" />
+                                        <input style="width: 70%; border: black solid 1px;" name="address" type="text" class="form-control" value="" placeholder="" required/>
                                     </div>
                                 </div>
                                 <div class="form-group">
                                     <div class="control-label">City</div>
-                                    <div class="">
-                                        <select style="width: 70%; border: black solid 1px;" class="form-select form-select-sm mb-3" id="city" aria-label=".form-select-sm">
-                                            <option value="" selected>Choose city</option>
+                                    <div>
+                                        <select name="city" id="city" style="width: 70%; border: black solid 1px;" class="form-select form-select-sm mb-3" required>
+                                            <option value="">Choose city</option>
                                         </select>
                                     </div>
                                 </div>
+                                <input type="hidden" name="cityName" id="cityName">
+
                                 <div class="form-group">
                                     <div class="control-label">District</div>
-                                    <div class="">
-                                        <select style="width: 70%; border: black solid 1px;" style="width: 70%; border: black solid 1px;" class="form-select form-select-sm mb-3" id="district"
-                                                 aria-label=".form-select-sm">
-                                            <option value="" selected>Choose district</option>
+                                    <div>
+                                        <select name="district" id="district" style="width: 70%; border: black solid 1px;" class="form-select form-select-sm mb-3">
+                                            <option value="">Choose district</option>
                                         </select>
                                     </div>
                                 </div>
+                                <input type="hidden" name="districtName" id="districtName">
+
                                 <div class="form-group">
                                     <div class="control-label">Town</div>
-                                    <div class="">
-                                        <select style="width: 70%; border: black solid 1px;" class="form-select form-select-sm" id="ward" aria-label=".form-select-sm">
-                                            <option value="" selected>Choose town</option>
+                                    <div>
+                                        <select name="town" id="ward" style="width: 70%; border: black solid 1px;" class="form-select form-select-sm">
+                                            <option value="">Choose town</option>
                                         </select>
                                     </div>
                                 </div>
+                                <input type="hidden" name="wardName" id="wardName">
                                 <svg width="100%" height="2" viewBox="0 0 100% 2" fill="none"
                                      xmlns="http://www.w3.org/2000/svg">
                                 <path d="M0 1L924 1.00008" stroke="#CACDD8" />
@@ -115,101 +117,80 @@
                                     <div class="">
                                         <div class="control-label">Standard Rate</div>
                                         <div>
-                                            <input type="radio" id="check" name="way" value=""> 
+                                            <input type="radio" id="check" name="way" value="ship" required> 
                                             <span style="display: flex; justify-content: space-between;">
                                                 <p>Price may vary
                                                     depending on
                                                     the
                                                     item/destination. Shop Staff will contact you.
                                                 </p>
-                                                <p><b>$21.00</b></p>
-                                            </span>
-                                        </div>
-                                        <div class="control-label">Pickup from store</div>
-                                        <input type="radio" id="check" name="way" value=""> <span style="display: flex; justify-content: space-between;">
-                                            <p> 305 La Trobe St
-                                                Melbourne
-                                                3000</p>
-                                            <p><b> $0.00</b></p></span>
+                                                <p><b><fmt:formatNumber value="30000" type="currency"/></b></p>
+                                        </span>
                                     </div>
+                                    <div class="control-label">Pickup from store</div>
+                                    <input type="radio" id="check" name="way" value="pick" required> <span style="display: flex; justify-content: space-between;">
+                                        <p> 305 La Trobe St
+                                            Melbourne
+                                            3000</p>
+                                        <p><b><fmt:formatNumber value="0" type="currency"/></b></p></span>
                                 </div>
-                                <button type="submit"
-                                        style="background-color: #0156ff; border: #0156ff solid 1px; color: white;">Next</button>
-                            </form>
-                        </div>
-                        <div class="col-md-4" style="background-color: #f5f7ff; padding: 20px; margin-top: -10px; height: 80%;">
-                            <h4>Order Summary</h4>
-                            <svg width="100%" height="2" viewBox="0 0 100% 2" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M0 1L385 0.999966" stroke="#CACDD8" />
-                            </svg>
-                            <p>2 Items in Cart</p>
+                            </div>
+                            <button type="submit"
+                                    style="background-color: #0156ff; border: #0156ff solid 1px; color: white;" value="Next">
+                                Next
+                            </button>
+                        </form>
+                    </div>
+                    <div class="col-md-4" style="background-color: #f5f7ff; padding: 20px; margin-top: -10px; height: 80%;">
+                        <h4>Order Summary</h4>
+                        <svg width="100%" height="2" viewBox="0 0 100% 2" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M0 1L385 0.999966" stroke="#CACDD8" />
+                        </svg>
+                        <%
+                            int n = 0;
+                            if (session.getAttribute("cartList") != null) {
+                                List<Cart> cart = (List<Cart>) session.getAttribute("cartList");
+                                n = cart.size();
+                            }
+                        %>
+                        <p> <%= n%> Items in Cart</p>
+                        <c:set var="total" value="0" />
+                        <c:forEach items="${sessionScope.cartList}" var="p">
                             <div style="display: flex; column-gap: 20px;">
                                 <div><img
-                                        src="./assets/imgs/ShoppingCartImg/z6117255602466_41a821476ad82f7bf0f521d8b1b7fec3.jpg"
+                                        src="./assets/imgs/${p.getProductType()}/${p.getProductImg()}"
                                         alt="" width="70px"></div>
                                 <div>
                                     <div>
-                                        <p>MSI MEG Trident X 10SD-1012AU Intel i7 10700K, 2070 SUPER...</p>
+                                        <p>${p.getProductName()}</p>
                                     </div>
                                     <div style="display: flex; column-gap: 10px; margin-top: -15px;">
-                                        <div>Qty 1</div>
-                                        <div><b>$3,799.00</b></div>
+                                        <div>Qty ${p.getQuantity()}</div>
+                                        <div><b><fmt:formatNumber value="${p.getPrice() * p.getQuantity()}" type="currency"/></b></div>
                                     </div>
                                 </div>
                             </div>
                             <br>
-                            <div style="display: flex; column-gap: 20px;">
-                                <div><img
-                                        src="./assets/imgs/ShoppingCartImg/z6117255602466_41a821476ad82f7bf0f521d8b1b7fec3.jpg"
-                                        alt="" width="70px"></div>
-                                <div>
-                                    <div>
-                                        <p>MSI MEG Trident X 10SD-1012AU Intel i7 10700K, 2070 SUPER...</p>
-                                    </div>
-                                    <div style="display: flex; column-gap: 10px; margin-top: -15px;">
-                                        <div>Qty 1</div>
-                                        <div><b>$3,799.00</b></div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+                            <c:set var="total" value="${total + (p.getPrice() * p.getQuantity())}" />
+                        </c:forEach>
+                        <h4>Total: <fmt:formatNumber value="${total}" type="currency" /></h4>
                     </div>
                 </div>
-                <br>
-                <div style="background-color: #f5f7ff;">
-                    <div class="container">
-                        <div class="row" style="text-align: center; padding: 30px; background-color: #f5f7ff;">
-                            <div class="col-md-4">
-                                <img src="./assets/imgs/ShoppingCartImg/headphone.jpg" alt="" width="70px">
-                                <h5>Product Support</h5>
-                                <p style="width: 70%; margin: 0 auto;">Up to 3 years on-site warranty available for your
-                                    peace
-                                    of mind.</p>
-                            </div>
-                            <div class="col-md-4">
-                                <img src="./assets/imgs/ShoppingCartImg/person.jpg" alt="" width="70px">
-                                <h5>Personal Account</h5>
-                                <p style="width: 70%; margin: 0 auto;">With big discounts, free delivery and a dedicated
-                                    support
-                                    specialist.</p>
-                            </div>
-                            <div class="col-md-4">
-                                <img src="./assets/imgs/ShoppingCartImg/tag.jpg" alt="" width="70px">
-                                <h5>Amazing Savings</h5>
-                                <p style="width: 70%; margin: 0 auto;">Up to 70% off new Products, you can be sure of
-                                    the best
-                                    price.</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </main>
+            </div>
+            <br>
+
+        </main>
         <jsp:include page="footer.jsp"></jsp:include>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.21.1/axios.min.js"></script>
         <script>
             var citis = document.getElementById("city");
             var districts = document.getElementById("district");
             var wards = document.getElementById("ward");
+
+            var cityNameInput = document.getElementById("cityName");
+            var districtNameInput = document.getElementById("districtName");
+            var wardNameInput = document.getElementById("wardName");
+
             var Parameter = {
                 url: "https://raw.githubusercontent.com/kenzouno1/DiaGioiHanhChinhVN/master/data.json",
                 method: "GET",
@@ -225,29 +206,33 @@
                     citis.options[citis.options.length] = new Option(x.Name, x.Id);
                 }
                 citis.onchange = function () {
-                    district.length = 1;
-                    ward.length = 1;
+                    districts.length = 1;
+                    wards.length = 1;
+                    cityNameInput.value = citis.options[citis.selectedIndex].text; // Lưu tên thành phố
                     if (this.value != "") {
                         const result = data.filter(n => n.Id === this.value);
-
                         for (const k of result[0].Districts) {
-                            district.options[district.options.length] = new Option(k.Name, k.Id);
+                            districts.options[districts.options.length] = new Option(k.Name, k.Id);
                         }
                     }
                 };
-                district.onchange = function () {
-                    ward.length = 1;
+                districts.onchange = function () {
+                    wards.length = 1;
+                    districtNameInput.value = districts.options[districts.selectedIndex].text; // Lưu tên quận/huyện
                     const dataCity = data.filter((n) => n.Id === citis.value);
                     if (this.value != "") {
                         const dataWards = dataCity[0].Districts.filter(n => n.Id === this.value)[0].Wards;
-
                         for (const w of dataWards) {
                             wards.options[wards.options.length] = new Option(w.Name, w.Id);
                         }
                     }
                 };
+                wards.onchange = function () {
+                    wardNameInput.value = wards.options[wards.selectedIndex].text; // Lưu tên phường/xã
+                };
             }
         </script>
+
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
                 integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
         crossorigin="anonymous"></script>

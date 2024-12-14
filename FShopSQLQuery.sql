@@ -124,12 +124,12 @@ CREATE TABLE [Orders] (
     orderID INT PRIMARY KEY IDENTITY(1,1),
     a_ID VARCHAR(20) NOT NULL,
     fullName VARCHAR(100) NOT NULL,
-    [address] TEXT NOT NULL,
+    [address] NTEXT NOT NULL,
     a_phoneNumber VARCHAR(15) NOT NULL,
     orderedDate DATETIME DEFAULT GETDATE(),
     orderShippedDate DATE,
     paymentMethod VARCHAR(20) NOT NULL,
-    [status] VARCHAR(20) NOT NULL,
+    [status] VARCHAR(20) NOT NULL DEFAULT 'Ordered Successful',
     totalAmount INT NOT NULL,
     discount DECIMAL(10, 2),
     FOREIGN KEY (a_ID) REFERENCES Accounts(a_ID)
@@ -183,6 +183,14 @@ INSERT INTO Carts VALUES ('user1', 1, 1),
 ('user1', 2, 1),
 ('user1', 5, 1),
 ('user1', 7, 1)
+
+Insert into [Orders] (a_ID, fullName, a_phoneNumber, [address], paymentMethod, totalAmount) values 
+('user1', 'Nguyen Van a', '034xxxxxxx',N'Địa chỉ có dấu', 'Delivery', 100000000)
+
+Select * from Orders
+order by orderID desc
+
+Select * from OrderDetails
 
 SELECT * FROM Laptops JOIN Products
 ON Laptops.pd_SKU = Products.pd_SKU
