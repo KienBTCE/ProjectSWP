@@ -119,7 +119,7 @@ public class LaptopDAO extends DBContext {
 
         String query = "SELECT * FROM Laptops JOIN Products\n"
                 + "ON Laptops.pd_SKU = Products.pd_SKU\n"
-                + "WHERE Laptops.pd_SKU IN (SELECT pd_SKU FROM Products WHERE pd_SKU IN (SELECT pd_SKU FROM Laptops) AND ";
+                + "WHERE Laptops.pd_SKU IN (SELECT pd_SKU FROM Products WHERE pd_SKU IN (SELECT pd_SKU FROM Laptops)";
 
         for (String filter : filters) {
             query += filter;

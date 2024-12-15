@@ -33,38 +33,64 @@ public class ViewLaptopServlet extends HttpServlet {
         LaptopDAO lD = new LaptopDAO();
         ArrayList<Laptop> laptops = null;
         ArrayList<String> filters = new ArrayList<>();
+        ArrayList<String> filtersInput = new ArrayList<>();
         boolean isFilter = false;
 
         String brand = request.getParameter("brand");
-        if (brand != null && !brand.isEmpty()) {
+        if (brand != null) {
             String[] brandFilters = brand.split(",");
 
             for (int i = 0; i < brandFilters.length; i++) {
                 if (brandFilters.length == 1) {
-                    filters.add("brand IN ('" + brandFilters[i].trim() + "')");
+                    filtersInput.add(" AND brand IN ('" + brandFilters[i].trim() + "')");
                 } else if (i == 0) {
-                    filters.add("brand IN ('" + brandFilters[i].trim() + "', ");
+                    filtersInput.add(" AND brand IN ('" + brandFilters[i].trim() + "', ");
                 } else if (i == brandFilters.length - 1) {
-                    filters.add("'" + brandFilters[i].trim() + "')");
+                    filtersInput.add("'" + brandFilters[i].trim() + "')");
                 } else {
-                    filters.add("'" + brandFilters[i].trim() + "', ");
+                    filtersInput.add("'" + brandFilters[i].trim() + "', ");
                 }
+                filters.add(brandFilters[i].trim());
             }
 
         }
 
-        for (String filter : filters) {
-            System.out.println(filter);
-        }
-
         String price = request.getParameter("price");
-
         if (price != null) {
-            filters.add("price = " + "\'" + price + "\'");
+            ArrayList<String> priceFilters = new ArrayList<>();
+            for (String string : price.split(",")) {
+                switch (string.trim()) {
+                    case "20-25":
+                        priceFilters.add("BETWEEN 20000000 AND 25000000");
+                        break;
+                    case "25-30":
+                        priceFilters.add("BETWEEN 25000000 AND 30000000");
+                        break;
+                    case "30-over":
+                        priceFilters.add("> 30000000");
+                        break;
+                    default:
+                        priceFilters.add("BETWEEN 0 AND 1000000000");
+                        break;
+                }
+                filters.add(string.trim());
+            }
+
+            for (int i = 0; i < priceFilters.size(); i++) {
+                if (priceFilters.size() == 1) {
+                    filtersInput.add(" AND price " + priceFilters.get(i).trim());
+                } else if (i == 0) {
+                    filtersInput.add(" AND (price " + priceFilters.get(i).trim());
+                } else if (i == priceFilters.size() - 1) {
+                    filtersInput.add(" OR price " + priceFilters.get(i).trim() + ")");
+                } else {
+                    filtersInput.add(" OR price " + priceFilters.get(i).trim());
+                }
+            }
         }
 
-        if (!filters.isEmpty()) {
-            laptops = lD.GetFilterLaptops(filters);
+        if (!filtersInput.isEmpty()) {
+            laptops = lD.GetFilterLaptops(filtersInput);
             isFilter = true;
         }
         if (!isFilter) {

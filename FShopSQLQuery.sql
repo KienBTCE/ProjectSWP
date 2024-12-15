@@ -194,4 +194,8 @@ Select * from OrderDetails
 
 SELECT * FROM Laptops JOIN Products
 ON Laptops.pd_SKU = Products.pd_SKU
-WHERE Laptops.pd_SKU IN (SELECT pd_SKU FROM Products WHERE pd_SKU IN (SELECT pd_SKU FROM Laptops) AND brand IN ('Apple', 'Asus'))
+WHERE Laptops.pd_SKU IN (SELECT pd_SKU FROM Products WHERE pd_SKU IN (SELECT pd_SKU FROM Laptops) AND brand IN ('Lenovo') AND ( price BETWEEN 25000000 AND 30000000 OR price BETWEEN 35000000 AND 40000000 ) )
+
+SELECT * FROM Laptops JOIN Products
+ON Laptops.pd_SKU = Products.pd_SKU
+WHERE Laptops.pd_SKU IN (SELECT pd_SKU FROM Products WHERE pd_SKU IN (SELECT pd_SKU FROM Laptops) AND brand IN ('Asus') AND (price BETWEEN 25000000 AND 30000000 OR price BETWEEN 30000000 AND 35000000))

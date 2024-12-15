@@ -108,19 +108,16 @@
                             </fieldset>
                             <fieldset>
                                 <legend style="font-size: 100%; font-weight: bold;">Price</legend>
-                                <label><input type="checkbox" name="price" value="20-25m">20 - 25 million</label>
-                                <label><input type="checkbox" name="price" value="25-30m">25 - 30 million</label>
-                                <label><input type="checkbox" name="price" value="30-35m">30 - 35 million</label>
-                                <label><input type="checkbox" name="price" value="35-40m">35 - 40 million</label>
-                            </fieldset>
+                                <label><input type="checkbox" name="price" value="20-25" <c:if test="${fn:contains(filters, '20-25')}">checked</c:if> >20 - 25 million</label>
+                                <label><input type="checkbox" name="price" value="25-30" <c:if test="${fn:contains(filters, '25-30')}">checked</c:if> >25 - 30 million</label>
+                                <label><input type="checkbox" name="price" value="30-over" <c:if test="${fn:contains(filters, '30-over')}">checked</c:if> >Over 30 million</label>
+                                </fieldset>
+                            </form>
 
-                            <!--<button type="button" id="applyFilters">Apply Filters</button>-->
-                        </form>
+                        </div>
 
-                    </div>
-
-                    <div class="show-product row col-md-10">
-                        <!--===================================================-->
+                        <div class="show-product row col-md-10">
+                            <!--===================================================-->
                         <c:forEach var="i" begin="1" end="${numberRow}" step="1">
 
                             <div class="section-content">
@@ -156,6 +153,8 @@
         <script>
             const pathname = window.location.pathname;
             let customPath = pathname;
+            let clrBtn = document.querySelector('.filter-btn');
+            let clrTxt = clrBtn.querySelector('h6');
 
             function updateSelectedValues() {
                 customPath = pathname;
@@ -172,6 +171,9 @@
                             customPath += "%2C" + selectedBrands[i];
                         }
                     }
+
+                    clrBtn.style.border = '2px solid #D10000';
+                    clrTxt.style.color = '#D10000';
                 }
 
                 if (selectedPrices.length !== 0 && !customPath.includes("?")) {
@@ -183,6 +185,9 @@
                             customPath += "%2C" + selectedPrices[i];
                         }
                     }
+
+                    clrBtn.style.border = '2px solid #D10000';
+                    clrTxt.style.color = '#D10000';
                 } else if (selectedPrices.length !== 0) {
                     customPath += "&price=";
                     for (var i = 0; i < selectedPrices.length; i++) {
@@ -192,9 +197,13 @@
                             customPath += "%2C" + selectedPrices[i];
                         }
                     }
+
+                    clrBtn.style.border = '2px solid #D10000';
+                    clrTxt.style.color = '#D10000';
                 }
 
-                if (!window.location.href.includes(customPath)) {
+
+                if (customPath !== (window.location.pathname + window.location.search)) {
                     window.location.href = customPath;
                 }
             }
@@ -204,6 +213,17 @@
             });
 
             updateSelectedValues();
+
+            /* ========================================================================================== */
+
+            document.querySelector('.filter-btn').addEventListener('click', function () {
+                document.querySelectorAll('.filter-form input[type="checkbox"]').forEach(input => {
+                    input.checked = false;
+                });
+
+                updateSelectedValues();
+            });
+
         </script>
         <script src="assets/js/bootstrap.min.js"></script>
     </body>
