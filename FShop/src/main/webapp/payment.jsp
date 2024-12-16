@@ -142,8 +142,10 @@
                 </div>
             </div>
             <br>
+
             <div class="container">
-                <form style="text-align: right" class="infor" action="order?totalAmount=${total}" method="POST">
+                <form style="text-align: right" class="infor" action="order" method="POST">
+                    <input type="number" name="totalAmount" value="${total}" hidden>
                     <button type="submit"
                             style="background-color: #0156ff; border: #0156ff solid 1px; color: white;">
                         Order

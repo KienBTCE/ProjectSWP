@@ -50,7 +50,7 @@
                         <td>CPUs</td>
                         <td>Custom PCs</td>
                         <td>Everyday Use Notebooks</td>
-                        <td>Address: 1234 Street Address City Address, 1234</td>
+                        <td>Address: Nguyen Van Cu, Ninh Kieu, Can Tho</td>
                     </tr>
                     <tr>
                         <td>About Zip</td>

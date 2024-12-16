@@ -23,7 +23,8 @@
             <main>
                 <div class="container">
                     <div class="row">
-                        <p>Home › Login</p>
+                        <p><a style=" text-decoration: none;
+                              color: black;" href="HomeServlet">Home</a> › Login</p>
                         <h2>Shopping Cart</h2>
                         <div class="col-md-8">
                             <table style="width: 100%; border-collapse: collapse; ">
