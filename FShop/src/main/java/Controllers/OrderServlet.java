@@ -4,6 +4,7 @@
  */
 package Controllers;
 
+import DAOs.CartDAO;
 import DAOs.OrderDAO;
 import Models.Cart;
 import Models.Order;
@@ -80,12 +81,14 @@ public class OrderServlet extends HttpServlet {
         long totalAmount = Long.parseLong(request.getParameter("totalAmount"));
         Order o = (Order)session.getAttribute("order");
         OrderDAO od = new OrderDAO();
+        CartDAO ca = new CartDAO();
         o.setAccountID("user1");
         o.setTotalAmount(totalAmount);
         od.createNewOrderWihoutDiscount(o);
         List<Cart> cartSelected = (List<Cart>) session.getAttribute("cartSelected");
         for (Cart c : cartSelected) {
             od.addOrderDetail(od.getNewestOrderID(), c.getProductSKU(), c.getQuantity(), c.getPrice());
+            ca.deleteProductOnCart(c.getProductSKU(), "user1");
         }
         request.getRequestDispatcher("HomeServlet").forward(request, response);
     }

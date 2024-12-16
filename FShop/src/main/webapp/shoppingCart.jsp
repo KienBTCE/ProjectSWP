@@ -27,6 +27,7 @@
                               color: black;" href="HomeServlet">Home</a> › Login</p>
                         <h2>Shopping Cart</h2>
                         <div class="col-md-8">
+                        <c:if test="${cartList != null && !cartList.isEmpty()}">
                             <table style="width: 100%; border-collapse: collapse; ">
                                 <tr style="height: 60px;">
                                     <th  class="th" style="width: 3%;"></th>
@@ -38,45 +39,65 @@
                                     <th class="th" style="width: 5%;"></th>
                                 </tr>
 
-                            <c:set var="total" value="0" />
-                            <form id="cartSelected" action="checkout" method="get">
-                                <c:forEach items="${sessionScope.cartList}" var="p">
-                                    <tr>
-                                        <td>
-                                            <input type="checkbox" name="cartSelected" value="${p.getProductSKU()}">
-                                        </td>
-                                        <td class="td"><img
-                                                src="./assets/imgs/${p.getProductType()}/${p.getProductImg()}"
-                                                alt="" width="105px"></td>
-                                        <td class="th">${p.getProductName()}</td>
-                                        <td class="th">
-                                            <h6>
-                                                <fmt:formatNumber value="${p.getPrice()}" type="currency" />
-                                            </h6>
-                                        </td>
-                                        <td class="th"><input style=" width: 60%;
-                                                              height: 40px;
-                                                              padding-left: 10px;
-                                                              font-weight: bold;
-                                                              background-color: #f5f7ff;
-                                                              border: #f5f7ff solid 1px;" type="number" min="1" value="${p.getQuantity()}"
-                                                              name="" id=""></td>
-                                        <td class="th">
-                                            <h6>
-                                                <fmt:formatNumber value="${p.getPrice() * p.getQuantity()}" type="currency" />
-                                            </h6>
-                                        </td>
-                                        <td class="th">
-                                            <a href=""><img src="./assets/imgs/ShoppingCartImg/x.jpg" alt=""
-                                                            width="25px"></a>
-                                            <a href=""><img src="./assets/imgs/ShoppingCartImg/pen.jpg" alt="" width="25px"
-                                                            style="margin-top: 5px;"></a>
-                                        </td>
-                                    </tr>
-                                    <c:set var="total" value="${total + (p.getPrice() * p.getQuantity())}" />
-                                </c:forEach>
-                            </form>
-                        </table>
+                                <c:set var="total" value="0" />
+                                <form id="cartSelected" action="checkout" method="get">
+                                    <c:forEach items="${sessionScope.cartList}" var="p">
+                                        <tr>
+                                            <td>
+                                                <input type="checkbox" name="cartSelected" value="${p.getProductSKU()}">
+                                            </td>
+                                            <td class="td"><img
+                                                    src="./assets/imgs/${p.getProductType()}/${p.getProductImg()}"
+                                                    alt="" width="105px"></td>
+                                            <td class="th">${p.getProductName()}</td>
+                                            <td class="th">
+                                                <h6>
+                                                    <fmt:formatNumber value="${p.getPrice()}" type="currency" />
+                                                </h6>
+                                            </td>
+                                            <td class="th"><input style=" width: 60%;
+                                                                  height: 40px;
+                                                                  padding-left: 10px;
+                                                                  font-weight: bold;
+                                                                  background-color: #f5f7ff;
+                                                                  border: #f5f7ff solid 1px;" type="number" min="1" value="${p.getQuantity()}"
+                                                                  name="" id=""></td>
+                                            <td class="th">
+                                                <h6>
+                                                    <fmt:formatNumber value="${p.getPrice() * p.getQuantity()}" type="currency" />
+                                                </h6>
+                                            </td>
+                                            <td class="th">
+                                                <a href="updateCart?id=${p.getProductSKU()}"><img src="./assets/imgs/ShoppingCartImg/x.jpg" alt=""
+                                                                                                  width="25px" ></a>
+                                                <a href=""><img src="./assets/imgs/ShoppingCartImg/pen.jpg" alt="" width="25px"
+                                                                style="margin-top: 5px;"></a>
+                                            </td>
+                                        </tr>
+                                        <c:set var="total" value="${total + (p.getPrice() * p.getQuantity())}" />
+                                    </c:forEach>
+                                </form>
+                            </table>
+                        </c:if>
+                        <c:if test="${cartList == null || cartList.isEmpty()}">
+                            <table style="width: 100%; border-collapse: collapse; ">
+                                <tr style="height: 60px;">
+                                    <th  class="th" style="width: 3%;"></th>
+                                    <th class="th" style="width: 17%;">Item</th>
+                                    <th class="th" style="width: 34%;"></th>
+                                    <th class="th" style="width: 13%;">Price</th>
+                                    <th class="th" style="width: 15%;">Qty</th>
+                                    <th class="th" style="width: 13%;">Subtotal</th>
+                                    <th class="th" style="width: 5%;"></th>
+                                </tr>
+
+                                <c:set var="total" value="0" />
+                                <tr>
+                                    <td colspan="7" style="text-align: center; padding: 20px"><h4>No products on cart. Countinue to shopping</h4></td>
+                                </tr>
+
+                            </table>
+                        </c:if>
                         <br>
                         <div class="btnControl">
                             <div>

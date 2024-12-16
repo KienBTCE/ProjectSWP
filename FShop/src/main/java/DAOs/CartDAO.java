@@ -90,10 +90,11 @@ public class CartDAO extends DBContext {
         return false;
     }
 
-    public void deleteProductOnCartAfterOrder(int productSKU, String id) {
+    public void deleteProductOnCart(int productSKU, String id) {
         try {
             PreparedStatement preparedStatement = connector.prepareStatement("Delete from Carts where pd_SKU = ? and a_ID LIKE'" + id + "'");
             preparedStatement.setInt(1, productSKU);
+            preparedStatement.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
         }

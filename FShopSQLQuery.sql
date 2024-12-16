@@ -182,7 +182,7 @@ VALUES ('user1', '0888888888', 'abc123@gmail.com', 'user1', 'User NoName', '2004
 INSERT INTO Carts VALUES ('user1', 1, 1),
 ('user1', 2, 1),
 ('user1', 5, 1),
-('user1', 7, 1)
+('user1', 7, 5)
 
 Insert into [Orders] (a_ID, fullName, a_phoneNumber, [address], paymentMethod, totalAmount) values 
 ('user1', 'Nguyen Van a', '034xxxxxxx',N'Địa chỉ có dấu', 'Delivery', 100000000)
@@ -191,6 +191,10 @@ Select * from Orders
 order by orderID desc
 
 Select * from OrderDetails
+
+Select * from Carts
+
+--Delete from Carts where pd_SKU = 2 and a_ID LIKE 'user1'
 
 SELECT * FROM Laptops JOIN Products
 ON Laptops.pd_SKU = Products.pd_SKU

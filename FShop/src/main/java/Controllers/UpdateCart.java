@@ -5,6 +5,7 @@
 
 package Controllers;
 
+import DAOs.CartDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -55,7 +56,10 @@ public class UpdateCart extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
-        processRequest(request, response);
+       int id = Integer.parseInt(request.getParameter("id"));
+       CartDAO c = new CartDAO();
+       c.deleteProductOnCart(id, "user1");
+       response.sendRedirect("cart");
     } 
 
     /** 
