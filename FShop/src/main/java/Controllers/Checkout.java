@@ -4,6 +4,7 @@
  */
 package Controllers;
 
+import Models.Cart;
 import Models.Order;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -13,6 +14,8 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  *
@@ -34,14 +37,14 @@ public class Checkout extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         try ( PrintWriter out = response.getWriter()) {
+
             /* TODO output your page here. You may use following sample code. */
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet Checkout</title>");
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet Checkout at " + request.getContextPath() + "</h1>");
+            out.println("<h1>" + request.getContextPath() + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }
@@ -61,6 +64,24 @@ public class Checkout extends HttpServlet {
             throws ServletException, IOException {
 //        long total = Long.parseLong(request.getParameter("total"));
 //        request.setAttribute("total", total);
+        HttpSession session = request.getSession();
+        List<Cart> cart = (List<Cart>) session.getAttribute("cartList");
+        String selectedProductIds[] = request.getParameterValues("cartSelected");
+        List<Cart> cartSelected = new ArrayList<>();
+        int count = 0;
+        long totalAmount = 0;
+        for (int i = 0; i < cart.size(); i++) {
+            for (int j = 0; j < selectedProductIds.length; j++) {
+                if (cart.get(i).getProductSKU() == Integer.parseInt(selectedProductIds[j])) {
+                    cartSelected.add(cart.get(i));
+                    totalAmount += cart.get(i).getPrice();
+                    count++;
+                }
+            }
+            
+        }
+        session.setAttribute("cartSelected", cartSelected);
+        session.setAttribute("totalAmount", totalAmount);
         request.getRequestDispatcher("checkout.jsp").forward(request, response);
     }
 

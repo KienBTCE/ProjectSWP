@@ -149,13 +149,12 @@
                         <%
                             int n = 0;
                             if (session.getAttribute("cartList") != null) {
-                                List<Cart> cart = (List<Cart>) session.getAttribute("cartList");
-                                n = cart.size();
+                                List<Cart> cartSelected = (List<Cart>) session.getAttribute("cartSelected");
+                                n = cartSelected.size();
                             }
                         %>
                         <p> <%= n%> Items in Cart</p>
-                        <c:set var="total" value="0" />
-                        <c:forEach items="${sessionScope.cartList}" var="p">
+                        <c:forEach items="${sessionScope.cartSelected}" var="p">
                             <div style="display: flex; column-gap: 20px;">
                                 <div><img
                                         src="./assets/imgs/${p.getProductType()}/${p.getProductImg()}"
@@ -171,9 +170,8 @@
                                 </div>
                             </div>
                             <br>
-                            <c:set var="total" value="${total + (p.getPrice() * p.getQuantity())}" />
                         </c:forEach>
-                        <h4>Total: <fmt:formatNumber value="${total}" type="currency" /></h4>
+                        <h4>Total: <fmt:formatNumber value="${totalAmount}" type="currency" /></h4>
                     </div>
                 </div>
             </div>

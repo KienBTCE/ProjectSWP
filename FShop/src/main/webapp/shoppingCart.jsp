@@ -29,46 +29,53 @@
                         <div class="col-md-8">
                             <table style="width: 100%; border-collapse: collapse; ">
                                 <tr style="height: 60px;">
+                                    <th  class="th" style="width: 3%;"></th>
                                     <th class="th" style="width: 17%;">Item</th>
-                                    <th class="th" style="width: 37%;"></th>
+                                    <th class="th" style="width: 34%;"></th>
                                     <th class="th" style="width: 13%;">Price</th>
                                     <th class="th" style="width: 15%;">Qty</th>
                                     <th class="th" style="width: 13%;">Subtotal</th>
                                     <th class="th" style="width: 5%;"></th>
                                 </tr>
+
                             <c:set var="total" value="0" />
-                            <c:forEach items="${sessionScope.cartList}" var="p">
-                                <tr>
-                                    <td class="td"><img
-                                            src="./assets/imgs/${p.getProductType()}/${p.getProductImg()}"
-                                            alt="" width="105px"></td>
-                                    <td class="th">${p.getProductName()}</td>
-                                    <td class="th">
-                                        <h6>
-                                            <fmt:formatNumber value="${p.getPrice()}" type="currency" />
-                                        </h6>
-                                    </td>
-                                    <td class="th"><input style=" width: 60%;
-                                                          height: 40px;
-                                                          padding-left: 10px;
-                                                          font-weight: bold;
-                                                          background-color: #f5f7ff;
-                                                          border: #f5f7ff solid 1px;" type="number" min="1" value="${p.getQuantity()}"
-                                                          name="" id=""></td>
-                                    <td class="th">
-                                        <h6>
-                                            <fmt:formatNumber value="${p.getPrice() * p.getQuantity()}" type="currency" />
-                                        </h6>
-                                    </td>
-                                    <td class="th">
-                                        <a href=""><img src="./assets/imgs/ShoppingCartImg/x.jpg" alt=""
-                                                        width="25px"></a>
-                                        <a href=""><img src="./assets/imgs/ShoppingCartImg/pen.jpg" alt="" width="25px"
-                                                        style="margin-top: 5px;"></a>
-                                    </td>
-                                </tr>
-                                <c:set var="total" value="${total + (p.getPrice() * p.getQuantity())}" />
-                            </c:forEach>
+                            <form id="cartSelected" action="checkout" method="get">
+                                <c:forEach items="${sessionScope.cartList}" var="p">
+                                    <tr>
+                                        <td>
+                                            <input type="checkbox" name="cartSelected" value="${p.getProductSKU()}">
+                                        </td>
+                                        <td class="td"><img
+                                                src="./assets/imgs/${p.getProductType()}/${p.getProductImg()}"
+                                                alt="" width="105px"></td>
+                                        <td class="th">${p.getProductName()}</td>
+                                        <td class="th">
+                                            <h6>
+                                                <fmt:formatNumber value="${p.getPrice()}" type="currency" />
+                                            </h6>
+                                        </td>
+                                        <td class="th"><input style=" width: 60%;
+                                                              height: 40px;
+                                                              padding-left: 10px;
+                                                              font-weight: bold;
+                                                              background-color: #f5f7ff;
+                                                              border: #f5f7ff solid 1px;" type="number" min="1" value="${p.getQuantity()}"
+                                                              name="" id=""></td>
+                                        <td class="th">
+                                            <h6>
+                                                <fmt:formatNumber value="${p.getPrice() * p.getQuantity()}" type="currency" />
+                                            </h6>
+                                        </td>
+                                        <td class="th">
+                                            <a href=""><img src="./assets/imgs/ShoppingCartImg/x.jpg" alt=""
+                                                            width="25px"></a>
+                                            <a href=""><img src="./assets/imgs/ShoppingCartImg/pen.jpg" alt="" width="25px"
+                                                            style="margin-top: 5px;"></a>
+                                        </td>
+                                    </tr>
+                                    <c:set var="total" value="${total + (p.getPrice() * p.getQuantity())}" />
+                                </c:forEach>
+                            </form>
                         </table>
                         <br>
                         <div class="btnControl">
@@ -478,10 +485,11 @@
                             </div>
                         </div>
                         <div class="btnSummary">
-                            <button
-                                style="background-color: #0156ff; border: #0156ff solid 1px; color: white;"><a style="text-decoration: none; color: white;" href="checkout">Proceed
-                                    to
-                                    Checkout</a></button>
+                            <button type="button"
+                                    style="background-color: #0156ff; border: #0156ff solid 1px; color: white;"
+                                    id="checkout">Proceed
+                                to
+                                Checkout</a></button>
                             <button
                                 style="background-color: #ffb800; border: #0156ff solid 1px; color: black;">Check
                                 out
@@ -555,6 +563,28 @@
         </main>
         <jsp:include page="footer.jsp"></jsp:include>
         <script>
+            document.getElementById("checkout").addEventListener("click", function () {
+                // Lấy tất cả các checkbox trong form
+                const checkboxes = document.querySelectorAll("input[name='cartSelected']");
+                let isChecked = false;
+
+                // Kiểm tra xem có ít nhất một checkbox được chọn không
+                checkboxes.forEach(checkbox => {
+                    if (checkbox.checked) {
+                        isChecked = true;
+                    }
+                });
+
+                if (!isChecked) {
+                    // Hiển thị thông báo nếu chưa chọn checkbox nào
+                    alert("Vui lòng chọn ít nhất một sản phẩm.");
+                } else {
+                    // Gửi form nếu có checkbox được chọn
+                    document.getElementById("cartSelected").submit();
+                }
+            });
+
+
             function toggleDisplay(divId) {
                 var x = document.getElementById(divId);
                 if (x.style.display === "none") {

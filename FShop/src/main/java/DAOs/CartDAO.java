@@ -76,6 +76,29 @@ public class CartDAO extends DBContext {
         return list;
     }
 
+    public boolean updateProductQuantity(int productSKU, int quantity, String id) {
+        String sql = "UPDATE Cart SET quantity = ? WHERE pd_SKU = ? AND a_ID LIKE '" + id + "'";
+        try {
+            PreparedStatement preparedStatement = connector.prepareStatement(sql);
+            preparedStatement.setInt(1, quantity);
+            preparedStatement.setInt(2, productSKU);
+            int rowsUpdated = preparedStatement.executeUpdate();
+            return rowsUpdated > 0;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    public void deleteProductOnCartAfterOrder(int productSKU, String id) {
+        try {
+            PreparedStatement preparedStatement = connector.prepareStatement("Delete from Carts where pd_SKU = ? and a_ID LIKE'" + id + "'");
+            preparedStatement.setInt(1, productSKU);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
     public static void main(String[] args) {
         CartDAO c = new CartDAO();
         List<Cart> ca = c.getCartOfAccountID("user1");

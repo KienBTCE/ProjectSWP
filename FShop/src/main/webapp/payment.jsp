@@ -91,18 +91,7 @@
                              xmlns="http://www.w3.org/2000/svg">
                         <path d="M0 1L385 0.999966" stroke="#CACDD8" />
                         </svg>
-                        <% int n = 0;
-                            if (session.getAttribute("cartList") != null) {
-                                List<Cart> cart
-                                        = (List<Cart>) session.getAttribute("cartList");
-                                n = cart.size();
-                            }
-                        %>
-                        <p>
-                            <%= n%> Items in Cart
-                        </p>
-                        <c:set var="total" value="0" />
-                        <c:forEach items="${sessionScope.cartList}" var="p">
+                        <c:forEach items="${sessionScope.cartSelected}" var="p">
                             <div style="display: flex; column-gap: 20px;">
                                 <div><img
                                         src="./assets/imgs/${p.getProductType()}/${p.getProductImg()}"
@@ -123,18 +112,17 @@
                                 </div>
                             </div>
                             <br>
-                            <c:set var="total"
-                                   value="${total + (p.getPrice() * p.getQuantity())}" />
                         </c:forEach>
                         <c:if test="${sessionScope.order.getWay() == 'ship'}" >
                             Shipping cost: <fmt:formatNumber value="30000" type="currency" /> 
                         </c:if>
                         <h4>Total:
                             <c:if test="${sessionScope.order.getWay() == 'ship'}" >
-                                <c:set var="total" value="${total + 30000}" />
+                                <c:set var="total" value="${totalAmount + 30000}" />
                                 <fmt:formatNumber value="${total}" type="currency" />
                             </c:if>
                             <c:if test="${sessionScope.order.getWay() != 'ship'}" >
+                                <c:set var="total" value="${totalAmount}" />
                                 <fmt:formatNumber value="${total}" type="currency" />
                             </c:if>
                         </h4>
