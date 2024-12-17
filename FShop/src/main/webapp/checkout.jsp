@@ -93,7 +93,7 @@
                                 <div class="form-group">
                                     <div class="control-label">District</div>
                                     <div>
-                                        <select name="district" id="district" style="width: 70%; border: black solid 1px;" class="form-select form-select-sm mb-3">
+                                        <select name="district" id="district" style="width: 70%; border: black solid 1px;" class="form-select form-select-sm mb-3" required>
                                             <option value="">Choose district</option>
                                         </select>
                                     </div>
@@ -103,7 +103,7 @@
                                 <div class="form-group">
                                     <div class="control-label">Town</div>
                                     <div>
-                                        <select name="town" id="ward" style="width: 70%; border: black solid 1px;" class="form-select form-select-sm">
+                                        <select name="town" id="ward" style="width: 70%; border: black solid 1px;" class="form-select form-select-sm" required>
                                             <option value="">Choose town</option>
                                         </select>
                                     </div>
