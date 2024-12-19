@@ -42,38 +42,78 @@
                                 <c:set var="total" value="0" />
                                 <form id="cartSelected" action="checkout" method="get">
                                     <c:forEach items="${sessionScope.cartList}" var="p">
-                                        <tr>
-                                            <td>
-                                                <input type="checkbox" name="cartSelected" value="${p.getProductSKU()}">
-                                            </td>
-                                            <td class="td"><img
-                                                    src="./assets/imgs/${p.getProductType()}/${p.getProductImg()}"
-                                                    alt="" width="105px"></td>
-                                            <td class="th">${p.getProductName()}</td>
-                                            <td class="th">
-                                                <h6>
-                                                    <fmt:formatNumber value="${p.getPrice()}" type="currency" />
-                                                </h6>
-                                            </td>
-                                            <td class="th"><input style=" width: 60%;
-                                                                  height: 40px;
-                                                                  padding-left: 10px;
-                                                                  font-weight: bold;
-                                                                  background-color: #f5f7ff;
-                                                                  border: #f5f7ff solid 1px;" type="number" min="1" value="${p.getQuantity()}"
-                                                                  name="" id=""></td>
-                                            <td class="th">
-                                                <h6>
-                                                    <fmt:formatNumber value="${p.getPrice() * p.getQuantity()}" type="currency" />
-                                                </h6>
-                                            </td>
-                                            <td class="th">
-                                                <a href="updateCart?id=${p.getProductSKU()}"><img src="./assets/imgs/ShoppingCartImg/x.jpg" alt=""
-                                                                                                  width="25px" ></a>
-                                                <a href=""><img src="./assets/imgs/ShoppingCartImg/pen.jpg" alt="" width="25px"
-                                                                style="margin-top: 5px;"></a>
-                                            </td>
-                                        </tr>
+                                        <c:if test="${p.getQuantity() == 0}">
+                                            <tr>
+                                                <td>
+                                                    <input disabled type="checkbox" name="cartSelected" value="${p.getProductSKU()}">
+                                                </td>
+                                                <td class="td"><img
+                                                        src="./assets/imgs/${p.getProductType()}/${p.getProductImg()}"
+                                                        alt="" width="105px"></td>
+                                                <td class="th">${p.getProductName()}</td>
+                                                <td class="th">
+                                                    <h6>
+                                                        <fmt:formatNumber value="${p.getPrice()}" type="currency" />
+                                                    </h6>
+                                                </td>
+                                                <td class="th">
+                                                    <input 
+                                                        style="width: 60%; height: 40px; padding-left: 10px; font-weight: bold; background-color: #f5f7ff; border: #f5f7ff solid 1px;"
+                                                        type="number" 
+                                                        min="1" 
+                                                        value="${p.getQuantity()}" 
+                                                        name="quantity" disabled>
+                                                </td>
+                                                <td class="th">
+                                                    <h6>
+                                                        Sold out
+                                                    </h6>
+                                                </td>
+                                                <td class="th">
+                                                    <a href="updateCart?id=${p.getProductSKU()}"><img src="./assets/imgs/ShoppingCartImg/x.jpg" alt=""
+                                                                                                      width="25px" ></a>
+                                                    <a href=""><img src="./assets/imgs/ShoppingCartImg/pen.jpg" alt="" width="25px"
+                                                                    style="margin-top: 5px;"></a>
+                                                </td>
+                                            </tr>
+                                        </c:if>
+                                        <c:if test="${p.getQuantity() > 0}">
+                                            <tr>
+                                                <td>
+                                                    <input type="checkbox" name="cartSelected" value="${p.getProductSKU()}">
+                                                </td>
+                                                <td class="td"><img
+                                                        src="./assets/imgs/${p.getProductType()}/${p.getProductImg()}"
+                                                        alt="" width="105px"></td>
+                                                <td class="th">${p.getProductName()}</td>
+                                                <td class="th">
+                                                    <h6>
+                                                        <fmt:formatNumber value="${p.getPrice()}" type="currency" />
+                                                    </h6>
+                                                </td>
+                                                <td class="th">
+                                                    <input 
+                                                        style="width: 60%; height: 40px; padding-left: 10px; font-weight: bold; background-color: #f5f7ff; border: #f5f7ff solid 1px;"
+                                                        type="number" 
+                                                        min="1" 
+                                                        value="${p.getQuantity()}" 
+                                                        name="quantity" 
+                                                        id="quantity-${p.getProductSKU()}" 
+                                                        onchange="updateQuantity(${p.getProductSKU()}, this.value)">
+                                                </td>
+                                                <td class="th">
+                                                    <h6>
+                                                        <fmt:formatNumber value="${p.getPrice() * p.getQuantity()}" type="currency" />
+                                                    </h6>
+                                                </td>
+                                                <td class="th">
+                                                    <a href="updateCart?id=${p.getProductSKU()}"><img src="./assets/imgs/ShoppingCartImg/x.jpg" alt=""
+                                                                                                      width="25px" ></a>
+                                                    <a href=""><img src="./assets/imgs/ShoppingCartImg/pen.jpg" alt="" width="25px"
+                                                                    style="margin-top: 5px;"></a>
+                                                </td>
+                                            </tr>
+                                        </c:if>
                                         <c:set var="total" value="${total + (p.getPrice() * p.getQuantity())}" />
                                     </c:forEach>
                                 </form>
@@ -584,6 +624,29 @@
         </main>
         <jsp:include page="footer.jsp"></jsp:include>
         <script>
+            function updateQuantity(productId, quantity) {
+                // Gửi dữ liệu tới Servlet qua AJAX
+                fetch('updateCart', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        productId: productId,
+                        quantity: quantity
+                    })
+                })
+                        .then(response => response.text())
+                        .then(data => {
+                            console.log(data); // Kiểm tra phản hồi từ server
+                            alert("Quantity updated successfully!");
+                        })
+                        .catch(error => {
+                            console.error("Error updating quantity:", error);
+                            alert("Failed to update quantity. Please try again.");
+                        });
+            }
+
             document.getElementById("checkout").addEventListener("click", function () {
                 // Lấy tất cả các checkbox trong form
                 const checkboxes = document.querySelectorAll("input[name='cartSelected']");

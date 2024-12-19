@@ -6,9 +6,11 @@ package DAOs;
 
 import DB.DBContext;
 import Models.Phone;
+import Models.Product;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  *

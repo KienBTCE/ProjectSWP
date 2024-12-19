@@ -15,7 +15,7 @@ import java.sql.SQLException;
  * @author NhutBMCE180569
  */
 public class OrderDAO extends DBContext {
-    
+
     public int getNewestOrderID() {
         int id = 0;
         try {
@@ -29,7 +29,7 @@ public class OrderDAO extends DBContext {
         }
         return id;
     }
-    
+
     public void createNewOrderWihoutDiscount(Order o) {
         try {
             String data = "";
@@ -50,7 +50,7 @@ public class OrderDAO extends DBContext {
             System.out.println(e);
         }
     }
-    
+
     public void addOrderDetail(int orderID, int pd_SKU, int quantity, int price) {
         try {
             PreparedStatement pre = connector.prepareStatement("Insert into [OrderDetails] values"
@@ -64,7 +64,17 @@ public class OrderDAO extends DBContext {
             System.out.println(e);
         }
     }
-    
+
+    public void subtractQuantityAfterBuy(int productID, int quantity) {
+        try {
+            PreparedStatement pr = connector.prepareStatement("Update Products set quantity = quantity - ? where pd_SKU=?");
+            pr.setInt(1, quantity);
+            pr.setInt(2, productID);
+            pr.executeUpdate();
+        } catch (Exception e) {
+        }
+    }
+
     public static void main(String[] args) {
         OrderDAO o = new OrderDAO();
         o.addOrderDetail(1, 1, 3, 34000000);

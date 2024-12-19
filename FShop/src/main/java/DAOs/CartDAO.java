@@ -76,18 +76,16 @@ public class CartDAO extends DBContext {
         return list;
     }
 
-    public boolean updateProductQuantity(int productSKU, int quantity, String id) {
-        String sql = "UPDATE Cart SET quantity = ? WHERE pd_SKU = ? AND a_ID LIKE '" + id + "'";
+    public void updateProductQuantity(int productSKU, int quantity, String id) {
+        String sql = "UPDATE Carts SET quantity = ? WHERE pd_SKU = ? AND a_ID LIKE '" + id + "'";
         try {
             PreparedStatement preparedStatement = connector.prepareStatement(sql);
             preparedStatement.setInt(1, quantity);
             preparedStatement.setInt(2, productSKU);
-            int rowsUpdated = preparedStatement.executeUpdate();
-            return rowsUpdated > 0;
+            preparedStatement.executeUpdate();
         } catch (SQLException e) {
-            e.printStackTrace();
+            System.out.println(e);
         }
-        return false;
     }
 
     public void deleteProductOnCart(int productSKU, String id) {
@@ -106,5 +104,6 @@ public class CartDAO extends DBContext {
         for (Cart cart : ca) {
             System.out.println(cart.getProductName() + " " + cart.getProductType());
         }
+        c.updateProductQuantity(5, 10, "user1");
     }
 }

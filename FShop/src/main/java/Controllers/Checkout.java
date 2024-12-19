@@ -74,7 +74,7 @@ public class Checkout extends HttpServlet {
             for (int j = 0; j < selectedProductIds.length; j++) {
                 if (cart.get(i).getProductSKU() == Integer.parseInt(selectedProductIds[j])) {
                     cartSelected.add(cart.get(i));
-                    totalAmount += cart.get(i).getPrice();
+                    totalAmount += cart.get(i).getPrice() * cart.get(i).getQuantity();
                     count++;
                 }
             }
