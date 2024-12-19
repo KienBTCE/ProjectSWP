@@ -111,19 +111,35 @@
                 opacity: 0.7;
                 text-decoration: none;
             }
+            @media all and (max-width: 1000px) {
+                .header-container .time-head, .phone-head {
+                    display: none;
+                }
+
+                .nav-infor{
+                    padding: 0 !important;
+                    height: 100%;
+                    display: flex;
+                    align-items: center;
+                    justify-content: space-between;
+                }
+                .list-cat {
+                    display: none;
+                }
+            }
         </style>
     </head>
     <body>
         <header>
             <div class="header-container container">
                 <div class="header-infor row">
-                    <div class="infor-content col-md-4">
+                    <div class="infor-content time-head col-md-4">
                         <p class="text-dark">Mon-Thu 9:00AM - 5:30PM</p>
                     </div>
-                    <div class="infor-content col-md-4">
-                        <p class="text-dark">Visit our showroom in Nguyen Van Cu, Ninh Kieu, Can Tho</p>
+                    <div class="infor-content address-head col-md-4">
+                        <p class="text-dark">Nguyen Van Cu, Ninh Kieu, Can Tho</p>
                     </div>
-                    <div class="infor-content col-md-4">
+                    <div class="infor-content phone-head col-md-4">
                         <p class="text-dark">Call Us: (+84) 12 345 6789</p>
                         <a href="#"><img src="assets/imgs/HeaderImgs/Vector-Header-FB.svg" alt="Facebook" style="width: 23px; height: 23px;"></a>
                         <a href="#"><img src="assets/imgs/HeaderImgs/Vector-Header-IG.svg" alt="Instagram" style="width: 23px; height: 23px;"></a>
@@ -137,7 +153,7 @@
                     <div class="nav-infor-content col-md-4">
                         <a href="HomeServlet"><img src="assets/imgs/HeaderImgs/Vector-Header-Logo.svg" alt="Shop Logo" style="width: 50px; height: 50px;"></a>
                     </div>
-                    <div class="nav-infor-content col-md-4">
+                    <div class="nav-infor-content list-cat col-md-4">
                         <ul class="list-categories">
                             <li>
                                 <a href="#">Asus</a>

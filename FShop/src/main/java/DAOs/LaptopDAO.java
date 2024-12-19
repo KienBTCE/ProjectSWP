@@ -97,7 +97,7 @@ public class LaptopDAO extends DBContext {
     public ArrayList<String> GetAllBrandLaptop() {
         ArrayList<String> list = null;
 
-        String query = "SELECT DISTINCT brand FROM Products WHERE [productType] = 'Laptop'";
+        String query = "SELECT DISTINCT brand FROM Products WHERE pd_SKU IN (SELECT pd_SKU FROM Laptops)";
 
         try ( PreparedStatement ps = connector.prepareStatement(query)) {
             try ( ResultSet rs = ps.executeQuery()) {
@@ -126,8 +126,6 @@ public class LaptopDAO extends DBContext {
         }
 
         query += ")";
-
-        System.out.println(query);
 
         try ( PreparedStatement ps = connector.prepareStatement(query)) {
             try ( ResultSet rs = ps.executeQuery()) {

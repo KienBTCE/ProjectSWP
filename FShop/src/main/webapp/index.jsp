@@ -103,7 +103,7 @@
             </div>
 
             <div class="row">
-                <h4 class="title-content"><a href="">Smart Phone</a></h4>
+                <h4 class="title-content"><a href="Phone">Smart Phone</a></h4>
                 <div class="gap-section section-content">
 
                     <c:set var="count" value="0" scope="page"></c:set>

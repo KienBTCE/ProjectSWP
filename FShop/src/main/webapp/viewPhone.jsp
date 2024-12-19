@@ -1,11 +1,9 @@
 <%-- 
-    Document   : viewLaptop
-    Created on : Dec 12, 2024, 7:20:22 PM
+    Document   : viewPhone
+    Created on : Dec 19, 2024, 11:05:41 AM
     Author     : KienBTCE180180
 --%>
 
-<%@page import="Models.Laptop"%>
-<%@page import="java.util.ArrayList"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@ taglib prefix = "c" uri = "http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
@@ -85,7 +83,7 @@
                 <div class="container">
                     <div class="row">
                         <div class="gap-section banner-content">
-                            <img src="assets/imgs/Banners/banner-laptop.svg" alt="alt"/>
+                            <img src="assets/imgs/Banners/banner-laptop.svg" alt="alt" style="width: 1398px; height: 104px;"/>
                         </div>
                     </div>
                     <div class="row">
@@ -122,10 +120,10 @@
 
                             <div class="section-content">
 
-                                <c:forEach items="${laptopProducts}" var="p" varStatus="status">
+                                <c:forEach items="${phoneProducts}" var="p" varStatus="status">
                                     <c:if test="${status.index >= (i * 4 - 4) && status.index < (i * 4)}">
                                         <div class="frame-represent">
-                                            <img src="assets/imgs/Laptop/${p.getImage()}" width="150px" height="150px" alt="alt"/>
+                                            <img src="assets/imgs/SmartPhone/${p.getImage()}" width="150px" height="150px" alt="alt"/>
                                             <div class="star-rating">
                                                 <!-- Các ngôi sao -->
                                                 <span class="star">★</span>

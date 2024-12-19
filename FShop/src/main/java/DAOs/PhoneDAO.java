@@ -53,4 +53,100 @@ public class PhoneDAO extends DBContext {
 
         return null;
     }
+
+    public Phone GetPhone(int SKU) {
+        Phone p;
+        String query = "SELECT * FROM Products JOIN Phones ON Products.pd_SKU = Phones.pd_SKU WHERE pd_SKU = ?";
+
+        try ( PreparedStatement ps = connector.prepareStatement(query)) {
+            ps.setInt(1, SKU);
+            try ( ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    p = new Phone(
+                            rs.getInt("pd_SKU"),
+                            rs.getString("fullName"),
+                            rs.getString("screen"),
+                            rs.getString("camera"),
+                            rs.getInt("RAM"),
+                            rs.getInt("ROM"),
+                            rs.getString("chip"),
+                            rs.getString("size"),
+                            rs.getFloat("weight"),
+                            rs.getString("image"),
+                            rs.getString("description"),
+                            rs.getInt("price")
+                    );
+                    return p;
+                }
+            } catch (Exception e) {
+                System.out.println(e);
+            }
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+
+        return null;
+    }
+
+    public ArrayList<String> GetAllBrandPhone() {
+        ArrayList<String> list = null;
+
+        String query = "SELECT DISTINCT brand FROM Products WHERE pd_SKU IN (SELECT pd_SKU FROM Phones)";
+
+        try ( PreparedStatement ps = connector.prepareStatement(query)) {
+            try ( ResultSet rs = ps.executeQuery()) {
+                list = new ArrayList<>();
+                while (rs.next()) {
+                    list.add(rs.getString("brand"));
+                }
+            } catch (Exception e) {
+            }
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+
+        return list;
+    }
+
+    public ArrayList<Phone> GetFilterLaptops(ArrayList<String> filters) {
+        ArrayList<Phone> list = null;
+
+        String query = "SELECT * FROM Phones JOIN Products\n"
+                + "ON Phones.pd_SKU = Products.pd_SKU\n"
+                + "WHERE Phones.pd_SKU IN (SELECT pd_SKU FROM Products WHERE pd_SKU IN (SELECT pd_SKU FROM Phones)";
+
+        for (String filter : filters) {
+            query += filter;
+        }
+
+        query += ")";
+
+        try ( PreparedStatement ps = connector.prepareStatement(query)) {
+            try ( ResultSet rs = ps.executeQuery()) {
+                list = new ArrayList<>();
+                while (rs.next()) {
+                    list.add(new Phone(
+                            rs.getInt("pd_SKU"),
+                            rs.getString("fullName"),
+                            rs.getString("screen"),
+                            rs.getString("camera"),
+                            rs.getInt("RAM"),
+                            rs.getInt("ROM"),
+                            rs.getString("chip"),
+                            rs.getString("size"),
+                            rs.getFloat("weight"),
+                            rs.getString("image"),
+                            rs.getString("description"),
+                            rs.getInt("price")
+                    ));
+                }
+                return list;
+            } catch (Exception e) {
+            }
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+
+        return list;
+    }
 }
