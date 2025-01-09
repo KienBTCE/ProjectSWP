@@ -28,13 +28,13 @@
                 flex-wrap: wrap;
                 justify-content: center;
                 align-items: center;
-                gap: 5%;
+                gap: 10px;
                 background-color: black;
                 height: 450px;
                 padding: 20px;
             }
             .content-black .text {
-                max-width: 30%;
+                max-width: 35%;
             }
             .content-black .text h2 {
                 color: white;
@@ -45,19 +45,19 @@
                 color: white;
             }
             .content-black .image{
-                width: 30%;
+                width: 35%;
                 height: 100%;
             }
             .content-black .image img {
                 width: 100%;
-                height: auto;
+                height: 100%;
                 border-radius: 5px;
             }
             .content-white {
                 background-color: white;
                 display: flex;
                 flex-wrap: wrap;
-                gap: 5%;
+                gap: 10px;
                 justify-content: center;
                 align-items: center;
                 height: 450px;
@@ -65,10 +65,12 @@
             }
 
             .content-white .image{
-                width: 30%;
+                width: 35%;
+                height: 100%;
             }
             .content-white .image img {
                 width: 100%;
+                height: 100%;
                 border-radius: 5px;
             }
             .content-white .text {
