@@ -16,7 +16,7 @@
                 margin: 0;
                 padding: 0;
                 box-sizing: border-box;
-                background-color: #f8f9fa;
+                background-color: white;
             }
             .container {
                 max-width: 1200px;
@@ -46,13 +46,15 @@
             }
             .content-black .image{
                 width: 30%;
+                height: 100%;
             }
             .content-black .image img {
                 width: 100%;
+                height: auto;
                 border-radius: 5px;
             }
             .content-white {
-                background-color: #f9f9f9;
+                background-color: white;
                 display: flex;
                 flex-wrap: wrap;
                 gap: 5%;
@@ -93,7 +95,7 @@
 
             .testimonial-container {
                 margin: 20px auto;
-                background-color: #f5f7ff;
+                background-color: white;
                 border-radius: 10px;
                 box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
                 max-width: 800px;
@@ -167,7 +169,7 @@
                 display: flex;
                 flex-wrap: wrap;
                 justify-content: center;
-                background-color: #f5f7ff;
+                background-color: white;
             }
             .feature-box {
                 display: inline-block;
@@ -180,7 +182,7 @@
             .feature-box img{
                 width: 25%;
                 height: auto;
-                background-color: #f5f7ff;
+                background-color: white;
                 border-radius: 50%;
                 margin: 10px;
             }
