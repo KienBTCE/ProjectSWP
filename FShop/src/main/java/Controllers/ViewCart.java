@@ -63,24 +63,7 @@ public class ViewCart extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        ProductDAO p = new ProductDAO();
-        HttpSession session = request.getSession();
-        String accountID = "user1";
-        CartDAO c = new CartDAO();
-        List<Cart> cartList = c.getCartOfAccountID(accountID);
-        List<Product> pList = p.GetAllProducts();
-        for (Product product : pList) {
-            for (Cart cart : cartList) {
-                if (product.getQuantity() == 0 && product.getSKU() == cart.getProductSKU()) {
-                    cart.setQuantity(product.getQuantity());
-                }
-            }
-        }
-        
-        session.setAttribute(
-                "cartList", cartList);
-        request.getRequestDispatcher(
-                "shoppingCart.jsp").forward(request, response);
+        doPost(request, response);
     }
 
     /**
@@ -94,7 +77,24 @@ public class ViewCart extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        
+        ProductDAO p = new ProductDAO();
+        HttpSession session = request.getSession();
+        String accountID = "user1";
+        CartDAO c = new CartDAO();
+        List<Cart> cartList = c.getCartOfAccountID(accountID);
+        List<Product> pList = p.GetAllProducts();
+        for (Product product : pList) {
+            for (Cart cart : cartList) {
+                if (product.getQuantity() == 0 && product.getSKU() == cart.getProductSKU()) {
+                    cart.setQuantity(product.getQuantity());
+                }
+            }
+        }
+
+        session.setAttribute(
+                "cartList", cartList);
+        request.getRequestDispatcher(
+                "shoppingCart.jsp").forward(request, response);
     }
 
     /**

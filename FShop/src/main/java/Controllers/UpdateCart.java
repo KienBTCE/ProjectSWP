@@ -104,7 +104,7 @@ public class UpdateCart extends HttpServlet {
         System.out.println("Received quantity: " + quantity);
 
         c.updateProductQuantity(productId, quantity, "user1");
-        response.sendRedirect("cart");
+        request.getRequestDispatcher("shoppingCart.jsp").forward(request, response);
     }
 
     /**

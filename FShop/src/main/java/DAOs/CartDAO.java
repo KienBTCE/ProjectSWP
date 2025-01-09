@@ -83,6 +83,7 @@ public class CartDAO extends DBContext {
             preparedStatement.setInt(1, quantity);
             preparedStatement.setInt(2, productSKU);
             preparedStatement.executeUpdate();
+            System.out.println("Update Ok");
         } catch (SQLException e) {
             System.out.println(e);
         }
