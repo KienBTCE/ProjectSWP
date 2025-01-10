@@ -55,7 +55,10 @@ WHERE email IS NOT NULL;
 
 CREATE TABLE Addresses (
 	a_ID INT,
-	[address] VARCHAR(500) UNIQUE,
+	street NTEXT,
+	ward NVARCHAR(100),
+	district NVARCHAR(100),
+	city NVARCHAR(100),
 	FOREIGN KEY (a_ID) REFERENCES Accounts(a_ID)
 )
 
