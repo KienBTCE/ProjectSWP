@@ -30,7 +30,7 @@ CREATE TABLE [Roles] (
 )
 
 CREATE TABLE Accounts (
-	a_ID INT identity (1,1) PRIMARY KEY,
+	a_ID INT PRIMARY KEY identity (1,1) ,
 	phoneNumber VARCHAR(15) UNIQUE NOT NULL,
 	email VARCHAR(254),
 	[password] VARCHAR(500) NOT NULL,
@@ -147,13 +147,19 @@ CREATE TABLE OrderDetails (
 )
 
 CREATE TABLE Blogs (
-	blogID INT Identity (1,1),
+	blogID INT Primary key Identity (1,1) ,
 	writer INT,
 	blogTitle NTEXT,
 	content NTEXT,
 	images TEXT,
-		datePost DATE DEFAULT GETDATE(),
+	datePost DATE DEFAULT GETDATE(),
 	Foreign key (writer) References Accounts(a_ID)
+)
+
+CREATE TABLE BlogImages (
+	[image] TEXT,
+	blogID INT,
+	foreign key (blogID) references Blogs(blogID)
 )
 /*******************************************************************************
    Schema for UI/UX Testing
