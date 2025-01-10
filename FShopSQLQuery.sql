@@ -288,16 +288,18 @@ SELECT *
 FROM Products;
 
 SELECT * 
-FROM Laptops 
+FROM Laptops;
 
 SELECT * 
-FROM Phones
+FROM Phones;
 
 -- Delete from Carts
 -- DELETE FROM Carts WHERE pd_ID = 2 AND a_ID LIKE 'user1';
 
 -- Query for Laptops with specific brand and price range
 
+SELECT * 
+FROM Laptops 
 JOIN Products ON Laptops.pd_ID = Products.pd_ID
 WHERE Laptops.pd_ID IN (
     SELECT pd_ID 
@@ -315,6 +317,6 @@ WHERE Laptops.pd_ID IN (
     SELECT pd_ID 
     FROM Products 
     WHERE pd_ID IN (SELECT pd_ID FROM Laptops) 
-      AND brandID IN (9) 
+      AND brandID IN (8) 
       AND (price BETWEEN 25000000 AND 30000000 OR price BETWEEN 30000000 AND 35000000)
 );
