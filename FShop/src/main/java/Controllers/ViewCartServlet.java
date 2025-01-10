@@ -22,8 +22,8 @@ import java.util.List;
  *
  * @author nhutb
  */
-@WebServlet(name = "ViewCart", urlPatterns = {"/cart"})
-public class ViewCart extends HttpServlet {
+@WebServlet(name = "ViewCartServlet", urlPatterns = {"/cart"})
+public class ViewCartServlet extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>

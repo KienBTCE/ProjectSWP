@@ -24,8 +24,8 @@ import java.util.logging.Logger;
  *
  * @author nhutb
  */
-@WebServlet(name = "UpdateCart", urlPatterns = {"/updateCart"})
-public class UpdateCart extends HttpServlet {
+@WebServlet(name = "UpdateCartServlet", urlPatterns = {"/updateCart"})
+public class UpdateCartServlet extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
