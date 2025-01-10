@@ -24,22 +24,29 @@ GO
    Consider use prefix for attribute name of each table. Ex: Table Accounts have (a_id, a_fullName, a_email,...)
 ********************************************************************************/
 
-CREATE TABLE Accounts (
-	a_ID VARCHAR(20) PRIMARY KEY, -- As a role
+CREATE TABLE [Role] (
+	[roleID] INT Primary key,
+	[name] NVARCHAR(50)
+)
 
+CREATE TABLE Accounts (
+	a_ID INT identity (1,1) PRIMARY KEY,
 	phoneNumber VARCHAR(15) UNIQUE NOT NULL,
 	email VARCHAR(254),
-
 	[password] VARCHAR(500) NOT NULL,
-
 	fullName VARCHAR(255) NOT NULL,
 	birthday DATE,
 	gender CHAR(6) CHECK (gender IN ('Male', 'Female', 'Other')),
-
 	createAt DATETIME DEFAULT GETDATE(),
 	[status] VARCHAR(20) DEFAULT 'Active',
-	avatar TEXT
+	avatar TEXT,
+	roleID INT,
+	FOREIGN KEY (roleID) REFERENCES [Role](roleID)
+
 )
+
+
+
 -- email can null, and null is not unique, but email is unique
 CREATE UNIQUE INDEX UQ_Email 
 ON Accounts(email) 
@@ -47,39 +54,35 @@ WHERE email IS NOT NULL;
 
 
 CREATE TABLE Addresses (
-	a_ID VARCHAR(20),
+	a_ID INT,
 	[address] VARCHAR(500) UNIQUE,
 	FOREIGN KEY (a_ID) REFERENCES Accounts(a_ID)
+)
+
+CREATE TABLE Categories (
+	ct_ID INT IDENTITY(1,1) primary key, -- this attribute will not change, follow to product to present type of product
+	typeName VARCHAR(100),
 )
 
 CREATE TABLE Products (
 	pd_ID VARCHAR(20) NOT NULL,
 	brand VARCHAR(20) NOT NULL,
 	pd_SKU INT UNIQUE IDENTITY(1,1) NOT NULL,
-
 	PRIMARY KEY (pd_ID, brand),
-
 	fullName VARCHAR(255) NOT NULL,
-
 	[status] VARCHAR(20) CHECK ([status] IN ('Available', 'Comming Soon', 'Sold Out')) DEFAULT 'Available',
 	note VARCHAR(500),
 	quantity INT NOT NULL,
 	[productType] VARCHAR(100) NOT NULL,
-
 	price INT NOT NULL,
+	categoryID INT,
+	FOREIGN KEY (categoryID) REFERENCES Categories(ct_ID)
 )
 
-CREATE TABLE Categories (
-	ct_ID INT IDENTITY(1,1), -- this attribute will not change, follow to product to present type of product
-	pd_SKU INT,
-	typeName VARCHAR(100),
-	PRIMARY KEY (pd_SKU, typeName),
-	FOREIGN KEY (pd_SKU) REFERENCES Products(pd_SKU)
-)
+
 
 CREATE TABLE Phones (
 	pd_SKU INT PRIMARY KEY,
-
     screen VARCHAR(100),
     camera VARCHAR(100),
     RAM INT,
@@ -87,15 +90,13 @@ CREATE TABLE Phones (
 	chip VARCHAR(100),
     size VARCHAR(50),
     [weight] FLOAT,
-
     [image] VARCHAR(255),
     [description] TEXT,
 	FOREIGN KEY (pd_SKU) REFERENCES Products(pd_SKU)
 )
 
 CREATE TABLE Laptops (
-	pd_SKU INT  PRIMARY KEY,
-
+	pd_SKU INT PRIMARY KEY,
     screen VARCHAR(100),
     camera VARCHAR(100),
     RAM INT,
@@ -106,14 +107,13 @@ CREATE TABLE Laptops (
     connectionPort TEXT,
     lightKeyboard BINARY,
     [weight] FLOAT,
-
     [image] VARCHAR(255),
     [description] TEXT,
 	FOREIGN KEY (pd_SKU) REFERENCES Products(pd_SKU)
 )
 
 CREATE TABLE Carts (
-	a_ID VARCHAR(20),
+	a_ID INT,
 	pd_SKU INT,
 	PRIMARY KEY (a_ID, pd_SKU),
 	quantity INT NOT NULL,
@@ -122,7 +122,7 @@ CREATE TABLE Carts (
 )
 CREATE TABLE [Orders] (
     orderID INT PRIMARY KEY IDENTITY(1,1),
-    a_ID VARCHAR(20) NOT NULL,
+    a_ID INT NOT NULL,
     fullName VARCHAR(100) NOT NULL,
     [address] NTEXT NOT NULL,
     a_phoneNumber VARCHAR(15) NOT NULL,
@@ -144,6 +144,14 @@ CREATE TABLE OrderDetails (
     FOREIGN KEY (OrderID) REFERENCES [Orders](OrderID)
 )
 
+CREATE TABLE Blogs (
+	blogID INT Identity (1,1),
+	writer INT,
+	blogTitle NTEXT,
+	content NTEXT,
+	images TEXT
+	Foreign key (writer) References Accounts(a_ID)
+)
 /*******************************************************************************
    Schema for UI/UX Testing
 ********************************************************************************/
@@ -175,17 +183,18 @@ INSERT INTO Products(pd_SKU, brand, pd_ID, fullName, quantity, [status], [produc
 INSERT INTO Laptops(pd_SKU, [image]) VALUES (8, '45606_dell_gaming_5511_dark_grey_ha3.jpg')
 
 SET IDENTITY_INSERT Products OFF;
+INSERT [Role] VALUES (1, 'Admin'), (2, 'Manager'), (3, 'Staff'), (4, 'Customer')
 
-INSERT INTO Accounts(a_ID, phoneNumber, email, [password], fullName, birthday, gender, avatar)
-VALUES ('user1', '0888888888', 'abc123@gmail.com', 'user1', 'User NoName', '2004-01-01', 'Male', 'avatar')
+INSERT INTO Accounts(phoneNumber, email, [password], fullName, birthday, gender, avatar, roleID)
+VALUES ('0888888888', 'abc123@gmail.com', 'user1', 'User NoName', '2004-01-01', 'Male', 'avatar', 4)
 
-INSERT INTO Carts VALUES ('user1', 1, 1),
-('user1', 2, 1),
-('user1', 5, 1),
-('user1', 7, 5)
+INSERT INTO Carts VALUES (1, 1, 1),
+(1, 2, 1),
+(1, 5, 1),
+(1, 7, 5)
 
 Insert into [Orders] (a_ID, fullName, a_phoneNumber, [address], paymentMethod, totalAmount) values 
-('user1', 'Nguyen Van a', '034xxxxxxx',N'Địa chỉ có dấu', 'Delivery', 100000000)
+(1, 'Nguyen Van a', '034xxxxxxx',N'Địa chỉ có dấu', 'Delivery', 100000000)
 
 Select * from Orders
 order by orderID desc
@@ -194,6 +203,7 @@ Select * from OrderDetails
 
 Select * from Carts
 
+Select * from Accounts
 --Delete from Carts where pd_SKU = 2 and a_ID LIKE 'user1'
 
 SELECT * FROM Laptops JOIN Products
