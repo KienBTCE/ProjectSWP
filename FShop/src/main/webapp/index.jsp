@@ -79,8 +79,8 @@
                     <div class="gap-section section-content">
 
                     <c:set var="count" value="0" scope="page"></c:set>
-                    <c:forEach items="${dataProducts}" var="p" varStatus="status">
-                        <c:if test="${p.isLaptop() && count < 5}">
+                    <c:forEach items="${laptops}" var="p" varStatus="status">
+                        <c:if test="${count < 5}">
                             <c:set var="count" value="${count + 1}" scope="page"></c:set>
                                 <div class="frame-represent">
                                     <img src="assets/imgs/Laptop/${p.getImage()}" width="150px" height="150px" alt="alt"/>
@@ -107,7 +107,7 @@
                 <div class="gap-section section-content">
 
                     <c:set var="count" value="0" scope="page"></c:set>
-                    <c:forEach items="${dataProducts}" var="p" varStatus="status">
+                    <c:forEach items="${phones}" var="p" varStatus="status">
                         <c:if test="${p.isPhone() && count < 5}">
                             <c:set var="count" value="${count + 1}" scope="page"></c:set>
                                 <div class="frame-represent">

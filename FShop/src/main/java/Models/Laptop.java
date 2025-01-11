@@ -4,13 +4,15 @@
  */
 package Models;
 
+import java.sql.Date;
+
 /**
  *
  * @author KienBTCE180180
  */
 public class Laptop extends Product {
 
-    private int SKU;
+    private int ID;
     private String screen;
     private String camera;
     private int RAM;
@@ -27,9 +29,9 @@ public class Laptop extends Product {
     public Laptop() {
     }
 
-    public Laptop(int SKU, String fullName, String screen, String camera, int RAM, int ROM, String CPU, String GPU, String size, String connectionPort, boolean lightKeyboard, float weight, String image, String description, int price) {
-        this.SKU = SKU;
-        super.setFullName(fullName);
+    public Laptop(String model, int ID, int brandID, String fullName, String status, String note, int quantity, int price, Date importDate, int categoryID, int supplierID, String screen, String camera, int RAM, int ROM, String CPU, String GPU, String size, String connectionPort, boolean lightKeyboard, float weight, String image, String description) {
+        super(model, ID, brandID, fullName, status, note, quantity, price, importDate, categoryID, supplierID);
+        this.ID = ID;
         this.screen = screen;
         this.camera = camera;
         this.RAM = RAM;
@@ -42,17 +44,16 @@ public class Laptop extends Product {
         this.weight = weight;
         this.image = image;
         this.description = description;
-        super.setPrice(price);
     }
 
     @Override
-    public int getSKU() {
-        return SKU;
+    public int getID() {
+        return ID;
     }
 
     @Override
-    public void setSKU(int SKU) {
-        this.SKU = SKU;
+    public void setID(int ID) {
+        this.ID = ID;
     }
 
     public String getScreen() {

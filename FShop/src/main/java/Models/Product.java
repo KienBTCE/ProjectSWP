@@ -4,6 +4,7 @@
  */
 package Models;
 
+import java.sql.Date;
 import java.text.NumberFormat;
 import java.util.Locale;
 
@@ -13,53 +14,57 @@ import java.util.Locale;
  */
 public class Product {
 
-    private String ID;
-    private String brand;
-    private int SKU;
+    private String model;
+    private int ID;
+    private int brandID;
     private String fullName;
     private String status;
     private String note;
     private int quantity;
-    private String productType;
     private int price;
+    private Date importDate;
+    private int categoryID;
+    private int supplierID;
 
     public Product() {
     }
 
-    public Product(String ID, String brand, int SKU, String fullName, String status, String note, int quantity, String productType, int price) {
+    public Product(String model, int ID, int brandID, String fullName, String status, String note, int quantity, int price, Date importDate, int categoryID, int supplierID) {
+        this.model = model;
         this.ID = ID;
-        this.brand = brand;
-        this.SKU = SKU;
+        this.brandID = brandID;
         this.fullName = fullName;
         this.status = status;
         this.note = note;
         this.quantity = quantity;
-        this.productType = productType;
         this.price = price;
+        this.importDate = importDate;
+        this.categoryID = categoryID;
+        this.supplierID = supplierID;
     }
 
-    public String getID() {
+    public String getModel() {
+        return model;
+    }
+
+    public void setModel(String model) {
+        this.model = model;
+    }
+
+    public int getID() {
         return ID;
     }
 
-    public void setID(String ID) {
+    public void setID(int ID) {
         this.ID = ID;
     }
 
-    public String getBrand() {
-        return brand;
+    public int getBrandID() {
+        return brandID;
     }
 
-    public void setBrand(String brand) {
-        this.brand = brand;
-    }
-
-    public int getSKU() {
-        return SKU;
-    }
-
-    public void setSKU(int SKU) {
-        this.SKU = SKU;
+    public void setBrandID(int brandID) {
+        this.brandID = brandID;
     }
 
     public String getFullName() {
@@ -94,22 +99,6 @@ public class Product {
         this.quantity = quantity;
     }
 
-    public String getProductType() {
-        return productType;
-    }
-
-    public void setProductType(String productType) {
-        this.productType = productType;
-    }
-
-    public boolean isLaptop() {
-        return this instanceof Laptop;
-    }
-
-    public boolean isPhone() {
-        return this instanceof Phone;
-    }
-
     public int getPrice() {
         return price;
     }
@@ -118,10 +107,34 @@ public class Product {
         this.price = price;
     }
 
+    public Date getImportDate() {
+        return importDate;
+    }
+
+    public void setImportDate(Date importDate) {
+        this.importDate = importDate;
+    }
+
+    public int getCategoryID() {
+        return categoryID;
+    }
+
+    public void setCategoryID(int categoryID) {
+        this.categoryID = categoryID;
+    }
+
+    public int getSupplierID() {
+        return supplierID;
+    }
+
+    public void setSupplierID(int supplierID) {
+        this.supplierID = supplierID;
+    }
+
     public String getPriceFormatted() {
         Locale vietnam = new Locale("vi", "VN");
         NumberFormat currencyFormatter = NumberFormat.getCurrencyInstance(vietnam);
         return currencyFormatter.format(price);
     }
-    
+
 }

@@ -31,8 +31,17 @@ public class PhoneDAO extends DBContext {
             try ( ResultSet rs = ps.executeQuery()) {
                 while (rs.next()) {
                     list.add(new Phone(
+                            rs.getString("model"),
                             rs.getInt("pd_SKU"),
+                            rs.getInt("brandID"),
                             rs.getString("fullName"),
+                            rs.getString("status"),
+                            rs.getString("note"),
+                            rs.getInt("quantity"),
+                            rs.getInt("price"),
+                            rs.getDate("importDate"),
+                            rs.getInt("categoryID"),
+                            rs.getInt("supplierID"),
                             rs.getString("screen"),
                             rs.getString("camera"),
                             rs.getInt("RAM"),
@@ -41,8 +50,7 @@ public class PhoneDAO extends DBContext {
                             rs.getString("size"),
                             rs.getFloat("weight"),
                             rs.getString("image"),
-                            rs.getString("description"),
-                            rs.getInt("price")
+                            rs.getString("description")
                     ));
                 }
                 return list;
@@ -65,8 +73,17 @@ public class PhoneDAO extends DBContext {
             try ( ResultSet rs = ps.executeQuery()) {
                 if (rs.next()) {
                     p = new Phone(
+                            rs.getString("model"),
                             rs.getInt("pd_SKU"),
+                            rs.getInt("brandID"),
                             rs.getString("fullName"),
+                            rs.getString("status"),
+                            rs.getString("note"),
+                            rs.getInt("quantity"),
+                            rs.getInt("price"),
+                            rs.getDate("importDate"),
+                            rs.getInt("categoryID"),
+                            rs.getInt("supplierID"),
                             rs.getString("screen"),
                             rs.getString("camera"),
                             rs.getInt("RAM"),
@@ -75,8 +92,7 @@ public class PhoneDAO extends DBContext {
                             rs.getString("size"),
                             rs.getFloat("weight"),
                             rs.getString("image"),
-                            rs.getString("description"),
-                            rs.getInt("price")
+                            rs.getString("description")
                     );
                     return p;
                 }
@@ -128,8 +144,17 @@ public class PhoneDAO extends DBContext {
                 list = new ArrayList<>();
                 while (rs.next()) {
                     list.add(new Phone(
+                            rs.getString("model"),
                             rs.getInt("pd_SKU"),
+                            rs.getInt("brandID"),
                             rs.getString("fullName"),
+                            rs.getString("status"),
+                            rs.getString("note"),
+                            rs.getInt("quantity"),
+                            rs.getInt("price"),
+                            rs.getDate("importDate"),
+                            rs.getInt("categoryID"),
+                            rs.getInt("supplierID"),
                             rs.getString("screen"),
                             rs.getString("camera"),
                             rs.getInt("RAM"),
@@ -138,8 +163,7 @@ public class PhoneDAO extends DBContext {
                             rs.getString("size"),
                             rs.getFloat("weight"),
                             rs.getString("image"),
-                            rs.getString("description"),
-                            rs.getInt("price")
+                            rs.getString("description")
                     ));
                 }
                 return list;

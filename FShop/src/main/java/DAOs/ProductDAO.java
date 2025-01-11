@@ -29,15 +29,18 @@ public class ProductDAO extends DBContext {
             try ( ResultSet rs = ps.executeQuery()) {
                 while (rs.next()) {
                     list.add(new Product(
-                            rs.getString("pd_ID"),
-                            rs.getString("brand"),
-                            rs.getInt("pd_SKU"),
+                            rs.getString("model"),
+                            rs.getInt("pd_ID"),
+                            rs.getInt("brandID"),
                             rs.getString("fullName"),
                             rs.getString("status"),
                             rs.getString("note"),
                             rs.getInt("quantity"),
-                            rs.getString("productType"),
-                            rs.getInt("price")));
+                            rs.getInt("price"),
+                            rs.getDate("importDate"),
+                            rs.getInt("categoryID"),
+                            rs.getInt("supplierID")
+                    ));
                 }
                 return list;
             } catch (Exception e) {

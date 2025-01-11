@@ -23,14 +23,23 @@ public class LaptopDAO extends DBContext {
     public ArrayList<Laptop> GetAllLaptops() {
         ArrayList<Laptop> list = new ArrayList<>();
 
-        String query = "SELECT * FROM Products JOIN Laptops ON Products.pd_SKU = Laptops.pd_SKU";
+        String query = "SELECT * FROM Laptops";
 
         try ( PreparedStatement ps = connector.prepareStatement(query)) {
             try ( ResultSet rs = ps.executeQuery()) {
                 while (rs.next()) {
                     list.add(new Laptop(
+                            rs.getString("model"),
                             rs.getInt("pd_SKU"),
+                            rs.getInt("brandID"),
                             rs.getString("fullName"),
+                            rs.getString("status"),
+                            rs.getString("note"),
+                            rs.getInt("quantity"),
+                            rs.getInt("price"),
+                            rs.getDate("importDate"),
+                            rs.getInt("categoryID"),
+                            rs.getInt("supplierID"),
                             rs.getString("screen"),
                             rs.getString("camera"),
                             rs.getInt("RAM"),
@@ -39,11 +48,10 @@ public class LaptopDAO extends DBContext {
                             rs.getString("GPU"),
                             rs.getString("size"),
                             rs.getString("connectionPort"),
-                            rs.getBoolean("lightKeyboard"), // Assuming lightKeyboard is a BIT or BOOLEAN in the database
+                            rs.getBoolean("lightKeyboard"),
                             rs.getFloat("weight"),
                             rs.getString("image"),
-                            rs.getString("description"),
-                            rs.getInt("price")
+                            rs.getString("description")
                     ));
                 }
                 return list;
@@ -66,8 +74,17 @@ public class LaptopDAO extends DBContext {
             try ( ResultSet rs = ps.executeQuery()) {
                 if (rs.next()) {
                     lt = new Laptop(
-                            rs.getInt("pdSKU"),
+                            rs.getString("model"),
+                            rs.getInt("pd_SKU"),
+                            rs.getInt("brandID"),
                             rs.getString("fullName"),
+                            rs.getString("status"),
+                            rs.getString("note"),
+                            rs.getInt("quantity"),
+                            rs.getInt("price"),
+                            rs.getDate("importDate"),
+                            rs.getInt("categoryID"),
+                            rs.getInt("supplierID"),
                             rs.getString("screen"),
                             rs.getString("camera"),
                             rs.getInt("RAM"),
@@ -76,11 +93,10 @@ public class LaptopDAO extends DBContext {
                             rs.getString("GPU"),
                             rs.getString("size"),
                             rs.getString("connectionPort"),
-                            rs.getBoolean("lightKeyboard"), // Assuming lightKeyboard is a BIT or BOOLEAN in the database
+                            rs.getBoolean("lightKeyboard"),
                             rs.getFloat("weight"),
                             rs.getString("image"),
-                            rs.getString("description"),
-                            rs.getInt("price")
+                            rs.getString("description")
                     );
                     return lt;
                 }
@@ -119,7 +135,9 @@ public class LaptopDAO extends DBContext {
 
         String query = "SELECT * FROM Laptops JOIN Products\n"
                 + "ON Laptops.pd_SKU = Products.pd_SKU\n"
-                + "WHERE Laptops.pd_SKU IN (SELECT pd_SKU FROM Products WHERE pd_SKU IN (SELECT pd_SKU FROM Laptops)";
+                + "JOIN Suppliers\n"
+                + "ON Products.brandID = Suppliers.supplierID"
+                + "WHERE";
 
         for (String filter : filters) {
             query += filter;
@@ -132,8 +150,17 @@ public class LaptopDAO extends DBContext {
                 list = new ArrayList<>();
                 while (rs.next()) {
                     list.add(new Laptop(
+                            rs.getString("model"),
                             rs.getInt("pd_SKU"),
+                            rs.getInt("brandID"),
                             rs.getString("fullName"),
+                            rs.getString("status"),
+                            rs.getString("note"),
+                            rs.getInt("quantity"),
+                            rs.getInt("price"),
+                            rs.getDate("importDate"),
+                            rs.getInt("categoryID"),
+                            rs.getInt("supplierID"),
                             rs.getString("screen"),
                             rs.getString("camera"),
                             rs.getInt("RAM"),
@@ -142,11 +169,10 @@ public class LaptopDAO extends DBContext {
                             rs.getString("GPU"),
                             rs.getString("size"),
                             rs.getString("connectionPort"),
-                            rs.getBoolean("lightKeyboard"), // Assuming lightKeyboard is a BIT or BOOLEAN in the database
+                            rs.getBoolean("lightKeyboard"),
                             rs.getFloat("weight"),
                             rs.getString("image"),
-                            rs.getString("description"),
-                            rs.getInt("price")
+                            rs.getString("description")
                     ));
                 }
                 return list;

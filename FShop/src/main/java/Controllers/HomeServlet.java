@@ -42,18 +42,9 @@ public class HomeServlet extends HttpServlet {
         PhoneDAO phD = new PhoneDAO();
         ArrayList<Phone> phones = phD.GetAllPhones();
 
-        if (laptops != null) {
-            productList = new ArrayList<>();
-            for (Laptop laptop : laptops) {
-                productList.add(laptop);
-            }
-            for (Phone phone : phones) {
-                productList.add(phone);
-            }
-        }
-
         try {
-            request.setAttribute("dataProducts", productList);
+            request.setAttribute("laptops", laptops);
+            request.setAttribute("phones", phones);
             request.getRequestDispatcher("index.jsp").forward(request, response);
         } catch (NullPointerException e) {
             System.out.println(e);
