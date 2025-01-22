@@ -7,3 +7,7 @@ INFORMATION
 This folder store both database script and project folder.
 The project folder is implemented by Apache NetBeans 13, JDK 1.8
 The database is created by SQL Server.
+
+NOTE:
+1. The order in which SQL files are run is by name.
+For example: you have to run 1_CreateDatabaseFShop.sql first, next one is 2_ImportDataVNProvinces.sql....
