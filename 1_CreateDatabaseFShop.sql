@@ -82,17 +82,20 @@ CREATE TABLE Suppliers (
 CREATE TABLE InventoryHistories (
     InvenID INT IDENTITY(1,1) PRIMARY KEY,
     SKU INT,
-    ImportDate DATE NOT NULL,
-    Stock INT NOT NULL,
-    ImportPrice INT NOT NULL,
+    [Date] DATE NOT NULL,
+	[Description] VARCHAR(20) NOT NULL,
+    Quantity INT NOT NULL,
+    Cost BIGINT NOT NULL,
+	SupplierID INT,
+	FOREIGN KEY (SupplierID) REFERENCES Suppliers(SupplierID)
 );
 
-CREATE TABLE ShopHistories (
-    ShopID INT IDENTITY(1,1) PRIMARY KEY,
+CREATE TABLE SellingHistories (
+    SellID INT IDENTITY(1,1) PRIMARY KEY,
     InvenID INT,
-    ExportDate DATE NOT NULL,
+    [Date] DATE NOT NULL,
     Quantity INT NOT NULL,
-    ExportPrice INT NOT NULL,
+    Price INT NOT NULL,
 );
 
 CREATE TABLE Products (
@@ -102,17 +105,17 @@ CREATE TABLE Products (
     SupplierID INT,
     Model VARCHAR(50),
     FullName NVARCHAR(255) NOT NULL,
-    [Status] VARCHAR(20) NOT NULL,
-    InvenID INT NULL,
-    ShopID INT NULL,
+    [Status] NVARCHAR(20) NOT NULL,
+	Quantity INT,
+	Stock INT,
+    SellID INT,
+	[Image] TEXT,
     FOREIGN KEY (BrandID) REFERENCES Brands(BrandID),
 	FOREIGN KEY (CategoryID) REFERENCES Categories(CID),
-    FOREIGN KEY (SupplierID) REFERENCES Suppliers(SupplierID)
 );
-   ALTER TABLE Products ADD CONSTRAINT FK_Products_InventoryHistories FOREIGN KEY (InvenID) REFERENCES InventoryHistories(InvenID);
-   ALTER TABLE Products ADD CONSTRAINT FK_Products_ShopHistories FOREIGN KEY (ShopID) REFERENCES ShopHistories(ShopID);
+   ALTER TABLE Products ADD CONSTRAINT FK_Products_SellingHistories FOREIGN KEY (SellID) REFERENCES SellingHistories(SellID);
    ALTER TABLE InventoryHistories ADD CONSTRAINT FK_InventoryHistories_Products FOREIGN KEY (SKU) REFERENCES Products(SKU);
-   ALTER TABLE ShopHistories ADD CONSTRAINT FK_ShopHistories_InventoryHistories FOREIGN KEY (InvenID) REFERENCES InventoryHistories(InvenID);
+   ALTER TABLE SellingHistories ADD CONSTRAINT FK_SellingHistories_InventoryHistories FOREIGN KEY (InvenID) REFERENCES InventoryHistories(InvenID);
 
 CREATE TABLE AttributeDetails (
     AttributeInfor VARCHAR(100),

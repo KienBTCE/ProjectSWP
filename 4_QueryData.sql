@@ -1,6 +1,6 @@
 USE FShop
 -- Query District of each province
-SELECT * FROM Provinces p
+SELECT p.FullNameEn, d.FullNameEn, w.FullNameEn FROM Provinces p
 LEFT JOIN Districts d ON d.ProvinceCode = p.Code
 LEFT JOIN Wards w ON w.DistrictCode = d.Code
 WHERE p.Code = 94 AND d.Code = 944

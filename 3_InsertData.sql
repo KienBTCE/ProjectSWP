@@ -41,15 +41,14 @@ VALUES
 (2, 'Screen Size');
 
 
+INSERT INTO Products (BrandID, CategoryID, SupplierID, Model, FullName, [Status], Quantity, Stock)
+VALUES (1, 1, 1, 'Macbook Pro 14', 'Apple Macbook Pro 14 inch M1 Pro chip', 'New', 10, 10);
 
-INSERT INTO Products (BrandID, CategoryID, SupplierID, Model, FullName, [Status])
-VALUES
-(1, 2, 1, 'iPhone 14 Pro', 'Apple iPhone 14 Pro 128GB', 'Available'),
-(2, 2, 2, 'Galaxy S23 Ultra', 'Samsung Galaxy S23 Ultra 256GB', 'Available'),
-(6, 1, 3, 'XPS 13', 'Dell XPS 13 9310', 'Available'),
-(8, 1, 4, 'ZenBook 14', 'Asus ZenBook 14 UX425', 'Available'),
-(10, 1, 5, 'Aspire 7', 'Acer Aspire 7 A715', 'Available');
+INSERT INTO Products (BrandID, CategoryID, SupplierID, Model, FullName, [Status], Quantity, Stock)
+VALUES (2, 2, 2, 'Galaxy S23 Ultra', 'Samsung Galaxy S23 Ultra 5G 256GB', 'New', 15, 15);
 
+INSERT INTO Products (BrandID, CategoryID, SupplierID, Model, FullName, [Status], Quantity, Stock)
+VALUES (3, 1, 3, 'Sony Vaio Z900', 'Sony Vaio Z900 Core i7 16GB RAM', 'Used', 5, 3);
 
 INSERT INTO AttributeDetails (AttributeInfor, AttributeID, PSKU)
 VALUES
