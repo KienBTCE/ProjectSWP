@@ -65,17 +65,7 @@ VALUES
 -- Thuộc tính cho Dell XPS 13
 ('Intel Core i7-1185G7', 1, 3),
 ('16GB', 2, 3),
-('512GB SSD', 3, 3),
-
--- Thuộc tính cho Asus ZenBook 14
-('AMD Ryzen 7 5800H', 1, 4),
-('16GB', 2, 4),
-('1TB SSD', 3, 4),
-
--- Thuộc tính cho Acer Aspire 7
-('Intel Core i5-10300H', 1, 5),
-('8GB', 2, 5),
-('256GB SSD', 3, 5);
+('512GB SSD', 3, 3)
 
 
 -- Insert roles
@@ -86,7 +76,7 @@ VALUES
     ('Staff')
 
 -- Insert account
-INSERT INTO Customers (FullName, Birthday, Password, PhoneNumber, Email, Gender, CreateAt, [Status], Avatar, LoyalPoint)
+INSERT INTO Customers (FullName, Birthday, [Password], PhoneNumber, Email, Gender, CreateAt, [Status], Avatar, LoyalPoint)
 VALUES
 ('Nguyen Van A', '1995-05-15', 'hashed_password_123', '0901234567', 'nguyenvana@example.com', 'Male', GETDATE(), 'Active', 'avatar_link.jpg', 1000);
 
@@ -95,7 +85,7 @@ INSERT INTO Carts (AID, SKU, Quantity)
 VALUES 
     (1, 1, 1),
     (1, 2, 1),
-    (1, 5, 1);
+    (1, 3, 1);
 
 -- Insert into Orders
 

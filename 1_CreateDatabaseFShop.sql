@@ -21,7 +21,7 @@ GO
 
 /*******************************************************************************
    Use camelCase for Name of attribute. Ex: FullDateOfCreateAccount
-   ConsIDer use prefix for attribute Name of each table. Ex: Table Accounts have (a_ID, a_FullName, a_email,...)
+   ConsIDer use prefix for attribute Name of each TABLE. Ex: TABLE Accounts have (a_ID, a_FullName, a_email,...)
 ********************************************************************************/
 
 -- DROP TABLE IF EXISTS Wards;
@@ -32,71 +32,88 @@ GO
 
 
 -----------------------------------------------------------------------------------
+
+-- CREATE Roles TABLE
+
 CREATE TABLE Roles (
     RoleID INT IDENTITY(1,1) PRIMARY KEY,
-    Name NVARCHAR(50)
+    [Name] NVARCHAR(50)
 );
+
+-- CREATE Employees TABLE
 
 CREATE TABLE Employees (
     AID INT IDENTITY(1,1) PRIMARY KEY,
     FullName VARCHAR(255),
     Birthday DATE,
-    Password VARCHAR(500),
+    [Password] VARCHAR(500),
     PhoneNumber VARCHAR(15) UNIQUE,
     Email VARCHAR(254),
-    Gender CHAR(6),
-    CreateAt DATETIME,
-    Status VARCHAR(20),
+    Gender CHAR(6) CHECK (gender IN ('Male', 'Female', 'Other')),
+    CreateAt DATETIME DEFAULT GETDATE(),
+    [Status] VARCHAR(20) DEFAULT 'Active',
     Avatar TEXT,
     RoleID INT,
     FOREIGN KEY (RoleID) REFERENCES Roles(RoleID)
 );
 
+-- CREATE Categories TABLE
 
 CREATE TABLE Categories (
     CID INT IDENTITY(1,1) PRIMARY KEY,
-    TypeName NVARCHAR(100)
+    TypeName NVARCHAR(100) NOT NULL
 );
+
+-- CREATE Attributes TABLE
 
 CREATE TABLE Attributes (
     AID INT IDENTITY(1,1) PRIMARY KEY,
-    CID INT,
-    AttributeName VARCHAR(100),
+    CID INT NOT NULL,
+    AttributeName VARCHAR(100) NOT NULL,
     FOREIGN KEY (CID) REFERENCES Categories(CID)
 );
 
+-- CREATE Brands TABLE
 
 CREATE TABLE Brands (
     BrandID INT IDENTITY(1,1) PRIMARY KEY,
-    BrandName NVARCHAR(50)
+    BrandName NVARCHAR(50) NOT NULL
 );
+
+-- CREATE Suppliers TABLE
 
 CREATE TABLE Suppliers (
     SupplierID INT IDENTITY(1,1) PRIMARY KEY,
-    SupplierName NVARCHAR(255),
-    Address NTEXT,
+    [Name] NVARCHAR(255),
+    [Address] NTEXT,
     PhoneNumber VARCHAR(30),
     Email TEXT
 );
+
+-- CREATE InventoryHistories TABLE
 
 CREATE TABLE InventoryHistories (
     InvenID INT IDENTITY(1,1) PRIMARY KEY,
     SKU INT,
     [Date] DATE NOT NULL,
-	[Description] VARCHAR(20) NOT NULL,
+	[Description] VARCHAR(255) NOT NULL,
     Quantity INT NOT NULL,
     Cost BIGINT NOT NULL,
 	SupplierID INT,
 	FOREIGN KEY (SupplierID) REFERENCES Suppliers(SupplierID)
 );
 
+-- CREATE SellingHistories TABLE
+
 CREATE TABLE SellingHistories (
     SellID INT IDENTITY(1,1) PRIMARY KEY,
     InvenID INT,
     [Date] DATE NOT NULL,
     Quantity INT NOT NULL,
-    Price INT NOT NULL,
+    Price BIGINT NOT NULL,
 );
+
+-- CREATE Products TABLE
 
 CREATE TABLE Products (
     SKU INT IDENTITY(1,1) PRIMARY KEY,
@@ -117,6 +134,8 @@ CREATE TABLE Products (
    ALTER TABLE InventoryHistories ADD CONSTRAINT FK_InventoryHistories_Products FOREIGN KEY (SKU) REFERENCES Products(SKU);
    ALTER TABLE SellingHistories ADD CONSTRAINT FK_SellingHistories_InventoryHistories FOREIGN KEY (InvenID) REFERENCES InventoryHistories(InvenID);
 
+-- CREATE AttributeDetails TABLE
+
 CREATE TABLE AttributeDetails (
     AttributeInfor VARCHAR(100),
     AttributeID INT,
@@ -125,30 +144,48 @@ CREATE TABLE AttributeDetails (
     FOREIGN KEY (PSKU) REFERENCES Products(SKU)
 );
 
+-- CREATE Customers TABLE
+
 CREATE TABLE Customers (
     AID INT IDENTITY(1,1) PRIMARY KEY,
     FullName VARCHAR(255),
     Birthday DATE,
-    Password VARCHAR(500),
+    [Password] VARCHAR(500),
     PhoneNumber VARCHAR(15) UNIQUE,
-    Email VARCHAR(254),
-    Gender CHAR(6),
-    CreateAt DATETIME,
-    Status VARCHAR(20),
+    Email VARCHAR(254) NOT NULL,
+    Gender CHAR(6) CHECK (gender IN ('Male', 'Female', 'Other')),
+    CreateAt DATETIME DEFAULT GETDATE(),
+    [Status] VARCHAR(20),
     Avatar TEXT,
     LoyalPoint BIGINT
 );
 
-CREATE TABLE Addresses (
-    AddressID INT IDENTITY(1,1) PRIMARY KEY,
-    AID INT,
-    City NVARCHAR(100),
-    Street NVARCHAR(100),
-    Ward NVARCHAR(100),
-    Province NVARCHAR(100),
-    District NVARCHAR(100),
-    FOREIGN KEY (AID) REFERENCES Customers(AID)
-);
+-- CREATE ProductRatings TABLE
+
+CREATE TABLE ProductRatings(
+	RateID INT IDENTITY(1,1) Primary key,
+	CustomerID INT,
+	SKU INT,
+	Star INT,
+	Comment NTEXT,
+	[Status] VARCHAR(20)
+	FOREIGN KEY (CustomerID) REFERENCES Customers(AID),
+	FOREIGN KEY (SKU) REFERENCES Products(SKU)
+)
+
+-- CREATE RatingReplies TABLE
+
+CREATE TABLE RatingReplies (
+	ReplyID INT IDENTITY(1,1) Primary key,
+	EmployeeID INT,
+	RateID INT,
+	Answer NTEXT
+	FOREIGN KEY (EmployeeID) REFERENCES Employees(AID),
+	FOREIGN KEY (RateID) REFERENCES ProductRatings(RateID)
+
+)
+
+-- CREATE Orders TABLE
 
 CREATE TABLE Orders (
     OrderID INT IDENTITY(1,1) PRIMARY KEY,
@@ -156,35 +193,39 @@ CREATE TABLE Orders (
     FullName NVARCHAR(100),
     Address NTEXT,
     APhoneNumber VARCHAR(15),
-    OrderDate DATETIME,
-    OrderShippedDate DATETIME,
-    Payment INT,
-    Status VARCHAR(20),
-    TotalAmount INT,
+    OrderDate DATETIME DEFAULT GETDATE(),
+    DeliveredDate DATETIME,
+    [Status] VARCHAR(255) NOT NULL DEFAULT 'Ordered Successful',
+    TotalAmount BIGINT,
     Discount DECIMAL(10,2),
     FOREIGN KEY (AID) REFERENCES Customers(AID)
 );
+
+-- CREATE OrderDetails TABLE
 
 CREATE TABLE OrderDetails (
     OrderID INT,
     PSKU INT,
     Quantity INT,
-    Price INT,
+    Price BIGINT,
     PRIMARY KEY (OrderID, PSKU),
     FOREIGN KEY (OrderID) REFERENCES Orders(OrderID),
     FOREIGN KEY (PSKU) REFERENCES Products(SKU)
 );
+
+-- CREATE PaymentHistories TABLE
 
 CREATE TABLE PaymentHistories (
     PhID INT IDENTITY(1,1) PRIMARY KEY,
     OrderID INT,
     PaIDAmount INT,
     RemainingAmount INT,
-    Status NVARCHAR(20),
+    [Status] NVARCHAR(20),
     PaymentDate DATE,
-    PaymentMethod NVARCHAR(20),
     FOREIGN KEY (OrderID) REFERENCES Orders(OrderID)
 );
+
+-- CREATE Carts TABLE
 
 CREATE TABLE Carts (
     AID INT FOREIGN KEY (AID) REFERENCES Customers(AID),
@@ -195,39 +236,42 @@ CREATE TABLE Carts (
 
 
 -- CREATE AdministrativeRegions TABLE
+
 CREATE TABLE AdministrativeRegions (
-	ID integer NOT NULL,
-	Name varchar(255) NOT NULL,
+	ID INT NOT NULL,
+	[Name] varchar(255) NOT NULL,
 	NameEn varchar(255) NOT NULL,
-	CodeName varchar(255) NULL,
-	CodeNameEn varchar(255) NULL,
+	CodeName varchar(255) NOT NULL,
+	CodeNameEn varchar(255) NOT NULL,
 	CONSTRAINT AdministrativeRegions_pkey PRIMARY KEY (ID)
 );
 
 
 -- CREATE AdministrativeUnits TABLE
+
 CREATE TABLE AdministrativeUnits (
-	ID integer NOT NULL,
-	FullName nvarchar(255) NULL,
-	FullNameEn varchar(255) NULL,
-	ShortName varchar(255) NULL,
-	ShortNameEn varchar(255) NULL,
-	CodeName varchar(255) NULL,
-	CodeNameEn varchar(255) NULL,
+	ID INT NOT NULL,
+	FullName nvarchar(255) NOT NULL,
+	FullNameEn varchar(255) NOT NULL,
+	ShortName varchar(255) NOT NULL,
+	ShortNameEn varchar(255) NOT NULL,
+	CodeName varchar(255) NOT NULL,
+	CodeNameEn varchar(255) NOT NULL,
 	CONSTRAINT AdministrativeUnits_pkey PRIMARY KEY (ID)
 );
 
 
 -- CREATE Provinces TABLE
+
 CREATE TABLE Provinces (
 	Code varchar(20) NOT NULL,
-	Name nvarchar(255) NOT NULL,
-	NameEn varchar(255) NULL,
+	[Name] nvarchar(255) NOT NULL,
+	NameEn varchar(255)  NOT NULL,
 	FullName nvarchar(255) NOT NULL,
-	FullNameEn varchar(255) NULL,
-	CodeName varchar(255) NULL,
-	AdministrativeUnitID integer NULL,
-	AdministrativeRegionID integer NULL,
+	FullNameEn varchar(255) NOT NULL,
+	CodeName varchar(255) NOT NULL,
+	AdministrativeUnitID INT NOT NULL,
+	AdministrativeRegionID INT NOT NULL,
 	CONSTRAINT Provinces_pkey PRIMARY KEY (Code)
 );
 
@@ -242,15 +286,16 @@ CREATE INDEX IDx_Provinces_unit ON Provinces(AdministrativeUnitID);
 
 
 -- CREATE Districts TABLE
+
 CREATE TABLE Districts (
 	Code varchar(20) NOT NULL,
-	Name nvarchar(255) NOT NULL,
-	NameEn varchar(255) NULL,
-	FullName nvarchar(255) NULL,
-	FullNameEn varchar(255) NULL,
-	CodeName varchar(255) NULL,
-	ProvinceCode varchar(20) NULL,
-	AdministrativeUnitID integer NULL,
+	[Name] nvarchar(255) NOT NULL,
+	NameEn varchar(255)  NOT NULL,
+	FullName nvarchar(255) NOT NULL,
+	FullNameEn varchar(255) NOT  NULL,
+	CodeName varchar(255) NOT NULL,
+	ProvinceCode varchar(20) NOT NULL,
+	AdministrativeUnitID integer NOT NULL,
 	CONSTRAINT Districts_pkey PRIMARY KEY (Code)
 );
 
@@ -265,15 +310,16 @@ CREATE INDEX IDx_Districts_unit ON Districts(AdministrativeUnitID);
 
 
 -- CREATE Wards TABLE
+
 CREATE TABLE Wards (
 	Code varchar(20) NOT NULL,
 	Name nvarchar(255) NOT NULL,
-	NameEn varchar(255) NULL,
-	FullName nvarchar(255) NULL,
-	FullNameEn varchar(255) NULL,
-	CodeName varchar(255) NULL,
-	DistrictCode varchar(20) NULL,
-	AdministrativeUnitID integer NULL,
+	NameEn varchar(255) NOT NULL,
+	FullName nvarchar(255)  NOT NULL,
+	FullNameEn varchar(255) NOT NULL,
+	CodeName varchar(255) NOT NULL,
+	DistrictCode varchar(20) NOT NULL,
+	AdministrativeUnitID INT NOT NULL,
 	CONSTRAINT Wards_pkey PRIMARY KEY (Code)
 );
 
@@ -285,6 +331,24 @@ ALTER TABLE Wards ADD CONSTRAINT Wards_DistrictCode_fkey FOREIGN KEY (DistrictCo
 
 CREATE INDEX IDx_Wards_district ON Wards(DistrictCode);
 CREATE INDEX IDx_Wards_unit ON Wards(AdministrativeUnitID);
+
+-- CREATE Cart TABLE
+
+CREATE TABLE Addresses (
+    AddressID INT IDENTITY(1,1) PRIMARY KEY,
+    AID INT,
+    IsDefault NVARCHAR(20),
+    Street NVARCHAR(20),
+    Ward VARCHAR(20),
+    Province VARCHAR(20),
+    District VARCHAR(20),
+    FOREIGN KEY (AID) REFERENCES Customers(AID),
+	FOREIGN KEY (Province) REFERENCES Provinces (Code),
+	FOREIGN KEY (District) REFERENCES Districts (Code),
+	FOREIGN KEY (Ward) REFERENCES Wards (Code)
+
+);
+
 /*******************************************************************************
    Schema for UI/UX Testing
 ********************************************************************************/
