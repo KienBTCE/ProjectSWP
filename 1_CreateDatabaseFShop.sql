@@ -155,7 +155,7 @@ CREATE TABLE Customers (
     Email VARCHAR(254) NOT NULL,
     Gender CHAR(6) CHECK (gender IN ('Male', 'Female', 'Other')),
     CreateAt DATETIME DEFAULT GETDATE(),
-    [Status] VARCHAR(20),
+    [Status] VARCHAR(255),
     Avatar TEXT,
     LoyalPoint BIGINT
 );
