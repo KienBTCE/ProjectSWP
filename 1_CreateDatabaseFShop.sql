@@ -90,28 +90,8 @@ CREATE TABLE Suppliers (
     Email TEXT
 );
 
--- CREATE InventoryHistories TABLE
 
-CREATE TABLE InventoryHistories (
-    InvenID INT IDENTITY(1,1) PRIMARY KEY,
-    SKU INT,
-    [Date] DATE NOT NULL,
-	[Description] VARCHAR(255) NOT NULL,
-    Quantity INT NOT NULL,
-    Cost BIGINT NOT NULL,
-	SupplierID INT,
-	FOREIGN KEY (SupplierID) REFERENCES Suppliers(SupplierID)
-);
 
--- CREATE SellingHistories TABLE
-
-CREATE TABLE SellingHistories (
-    SellID INT IDENTITY(1,1) PRIMARY KEY,
-    InvenID INT,
-    [Date] DATE NOT NULL,
-    Quantity INT NOT NULL,
-    Price BIGINT NOT NULL,
-);
 
 -- CREATE Products TABLE
 
@@ -130,9 +110,58 @@ CREATE TABLE Products (
     FOREIGN KEY (BrandID) REFERENCES Brands(BrandID),
 	FOREIGN KEY (CategoryID) REFERENCES Categories(CID),
 );
-   ALTER TABLE Products ADD CONSTRAINT FK_Products_SellingHistories FOREIGN KEY (SellID) REFERENCES SellingHistories(SellID);
-   ALTER TABLE InventoryHistories ADD CONSTRAINT FK_InventoryHistories_Products FOREIGN KEY (SKU) REFERENCES Products(SKU);
-   ALTER TABLE SellingHistories ADD CONSTRAINT FK_SellingHistories_InventoryHistories FOREIGN KEY (InvenID) REFERENCES InventoryHistories(InvenID);
+
+--CREATE InventoryProducts TABLE 
+
+CREATE TABLE InventoryProducts (
+	PackageID INT IDENTITY (1,1) Primary key,
+	SKU INT,
+	SupplierID INT NOT NULL,
+	ProductCost BIGINT NOT NULL,
+	Stock INT NOT NULL
+	FOREIGN KEY (SKU) REFERENCES Products(SKU),
+	FOREIGN KEY (SupplierID) REFERENCES Suppliers(SupplierID)
+)
+
+-- CREATE SellingHistories TABLE
+
+CREATE TABLE ShopHistories (
+    SellID INT IDENTITY(1,1) PRIMARY KEY,
+    PackageID INT,
+	EmployeeID INT,
+    [Date] DATE NOT NULL,
+    Quantity INT NOT NULL,
+    Price BIGINT NOT NULL,
+	FOREIGN KEY (PackageID) REFERENCES InventoryProducts(PackageID),
+	FOREIGN KEY (EmployeeID) REFERENCES Employees(AID)
+);
+
+-- CREATE InventoryHistories TABLE
+
+CREATE TABLE InventoryHistories (
+    HistoryID INT IDENTITY(1,1) PRIMARY KEY,
+    PackageID INT,
+	EmployeeID INT NOT NULL,
+    TransactionAt DATE NOT NULL,
+	[Status] VARCHAR(255) NOT NULL,
+    Quantity INT NOT NULL,
+	FOREIGN KEY (PackageID) REFERENCES InventoryProducts(PackageID),
+	FOREIGN KEY (EmployeeID) REFERENCES Employees(AID)
+
+);
+
+--CREATE ShopProducts TABLE
+
+CREATE TABLE ShopProducts (
+	SKU INT,
+	PackageID INT,
+	Price BIGINT NOT NULL,
+	Quantity INT NOT NULL
+	Primary key (SKU, PackageID),
+	FOREIGN KEY (PackageID) REFERENCES InventoryProducts(PackageID),
+	FOREIGN KEY (SKU) REFERENCES Products(SKU)
+
+)
 
 -- CREATE AttributeDetails TABLE
 

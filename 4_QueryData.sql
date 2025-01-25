@@ -20,7 +20,7 @@ FROM Carts;
 
 -- Query Accounts
 SELECT * 
-FROM Accounts;
+FROM Customers;
 
 -- Query Products
 SELECT p.FullName, p.Model, p.[Status], [at].AttributeName, a.AttributeInfor 
@@ -30,11 +30,6 @@ LEFT JOIN Attributes [at] ON a.AttributeID = [at].AID
 
 
 
-SELECT * 
-FROM Laptops;
-
-SELECT * 
-FROM Phones;
 
 SELECT * 
 FROM Suppliers;
