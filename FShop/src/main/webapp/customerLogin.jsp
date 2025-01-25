@@ -1,5 +1,5 @@
 <%-- 
-    Document   : register
+    Document   : CustomerLogin
     Created on : Dec 11, 2024, 8:31:26 PM
     Author     : TuongMPCE180644
 --%>
@@ -140,6 +140,36 @@
                 }
             }
 
+            /* Popup styles */
+            .popup {
+                display: none;
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background-color: rgba(0, 0, 0, 0.5);
+                justify-content: center;
+                align-items: center;
+            }
+            .popup-content {
+                background-color: white;
+                padding: 30px;
+                border-radius: 8px;
+                text-align: center;
+                width: 300px;
+            }
+            .popup button {
+                background-color: #007bff;
+                color: white;
+                padding: 10px 20px;
+                border: none;
+                border-radius: 5px;
+                cursor: pointer;
+            }
+            .popup button:hover {
+                background-color: #0056b3;
+            }
         </style>
     </head>
     <body>
@@ -152,7 +182,7 @@
                     <div class="form-box">
                         <h2>Registered Customers</h2>
                         <p>If you have an account, sign in with your email address.</p>
-                        <form>
+                        <form action="customerLogin" method="post">
                             <label for="email">Email</label>
                             <input type="email" id="email" name="email" placeholder="Your Email" required>
 
@@ -193,6 +223,35 @@
                     <p>Up to 70% off new products, you can be sure of the best price.</p>
                 </div>
             </div>
+
+            <!-- Popup -->
+            <div class="popup" id="loginFailPopup">
+                <div class="popup-content">
+                    <h3>Login Failed</h3>
+                    <p>Invalid email or password. Please try again.</p>
+                    <button onclick="closePopup()">Close</button>
+                </div>
+            </div>
+
+            <script>
+                function showPopup() {
+                    document.getElementById("loginFailPopup").style.display = "flex";
+                }
+
+                function closePopup() {
+                    document.getElementById("loginFailPopup").style.display = "none";
+                }
+
+                // Show popup if login fails (you can trigger this with backend error)
+                // For example, if you're using a session attribute or response error:
+                <% 
+                    String message = (String) session.getAttribute("message");
+                    if (message != null && message.equals("Login Failed")) {
+                        out.print("showPopup();");
+                        session.removeAttribute("message"); // Xóa thông báo sau khi hiển thị
+                    }
+                %>
+            </script>
 
         <jsp:include page="footer.jsp"></jsp:include>
     </body>
