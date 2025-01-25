@@ -41,14 +41,10 @@ VALUES
 (2, 'Screen Size');
 
 
-INSERT INTO Products (BrandID, CategoryID, SupplierID, Model, FullName, [Status], Quantity, Stock)
-VALUES (1, 1, 1, 'Macbook Pro 14', 'Apple Macbook Pro 14 inch M1 Pro chip', 'New', 10, 10);
-
-INSERT INTO Products (BrandID, CategoryID, SupplierID, Model, FullName, [Status], Quantity, Stock)
-VALUES (2, 2, 2, 'Galaxy S23 Ultra', 'Samsung Galaxy S23 Ultra 5G 256GB', 'New', 15, 15);
-
-INSERT INTO Products (BrandID, CategoryID, SupplierID, Model, FullName, [Status], Quantity, Stock)
-VALUES (3, 1, 3, 'Sony Vaio Z900', 'Sony Vaio Z900 Core i7 16GB RAM', 'Used', 5, 3);
+INSERT INTO Products (BrandID, CategoryID, Model, FullName, [Status])
+VALUES (1, 1, 'Macbook Pro 14', 'Apple Macbook Pro 14 inch M1 Pro chip', 'New'),
+(2, 2, 'Galaxy S23 Ultra', 'Samsung Galaxy S23 Ultra 5G 256GB', 'New'),
+(3, 1, 'Sony Vaio Z900', 'Sony Vaio Z900 Core i7 16GB RAM', 'Used')
 
 INSERT INTO AttributeDetails (AttributeInfor, AttributeID, PSKU)
 VALUES
@@ -78,18 +74,20 @@ VALUES
 -- Insert account
 INSERT INTO Customers (FullName, Birthday, [Password], PhoneNumber, Email, Gender, CreateAt, [Status], Avatar, LoyalPoint)
 VALUES
-('Nguyen Van A', '1995-05-15', 'hashed_password_123', '0901234567', 'nguyenvana@example.com', 'Male', GETDATE(), 'Active', 'avatar_link.jpg', 1000);
+('Nguyen Van A', '1995-05-15', '055c03b195d4c31b8918cabf04bbd255', '0901234567', 'nguyenvana@example.com', 'Male', GETDATE(), 'Active', 'avatar_link.jpg', 1000);
 
 -- Insert into Carts
 INSERT INTO Carts (AID, SKU, Quantity)
 VALUES 
-    (1, 1, 1),
-    (1, 2, 1),
-    (1, 3, 1);
+    (1, 1, 1);
 
 -- Insert into Orders
 
 
 -- Turn off IDentity insert for Products
 
+-- Insert into InventoryProducts
+INSERT INTO InventoryProducts VALUES (1, 1, 25000000, 20)
 
+-- Insert into ShopProducts
+INSERT INTO ShopProducts VALUES (1, 1, 30000000, 20)

@@ -15,8 +15,11 @@ SELECT *
 FROM OrderDetails;
 
 -- Query Carts
-SELECT * 
-FROM Carts;
+SELECT c.SKU, c.Quantity, p.[Image], p.FullName, sp.Price, p.CategoryID  
+FROM Carts c 
+LEFT JOIN Products p ON c.SKU = p.SKU
+LEFT JOIN ShopProducts sp ON p.SKU = sp.SKU
+WHERE c.AID = 1
 
 -- Query Accounts
 SELECT * 

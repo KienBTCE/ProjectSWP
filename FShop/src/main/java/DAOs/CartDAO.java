@@ -23,52 +23,18 @@ public class CartDAO extends DBContext {
         super();
     }
 
-    public List<Cart> getCartOfAccountID(String accountID) {
+    public List<Cart> getCartOfAccountID(int accountID) {
         List<Cart> list = new ArrayList<>();
-        List<Product> p = new ArrayList<>();
         try {
-            PreparedStatement pre = connector.prepareStatement("SELECT * FROM Carts c \n"
-                    + "LEFT JOIN Products p\n"
-                    + "ON c.pd_SKU = p.pd_SKU "
-                    + "WHERE c.a_ID LIKE '" + accountID + "'");
+            PreparedStatement pre = connector.prepareStatement("SELECT c.SKU, c.Quantity, p.[Image], p.FullName, sp.Price, p.CategoryID  \n"
+                    + "FROM Carts c \n"
+                    + "LEFT JOIN Products p ON c.SKU = p.SKU\n"
+                    + "LEFT JOIN ShopProducts sp ON p.SKU = sp.SKU\n"
+                    + "WHERE c.AID = ?");
+            pre.setInt(1, accountID);
             ResultSet rs = pre.executeQuery();
             while (rs.next()) {
-                p.add(new Product(
-                        rs.getString("pd_ID"),
-                        rs.getString("brand"),
-                        rs.getInt("pd_SKU"),
-                        rs.getString("fullName"),
-                        rs.getString("status"),
-                        rs.getString("note"),
-                        rs.getInt("quantity"),
-                        rs.getString("productType"),
-                        rs.getInt("price")));
-            }
-            for (Product pr : p) {
-                if (pr.getProductType().equalsIgnoreCase("laptop")) {
-                    pre = connector.prepareStatement("SELECT c.pd_SKU, c.quantity, l.[image], p.fullName, p.price, p.productType FROM Carts c\n"
-                            + "                            LEFT JOIN Products p\n"
-                            + "                           ON c.pd_SKU = p.pd_SKU \n"
-                            + "                            LEFT JOIN Laptops l\n"
-                            + "                            ON p.pd_SKU = l.pd_SKU\n"
-                            + "                            WHERE c.pd_SKU = ? AND c.a_ID LIKE '" + accountID + "'");
-                    pre.setInt(1, pr.getSKU());
-                    rs = pre.executeQuery();
-                    if (rs.next()) {
-                        list.add(new Cart(rs.getInt(1), rs.getInt(2), rs.getString(3), rs.getString(4), rs.getInt(5), rs.getString(6)));
-                    }
-                } else if (pr.getProductType().equalsIgnoreCase("smartphone")) {
-                    pre = connector.prepareStatement("SELECT c.pd_SKU, c.quantity, ph.[image], p.fullName, p.price, p.productType FROM Carts c \n"
-                            + "LEFT JOIN Products p\n"
-                            + "ON c.pd_SKU = p.pd_SKU \n"
-                            + "LEFT JOIN Phones ph\n"
-                            + "ON p.pd_SKU = ph.pd_SKU WHERE c.pd_SKU = ? AND c.a_ID LIKE '" + accountID + "'");
-                    pre.setInt(1, pr.getSKU());
-                    rs = pre.executeQuery();
-                    if (rs.next()) {
-                        list.add(new Cart(rs.getInt(1), rs.getInt(2), rs.getString(3), rs.getString(4), rs.getInt(5), rs.getString(6)));
-                    }
-                }
+                list.add(new Cart(rs.getInt(1), rs.getInt(2), rs.getString(3), rs.getString(4), rs.getInt(5), rs.getInt(6)));
             }
         } catch (SQLException e) {
             System.out.println(e + "");
@@ -76,12 +42,13 @@ public class CartDAO extends DBContext {
         return list;
     }
 
-    public void updateProductQuantity(int productSKU, int quantity, String id) {
-        String sql = "UPDATE Carts SET quantity = ? WHERE pd_SKU = ? AND a_ID LIKE '" + id + "'";
+    public void updateProductQuantity(int productSKU, int quantity, int id) {
+        String sql = "UPDATE Carts SET Quantity = ? WHERE SKU = ? AND AID = ?";
         try {
             PreparedStatement preparedStatement = connector.prepareStatement(sql);
             preparedStatement.setInt(1, quantity);
             preparedStatement.setInt(2, productSKU);
+            preparedStatement.setInt(3, id);
             preparedStatement.executeUpdate();
             System.out.println("Update Ok");
         } catch (SQLException e) {
@@ -89,10 +56,11 @@ public class CartDAO extends DBContext {
         }
     }
 
-    public void deleteProductOnCart(int productSKU, String id) {
+    public void deleteProductOnCart(int productSKU, int id) {
         try {
-            PreparedStatement preparedStatement = connector.prepareStatement("Delete from Carts where pd_SKU = ? and a_ID LIKE'" + id + "'");
+            PreparedStatement preparedStatement = connector.prepareStatement("Delete from Carts where SKU = ? and AID = ?");
             preparedStatement.setInt(1, productSKU);
+            preparedStatement.setInt(2, id);
             preparedStatement.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
@@ -101,10 +69,10 @@ public class CartDAO extends DBContext {
 
     public static void main(String[] args) {
         CartDAO c = new CartDAO();
-        List<Cart> ca = c.getCartOfAccountID("user1");
+        List<Cart> ca = c.getCartOfAccountID(1);
         for (Cart cart : ca) {
-            System.out.println(cart.getProductName() + " " + cart.getProductType());
+            System.out.println(cart.getFullName() + " " + cart.getImage());
         }
-        c.updateProductQuantity(5, 10, "user1");
+
     }
 }

@@ -5,9 +5,7 @@
 package Controllers;
 
 import DAOs.CartDAO;
-import DAOs.OrderDAO;
-import Models.Cart;
-import Models.Order;
+import Models.Customer;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -16,14 +14,13 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
-import java.util.List;
 
 /**
  *
  * @author nhutb
  */
-@WebServlet(name = "Order", urlPatterns = {"/order"})
-public class OrderServlet extends HttpServlet {
+@WebServlet(name = "DeleteProductOnCart", urlPatterns = {"/deletePOC"})
+public class DeleteProductOnCart extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -42,10 +39,10 @@ public class OrderServlet extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet Order</title>");
+            out.println("<title>Servlet DeleteProductOnCart</title>");
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet Order at " + request.getContextPath() + "</h1>");
+            out.println("<h1>Servlet DeleteProductOnCart at " + request.getContextPath() + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }
@@ -63,7 +60,12 @@ public class OrderServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        HttpSession session = request.getSession();
+        Customer cus = (Customer) session.getAttribute("customer");
+        int id = Integer.parseInt(request.getParameter("id"));
+        CartDAO c = new CartDAO();
+        c.deleteProductOnCart(id, cus.getId());
+        response.sendRedirect("cart");
     }
 
     /**
@@ -77,21 +79,7 @@ public class OrderServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        HttpSession session = request.getSession();
-        long totalAmount = Long.parseLong(request.getParameter("totalAmount"));
-        Order o = (Order) session.getAttribute("order");
-        OrderDAO od = new OrderDAO();
-        CartDAO ca = new CartDAO();
-        o.setAccountID("user1");
-        o.setTotalAmount(totalAmount);
-        od.createNewOrderWihoutDiscount(o);
-        List<Cart> cartSelected = (List<Cart>) session.getAttribute("cartSelected");
-//        for (Cart c : cartSelected) {
-//            od.addOrderDetail(od.getNewestOrderID(), c.getProductSKU(), c.getQuantity(), c.getPrice());
-//            od.subtractQuantityAfterBuy(c.getProductSKU(), c.getQuantity());
-//            ca.deleteProductOnCart(c.getProductSKU(), "user1");
-//        }
-        request.getRequestDispatcher("HomeServlet").forward(request, response);
+        processRequest(request, response);
     }
 
     /**

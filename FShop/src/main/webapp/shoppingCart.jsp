@@ -5,6 +5,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <fmt:setLocale value="vi_VN" />
 <%@page import="DAOs.CartDAO" %>
+<%@page import="Models.Cart"%>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -45,12 +46,12 @@
                                         <c:if test="${p.getQuantity() == 0}">
                                             <tr>
                                                 <td>
-                                                    <input disabled type="checkbox" name="cartSelected" value="${p.getProductSKU()}">
+                                                    <input disabled type="checkbox" name="cartSelected" value="${p.getSKU()}">
                                                 </td>
                                                 <td class="td"><img
-                                                        src="./assets/imgs/${p.getProductType()}/${p.getProductImg()}"
+                                                        src="./assets/imgs/${p.getCategory()}/${p.getImage()}"
                                                         alt="" width="105px"></td>
-                                                <td class="th">${p.getProductName()}</td>
+                                                <td class="th">${p.getFullName()}</td>
                                                 <td class="th">
                                                     <h6>
                                                         <fmt:formatNumber value="${p.getPrice()}" type="currency" />
@@ -70,7 +71,7 @@
                                                     </h6>
                                                 </td>
                                                 <td class="th">
-                                                    <a href="updateCart?id=${p.getProductSKU()}"><img src="./assets/imgs/ShoppingCartImg/x.jpg" alt=""
+                                                    <a href="updateCart?id=${p.getSKU()}"><img src="./assets/imgs/ShoppingCartImg/x.jpg" alt=""
                                                                                                       width="25px" ></a>
                                                     <a href=""><img src="./assets/imgs/ShoppingCartImg/pen.jpg" alt="" width="25px"
                                                                     style="margin-top: 5px;"></a>
@@ -79,13 +80,13 @@
                                         </c:if>
                                         <c:if test="${p.getQuantity() > 0}">
                                             <tr>
-                                                <td>
-                                                    <input type="checkbox" name="cartSelected" value="${p.getProductSKU()}">
+                                                 <td>
+                                                    <input type="checkbox" name="cartSelected" value="${p.getSKU()}">
                                                 </td>
                                                 <td class="td"><img
-                                                        src="./assets/imgs/${p.getProductType()}/${p.getProductImg()}"
+                                                        src="./assets/imgs/${p.getCategory()}/${p.getImage()}"
                                                         alt="" width="105px"></td>
-                                                <td class="th">${p.getProductName()}</td>
+                                                <td class="th">${p.getFullName()}</td>
                                                 <td class="th">
                                                     <h6>
                                                         <fmt:formatNumber value="${p.getPrice()}" type="currency" />
@@ -98,8 +99,8 @@
                                                         min="1" 
                                                         value="${p.getQuantity()}" 
                                                         name="quantity" 
-                                                        id="quantity-${p.getProductSKU()}" 
-                                                        onchange="updateQuantity(${p.getProductSKU()}, this.value)">
+                                                        id="quantity-${p.getSKU()}" 
+                                                        onchange="updateQuantity(${p.getSKU()}, this.value)">
                                                 </td>
                                                 <td class="th">
                                                     <h6>
@@ -107,7 +108,7 @@
                                                     </h6>
                                                 </td>
                                                 <td class="th">
-                                                    <a href="updateCart?id=${p.getProductSKU()}"><img src="./assets/imgs/ShoppingCartImg/x.jpg" alt=""
+                                                    <a href="deletePOC?id=${p.getSKU()}"><img src="./assets/imgs/ShoppingCartImg/x.jpg" alt=""
                                                                                                       width="25px" ></a>
                                                     <a href=""><img src="./assets/imgs/ShoppingCartImg/pen.jpg" alt="" width="25px"
                                                                     style="margin-top: 5px;"></a>

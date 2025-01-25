@@ -70,16 +70,16 @@ public class CheckoutServlet extends HttpServlet {
         List<Cart> cartSelected = new ArrayList<>();
         int count = 0;
         long totalAmount = 0;
-        for (int i = 0; i < cart.size(); i++) {
-            for (int j = 0; j < selectedProductIds.length; j++) {
-                if (cart.get(i).getProductSKU() == Integer.parseInt(selectedProductIds[j])) {
-                    cartSelected.add(cart.get(i));
-                    totalAmount += cart.get(i).getPrice() * cart.get(i).getQuantity();
-                    count++;
-                }
-            }
-            
-        }
+//        for (int i = 0; i < cart.size(); i++) {
+//            for (int j = 0; j < selectedProductIds.length; j++) {
+//                if (cart.get(i).getProductSKU() == Integer.parseInt(selectedProductIds[j])) {
+//                    cartSelected.add(cart.get(i));
+//                    totalAmount += cart.get(i).getPrice() * cart.get(i).getQuantity();
+//                    count++;
+//                }
+//            }
+//            
+//        }
         session.setAttribute("cartSelected", cartSelected);
         session.setAttribute("totalAmount", totalAmount);
         request.getRequestDispatcher("checkout.jsp").forward(request, response);

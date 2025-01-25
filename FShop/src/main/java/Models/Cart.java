@@ -10,31 +10,31 @@ package Models;
  */
 public class Cart {
 
-    private int productSKU;
+    private int SKU;
     private int quantity;
-    private String productImg;
-    private String productName;
+    private String image;
+    private String fullName;
     private int price;
-    private String productType;
+    private int category;
 
     public Cart() {
     }
 
-    public Cart(int productSKU, int quantity, String productImg, String productName, int price, String productType) {
-        this.productSKU = productSKU;
+    public Cart(int SKU, int quantity, String image, String fullName, int price, int category) {
+        this.SKU = SKU;
         this.quantity = quantity;
-        this.productImg = productImg;
-        this.productName = productName;
+        this.image = image;
+        this.fullName = fullName;
         this.price = price;
-        this.productType = productType;
+        this.category = category;
     }
 
-    public int getProductSKU() {
-        return productSKU;
+    public int getSKU() {
+        return SKU;
     }
 
-    public void setProductSKU(int productSKU) {
-        this.productSKU = productSKU;
+    public void setSKU(int SKU) {
+        this.SKU = SKU;
     }
 
     public int getQuantity() {
@@ -45,20 +45,20 @@ public class Cart {
         this.quantity = quantity;
     }
 
-    public String getProductImg() {
-        return productImg;
+    public String getImage() {
+        return image;
     }
 
-    public void setProductImg(String productImg) {
-        this.productImg = productImg;
+    public void setImage(String image) {
+        this.image = image;
     }
 
-    public String getProductName() {
-        return productName;
+    public String getFullName() {
+        return fullName;
     }
 
-    public void setProductName(String productName) {
-        this.productName = productName;
+    public void setFullName(String fullName) {
+        this.fullName = fullName;
     }
 
     public int getPrice() {
@@ -69,13 +69,12 @@ public class Cart {
         this.price = price;
     }
 
-    public String getProductType() {
-        return productType;
+    public int getCategory() {
+        return category;
     }
 
-    public void setProductType(String productType) {
-        this.productType = productType;
+    public void setCategory(int category) {
+        this.category = category;
     }
 
-    
 }

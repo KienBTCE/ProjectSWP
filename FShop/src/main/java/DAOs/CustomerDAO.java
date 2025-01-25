@@ -74,5 +74,8 @@ public class CustomerDAO extends DBContext {
         return null; // Không tìm thấy khách hàng
     }
 
-    
+    public static void main(String[] args) {
+        CustomerDAO c = new CustomerDAO();
+        System.out.println(c.getMD5("hashed_password_123"));
+    }
 }

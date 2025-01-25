@@ -1,10 +1,11 @@
-/*
+   /*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
  */
 package Controllers;
 
 import DAOs.CartDAO;
+import Models.Customer;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -12,6 +13,7 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 import java.io.BufferedReader;
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -65,10 +67,7 @@ public class UpdateCartServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        int id = Integer.parseInt(request.getParameter("id"));
-        CartDAO c = new CartDAO();
-        c.deleteProductOnCart(id, "user1");
-        response.sendRedirect("cart");
+       
     }
 
     /**
@@ -82,6 +81,8 @@ public class UpdateCartServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        HttpSession session = request.getSession();
+        Customer cus = (Customer)session.getAttribute("customer");
         CartDAO c = new CartDAO();
         // Đọc dữ liệu JSON từ yêu cầu
         BufferedReader reader = request.getReader();
@@ -103,7 +104,7 @@ public class UpdateCartServlet extends HttpServlet {
         System.out.println("Received productId: " + productId);
         System.out.println("Received quantity: " + quantity);
 
-        c.updateProductQuantity(productId, quantity, "user1");
+        c.updateProductQuantity(productId, quantity, cus.getId());
         request.getRequestDispatcher("shoppingCart.jsp").forward(request, response);
     }
 

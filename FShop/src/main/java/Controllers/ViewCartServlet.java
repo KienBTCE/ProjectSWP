@@ -7,6 +7,7 @@ package Controllers;
 import DAOs.CartDAO;
 import DAOs.ProductDAO;
 import Models.Cart;
+import Models.Customer;
 import Models.Product;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -79,17 +80,21 @@ public class ViewCartServlet extends HttpServlet {
             throws ServletException, IOException {
         ProductDAO p = new ProductDAO();
         HttpSession session = request.getSession();
-        String accountID = "user1";
+        Customer cus = (Customer)session.getAttribute("customer");
         CartDAO c = new CartDAO();
-        List<Cart> cartList = c.getCartOfAccountID(accountID);
-        List<Product> pList = p.GetAllProducts();
-        for (Product product : pList) {
-            for (Cart cart : cartList) {
-                if (product.getQuantity() == 0 && product.getSKU() == cart.getProductSKU()) {
-                    cart.setQuantity(product.getQuantity());
-                }
-            }
+        List<Cart> cartList = c.getCartOfAccountID(cus.getId());
+        System.out.println(cus.getId());
+        for (Cart cart : cartList) {
+            System.out.println(cart.getFullName());
         }
+        //List<Product> pList = p.GetAllProducts();
+//        for (Product product : pList) {
+//            for (Cart cart : cartList) {
+//                if (product.getQuantity() == 0 && product.getSKU() == cart.getProductSKU()) {
+//                    cart.setQuantity(product.getQuantity());
+//                }
+//            }
+//        }
 
         session.setAttribute(
                 "cartList", cartList);
