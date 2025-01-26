@@ -30,7 +30,7 @@ VALUES
 ('SmartTech Supplies', '101 Future Drive, District 7, Ho Chi Minh City', '0934567890', 'sales@smarttech.vn'),
 ('NextGen Electronics', '202 Silicon Valley, District 2, Ho Chi Minh City', '0945678901', 'hello@nextgen.vn');
 
-INSERT INTO Attributes (CID, AttributeName)
+INSERT INTO Attributes (CategoryID, AttributeName)
 VALUES
 (1, 'Processor'), -- Thuộc tính cho Laptop
 (1, 'RAM'),
@@ -46,7 +46,7 @@ VALUES (1, 1, 'Macbook Pro 14', 'Apple Macbook Pro 14 inch M1 Pro chip', 'New'),
 (2, 2, 'Galaxy S23 Ultra', 'Samsung Galaxy S23 Ultra 5G 256GB', 'New'),
 (3, 1, 'Sony Vaio Z900', 'Sony Vaio Z900 Core i7 16GB RAM', 'Used')
 
-INSERT INTO AttributeDetails (AttributeInfor, AttributeID, PSKU)
+INSERT INTO AttributeDetails (AttributeInfor, AttributeID, SKU)
 VALUES
 -- Thuộc tính cho iPhone 14 Pro
 ('A16 Bionic', 4, 1),
@@ -77,7 +77,7 @@ VALUES
 ('Nguyen Van A', '1995-05-15', '055c03b195d4c31b8918cabf04bbd255', '0901234567', 'nguyenvana@example.com', 'Male', GETDATE(), 'Active', 'avatar_link.jpg', 1000);
 
 -- Insert into Carts
-INSERT INTO Carts (AID, SKU, Quantity)
+INSERT INTO Carts (CustomerID, SKU, Quantity)
 VALUES 
     (1, 1, 1);
 
@@ -90,4 +90,4 @@ VALUES
 INSERT INTO InventoryProducts VALUES (1, 1, 25000000, 20)
 
 -- Insert into ShopProducts
-INSERT INTO ShopProducts VALUES (1, 1, 30000000, 20)
+INSERT INTO ShopProducts(PackageID, SKU, Price, Quantity) VALUES (1, 1, 30000000, 20)
