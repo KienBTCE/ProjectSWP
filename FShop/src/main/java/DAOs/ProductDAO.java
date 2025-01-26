@@ -26,7 +26,7 @@ public class ProductDAO extends DBContext {
         String query = "SELECT * FROM Products";
 
         try ( PreparedStatement ps = connector.prepareStatement(query)) {
-            try ( ResultSet rs = ps.executeQuery()) {
+            try ( ResultSet rs = ps.executeQuery()) { // nen doi rs sang resuleSet cho dong bo voi sequence diagram
                 while (rs.next()) {
                     list.add(new Product(
                             rs.getString("model"),

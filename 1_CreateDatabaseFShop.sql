@@ -60,17 +60,17 @@ CREATE TABLE Employees (
 -- CREATE Categories TABLE
 
 CREATE TABLE Categories (
-    CID INT IDENTITY(1,1) PRIMARY KEY,
+    CategoryID INT IDENTITY(1,1) PRIMARY KEY,
     TypeName NVARCHAR(100) NOT NULL
 );
 
 -- CREATE Attributes TABLE
 
 CREATE TABLE Attributes (
-    AID INT IDENTITY(1,1) PRIMARY KEY,
-    CID INT NOT NULL,
+    AttributeID INT IDENTITY(1,1) PRIMARY KEY,
+    CategoryID INT NOT NULL,
     AttributeName VARCHAR(100) NOT NULL,
-    FOREIGN KEY (CID) REFERENCES Categories(CID)
+    FOREIGN KEY (CategoryID) REFERENCES Categories(CategoryID)
 );
 
 -- CREATE Brands TABLE
@@ -84,8 +84,8 @@ CREATE TABLE Brands (
 
 CREATE TABLE Suppliers (
     SupplierID INT IDENTITY(1,1) PRIMARY KEY,
-    [Name] NVARCHAR(255),
-    [Address] NTEXT,
+    [Name] NVARCHAR(255) NOT NULL,
+    [Address] NTEXT NOT NULL,
     PhoneNumber VARCHAR(30),
     Email TEXT
 );
@@ -101,81 +101,80 @@ CREATE TABLE Products (
     CategoryID INT,
     Model VARCHAR(50),
     FullName NVARCHAR(255) NOT NULL,
+	[Description] TEXT,
     [Status] NVARCHAR(20) NOT NULL,
 	[Image] TEXT,
     FOREIGN KEY (BrandID) REFERENCES Brands(BrandID),
-	FOREIGN KEY (CategoryID) REFERENCES Categories(CID),
+	FOREIGN KEY (CategoryID) REFERENCES Categories(CategoryID)
+);
+
+-- CREATE InventoryStatus TABLE
+
+CREATE TABLE InventoryStatus (
+    StatusID INT IDENTITY (1,1) PRIMARY KEY,
+	[Description] NVARCHAR(20) NOT NULL
 );
 
 --CREATE InventoryProducts TABLE 
 
 CREATE TABLE InventoryProducts (
-	PackageID INT IDENTITY (1,1) Primary key,
+	PackageID INT IDENTITY (1,1),
 	SKU INT,
+	PRIMARY KEY (PackageID, SKU),
 	SupplierID INT NOT NULL,
 	ProductCost BIGINT NOT NULL,
-	Stock INT NOT NULL
+	Stock INT NOT NULL,
 	FOREIGN KEY (SKU) REFERENCES Products(SKU),
 	FOREIGN KEY (SupplierID) REFERENCES Suppliers(SupplierID)
 )
-
--- CREATE SellingHistories TABLE
-
-CREATE TABLE ShopHistories (
-    SellID INT IDENTITY(1,1) PRIMARY KEY,
-    PackageID INT,
-	EmployeeID INT,
-    [Date] DATE NOT NULL,
-    Quantity INT NOT NULL,
-    Price BIGINT NOT NULL,
-	FOREIGN KEY (PackageID) REFERENCES InventoryProducts(PackageID),
-	FOREIGN KEY (EmployeeID) REFERENCES Employees(AID)
-);
 
 -- CREATE InventoryHistories TABLE
 
 CREATE TABLE InventoryHistories (
     HistoryID INT IDENTITY(1,1) PRIMARY KEY,
     PackageID INT,
+	SKU INT,
 	EmployeeID INT NOT NULL,
-    TransactionAt DATE NOT NULL,
-	[Status] VARCHAR(255) NOT NULL,
+    TransactionAt DATETIME NOT NULL,
+	StatusID INT,
+	Price BIGINT,
     Quantity INT NOT NULL,
-	FOREIGN KEY (PackageID) REFERENCES InventoryProducts(PackageID),
-	FOREIGN KEY (EmployeeID) REFERENCES Employees(AID)
-
+	Note TEXT,
+	FOREIGN KEY (PackageID, SKU) REFERENCES InventoryProducts(PackageID, SKU),
+	FOREIGN KEY (EmployeeID) REFERENCES Employees(AID),
+	FOREIGN KEY (StatusID) REFERENCES InventoryStatus(StatusID)
 );
 
 --CREATE ShopProducts TABLE
 
 CREATE TABLE ShopProducts (
-	SKU INT,
 	PackageID INT,
-	Price BIGINT NOT NULL,
-	Quantity INT NOT NULL
+	SKU INT UNIQUE,
 	Primary key (SKU, PackageID),
-	FOREIGN KEY (PackageID) REFERENCES InventoryProducts(PackageID),
+	Price BIGINT NOT NULL,
+	Quantity INT NOT NULL,
+	Note TEXT,
+	FOREIGN KEY (PackageID, SKU) REFERENCES InventoryProducts(PackageID, SKU),
 	FOREIGN KEY (SKU) REFERENCES Products(SKU)
-
 )
 
 -- CREATE AttributeDetails TABLE
 
 CREATE TABLE AttributeDetails (
-    AttributeInfor VARCHAR(100),
     AttributeID INT,
-    PSKU INT,
+    AttributeInfor VARCHAR(100) NOT NULL,
+    SKU INT,
     FOREIGN KEY (AttributeID) REFERENCES Attributes(AID),
-    FOREIGN KEY (PSKU) REFERENCES Products(SKU)
+    FOREIGN KEY (SKU) REFERENCES Products(SKU)
 );
 
 -- CREATE Customers TABLE
 
 CREATE TABLE Customers (
-    AID INT IDENTITY(1,1) PRIMARY KEY,
-    FullName VARCHAR(255),
+    CustomerID INT IDENTITY(1,1) PRIMARY KEY,
+    FullName VARCHAR(255) NOT NULL,
     Birthday DATE,
-    [Password] VARCHAR(500),
+    [Password] VARCHAR(500) NOT NULL,
     PhoneNumber VARCHAR(15) UNIQUE,
     Email VARCHAR(254) NOT NULL,
     Gender CHAR(6) CHECK (gender IN ('Male', 'Female', 'Other')),
