@@ -32,7 +32,9 @@ LEFT JOIN AttributeDetails a ON p.SKU = a.PSKU
 LEFT JOIN Attributes [at] ON a.AttributeID = [at].AID
 
 
+SELECT * FROM InventoryProducts
 
+SELECT * FROM ShopProducts
 
 SELECT * 
 FROM Suppliers;

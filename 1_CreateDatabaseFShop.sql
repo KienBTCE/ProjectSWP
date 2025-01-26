@@ -64,15 +64,6 @@ CREATE TABLE Categories (
     TypeName NVARCHAR(100) NOT NULL
 );
 
--- CREATE Attributes TABLE
-
-CREATE TABLE Attributes (
-    AttributeID INT IDENTITY(1,1) PRIMARY KEY,
-    CategoryID INT NOT NULL,
-    AttributeName VARCHAR(100) NOT NULL,
-    FOREIGN KEY (CategoryID) REFERENCES Categories(CategoryID)
-);
-
 -- CREATE Brands TABLE
 
 CREATE TABLE Brands (
@@ -89,9 +80,6 @@ CREATE TABLE Suppliers (
     PhoneNumber VARCHAR(30),
     Email TEXT
 );
-
-
-
 
 -- CREATE Products TABLE
 
@@ -158,13 +146,22 @@ CREATE TABLE ShopProducts (
 	FOREIGN KEY (SKU) REFERENCES Products(SKU)
 )
 
+-- CREATE Attributes TABLE
+
+CREATE TABLE Attributes (
+    AttributeID INT IDENTITY(1,1) PRIMARY KEY,
+    CategoryID INT NOT NULL,
+    AttributeName VARCHAR(100) NOT NULL,
+    FOREIGN KEY (CategoryID) REFERENCES Categories(CategoryID)
+);
+
 -- CREATE AttributeDetails TABLE
 
 CREATE TABLE AttributeDetails (
     AttributeID INT,
     AttributeInfor VARCHAR(100) NOT NULL,
     SKU INT,
-    FOREIGN KEY (AttributeID) REFERENCES Attributes(AID),
+    FOREIGN KEY (AttributeID) REFERENCES Attributes(AttributeID),
     FOREIGN KEY (SKU) REFERENCES Products(SKU)
 );
 
@@ -193,7 +190,7 @@ CREATE TABLE ProductRatings(
 	Star INT,
 	Comment NTEXT,
 	[Status] VARCHAR(20)
-	FOREIGN KEY (CustomerID) REFERENCES Customers(AID),
+	FOREIGN KEY (CustomerID) REFERENCES Customers(CustomerID),
 	FOREIGN KEY (SKU) REFERENCES Products(SKU)
 )
 
@@ -213,7 +210,7 @@ CREATE TABLE RatingReplies (
 
 CREATE TABLE Orders (
     OrderID INT IDENTITY(1,1) PRIMARY KEY,
-    AID INT,
+    CustomerID INT,
     FullName NVARCHAR(100),
     Address NTEXT,
     APhoneNumber VARCHAR(15),
@@ -222,7 +219,7 @@ CREATE TABLE Orders (
     [Status] VARCHAR(255) NOT NULL DEFAULT 'Ordered Successful',
     TotalAmount BIGINT,
     Discount DECIMAL(10,2),
-    FOREIGN KEY (AID) REFERENCES Customers(AID)
+    FOREIGN KEY (CustomerID) REFERENCES Customers(CustomerID)
 );
 
 -- CREATE OrderDetails TABLE
@@ -242,7 +239,7 @@ CREATE TABLE OrderDetails (
 CREATE TABLE PaymentHistories (
     PhID INT IDENTITY(1,1) PRIMARY KEY,
     OrderID INT,
-    PaIDAmount INT,
+    PCustomerIDAmount INT,
     RemainingAmount INT,
     [Status] NVARCHAR(20),
     PaymentDate DATE,
@@ -252,10 +249,10 @@ CREATE TABLE PaymentHistories (
 -- CREATE Carts TABLE
 
 CREATE TABLE Carts (
-    AID INT FOREIGN KEY (AID) REFERENCES Customers(AID),
+    CustomerID INT FOREIGN KEY (CustomerID) REFERENCES Customers(CustomerID),
     SKU INT FOREIGN KEY (SKU) REFERENCES Products(SKU),
     Quantity INT,
-    PRIMARY KEY (AID, SKU)
+    PRIMARY KEY (CustomerID, SKU)
 );
 
 
@@ -360,13 +357,13 @@ CREATE INDEX IDx_Wards_unit ON Wards(AdministrativeUnitID);
 
 CREATE TABLE Addresses (
     AddressID INT IDENTITY(1,1) PRIMARY KEY,
-    AID INT,
+    CustomerID INT,
     IsDefault NVARCHAR(20),
     Street NVARCHAR(20),
     Ward VARCHAR(20),
     Province VARCHAR(20),
     District VARCHAR(20),
-    FOREIGN KEY (AID) REFERENCES Customers(AID),
+    FOREIGN KEY (CustomerID) REFERENCES Customers(CustomerID),
 	FOREIGN KEY (Province) REFERENCES Provinces (Code),
 	FOREIGN KEY (District) REFERENCES Districts (Code),
 	FOREIGN KEY (Ward) REFERENCES Wards (Code)
