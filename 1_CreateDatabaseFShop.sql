@@ -50,7 +50,7 @@ CREATE TABLE Employees (
     PhoneNumber VARCHAR(15) UNIQUE,
     Email VARCHAR(254),
     Gender CHAR(6) CHECK (gender IN ('Male', 'Female', 'Other')),
-    CreateAt DATETIME DEFAULT GETDATE(),
+    CreatedAt DATETIME DEFAULT GETDATE(),
     [Status] VARCHAR(20) DEFAULT 'Active',
     Avatar TEXT,
     RoleID INT,
@@ -175,7 +175,7 @@ CREATE TABLE Customers (
     PhoneNumber VARCHAR(15) UNIQUE,
     Email VARCHAR(254) NOT NULL,
     Gender CHAR(6) CHECK (gender IN ('Male', 'Female', 'Other')),
-    CreateAt DATETIME DEFAULT GETDATE(),
+    CreatedAt DATETIME DEFAULT GETDATE(),
     [Status] VARCHAR(255),
     Avatar TEXT,
     LoyalPoint BIGINT
@@ -187,7 +187,8 @@ CREATE TABLE ProductRatings(
 	RateID INT IDENTITY(1,1) Primary key,
 	CustomerID INT,
 	SKU INT,
-	Star INT,
+        CreatedAt DATETIME DEFAULT GETDATE(),
+	Star INT NOT NULL CHECK (Star BETWEEN 1 AND 5),
 	Comment NTEXT,
 	[Status] VARCHAR(20)
 	FOREIGN KEY (CustomerID) REFERENCES Customers(CustomerID),
