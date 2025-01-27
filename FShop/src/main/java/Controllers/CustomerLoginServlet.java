@@ -85,7 +85,6 @@ public class CustomerLoginServlet extends HttpServlet {
         } else{
             session.setAttribute("message", "Login Failed");
             request.getRequestDispatcher("customerLogin.jsp").forward(request, response);
-            
         }
     }
 

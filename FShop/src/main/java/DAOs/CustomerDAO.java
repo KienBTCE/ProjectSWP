@@ -51,7 +51,7 @@ public class CustomerDAO extends DBContext {
             try ( ResultSet rs = ps.executeQuery()) {
                 if (rs.next()) {
                     return new Customer(
-                            rs.getInt("AID"),
+                            rs.getInt("CustomerID"),
                             rs.getString("FullName"),
                             null,
                             rs.getDate("Birthday"),
