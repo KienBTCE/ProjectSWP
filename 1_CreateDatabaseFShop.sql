@@ -213,7 +213,7 @@ CREATE TABLE Orders (
     CustomerID INT,
     FullName NVARCHAR(100),
     Address NTEXT,
-    APhoneNumber VARCHAR(15),
+    PhoneNumber VARCHAR(15),
     OrderDate DATETIME DEFAULT GETDATE(),
     DeliveredDate DATETIME,
     [Status] VARCHAR(255) NOT NULL DEFAULT 'Ordered Successful',
@@ -226,23 +226,23 @@ CREATE TABLE Orders (
 
 CREATE TABLE OrderDetails (
     OrderID INT,
-    PSKU INT,
+    SKU INT,
     Quantity INT,
     Price BIGINT,
-    PRIMARY KEY (OrderID, PSKU),
+    PRIMARY KEY (OrderID, SKU),
     FOREIGN KEY (OrderID) REFERENCES Orders(OrderID),
-    FOREIGN KEY (PSKU) REFERENCES Products(SKU)
+    FOREIGN KEY (SKU) REFERENCES Products(SKU)
 );
 
 -- CREATE PaymentHistories TABLE
 
 CREATE TABLE PaymentHistories (
-    PhID INT IDENTITY(1,1) PRIMARY KEY,
+    PaymentID INT IDENTITY(1,1) PRIMARY KEY,
     OrderID INT,
-    PCustomerIDAmount INT,
+    PaidAmount INT,
     RemainingAmount INT,
     [Status] NVARCHAR(20),
-    PaymentDate DATE,
+    PaymentDate DATETIME DEFAULT GETDATE(),
     FOREIGN KEY (OrderID) REFERENCES Orders(OrderID)
 );
 
@@ -373,4 +373,3 @@ CREATE TABLE Addresses (
 /*******************************************************************************
    Schema for UI/UX Testing
 ********************************************************************************/
-
