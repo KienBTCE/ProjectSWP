@@ -58,7 +58,7 @@ public class CustomerDAO extends DBContext {
                             rs.getString("Gender"),
                             rs.getString("PhoneNumber"),
                             rs.getString("Email"),
-                            rs.getDate("CreateAt"),
+                            rs.getDate("CreatedAt"),
                             rs.getString("Status"),
                             rs.getString("Avatar"),
                             rs.getDouble("LoyalPoint")

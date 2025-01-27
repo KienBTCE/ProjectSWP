@@ -1,6 +1,6 @@
 USE FShop
 -- Query District of each province
-SELECT p.FullNameEn, d.FullNameEn, w.FullNameEn FROM Provinces p
+SELECT p.FullNameEn, d.FullNameEn, w.FullNameEn, w.Code FROM Provinces p
 LEFT JOIN Districts d ON d.ProvinceCode = p.Code
 LEFT JOIN Wards w ON w.DistrictCode = d.Code
 WHERE p.Code = 94 AND d.Code = 944
@@ -19,7 +19,7 @@ SELECT c.SKU, c.Quantity, p.[Image], p.FullName, sp.Price, p.CategoryID
 FROM Carts c 
 LEFT JOIN Products p ON c.SKU = p.SKU
 LEFT JOIN ShopProducts sp ON p.SKU = sp.SKU
-WHERE c.AID = 1
+WHERE c.CustomerID = 1
 
 -- Query Accounts
 SELECT * 
@@ -35,6 +35,12 @@ LEFT JOIN Attributes [at] ON a.AttributeID = [at].AID
 SELECT * FROM InventoryProducts
 
 SELECT * FROM ShopProducts
+
+SELECT a.AddressID, a.Street, w.NameEn, d.NameEn, p.NameEn, a.IsDefault FROM Addresses a
+LEFT JOIN Provinces p ON a.Province = p.Code
+LEFT JOIN Districts d ON a.District = d.Code
+LEFT JOIN Wards w ON a.Ward = w.Code
+Where CustomerID = 1
 
 SELECT * 
 FROM Suppliers;

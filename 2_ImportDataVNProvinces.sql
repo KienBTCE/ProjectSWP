@@ -1,7 +1,4 @@
-/* === VietNamese Provinces Database Dataset for PostgreSQL/MySQL === */
-/* Created at:  Sat, 11 Jan 2025 11:11:14 +0700 */
-/* Reference: https://github.com/ThangLeQuoc/vietNamese-Provinces-database */
-/* =============================================== */
+
 USE FShop
 -- DATA for AdministrativeRegions --
 INSERT INTO AdministrativeRegions(ID,Name,NameEn,CodeName,CodeNameEn) VALUES(1,N'Đông Bắc Bộ',N'Northeast',N'dong_bac_bo',N'northest');

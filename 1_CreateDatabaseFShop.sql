@@ -260,114 +260,87 @@ CREATE TABLE Carts (
 -- CREATE AdministrativeRegions TABLE
 
 CREATE TABLE AdministrativeRegions (
-	ID INT NOT NULL,
+	ID INT PRIMARY KEY NOT NULL,
 	[Name] varchar(255) NOT NULL,
 	NameEn varchar(255) NOT NULL,
 	CodeName varchar(255) NOT NULL,
 	CodeNameEn varchar(255) NOT NULL,
-	CONSTRAINT AdministrativeRegions_pkey PRIMARY KEY (ID)
 );
 
 
 -- CREATE AdministrativeUnits TABLE
 
 CREATE TABLE AdministrativeUnits (
-	ID INT NOT NULL,
+	ID INT PRIMARY KEY NOT NULL,
 	FullName nvarchar(255) NOT NULL,
 	FullNameEn varchar(255) NOT NULL,
 	ShortName varchar(255) NOT NULL,
 	ShortNameEn varchar(255) NOT NULL,
 	CodeName varchar(255) NOT NULL,
 	CodeNameEn varchar(255) NOT NULL,
-	CONSTRAINT AdministrativeUnits_pkey PRIMARY KEY (ID)
 );
 
 
 -- CREATE Provinces TABLE
 
 CREATE TABLE Provinces (
-	Code varchar(20) NOT NULL,
+	Code varchar(20) PRIMARY KEY NOT NULL,
 	[Name] nvarchar(255) NOT NULL,
 	NameEn varchar(255)  NOT NULL,
 	FullName nvarchar(255) NOT NULL,
 	FullNameEn varchar(255) NOT NULL,
 	CodeName varchar(255) NOT NULL,
-	AdministrativeUnitID INT NOT NULL,
-	AdministrativeRegionID INT NOT NULL,
-	CONSTRAINT Provinces_pkey PRIMARY KEY (Code)
+	AdministrativeUnitID INT FOREIGN KEY REFERENCES AdministrativeUnits(ID) NOT NULL,
+	AdministrativeRegionID INT FOREIGN KEY REFERENCES AdministrativeRegions(ID) NOT NULL
 );
 
-
--- Provinces foreign keys
-
-ALTER TABLE Provinces ADD CONSTRAINT Provinces_AdministrativeRegionID_fkey FOREIGN KEY (AdministrativeRegionID) REFERENCES AdministrativeRegions(ID);
-ALTER TABLE Provinces ADD CONSTRAINT Provinces_AdministrativeUnitID_fkey FOREIGN KEY (AdministrativeUnitID) REFERENCES AdministrativeUnits(ID);
-
-CREATE INDEX IDx_Provinces_region ON Provinces(AdministrativeRegionID);
-CREATE INDEX IDx_Provinces_unit ON Provinces(AdministrativeUnitID);
 
 
 -- CREATE Districts TABLE
 
 CREATE TABLE Districts (
-	Code varchar(20) NOT NULL,
+	Code varchar(20) PRIMARY KEY NOT NULL,
 	[Name] nvarchar(255) NOT NULL,
 	NameEn varchar(255)  NOT NULL,
 	FullName nvarchar(255) NOT NULL,
 	FullNameEn varchar(255) NOT  NULL,
 	CodeName varchar(255) NOT NULL,
-	ProvinceCode varchar(20) NOT NULL,
-	AdministrativeUnitID integer NOT NULL,
-	CONSTRAINT Districts_pkey PRIMARY KEY (Code)
+	ProvinceCode varchar(20) FOREIGN KEY REFERENCES Provinces(Code) NOT NULL,
+	AdministrativeUnitID INT FOREIGN KEY REFERENCES AdministrativeUnits(ID) NOT NULL
 );
 
 
--- Districts foreign keys
-
-ALTER TABLE Districts ADD CONSTRAINT Districts_AdministrativeUnitID_fkey FOREIGN KEY (AdministrativeUnitID) REFERENCES AdministrativeUnits(ID);
-ALTER TABLE Districts ADD CONSTRAINT Districts_ProvinceCode_fkey FOREIGN KEY (ProvinceCode) REFERENCES Provinces(Code);
-
-CREATE INDEX IDx_Districts_Province ON Districts(ProvinceCode);
-CREATE INDEX IDx_Districts_unit ON Districts(AdministrativeUnitID);
 
 
 -- CREATE Wards TABLE
 
 CREATE TABLE Wards (
-	Code varchar(20) NOT NULL,
+	Code varchar(20) PRIMARY KEY NOT NULL,
 	Name nvarchar(255) NOT NULL,
 	NameEn varchar(255) NOT NULL,
 	FullName nvarchar(255)  NOT NULL,
 	FullNameEn varchar(255) NOT NULL,
 	CodeName varchar(255) NOT NULL,
-	DistrictCode varchar(20) NOT NULL,
-	AdministrativeUnitID INT NOT NULL,
-	CONSTRAINT Wards_pkey PRIMARY KEY (Code)
+	DistrictCode varchar(20) FOREIGN KEY REFERENCES Districts(Code) NOT NULL,
+	AdministrativeUnitID INT FOREIGN KEY REFERENCES AdministrativeUnits(ID) NOT NULL
+
 );
 
-
--- Wards foreign keys
-
-ALTER TABLE Wards ADD CONSTRAINT Wards_AdministrativeUnitID_fkey FOREIGN KEY (AdministrativeUnitID) REFERENCES AdministrativeUnits(ID);
-ALTER TABLE Wards ADD CONSTRAINT Wards_DistrictCode_fkey FOREIGN KEY (DistrictCode) REFERENCES Districts(Code);
-
-CREATE INDEX IDx_Wards_district ON Wards(DistrictCode);
-CREATE INDEX IDx_Wards_unit ON Wards(AdministrativeUnitID);
 
 -- CREATE Cart TABLE
 
 CREATE TABLE Addresses (
     AddressID INT IDENTITY(1,1) PRIMARY KEY,
     CustomerID INT,
-    IsDefault NVARCHAR(20),
+    IsDefault BIT,
     Street NVARCHAR(20),
     Ward VARCHAR(20),
     Province VARCHAR(20),
     District VARCHAR(20),
     FOREIGN KEY (CustomerID) REFERENCES Customers(CustomerID),
-	FOREIGN KEY (Province) REFERENCES Provinces (Code),
-	FOREIGN KEY (District) REFERENCES Districts (Code),
-	FOREIGN KEY (Ward) REFERENCES Wards (Code)
+	FOREIGN KEY (District) REFERENCES Districts(Code),
+	FOREIGN KEY (Ward) REFERENCES Wards(Code),
+	FOREIGN KEY (Province) REFERENCES Provinces(Code)
 
 );
 

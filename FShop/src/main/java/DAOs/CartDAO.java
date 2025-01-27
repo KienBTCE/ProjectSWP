@@ -30,7 +30,7 @@ public class CartDAO extends DBContext {
                     + "FROM Carts c \n"
                     + "LEFT JOIN Products p ON c.SKU = p.SKU\n"
                     + "LEFT JOIN ShopProducts sp ON p.SKU = sp.SKU\n"
-                    + "WHERE c.AID = ?");
+                    + "WHERE c.CustomerID = ?");
             pre.setInt(1, accountID);
             ResultSet rs = pre.executeQuery();
             while (rs.next()) {
@@ -43,7 +43,7 @@ public class CartDAO extends DBContext {
     }
 
     public void updateProductQuantity(int productSKU, int quantity, int id) {
-        String sql = "UPDATE Carts SET Quantity = ? WHERE SKU = ? AND AID = ?";
+        String sql = "UPDATE Carts SET Quantity = ? WHERE SKU = ? AND CustomerID = ?";
         try {
             PreparedStatement preparedStatement = connector.prepareStatement(sql);
             preparedStatement.setInt(1, quantity);
@@ -58,7 +58,7 @@ public class CartDAO extends DBContext {
 
     public void deleteProductOnCart(int productSKU, int id) {
         try {
-            PreparedStatement preparedStatement = connector.prepareStatement("Delete from Carts where SKU = ? and AID = ?");
+            PreparedStatement preparedStatement = connector.prepareStatement("Delete from Carts where SKU = ? and CustomerID = ?");
             preparedStatement.setInt(1, productSKU);
             preparedStatement.setInt(2, id);
             preparedStatement.executeUpdate();

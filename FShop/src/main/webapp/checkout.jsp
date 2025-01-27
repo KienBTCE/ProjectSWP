@@ -38,9 +38,9 @@
                                 <div>
                                     <h1>Checkout</h1>
                                 </div>
-                                <div><button type="submit"
-                                             style="background-color: white; border: #0156ff solid 1px; color: #0156ff;"><b>Sign
-                                            in</b></button></div>
+                                <!--                                <div><button type="submit"
+                                                                             style="background-color: white; border: #0156ff solid 1px; color: #0156ff;"><b>Sign
+                                                                            in</b></button></div>-->
                             </div>
                         </div>
                         <div class="col-md-4" style="text-align: right;">
@@ -61,70 +61,75 @@
                     <div class="row">
                         <div class="col-md-8">
                             <form action="checkout" method="post" class="infor">
-
                                 <div class="form-group">
                                     <div class="control-label">Fullname</div>
                                     <div class="">
-                                        <input style="width: 70%; border: black solid 1px;" name="fullname" type="text" class="form-control" value="" placeholder="" required/>
-                                    </div>
+                                        <input style="width: 70%; border: black solid 1px;" name="fullname" type="text" class="form-control" value="${sessionScope.customer.getFullName()}" placeholder="" readonly/>
                                 </div>
-                                <div class="form-group">
-                                    <div class="control-label">Phone Number *</div>
-                                    <div class="">
-                                        <input style="width: 70%; border: black solid 1px;" name="phone" type="text" class="form-control" value="" placeholder="" required/>
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <div class="control-label">Street Address *</div>
-                                    <div class="">
-                                        <input style="width: 70%; border: black solid 1px;" name="address" type="text" class="form-control" value="" placeholder="" required/>
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <div class="control-label">City</div>
-                                    <div>
-                                        <select name="city" id="city" style="width: 70%; border: black solid 1px;" class="form-select form-select-sm mb-3" required>
-                                            <option value="">Choose city</option>
-                                        </select>
-                                    </div>
-                                </div>
-                                <input type="hidden" name="cityName" id="cityName">
+                            </div>
 
-                                <div class="form-group">
-                                    <div class="control-label">District</div>
-                                    <div>
-                                        <select name="district" id="district" style="width: 70%; border: black solid 1px;" class="form-select form-select-sm mb-3" required>
-                                            <option value="">Choose district</option>
-                                        </select>
-                                    </div>
+                            <div class="form-group">
+                                <div class="control-label">Phone Number *</div>
+                                <div class="">
+                                    <input style="width: 70%; border: black solid 1px;" name="phone" type="text" class="form-control" value="${sessionScope.customer.getPhoneNumber()}" placeholder="" readonly/>
                                 </div>
-                                <input type="hidden" name="districtName" id="districtName">
-
-                                <div class="form-group">
-                                    <div class="control-label">Town</div>
-                                    <div>
-                                        <select name="town" id="ward" style="width: 70%; border: black solid 1px;" class="form-select form-select-sm" required>
-                                            <option value="">Choose town</option>
-                                        </select>
+                            </div>
+                            <div>
+                                <form> 
+                                    <div class="form-group">
+                                        <div class="control-label">Street Address *</div>
+                                        <div class="">
+                                            <input style="width: 70%; border: black solid 1px;" name="address" type="text" class="form-control" value="" placeholder="" required/>
+                                        </div>
                                     </div>
-                                </div>
-                                <input type="hidden" name="wardName" id="wardName">
-                                <svg width="100%" height="2" viewBox="0 0 100% 2" fill="none"
-                                     xmlns="http://www.w3.org/2000/svg">
-                                <path d="M0 1L924 1.00008" stroke="#CACDD8" />
-                                </svg>
-                                <div class="form-group">
-                                    <div class="">
-                                        <div class="control-label">Standard Rate</div>
+                                    <div class="form-group">
+                                        <div class="control-label">City</div>
                                         <div>
-                                            <input type="radio" id="check" name="way" value="ship" required> 
-                                            <span style="display: flex; justify-content: space-between;">
-                                                <p>Price may vary
-                                                    depending on
-                                                    the
-                                                    item/destination. Shop Staff will contact you.
-                                                </p>
-                                                <p><b><fmt:formatNumber value="30000" type="currency"/></b></p>
+                                            <select name="city" id="city" style="width: 70%; border: black solid 1px;" class="form-select form-select-sm mb-3" required>
+                                                <option value="">Choose city</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <input type="hidden" name="cityName" id="cityName">
+
+                                    <div class="form-group">
+                                        <div class="control-label">District</div>
+                                        <div>
+                                            <select name="district" id="district" style="width: 70%; border: black solid 1px;" class="form-select form-select-sm mb-3" required>
+                                                <option value="">Choose district</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <input type="hidden" name="districtName" id="districtName">
+
+                                    <div class="form-group">
+                                        <div class="control-label">Town</div>
+                                        <div>
+                                            <select name="town" id="ward" style="width: 70%; border: black solid 1px;" class="form-select form-select-sm" required>
+                                                <option value="">Choose town</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <input type="hidden" name="wardName" id="wardName">
+                                    <svg width="100%" height="2" viewBox="0 0 100% 2" fill="none"
+                                         xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M0 1L924 1.00008" stroke="#CACDD8" />
+                                    </svg>
+                                </form>
+                            </div>
+
+                            <div class="form-group">
+                                <div class="">
+                                    <div class="control-label">Standard Rate</div>
+                                    <div>
+                                        <input type="radio" id="check" name="way" value="ship" required> 
+                                        <span style="display: flex; justify-content: space-between;">
+                                            <p>Price may vary
+                                                depending on
+                                                the
+                                                item/destination. Shop Staff will contact you.
+                                            </p>
+                                            <p><b><fmt:formatNumber value="30000" type="currency"/></b></p>
                                         </span>
                                     </div>
                                     <div class="control-label">Pickup from store</div>
