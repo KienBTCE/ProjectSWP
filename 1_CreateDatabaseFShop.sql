@@ -62,7 +62,7 @@ CREATE TABLE Employees (
 CREATE TABLE Categories (
     CategoryID INT IDENTITY(1,1) PRIMARY KEY,
     TypeName NVARCHAR(100) NOT NULL,
-    Status NVARCHAR(20) NOT NULL
+    [Status] NVARCHAR(20) NOT NULL
 );
 
 -- CREATE Brands TABLE
@@ -188,7 +188,7 @@ CREATE TABLE ProductRatings(
 	RateID INT IDENTITY(1,1) Primary key,
 	CustomerID INT,
 	SKU INT,
-        CreatedAt DATETIME DEFAULT GETDATE(),
+    CreatedAt DATETIME DEFAULT GETDATE(),
 	Star INT NOT NULL CHECK (Star BETWEEN 1 AND 5),
 	Comment NTEXT,
 	[Status] VARCHAR(20)
@@ -214,7 +214,7 @@ CREATE TABLE Orders (
     OrderID INT IDENTITY(1,1) PRIMARY KEY,
     CustomerID INT,
     FullName NVARCHAR(100),
-    Address NTEXT,
+    [Address] NTEXT,
     PhoneNumber VARCHAR(15),
     OrderDate DATETIME DEFAULT GETDATE(),
     DeliveredDate DATETIME,

@@ -11,31 +11,26 @@ package Models;
 public class Order {
 
     int orderID;
-    String accountID;
+    int accountID;
     String fullName;
     String phone;
     String address;
-    String way;
     long totalAmount;
+    
 
-    public Order(String fullName, String phone, String address, String way) {
+    public Order(String fullName, String phone, String address) {
         this.fullName = fullName;
         this.phone = phone;
         this.address = address;
-        this.way = way;
     }
 
-    public Order(String accountID, String fullName, String phone, String address, String way, long totalAmount) {
+    public Order(int accountID, String fullName, String phone, String address, long totalAmount) {
         this.accountID = accountID;
         this.fullName = fullName;
         this.phone = phone;
         this.address = address;
-        this.way = way;
         this.totalAmount = totalAmount;
     }
-
-    
-    
 
     public int getOrderID() {
         return orderID;
@@ -69,15 +64,6 @@ public class Order {
         this.address = address;
     }
 
-
-    public String getWay() {
-        return way;
-    }
-
-    public void setWay(String way) {
-        this.way = way;
-    }
-
     public long getTotalAmount() {
         return totalAmount;
     }
@@ -86,14 +72,12 @@ public class Order {
         this.totalAmount = totalAmount;
     }
 
-    public String getAccountID() {
+    public int getAccountID() {
         return accountID;
     }
 
-    public void setAccountID(String accountID) {
+    public void setAccountID(int accountID) {
         this.accountID = accountID;
     }
-
-  
 
 }

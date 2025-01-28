@@ -64,8 +64,8 @@
                                 <div class="form-group">
                                     <div class="control-label">Fullname</div>
                                     <div class="">
-                                        <input style="width: 70%; border: black solid 1px;" name="fullname" type="text" class="form-control" value="${sessionScope.customer.getFullName()}" placeholder="" readonly/>
-                                </div>
+                                        <input style="width: 70%; border: black solid 1px;" name="fullname" type="text" class="form-control" value="${sessionScope.customer.getFullName()}" placeholder="" readonly/> </div>
+
                             </div>
 
                             <div class="form-group">
@@ -75,7 +75,12 @@
                                 </div>
                             </div>
                             <div>
-                                <form> 
+                                <div class="control-label">Address</div>
+                                <div class="">
+                                    <input style="width: 70%; border: black solid 1px;" name="address" type="text" class="form-control" value="${shipAddress}" placeholder="" readonly/>
+                                </div>
+                                <a href="url">Change address</a>
+<!--                                <form> 
                                     <div class="form-group">
                                         <div class="control-label">Street Address *</div>
                                         <div class="">
@@ -115,10 +120,10 @@
                                          xmlns="http://www.w3.org/2000/svg">
                                     <path d="M0 1L924 1.00008" stroke="#CACDD8" />
                                     </svg>
-                                </form>
+                                </form>-->
                             </div>
 
-                            <div class="form-group">
+<!--                            <div class="form-group">
                                 <div class="">
                                     <div class="control-label">Standard Rate</div>
                                     <div>
@@ -139,7 +144,7 @@
                                             3000</p>
                                         <p><b><fmt:formatNumber value="0" type="currency"/></b></p></span>
                                 </div>
-                            </div>
+                            </div>-->
                             <button type="submit"
                                     style="background-color: #0156ff; border: #0156ff solid 1px; color: white;" value="Next">
                                 Next
@@ -151,22 +156,16 @@
                         <svg width="100%" height="2" viewBox="0 0 100% 2" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <path d="M0 1L385 0.999966" stroke="#CACDD8" />
                         </svg>
-                        <%
-                            int n = 0;
-                            if (session.getAttribute("cartList") != null) {
-                                List<Cart> cartSelected = (List<Cart>) session.getAttribute("cartSelected");
-                                n = cartSelected.size();
-                            }
-                        %>
-                        <p> <%= n%> Items in Cart</p>
+
+                        <p> ${numOfItems} Items in Cart</p>
                         <c:forEach items="${sessionScope.cartSelected}" var="p">
                             <div style="display: flex; column-gap: 20px;">
                                 <div><img
-                                        src="./assets/imgs/${p.getProductType()}/${p.getProductImg()}"
+                                        src="./assets/imgs/Products/${p.getImage()}"
                                         alt="" width="70px"></div>
                                 <div>
                                     <div>
-                                        <p>${p.getProductName()}</p>
+                                        <p>${p.getFullName()}</p>
                                     </div>
                                     <div style="display: flex; column-gap: 10px; margin-top: -15px;">
                                         <div>Qty ${p.getQuantity()}</div>

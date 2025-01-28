@@ -94,11 +94,11 @@
                         <c:forEach items="${sessionScope.cartSelected}" var="p">
                             <div style="display: flex; column-gap: 20px;">
                                 <div><img
-                                        src="./assets/imgs/${p.getProductType()}/${p.getProductImg()}"
+                                        src="./assets/imgs/Products//${p.getImage()}"
                                         alt="" width="70px"></div>
                                 <div>
                                     <div>
-                                        <p>${p.getProductName()}</p>
+                                        <p>${p.getFullName()}</p>
                                     </div>
                                     <div
                                         style="display: flex; column-gap: 10px; margin-top: -15px;">
@@ -113,18 +113,10 @@
                             </div>
                             <br>
                         </c:forEach>
-                        <c:if test="${sessionScope.order.getWay() == 'ship'}" >
-                            Shipping cost: <fmt:formatNumber value="30000" type="currency" /> 
-                        </c:if>
+
                         <h4>Total:
-                            <c:if test="${sessionScope.order.getWay() == 'ship'}" >
-                                <c:set var="total" value="${totalAmount + 30000}" />
-                                <fmt:formatNumber value="${total}" type="currency" />
-                            </c:if>
-                            <c:if test="${sessionScope.order.getWay() != 'ship'}" >
-                                <c:set var="total" value="${totalAmount}" />
-                                <fmt:formatNumber value="${total}" type="currency" />
-                            </c:if>
+                            <c:set var="total" value="${totalAmount}" />
+                            <fmt:formatNumber value="${total}" type="currency" />
                         </h4>
                     </div>
                 </div>

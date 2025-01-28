@@ -30,21 +30,17 @@ public class OrderDAO extends DBContext {
         return id;
     }
 
-    public void createNewOrderWihoutDiscount(Order o) {
+    public void createNewOrder(Order o) {
         try {
             String data = "";
             data = "'" + o.getAccountID() + "',";
             data += "'" + o.getFullName() + "',";
             data += "'" + o.getPhone() + "',";
             data += "N'" + o.getAddress() + "',";
-            if (o.getWay().equals("ship")) {
-                data += "'" + "Delivery" + "',";
-            } else {
-                data += "'" + "Pick up at store" + "',";
-            }
             data += o.getTotalAmount() + "";
+
             PreparedStatement pre = connector.prepareStatement("Insert into [Orders] "
-                    + "(a_ID, fullName, a_phoneNumber, [address], paymentMethod, totalAmount) values (" + data + ")");
+                    + "(a_ID, fullName, a_phoneNumber, [address], paymentMethod, totalAmount, Discount) values (" + data + ")");
             pre.executeUpdate();
         } catch (SQLException e) {
             System.out.println(e);

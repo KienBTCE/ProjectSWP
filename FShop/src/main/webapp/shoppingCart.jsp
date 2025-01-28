@@ -78,8 +78,8 @@
                                                     <td class="th">
                                                         <a href="updateCart?id=${p.getSKU()}"><img src="./assets/imgs/ShoppingCartImg/x.jpg" alt=""
                                                                                                    width="25px" ></a>
-<!--                                                        <a href=""><img src="./assets/imgs/ShoppingCartImg/pen.jpg" alt="" width="25px"
-                                                                        style="margin-top: 5px;"></a>-->
+                                                        <!--                                                        <a href=""><img src="./assets/imgs/ShoppingCartImg/pen.jpg" alt="" width="25px"
+                                                                                                                                style="margin-top: 5px;"></a>-->
                                                     </td>
                                                 </tr>
                                             </c:if>
@@ -115,8 +115,8 @@
                                                     <td class="th">
                                                         <a href="deletePOC?id=${p.getSKU()}"><img src="./assets/imgs/ShoppingCartImg/x.jpg" alt=""
                                                                                                   width="25px" ></a>
-<!--                                                        <a href=""><img src="./assets/imgs/ShoppingCartImg/pen.jpg" alt="" width="25px"
-                                                                        style="margin-top: 5px;"></a>-->
+                                                        <!--                                                        <a href=""><img src="./assets/imgs/ShoppingCartImg/pen.jpg" alt="" width="25px"
+                                                                                                                                style="margin-top: 5px;"></a>-->
                                                     </td>
                                                 </tr>
                                             </c:if>
@@ -216,7 +216,7 @@
                                     style="background-color: #0156ff; border: #0156ff solid 1px; color: white;"
                                     id="checkout">Proceed
                                 to
-                                Checkout</a></button>
+                                Checkout</button>
                             <button
                                 style="background-color: #ffb800; border: #0156ff solid 1px; color: black;">Check
                                 out

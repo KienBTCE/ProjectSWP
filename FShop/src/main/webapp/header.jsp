@@ -173,9 +173,15 @@
                         </ul>
                     </div>
                     <div class="nav-infor-content col-md-4">
-                        <i class="ti-search" style="font-size: 150%; color: black;"></i>
-                        <a href="cart"><i class="ti-shopping-cart" style="font-size: 150%; color: black;"></i></a>
-                        <a href="customerLogin.jsp"><i class="ti-user" style="font-size: 150%; color: black; margin-left: 20px;"></i></a>
+                        <i class="ti-search" style="font-size: 150%; color: black;"></i>    
+                        <div style="display: flex; align-items: center">
+                            <a href="cart"><i class="ti-shopping-cart" style="font-size: 150%; color: black;"></i></a>
+                            <p>${sessionScope.numOfProCart}</p>
+                        </div>
+                        <div style="display: flex; align-items: center">
+                            <a href="customerLogin.jsp"><i class="ti-user" style="font-size: 150%; color: black; margin-left: 20px;"></i></a>
+                            <p>${sessionScope.customer.getFullName()}</p>
+                        </div>
                     </div>
                 </div>
             </div>

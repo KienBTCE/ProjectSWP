@@ -7,6 +7,7 @@ package Controllers;
 import DAOs.CartDAO;
 import DAOs.OrderDAO;
 import Models.Cart;
+import Models.Customer;
 import Models.Order;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -82,9 +83,10 @@ public class OrderServlet extends HttpServlet {
         Order o = (Order) session.getAttribute("order");
         OrderDAO od = new OrderDAO();
         CartDAO ca = new CartDAO();
-        o.setAccountID("user1");
+        Customer cus = (Customer) session.getAttribute("customer");
+        o.setAccountID(cus.getId());
         o.setTotalAmount(totalAmount);
-        od.createNewOrderWihoutDiscount(o);
+        od.createNewOrder(o);
         List<Cart> cartSelected = (List<Cart>) session.getAttribute("cartSelected");
 //        for (Cart c : cartSelected) {
 //            od.addOrderDetail(od.getNewestOrderID(), c.getProductSKU(), c.getQuantity(), c.getPrice());

@@ -4,7 +4,10 @@
  */
 package Controllers;
 
+import DAOs.CustomerDAO;
+import Models.Address;
 import Models.Cart;
+import Models.Customer;
 import Models.Order;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -68,20 +71,27 @@ public class CheckoutServlet extends HttpServlet {
         List<Cart> cart = (List<Cart>) session.getAttribute("cartList");
         String selectedProductIds[] = request.getParameterValues("cartSelected");
         List<Cart> cartSelected = new ArrayList<>();
+        Customer cus = (Customer) session.getAttribute("customer");
+        CustomerDAO cdao = new CustomerDAO();
+        Address add = cdao.getDefaultAddress(cus.getId());
+        String address = add.getStreet() + ", " + add.getWardNameEn() + ", " + add.getDistrictNameEn() + ", " + add.getProvinceNameEn();
         int count = 0;
         long totalAmount = 0;
-//        for (int i = 0; i < cart.size(); i++) {
-//            for (int j = 0; j < selectedProductIds.length; j++) {
-//                if (cart.get(i).getProductSKU() == Integer.parseInt(selectedProductIds[j])) {
-//                    cartSelected.add(cart.get(i));
-//                    totalAmount += cart.get(i).getPrice() * cart.get(i).getQuantity();
-//                    count++;
-//                }
-//            }
-//            
-//        }
+        for (int i = 0; i < cart.size(); i++) {
+            for (String selectedProductId : selectedProductIds) {
+                if (cart.get(i).getSKU() == Integer.parseInt(selectedProductId)) {
+                    cartSelected.add(cart.get(i));
+                    totalAmount += cart.get(i).getPrice() * cart.get(i).getQuantity();
+                    count++;
+                    System.out.println(cart.get(i).getFullName());
+                }
+            }
+        }
+        
         session.setAttribute("cartSelected", cartSelected);
         session.setAttribute("totalAmount", totalAmount);
+        session.setAttribute("shipAddress", address);
+        session.setAttribute("numOfItems", count);
         request.getRequestDispatcher("checkout.jsp").forward(request, response);
     }
 
@@ -99,13 +109,9 @@ public class CheckoutServlet extends HttpServlet {
         String fullname = request.getParameter("fullname");
         String phone = request.getParameter("phone");
         String address = request.getParameter("address");
-        String city = request.getParameter("cityName");
-        String district = request.getParameter("districtName");
-        String town = request.getParameter("wardName");
-        String way = request.getParameter("way");
-        String totalAddress = address + ", " + town + ", " + district + ", " + city;
+        System.out.println(fullname + " " +address);
         HttpSession session = request.getSession();
-        session.setAttribute("order", new Order(fullname, phone, totalAddress, way));
+        session.setAttribute("order", new Order(fullname, phone, address));
         request.getRequestDispatcher("payment.jsp").forward(request, response);
 
     }

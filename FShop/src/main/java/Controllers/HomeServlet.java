@@ -4,8 +4,10 @@
  */
 package Controllers;
 
+import DAOs.CartDAO;
 import DAOs.LaptopDAO;
 import DAOs.PhoneDAO;
+import Models.Customer;
 import Models.Laptop;
 import Models.Phone;
 import Models.Product;
@@ -14,6 +16,7 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 import java.util.ArrayList;
 
 /**
@@ -34,14 +37,20 @@ public class HomeServlet extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         ArrayList<Product> productList = null;
-
+        HttpSession session = request.getSession();
 //        ProductDAO pD = new ProductDAO();
 //        ArrayList<Product> products = pD.GetAllProducts();
         LaptopDAO lD = new LaptopDAO();
         ArrayList<Laptop> laptops = lD.GetAllLaptops();
         PhoneDAO phD = new PhoneDAO();
         ArrayList<Phone> phones = phD.GetAllPhones();
-
+        if(session.getAttribute("customer") != null){
+            CartDAO c = new CartDAO();
+            Customer cus = (Customer)session.getAttribute("customer");
+           
+            session.setAttribute("numOfProCart", c.getNumberOfProduct(cus.getId()));
+        }
+        CartDAO c = new CartDAO();
         try {
             request.setAttribute("laptops", laptops);
             request.setAttribute("phones", phones);

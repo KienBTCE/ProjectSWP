@@ -42,6 +42,21 @@ public class CartDAO extends DBContext {
         return list;
     }
 
+    public int getNumberOfProduct(int accountID) {
+        int num = 0;
+        try {
+            PreparedStatement pre = connector.prepareStatement("SELECT * FROM Carts WHERE CustomerID = ?");
+            pre.setInt(1, accountID);
+            ResultSet rs = pre.executeQuery();
+            while (rs.next()) {
+                num++;
+            }
+        } catch (SQLException e) {
+            System.out.println(e + "");
+        }
+        return num;
+    }
+
     public void updateProductQuantity(int productSKU, int quantity, int id) {
         String sql = "UPDATE Carts SET Quantity = ? WHERE SKU = ? AND CustomerID = ?";
         try {
@@ -73,6 +88,6 @@ public class CartDAO extends DBContext {
         for (Cart cart : ca) {
             System.out.println(cart.getFullName() + " " + cart.getImage());
         }
-
+        System.out.println(c.getNumberOfProduct(1));
     }
 }

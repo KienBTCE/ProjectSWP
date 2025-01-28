@@ -1,7 +1,7 @@
 ﻿USE FShop
 
 
-INSERT INTO Categories VALUES ('Laptop'), ('Smartphone');
+INSERT INTO Categories VALUES ('Laptop', 'Selling'), ('Smartphone', 'Selling');
 
 INSERT INTO Brands
 VALUES 
@@ -93,4 +93,5 @@ INSERT INTO InventoryProducts VALUES (1, 1, 25000000, 20)
 INSERT INTO ShopProducts(PackageID, SKU, Price, Quantity) VALUES (1, 1, 30000000, 20)
 
 -- Insert into Addresses
-INSERT INTO Addresses(CustomerID, IsDefault, Street, Province, District, Ward) VALUES (1, 1, 'Ap tra coi A', 94, 944, 31591)
+INSERT INTO Addresses(CustomerID, IsDefault, Street, Province, District, Ward) VALUES  (1, 1, 'Ap tra coi A', 94, 944, 31591)
+INSERT INTO Addresses(CustomerID, IsDefault, Street, Province, District, Ward) VALUES  (1, 0, 'DT940', 94, 944, 31567)

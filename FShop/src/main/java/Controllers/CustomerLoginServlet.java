@@ -81,7 +81,7 @@ public class CustomerLoginServlet extends HttpServlet {
         Customer customer = ctmDAO.getCustomerLogin(email, password);
         if (customer != null) {
             session.setAttribute("customer", customer);
-            request.getRequestDispatcher("index.jsp").forward(request, response);
+            request.getRequestDispatcher("HomeServlet").forward(request, response);
         } else{
             session.setAttribute("message", "Login Failed");
             request.getRequestDispatcher("customerLogin.jsp").forward(request, response);
