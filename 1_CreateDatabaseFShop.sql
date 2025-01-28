@@ -61,7 +61,8 @@ CREATE TABLE Employees (
 
 CREATE TABLE Categories (
     CategoryID INT IDENTITY(1,1) PRIMARY KEY,
-    TypeName NVARCHAR(100) NOT NULL
+    TypeName NVARCHAR(100) NOT NULL,
+    Status NVARCHAR(20) NOT NULL
 );
 
 -- CREATE Brands TABLE
