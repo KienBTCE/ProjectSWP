@@ -179,7 +179,7 @@
                             <p>${sessionScope.numOfProCart}</p>
                         </div>
                         <div style="display: flex; align-items: center">
-                            <a href="customerLogin.jsp"><i class="ti-user" style="font-size: 150%; color: black; margin-left: 20px;"></i></a>
+                            <a href="customerLogin"><i class="ti-user" style="font-size: 150%; color: black; margin-left: 20px;"></i></a>
                             <p>${sessionScope.customer.getFullName()}</p>
                         </div>
                     </div>

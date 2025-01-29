@@ -72,18 +72,20 @@
                 padding: 12px 50px;
                 border-radius: 50px;
                 display: inline;
+                text-decoration: none;
             }
             .summit:hover {
                 background-color: #0056b3;
+                color: white;
             }
-            .form-box a {
+            .forgotpass {
                 width: 100px;
                 display: inline;
                 margin: 10px 20px;
                 color: #007bff;
                 text-decoration: none;
             }
-            .form-box a:hover {
+            .forgotpass:hover {
                 text-decoration: underline;
             }
             ul {
@@ -190,7 +192,7 @@
                             <input type="password" id="password" name="password" placeholder="Your Password" required>
 
                             <button class="summit" type="submit">Sign In</button>
-                            <a href="#">Forgot Your Password?</a>
+                            <a class="forgotpass" href="#">Forgot Your Password?</a>
                         </form>
 
                     </div>
@@ -202,7 +204,7 @@
                             <li>Keep more than one address</li>
                             <li>Track orders and more</li>
                         </ul>
-                        <button class="summit">Create An Account</button>
+                        <a href="/register" class="summit"> Create An Account</a>
                     </div>
                 </div>
             </div>

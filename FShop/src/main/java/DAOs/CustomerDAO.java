@@ -7,12 +7,12 @@ package DAOs;
 import DB.DBContext;
 import Models.Address;
 import Models.Customer;
-import Models.Laptop;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.LocalDate;
 
 /**
  *
@@ -55,11 +55,11 @@ public class CustomerDAO extends DBContext {
                             rs.getInt("CustomerID"),
                             rs.getString("FullName"),
                             null,
-                            rs.getDate("Birthday"),
+                            rs.getString("Birthday"),
                             rs.getString("Gender"),
                             rs.getString("PhoneNumber"),
                             rs.getString("Email"),
-                            rs.getDate("CreatedAt"),
+                            rs.getString("CreatedAt"),
                             rs.getString("Status"),
                             rs.getString("Avatar"),
                             rs.getDouble("LoyalPoint")
@@ -93,9 +93,47 @@ public class CustomerDAO extends DBContext {
         return null;
     }
 
+    public boolean checkEmailExisted(String email) {
+        try {
+            PreparedStatement pr = connector.prepareStatement("SELECT * FROM Customers WHERE Email = ?;");
+            pr.setString(1, email);
+            ResultSet rs = pr.executeQuery();
+            if (rs.next()) {
+                return true;
+            }
+        } catch (SQLException e) {
+            System.out.println(e + " ");
+        }
+        return false;
+    }
+
+    public boolean addNewCustomer(Customer ctm) {
+        try {
+            PreparedStatement pr = connector.prepareStatement("INSERT INTO Customers (FullName, Birthday, [Password], PhoneNumber, Email, Gender, CreatedAt, [Status], Avatar, LoyalPoint)\n"
+                    + "VALUES\n"
+                    + "(?, ?, ?, ?, ?, ?, ?, ?, ?, ?);");
+            pr.setString(1, ctm.getFullName());
+            pr.setString(2, ctm.getBirthday());
+            pr.setString(3, getMD5(ctm.getPassword()));
+            pr.setString(4, ctm.getPhoneNumber());
+            pr.setString(5, ctm.getEmail());
+            pr.setString(6, ctm.getGender());
+            pr.setString(7, LocalDate.now() + "");
+            pr.setString(8, ctm.getStatus());
+            pr.setString(9, ctm.getAvatar());
+            pr.setDouble(10, ctm.getLoyalPoint());
+            int rs = pr.executeUpdate();
+            return rs == 1;
+        } catch (SQLException e) {
+            System.out.println(e + " ");
+        }
+        return false;
+    }
+
     public static void main(String[] args) {
         CustomerDAO c = new CustomerDAO();
-        System.out.println(c.getMD5("hashed_password_123"));
+        
+        System.out.println(LocalDate.now());
         System.out.println(c.getDefaultAddress(1).getWardNameEn());
     }
 }

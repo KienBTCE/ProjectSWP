@@ -14,11 +14,11 @@ public class Customer {
     private int id;
     private String fullName;
     private String password;
-    private Date birthday;
+    private String birthday;
     private String gender;
     private String phoneNumber;
     private String email;
-    private Date createAt;
+    private String createAt;
     private String status;
     private String avatar;
     private double loyalPoint;
@@ -26,7 +26,7 @@ public class Customer {
     public Customer() {
     }
 
-    public Customer(int id, String fullName, String password, Date birthday, String gender, String phoneNumber, String email, Date createAt, String status, String avatar, double loyalPoint) {
+    public Customer(int id, String fullName, String password, String birthday, String gender, String phoneNumber, String email, String createAt, String status, String avatar, double loyalPoint) {
         this.id = id;
         this.fullName = fullName;
         this.password = password;
@@ -52,7 +52,7 @@ public class Customer {
         return password;
     }
 
-    public Date getBirthday() {
+    public String getBirthday() {
         return birthday;
     }
 
@@ -68,7 +68,7 @@ public class Customer {
         return email;
     }
 
-    public Date getCreateAt() {
+    public String getCreateAt() {
         return createAt;
     }
 
@@ -96,7 +96,7 @@ public class Customer {
         this.password = password;
     }
 
-    public void setBirthday(Date birthday) {
+    public void setBirthday(String birthday) {
         this.birthday = birthday;
     }
 
@@ -112,7 +112,7 @@ public class Customer {
         this.email = email;
     }
 
-    public void setCreateAt(Date createAt) {
+    public void setCreateAt(String createAt) {
         this.createAt = createAt;
     }
 

@@ -82,7 +82,7 @@
                         <h2>Create An Account</h2>
                         <div class="card shadow">
                             <div class="card-body">
-                                <form id="registerForm" action="RegisterServlet" method="post" enctype="multipart/form-data">
+                                <form id="registerForm" action="register" method="post">
                                     <div class="form-group">
                                         <label for="fullName">Full Name:</label>
                                         <input type="text" class="form-control" id="fullName" name="fullName" required>
@@ -104,7 +104,7 @@
 
                                     <div class="form-group">
                                         <label for="phoneNumber">Phone Number:</label>
-                                        <input type="tel" class="form-control" id="phoneNumber" name="phoneNumber" pattern="[0-9]{10}" placeholder="1234567890" required>
+                                        <input type="tel" class="form-control" id="phoneNumber" name="phoneNumber" pattern="[0-9]{10}" required>
                                     </div>
 
                                     <div class="form-group">
@@ -122,11 +122,6 @@
                                         <label for="confirmPassword">Confirm Password:</label>
                                         <input type="password" class="form-control" id="confirmPassword" name="confirmPassword" required>
                                         <div id="passwordError" class="error-message"></div>
-                                    </div>
-
-                                    <div class="form-group">
-                                        <label for="avatar">Avatar:</label>
-                                        <input type="file" class="form-control-file" id="avatar" name="avatar" accept="image/*">
                                     </div>
 
                                     <button type="submit" class="btn btn-primary btn-block">Register</button>
