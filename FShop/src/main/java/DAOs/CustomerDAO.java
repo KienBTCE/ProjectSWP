@@ -77,7 +77,7 @@ public class CustomerDAO extends DBContext {
 
     public Address getDefaultAddress(int customerID) {
         try {
-            PreparedStatement pr = connector.prepareStatement("SELECT a.AddressID, a.Street, w.NameEn, d.NameEn, p.NameEn, a.IsDefault FROM Addresses a\n"
+            PreparedStatement pr = connector.prepareStatement("SELECT a.AddressID, a.Street, w.FullNameEn, d.FullNameEn, p.FullNameEn, a.IsDefault FROM Addresses a\n"
                     + "LEFT JOIN Provinces p ON a.Province = p.Code\n"
                     + "LEFT JOIN Districts d ON a.District = d.Code\n"
                     + "LEFT JOIN Wards w ON a.Ward = w.Code\n"

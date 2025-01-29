@@ -20,7 +20,7 @@ public class OrderDAO extends DBContext {
         int id = 0;
         try {
             PreparedStatement pre = connector.prepareStatement("Select top 1* from Orders\n"
-                    + "order by orderID desc");
+                    + "order by OrderID desc");
             ResultSet rs = pre.executeQuery();
             if (rs.next()) {
                 id = rs.getInt(1);
@@ -39,8 +39,8 @@ public class OrderDAO extends DBContext {
             data += "N'" + o.getAddress() + "',";
             data += o.getTotalAmount() + "";
 
-            PreparedStatement pre = connector.prepareStatement("Insert into [Orders] "
-                    + "(a_ID, fullName, a_phoneNumber, [address], paymentMethod, totalAmount, Discount) values (" + data + ")");
+            PreparedStatement pre = connector.prepareStatement("Insert into [Orders] (CustomerID, FullName, PhoneNumber, [Address], TotalAmount)"
+                    + " values (" + data + ")");
             pre.executeUpdate();
         } catch (SQLException e) {
             System.out.println(e);

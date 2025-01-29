@@ -36,7 +36,7 @@ SELECT * FROM InventoryProducts
 
 SELECT * FROM ShopProducts
 
-	SELECT a.AddressID, a.Street, w.NameEn, d.NameEn, p.NameEn, a.IsDefault FROM Addresses a
+	SELECT a.AddressID, a.Street, w.FullNameEn, d.FullNameEn, p.FullNameEn, a.IsDefault FROM Addresses a
 	LEFT JOIN Provinces p ON a.Province = p.Code
 	LEFT JOIN Districts d ON a.District = d.Code
 	LEFT JOIN Wards w ON a.Ward = w.Code

@@ -79,7 +79,8 @@ VALUES
 -- Insert into Carts
 INSERT INTO Carts (CustomerID, SKU, Quantity)
 VALUES 
-    (1, 1, 1);
+    (1, 1, 1),
+	(1, 2, 5)
 
 -- Insert into Orders
 
@@ -95,3 +96,6 @@ INSERT INTO ShopProducts(PackageID, SKU, Price, Quantity) VALUES (1, 1, 30000000
 -- Insert into Addresses
 INSERT INTO Addresses(CustomerID, IsDefault, Street, Province, District, Ward) VALUES  (1, 1, 'Ap tra coi A', 94, 944, 31591)
 INSERT INTO Addresses(CustomerID, IsDefault, Street, Province, District, Ward) VALUES  (1, 0, 'DT940', 94, 944, 31567)
+
+
+-- Insert into [Orders] (CustomerID, FullName, PhoneNumber, [Address], TotalAmount, Discount) values ()

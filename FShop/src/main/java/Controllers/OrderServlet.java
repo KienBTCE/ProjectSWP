@@ -88,12 +88,13 @@ public class OrderServlet extends HttpServlet {
         o.setTotalAmount(totalAmount);
         od.createNewOrder(o);
         List<Cart> cartSelected = (List<Cart>) session.getAttribute("cartSelected");
-//        for (Cart c : cartSelected) {
-//            od.addOrderDetail(od.getNewestOrderID(), c.getProductSKU(), c.getQuantity(), c.getPrice());
-//            od.subtractQuantityAfterBuy(c.getProductSKU(), c.getQuantity());
-//            ca.deleteProductOnCart(c.getProductSKU(), "user1");
-//        }
-        request.getRequestDispatcher("HomeServlet").forward(request, response);
+        for (Cart c : cartSelected) {
+            od.addOrderDetail(od.getNewestOrderID(), c.getSKU(), c.getQuantity(), c.getPrice());
+            //od.subtractQuantityAfterBuy(c.getSKU(), c.getQuantity());
+            ca.deleteProductOnCart(c.getSKU(), cus.getId());
+        }
+        session.setAttribute("orderStatus", "success");
+        request.getRequestDispatcher("payment.jsp").forward(request, response);
     }
 
     /**
