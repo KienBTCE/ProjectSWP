@@ -62,7 +62,7 @@ public class ViewProfileServlet extends HttpServlet {
         if (session.getAttribute("customer") == null) {
             response.sendRedirect("/customerLogin");
         } else {
-            request.getRequestDispatcher("profile.jsp").forward(request, response);
+            request.getRequestDispatcher("myInfor.jsp").forward(request, response);
         }
     }
 

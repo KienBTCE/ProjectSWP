@@ -4,26 +4,21 @@
  */
 package Controllers;
 
-import DAOs.CartDAO;
-import DAOs.LaptopDAO;
-import DAOs.PhoneDAO;
-import Models.Customer;
-import Models.Laptop;
-import Models.Phone;
-import Models.Product;
 import java.io.IOException;
+import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
+import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
-import java.util.ArrayList;
 
 /**
  *
- * @author KienBTCE180180
+ * @author nhutb
  */
-public class HomeServlet extends HttpServlet {
+@WebServlet(name = "LogoutServlet", urlPatterns = {"/Logout"})
+public class LogoutServlet extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -36,26 +31,18 @@ public class HomeServlet extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        ArrayList<Product> productList = null;
-        HttpSession session = request.getSession();
-//        ProductDAO pD = new ProductDAO();
-//        ArrayList<Product> products = pD.GetAllProducts();
-        LaptopDAO lD = new LaptopDAO();
-        ArrayList<Laptop> laptops = lD.GetAllLaptops();
-        PhoneDAO phD = new PhoneDAO();
-        ArrayList<Phone> phones = phD.GetAllPhones();
-        if(session.getAttribute("customer") != null){
-            CartDAO c = new CartDAO();
-            Customer cus = (Customer)session.getAttribute("customer");
-            session.setAttribute("numOfProCartOfCus", c.getNumberOfProduct(cus.getId()));
-        }
-        CartDAO c = new CartDAO();
-        try {
-            request.setAttribute("laptops", laptops);
-            request.setAttribute("phones", phones);
-            request.getRequestDispatcher("index.jsp").forward(request, response);
-        } catch (NullPointerException e) {
-            System.out.println(e);
+        response.setContentType("text/html;charset=UTF-8");
+        try ( PrintWriter out = response.getWriter()) {
+            /* TODO output your page here. You may use following sample code. */
+            out.println("<!DOCTYPE html>");
+            out.println("<html>");
+            out.println("<head>");
+            out.println("<title>Servlet Logout</title>");
+            out.println("</head>");
+            out.println("<body>");
+            out.println("<h1>Servlet Logout at " + request.getContextPath() + "</h1>");
+            out.println("</body>");
+            out.println("</html>");
         }
     }
 
@@ -71,7 +58,9 @@ public class HomeServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        HttpSession session = request.getSession();
+        session.removeAttribute("customer");
+        request.getRequestDispatcher("HomeServlet").forward(request, response);
     }
 
     /**

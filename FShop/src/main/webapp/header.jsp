@@ -5,6 +5,8 @@
 --%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@ taglib prefix = "c" uri = "http://java.sun.com/jsp/jstl/core" %>
+
 <!DOCTYPE html>
 <html>
     <head>
@@ -175,12 +177,23 @@
                     <div class="nav-infor-content col-md-4">
                         <i class="ti-search" style="font-size: 150%; color: black;"></i>    
                         <div style="display: flex; align-items: center">
-                            <a href="cart"><i class="ti-shopping-cart" style="font-size: 150%; color: black;"></i></a>
-                            <p>${sessionScope.numOfProCart}</p>
+                            <c:if test="${sessionScope.customer == null}">
+                                <a href="cart"><i class="ti-shopping-cart" style="font-size: 150%; color: black;"></i></a>
+                                </c:if>
+                                <c:if test="${sessionScope.customer != null}">
+                                <a href="cart"><i class="ti-shopping-cart" style="font-size: 150%; color: black;"></i></a>
+                                <p>${sessionScope.numOfProCartOfCus}</p>
+                            </c:if>
                         </div>
                         <div style="display: flex; align-items: center">
-                            <a href="customerLogin"><i class="ti-user" style="font-size: 150%; color: black; margin-left: 20px;"></i></a>
-                            <p>${sessionScope.customer.getFullName()}</p>
+                            <c:if test="${sessionScope.customer != null}">
+                                <a href="viewProfile"><i class="ti-user" style="font-size: 150%; color: black; margin-left: 20px;"></i></a>
+                                <p>${sessionScope.customer.getFullName()}</p>
+                            </c:if>
+                            <c:if test="${sessionScope.customer == null}">
+                                <a href="customerLogin"><i class="ti-user" style="font-size: 150%; color: black; margin-left: 20px;"></i></a>
+                                </c:if>
+
                         </div>
                     </div>
                 </div>

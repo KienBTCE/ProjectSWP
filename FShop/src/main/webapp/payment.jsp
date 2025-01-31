@@ -22,68 +22,11 @@
               integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH"
               crossorigin="anonymous">
         <link rel="stylesheet" href="./assets/css/checkout.css">
+        <link rel="stylesheet" href="./assets/css/popup.css"/>
         <title>Checkout</title>
         <style>
 
-            /* Popup styles */
-            .popup {
-                display: none;
-                position: fixed;
-                top: 0;
-                left: 0;
-                width: 100%;
-                height: 100%;
-                background-color: rgba(0, 0, 0, 0.5);
-                justify-content: center;
-                align-items: center;
-                z-index: 1000;
-                animation: fadeIn 0.3s;
-            }
-            .popup-content {
-                background-color: white;
-                padding: 30px;
-                border-radius: 8px;
-                text-align: center;
-                width: 300px;
-                position: relative;
-                animation: slideIn 0.3s;
-            }
-            .popup button {
-                background-color: #007bff;
-                color: white;
-                padding: 10px 20px;
-                border: none;
-                border-radius: 5px;
-                cursor: pointer;
-                margin: 5px;
-            }
-            .popup button:hover {
-                background-color: #0056b3;
-            }
-            .close-btn {
-                position: absolute;
-                top: 10px;
-                right: 10px;
-                cursor: pointer;
-                font-size: 20px;
-                color: #000;
-            }
-            @keyframes fadeIn {
-                from {
-                    opacity: 0;
-                }
-                to {
-                    opacity: 1;
-                }
-            }
-            @keyframes slideIn {
-                from {
-                    transform: translateY(-20px);
-                }
-                to {
-                    transform: translateY(0);
-                }
-            }
+
         </style>
     </head>
 
@@ -196,11 +139,10 @@
             <br>
             <div class="popup" id="orderPopup">
                 <div class="popup-content">
-                    <span class="close-btn" onclick="closePopup()">&times;</span>
                     <h3>Order Successful</h3>
                     <p>Your order is waiting for acceptance by the shop.</p>
                     <div style="display: flex; justify-content: center;">
-                        <button onclick="closePopup()">OK</button>
+                        <button onclick="closePopup()"><a style="text-decoration: none; color: white;" href="viewOrderHistory">OK</a></button>
                         <button><a style="text-decoration: none; color: white;" href="HomeServlet">Back to home</a></button>
                     </div>
                 </div>
@@ -214,16 +156,16 @@
         </body>
 
         <script>
-                        function showPopup() {
-                            document.getElementById("orderPopup").style.display = "flex";
-                        }
+                            function showPopup() {
+                                document.getElementById("orderPopup").style.display = "flex";
+                            }
 
-                        function closePopup() {
-                            document.getElementById("orderPopup").style.display = "none";
-                        }
+                            function closePopup() {
+                                document.getElementById("orderPopup").style.display = "none";
+                            }
 
-                        // Show popup if login fails (you can trigger this with backend error)
-                        // For example, if you're using a session attribute or response error:
+                            // Show popup if login fails (you can trigger this with backend error)
+                            // For example, if you're using a session attribute or response error:
         <%
             String message = (String) session.getAttribute("orderStatus");
             if (message != null && message.equals("success")) {
