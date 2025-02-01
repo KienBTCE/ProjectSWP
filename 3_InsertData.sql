@@ -24,11 +24,11 @@ VALUES
 
 INSERT INTO Suppliers 
 VALUES 
-('TechGear Solutions', '123 Tech Street, District 1, Ho Chi Minh City', '0901234567', 'contact@techgear.com'),
-('GadgetWorld', '456 Innovation Blvd, District 3, Ho Chi Minh City', '0912345678', 'info@gadgetworld.vn'),
-('DigitalZone', '789 Digital Avenue, District 5, Ho Chi Minh City', '0923456789', 'support@digitalzone.vn'),
-('SmartTech Supplies', '101 Future Drive, District 7, Ho Chi Minh City', '0934567890', 'sales@smarttech.vn'),
-('NextGen Electronics', '202 Silicon Valley, District 2, Ho Chi Minh City', '0945678901', 'hello@nextgen.vn');
+('TechGear Solutions', '123 Tech Street, District 1, Ho Chi Minh City', '0901234567', 'contact@techgear.com', '0100101234', 1),
+('GadgetWorld', '456 Innovation Blvd, District 3, Ho Chi Minh City', '0912345678', 'info@gadgetworld.vn', '0200101234', 1),
+('DigitalZone', '789 Digital Avenue, District 5, Ho Chi Minh City', '0923456789', 'support@digitalzone.vn', '0300101234', 1),
+('SmartTech Supplies', '101 Future Drive, District 7, Ho Chi Minh City', '0934567890', 'sales@smarttech.vn', '0400101234', 1),
+('NextGen Electronics', '202 Silicon Valley, District 2, Ho Chi Minh City', '0945678901', 'hello@nextgen.vn', '0500101234', 1);
 
 INSERT INTO Attributes (CategoryID, AttributeName)
 VALUES
@@ -65,11 +65,11 @@ VALUES
 
 
 -- Insert roles
-INSERT INTO [Roles] 
+INSERT INTO Roles (RoleID, [Name]) 
 VALUES 
-    ('Admin'), 
-    ('Manager'), 
-    ('Staff')
+    (1, 'Admin'), 
+    (2, 'Manager'), 
+    (3, 'Staff')
 
 -- Insert account
 INSERT INTO Customers (FullName, Birthday, [Password], PhoneNumber, Email, Gender, CreatedAt, [Status], Avatar, LoyalPoint)
@@ -99,3 +99,30 @@ INSERT INTO Addresses(CustomerID, IsDefault, Street, Province, District, Ward) V
 
 
 -- Insert into [Orders] (CustomerID, FullName, PhoneNumber, [Address], TotalAmount, Discount) values ()
+
+-- Insert into Employees
+INSERT INTO Employees (FullName, Birthday, [Password], PhoneNumber, Email, Gender, Avatar, RoleID)
+VALUES 
+('Nguyen Van A', '1990-01-01', 'encrypted_password_here', '0123456789', 'nguyen.vana@example.com', 'Male', 'avatar_image_url_here', 1);
+
+-- Insert into InventoryStatus
+INSERT INTO InventoryStatus (StatusID, [Description])
+VALUES
+(1, N'Import Inventory'), 
+(2, N'Export Inventory'), 
+(3, N'Imported Shop'),
+(4, N'Import Shop'),
+(5, N'Return to Inventory');
+
+-- Insert into InventoryHistories
+INSERT INTO InventoryHistories (PackageID, SKU, EmployeeID, TransactionAt, StatusID, Price, Quantity, Note)
+VALUES (1, 1, 1, GETDATE(), 1, 25000000, 10, 'First package');
+
+-- Insert into ShopProducts
+INSERT INTO InventoryHistories (PackageID, SKU, EmployeeID, TransactionAt, StatusID, Price, Quantity, Note)
+VALUES (1, 1, 1, GETDATE(), 2, 35000000, 10, 'First package');
+
+update InventoryHistories set StatusID = 3 where PackageID = 1 AND SKU = 1 AND StatusID = 2
+
+INSERT INTO InventoryHistories (PackageID, SKU, EmployeeID, TransactionAt, StatusID, Price, Quantity, Note)
+VALUES (1, 1, 1, GETDATE(), 4, 35000000, 10, 'First package');

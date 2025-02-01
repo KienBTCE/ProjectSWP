@@ -36,14 +36,14 @@ GO
 -- CREATE Roles TABLE
 
 CREATE TABLE Roles (
-    RoleID INT IDENTITY(1,1) PRIMARY KEY,
+    RoleID INT PRIMARY KEY,
     [Name] NVARCHAR(50)
 );
 
 -- CREATE Employees TABLE
 
 CREATE TABLE Employees (
-    AID INT IDENTITY(1,1) PRIMARY KEY,
+    EmployeeID INT IDENTITY(1,1) PRIMARY KEY,
     FullName VARCHAR(255),
     Birthday DATE,
     [Password] VARCHAR(500),
@@ -102,7 +102,7 @@ CREATE TABLE Products (
 -- CREATE InventoryStatus TABLE
 
 CREATE TABLE InventoryStatus (
-    StatusID INT IDENTITY (1,1) PRIMARY KEY,
+    StatusID INT PRIMARY KEY,
 	[Description] NVARCHAR(20) NOT NULL
 );
 
@@ -132,7 +132,7 @@ CREATE TABLE InventoryHistories (
     Quantity INT NOT NULL,
 	Note TEXT,
 	FOREIGN KEY (PackageID, SKU) REFERENCES InventoryProducts(PackageID, SKU),
-	FOREIGN KEY (EmployeeID) REFERENCES Employees(AID),
+	FOREIGN KEY (EmployeeID) REFERENCES Employees(EmployeeID),
 	FOREIGN KEY (StatusID) REFERENCES InventoryStatus(StatusID)
 );
 
@@ -205,7 +205,7 @@ CREATE TABLE RatingReplies (
 	EmployeeID INT,
 	RateID INT,
 	Answer NTEXT
-	FOREIGN KEY (EmployeeID) REFERENCES Employees(AID),
+	FOREIGN KEY (EmployeeID) REFERENCES Employees(EmployeeID),
 	FOREIGN KEY (RateID) REFERENCES ProductRatings(RateID)
 
 )
