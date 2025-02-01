@@ -80,7 +80,8 @@ CREATE TABLE Suppliers (
     [Address] NTEXT NOT NULL,
     PhoneNumber VARCHAR(30),
     Email TEXT,
-    TIN NVARCHAR(15) UNIQUE
+    TIN NVARCHAR(15) UNIQUE,
+    Status NVARCHAR(15)
 );
 
 -- CREATE Products TABLE
