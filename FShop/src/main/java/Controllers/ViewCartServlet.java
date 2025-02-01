@@ -81,13 +81,20 @@ public class ViewCartServlet extends HttpServlet {
         ProductDAO p = new ProductDAO();
         HttpSession session = request.getSession();
         if (session.getAttribute("customer") != null) {
+
             Customer cus = (Customer) session.getAttribute("customer");
             CartDAO c = new CartDAO();
             List<Cart> cartList = c.getCartOfAccountID(cus.getId());
             System.out.println(cus.getId());
-            for (Cart cart : cartList) {
-                System.out.println(cart.getFullName());
-            }
+           // List<Product> pList = p.GetAllProducts();
+//            for (Product product : pList) {
+//                for (Cart cart : cartList) {
+//                    //System.out.println(cart.getFullName());
+//                    if (product.getQuantity() == 0 && product.SKU() == cart.getProductSKU()) {
+//                        cart.setQuantity(product.getQuantity());
+//                    }
+//                }
+//            }
             session.setAttribute(
                     "cartList", cartList);
             request.getRequestDispatcher(
@@ -96,14 +103,6 @@ public class ViewCartServlet extends HttpServlet {
             // your code about Cart guest
             response.sendRedirect("shoppingCart.jsp");
         }
-        //List<Product> pList = p.GetAllProducts();
-//        for (Product product : pList) {
-//            for (Cart cart : cartList) {
-//                if (product.getQuantity() == 0 && product.getSKU() == cart.getProductSKU()) {
-//                    cart.setQuantity(product.getQuantity());
-//                }
-//            }
-//        }
 
     }
 

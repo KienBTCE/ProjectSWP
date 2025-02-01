@@ -36,7 +36,7 @@ GO
 -- CREATE Roles TABLE
 
 CREATE TABLE Roles (
-    RoleID INT IDENTITY(1,1) PRIMARY KEY,
+    RoleID INT PRIMARY KEY,
     [Name] NVARCHAR(50)
 );
 

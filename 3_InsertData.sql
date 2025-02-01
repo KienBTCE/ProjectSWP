@@ -67,9 +67,9 @@ VALUES
 -- Insert roles
 INSERT INTO [Roles] 
 VALUES 
-    ('Admin'), 
-    ('Manager'), 
-    ('Staff')
+    (1, 'Admin'), 
+    (2, 'Manager'), 
+    (3, 'Staff')
 
 -- Insert account
 INSERT INTO Customers (FullName, Birthday, [Password], PhoneNumber, Email, Gender, CreatedAt, [Status], Avatar, LoyalPoint)

@@ -50,6 +50,8 @@ Where CustomerID = 1
 
 SELECT * FROM Wards WHERE DistrictCode LIKE '944'
 
+SELECT * FROM ShopProducts
+
 SELECT * 
 FROM Suppliers;
 
