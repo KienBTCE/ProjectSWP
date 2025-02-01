@@ -136,35 +136,6 @@ CREATE TABLE InventoryHistories (
 	FOREIGN KEY (StatusID) REFERENCES InventoryStatus(StatusID)
 );
 
-CREATE PROCEDURE InsertInventoryAndHistory
-    @SKU INT,
-    @SupplierID INT,
-    @ProductCost BIGINT,
-    @Stock INT,
-    @EmployeeID INT,
-    @StatusID INT,
-    @Price BIGINT,
-    @Quantity INT,
-    @Note TEXT
-AS
-BEGIN
-    SET NOCOUNT ON;
-    BEGIN TRANSACTION;
-
-    DECLARE @PackageID INT;
-
-    INSERT INTO InventoryProducts (SKU, SupplierID, ProductCost, Stock)
-    VALUES (@SKU, @SupplierID, @ProductCost, @Stock);
-
-    SET @PackageID = SCOPE_IDENTITY();
-
-    INSERT INTO InventoryHistories (PackageID, SKU, EmployeeID, TransactionAt, StatusID, Price, Quantity, Note)
-    VALUES (@PackageID, @SKU, @EmployeeID, GETDATE(), @StatusID, @Price, @Quantity, @Note);
-
-    COMMIT TRANSACTION;
-END;
-
-
 --CREATE ShopProducts TABLE
 
 CREATE TABLE ShopProducts (
@@ -375,7 +346,6 @@ CREATE TABLE Addresses (
 	FOREIGN KEY (Province) REFERENCES Provinces(Code)
 
 );
-
 /*******************************************************************************
    Schema for UI/UX Testing
 ********************************************************************************/
