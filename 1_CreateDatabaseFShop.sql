@@ -81,7 +81,7 @@ CREATE TABLE Suppliers (
     PhoneNumber VARCHAR(30),
     Email TEXT,
     TIN NVARCHAR(15) UNIQUE,
-    Status NVARCHAR(15)
+    Status INT
 );
 
 -- CREATE Products TABLE
