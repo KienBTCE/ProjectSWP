@@ -75,6 +75,7 @@
 
                 <!-- Nội dung động -->
                 <main id="content" class="content">
+                    <jsp:include page="address.jsp"></jsp:include>
                     <jsp:include page="profile.jsp"></jsp:include>
                     </main>
                 </div>
