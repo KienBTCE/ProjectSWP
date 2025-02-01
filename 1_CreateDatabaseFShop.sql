@@ -79,7 +79,8 @@ CREATE TABLE Suppliers (
     [Name] NVARCHAR(255) NOT NULL,
     [Address] NTEXT NOT NULL,
     PhoneNumber VARCHAR(30),
-    Email TEXT
+    Email TEXT,
+    TIN NVARCHAR(15) UNIQUE
 );
 
 -- CREATE Products TABLE
