@@ -92,6 +92,7 @@
                         <label class="form-label">Phone Number:</label>
                         <p>
                             ********<span id="phoneDisplay">${sessionScope.customer.getPhoneNumber().substring(sessionScope.customer.getPhoneNumber().length()-2)}</span> 
+                            <input id="phoneInput" name="phoneNumber" type="tel" value="${sessionScope.customer.getPhoneNumber()}" hidden>
                             <button type="button" onclick="openModal()">Change</button>
                         </p>
                     </div>
@@ -148,14 +149,14 @@
         </form>
 
         <!-- Popup nh?p s? ?i?n tho?i -->
-        <form id="phoneModal" class="phone" action="updateProfile" method="post" onsubmit="return updatePhone(event)">
+        <div id="phoneModal" class="phone">
             <div class="phone-content">
                 <span class="close-phone" onclick="closeModal()">&times;</span>
                 <h3>Update Phone Number</h3>
                 <input type="tel" id="newPhoneNumber" name="phoneNumber" class="form-control" placeholder="Enter new phone number">
-                <button type="submit" class="mt-2 btn btn-primary">Save</button>
+                <button onclick="updatePhone()" class="mt-2 btn btn-primary">Save</button>
             </div>
-        </form>
+        </div>
 
     </body>
     <script>
@@ -176,16 +177,20 @@
             document.getElementById("phoneModal").style.display = "none";
         }
 
-        function updatePhone(event) {
+        function updatePhone() {
             let newPhone = document.getElementById("newPhoneNumber").value;
+
             if (!newPhone.match(/^\d{10}$/)) {
                 alert("Invalid phone number. Please enter a 10-digit number.");
-                event.preventDefault();
-                return false;
+                return;
             }
+
+            // C?p nh?t s? ?i?n tho?i vào giao di?n
             document.getElementById("phoneDisplay").innerText = newPhone.slice(-2);
+            document.getElementById("phoneInput").value = newPhone;
+
+            // ?óng modal
             closeModal();
-            return true;
         }
     </script>   
 </html>
