@@ -4,6 +4,8 @@
  */
 package Controllers;
 
+import DAOs.CustomerDAO;
+import Models.Customer;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -62,6 +64,10 @@ public class ViewProfileServlet extends HttpServlet {
         if (session.getAttribute("customer") == null) {
             response.sendRedirect("/customerLogin");
         } else {
+            CustomerDAO ctmDAO = new CustomerDAO();
+            Customer customer = (Customer)session.getAttribute("customer");
+            Customer ctm = ctmDAO.getCustomerById(customer.getId());
+            session.setAttribute("customer", ctm);
             request.getRequestDispatcher("myInfor.jsp").forward(request, response);
         }
     }

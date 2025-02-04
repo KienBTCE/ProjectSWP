@@ -42,7 +42,37 @@ public class CustomerDAO extends DBContext {
             throw new RuntimeException("MD5 algorithm not found!", e);
         }
     }
+    
+    public Customer getCustomerById(int id){
+        String sql = "SELECT * FROM Customers WHERE CustomerID = ?;";
+        try ( PreparedStatement ps = connector.prepareStatement(sql)) {
+            ps.setInt(1, id);
+            try ( ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    return new Customer(
+                            rs.getInt("CustomerID"),
+                            rs.getString("FullName"),
+                            null,
+                            rs.getString("Birthday"),
+                            rs.getString("Gender"),
+                            rs.getString("PhoneNumber"),
+                            rs.getString("Email"),
+                            rs.getString("CreatedAt"),
+                            rs.getString("Status"),
+                            rs.getString("Avatar"),
+                            rs.getDouble("LoyalPoint")
+                    );
+                }
+            }
+        } catch (SQLException e) {
+            System.err.println(e.getMessage());
+        } catch (Exception e) {
+            System.err.println(e.getMessage());
+        }
 
+        return null; // Không tìm thấy khách hàng
+    }
+    
     public Customer getCustomerLogin(String email, String password) {
         String sql = "SELECT * FROM Customers WHERE Email = ? AND Password = ?";
         try ( PreparedStatement ps = connector.prepareStatement(sql)) {
