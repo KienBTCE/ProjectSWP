@@ -209,6 +209,12 @@ CREATE TABLE RatingReplies (
 	FOREIGN KEY (RateID) REFERENCES ProductRatings(RateID)
 
 )
+-- CREATE OrderStatus TABLE
+
+CREATE TABLE OrderStatus(
+	ID INT Primary key,
+	[Status] NTEXT
+)
 
 -- CREATE Orders TABLE
 
@@ -220,10 +226,11 @@ CREATE TABLE Orders (
     PhoneNumber VARCHAR(15),
     OrderDate DATETIME DEFAULT GETDATE(),
     DeliveredDate DATETIME,
-    [Status] VARCHAR(255) NOT NULL DEFAULT 'Ordered Successful',
+    [Status] INT NOT NULL,
     TotalAmount BIGINT,
     Discount DECIMAL(10,2),
-    FOREIGN KEY (CustomerID) REFERENCES Customers(CustomerID)
+    FOREIGN KEY (CustomerID) REFERENCES Customers(CustomerID),
+	FOREIGN KEY ([Status]) REFERENCES OrderStatus (ID)
 );
 
 -- CREATE OrderDetails TABLE

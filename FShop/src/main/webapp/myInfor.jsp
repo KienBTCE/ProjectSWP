@@ -74,45 +74,46 @@
                 </aside>
 
                 <!-- Nội dung động -->
-                <main id="content" class="content">
-                    <jsp:include page="address.jsp"></jsp:include>
+                <div id="content" class="content">
                     <jsp:include page="profile.jsp"></jsp:include>
-                    </main>
+                    <jsp:include page="address.jsp"></jsp:include>
+
+                        </main>
+                    </div>
                 </div>
-            </div>
 
-        <jsp:include page="footer.jsp"></jsp:include>
+            <jsp:include page="footer.jsp"></jsp:include>
 
-        <!-- Bootstrap JS -->
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+            <!-- Bootstrap JS -->
+            <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
-        <!-- Script to load content dynamically -->
-        <script>
-            document.addEventListener("DOMContentLoaded", function () {
-                function loadPage(page) {
-                    fetch("/" + page)
-                            .then(response => response.text())
-                            .then(data => {
-                                document.getElementById("content").innerHTML = data;
-                            })
-                            .catch(error => console.error("Error loading page:", error));
-                }
+            <!-- Script to load content dynamically -->
+            <script>
+                document.addEventListener("DOMContentLoaded", function () {
+                    function loadPage(page) {
+                        fetch("/" + page)
+                                .then(response => response.text())
+                                .then(data => {
+                                    document.getElementById("content").innerHTML = data;
+                                })
+                                .catch(error => console.error("Error loading page:", error));
+                    }
 
-                document.querySelectorAll(".sidebar-link").forEach(link => {
-                    link.addEventListener("click", function (event) {
-                        event.preventDefault();
-                        document.querySelectorAll(".sidebar-link").forEach(link => link.classList.remove("active"));
-                        this.classList.add("active");
+                    document.querySelectorAll(".sidebar-link").forEach(link => {
+                        link.addEventListener("click", function (event) {
+                            event.preventDefault();
+                            document.querySelectorAll(".sidebar-link").forEach(link => link.classList.remove("active"));
+                            this.classList.add("active");
 
-                        let page = this.getAttribute("data-page");
-                        loadPage(page);
+                            let page = this.getAttribute("data-page");
+                            loadPage(page);
+                        });
                     });
-                });
 
-                // Load default page (Profile)
-                loadPage("profile.jsp");
-            });
-        </script>
+                    // Load default page (Profile)
+                    loadPage("profile.jsp");
+                });
+            </script>
 
     </body>
 </html>

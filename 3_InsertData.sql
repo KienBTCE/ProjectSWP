@@ -114,6 +114,15 @@ VALUES
 (4, N'Import Shop'),
 (5, N'Return to Inventory');
 
+-- Insert into OrderStatus
+
+INSERT INTO OrderStatus VALUES 
+(1, 'Waiting for acceptance'),
+(2, 'Transport'),
+(3, 'Waiting for delivery'),
+(4, 'Delivered'),
+(5, 'Canceled')
+
 -- Insert into InventoryHistories
 INSERT INTO InventoryHistories (PackageID, SKU, EmployeeID, TransactionAt, StatusID, Price, Quantity, Note)
 VALUES (1, 1, 1, GETDATE(), 1, 25000000, 10, 'First package');

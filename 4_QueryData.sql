@@ -6,9 +6,23 @@ LEFT JOIN Wards w ON w.DistrictCode = d.Code
 WHERE p.Code = 94 AND d.Code = 944
 
 -- Query Orders ordered by orderID
-SELECT * 
-FROM Orders
-ORDER BY orderID DESC;
+SELECT o.OrderID, od.SKU, MIN(i.[Image])
+FROM Orders o 
+LEFT JOIN OrderDetails od ON o.OrderID = od.OrderID
+LEFT JOIN Products i ON od.SKU = i.SKU 
+GROUP BY o.OrderID, od.SKU, od.Quantity
+GO
+WITH RankedProducts AS (
+    SELECT SKU, FullName, Image,
+           ROW_NUMBER() OVER (PARTITION BY SKU ORDER BY SKU) AS rn
+    FROM Products
+)
+SELECT SKU, FullName, Image
+FROM RankedProducts
+WHERE rn = 1;
+GO
+SELECT * FROM Orders o 
+LEFT JOIN OrderStatus ot ON o.Status = ot.ID 
 
 -- Query OrderDetails
 SELECT * 

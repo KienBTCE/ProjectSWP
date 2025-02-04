@@ -39,8 +39,8 @@ public class OrderDAO extends DBContext {
             data += "N'" + o.getAddress() + "',";
             data += o.getTotalAmount() + "";
 
-            PreparedStatement pre = connector.prepareStatement("Insert into [Orders] (CustomerID, FullName, PhoneNumber, [Address], TotalAmount)"
-                    + " values (" + data + ")");
+            PreparedStatement pre = connector.prepareStatement("Insert into [Orders] (CustomerID, FullName, PhoneNumber, [Address], TotalAmount, [Status])"
+                    + " values (" + data + ", 1)");
             pre.executeUpdate();
         } catch (SQLException e) {
             System.out.println(e);

@@ -42,6 +42,32 @@
                 text-align: center;
                 padding: 20px;
             }
+
+            /* CSS cho Modal */
+            .phone {
+                display: none;
+                position: fixed;
+                z-index: 1000;
+                left: 0;
+                top: 0;
+                width: 100%;
+                height: 100%;
+                background-color: rgba(0,0,0,0.4);
+            }
+            .phone-content {
+                background-color: white;
+                margin: 10% auto;
+                padding: 20px;
+                width: 300px;
+                border-radius: 5px;
+                box-shadow: 0 2px 10px rgba(0,0,0,0.3);
+                text-align: center;
+            }
+            .close-phone {
+                float: right;
+                font-size: 24px;
+                cursor: pointer;
+            }
         </style>
     </head>
     <body>
@@ -59,12 +85,15 @@
 
                     <div class="mb-3">
                         <label class="form-label">Name:</label>
-                        <input type="text" class="form-control" name="fullname" value="${sessionScope.customer.getFullName()}" readonly>
+                        <input type="text" class="form-control" name="fullname" value="${sessionScope.customer.getFullName()}" >
                     </div>
 
                     <div class="mb-3">
                         <label class="form-label">Phone Number:</label>
-                        <p>********${sessionScope.customer.getPhoneNumber().substring(sessionScope.customer.getPhoneNumber().length()-2)} <a href="#">Change</a></p>
+                        <p>
+                            ********<span id="phoneDisplay">${sessionScope.customer.getPhoneNumber().substring(sessionScope.customer.getPhoneNumber().length()-2)}</span> 
+                            <button type="button" onclick="openModal()">Change</button>
+                        </p>
                     </div>
 
                     <div class="mb-3">
@@ -83,7 +112,7 @@
                                 <select class="form-select" name="day">
                                     <option>Day</option>
                                     <c:forEach var="i" begin="1" end="31">
-                                        <option ${sessionScope.customer.getBirthday() != null && sessionScope.customer.getBirthday().split("-")[1].equals(String.format("%02d", i)) ? 'selected' : ''}>${i}</option>
+                                        <option ${sessionScope.customer.getBirthday() != null && sessionScope.customer.getBirthday().split("-")[2].equals(String.format("%02d", i)) ? 'selected' : ''}>${i}</option>
                                     </c:forEach>
                                 </select>
                             </div>
@@ -91,7 +120,7 @@
                                 <select class="form-select" name="month">
                                     <option>Month</option>
                                     <c:forEach var="i" begin="1" end="12">
-                                        <option ${sessionScope.customer.getBirthday() != null && sessionScope.customer.getBirthday().split("-")[2].equals(String.format("%02d", i)) ? 'selected' : ''}>${i}</option>
+                                        <option ${sessionScope.customer.getBirthday() != null && sessionScope.customer.getBirthday().split("-")[1].equals(String.format("%02d", i)) ? 'selected' : ''}>${i}</option>
                                     </c:forEach>
                                 </select>
                             </div>
@@ -118,6 +147,15 @@
             <button type="submit" class="btn btn-danger">Save</button>
         </form>
 
+        <!-- Popup nh?p s? ?i?n tho?i -->
+        <form id="phoneModal" class="phone" action="updateProfile" method="post" onsubmit="return updatePhone(event)">
+            <div class="phone-content">
+                <span class="close-phone" onclick="closeModal()">&times;</span>
+                <h3>Update Phone Number</h3>
+                <input type="tel" id="newPhoneNumber" name="phoneNumber" class="form-control" placeholder="Enter new phone number">
+                <button type="submit" class="mt-2 btn btn-primary">Save</button>
+            </div>
+        </form>
 
     </body>
     <script>
@@ -130,6 +168,24 @@
             reader.readAsDataURL(event.target.files[0]);
         }
 
+        function openModal() {
+            document.getElementById("phoneModal").style.display = "block";
+        }
+
+        function closeModal() {
+            document.getElementById("phoneModal").style.display = "none";
+        }
+
+        function updatePhone(event) {
+            let newPhone = document.getElementById("newPhoneNumber").value;
+            if (!newPhone.match(/^\d{10}$/)) {
+                alert("Invalid phone number. Please enter a 10-digit number.");
+                event.preventDefault();
+                return false;
+            }
+            document.getElementById("phoneDisplay").innerText = newPhone.slice(-2);
+            closeModal();
+            return true;
+        }
     </script>   
 </html>
-

@@ -16,6 +16,9 @@ public class Order {
     String phone;
     String address;
     long totalAmount;
+    String orderDate;
+    String deliveredDate;
+    int status;
     
 
     public Order(String fullName, String phone, String address) {
@@ -80,4 +83,29 @@ public class Order {
         this.accountID = accountID;
     }
 
+    public String getOrderDate() {
+        return orderDate;
+    }
+
+    public void setOrderDate(String orderDate) {
+        this.orderDate = orderDate;
+    }
+
+    public String getDeliveredDate() {
+        return deliveredDate;
+    }
+
+    public void setDeliveredDate(String deliveredDate) {
+        this.deliveredDate = deliveredDate;
+    }
+
+    public int getStatus() {
+        return status;
+    }
+
+    public void setStatus(int status) {
+        this.status = status;
+    }
+    
+    
 }

@@ -6,173 +6,181 @@
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>Quản lý Địa Chỉ</title>
-        <style>
-            body {
-                font-family: Arial, sans-serif;
-            }
-
-            .header {
-                display: flex;
-                justify-content: space-between;
-                align-items: center;
-                border-bottom: 1px solid #ddd;
-                padding: 15px 15px 15px 0px;
-            }
-
-            .address {
-                border-bottom: 1px solid #ddd;
-                padding: 10px 0;
-                display: flex;
-                justify-content: space-between;
-                align-items: center;
-            }
-
-            .default {
-                color: red;
-                font-weight: bold;
-            }
-
-            .btn {
-                padding: 5px 5px;
-                cursor: pointer;
-                border: none;
-                margin-left: 5px;
-            }
-
-            .btn-default {
-                background: #f5f5f5;
-            }
-
-            .btn-delete {
-                color: red;
-                background: none;
-            }
-
-            .btn-update {
-                background: blue;
-                color: white;
-            }
-
-            .btn-add {
-                background: red;
-                color: white;
-            }
-
-            .actions {
-                display: flex;
-                flex-direction: column;
-            }
-
-            .actions .btn {
-                margin-bottom: 5px;
-            }
-
-            .btn1 {
-                display: flex;
-                flex-direction: row;
-            }
-
-            /* Popup Modal Styles */
-            .modal {
-                display: none;
-                position: fixed;
-                z-index: 1;
-                left: 0;
-                top: 0;
-                width: 100%;
-                height: 100%;
-                overflow: auto;
-                background-color: rgb(0, 0, 0);
-                background-color: rgba(0, 0, 0, 0.4);
-                padding-top: 60px;
-            }
-
-            .modal-content {
-                background-color: #fefefe;
-                margin: 5% auto;
-                padding: 20px;
-                border: 1px solid #888;
-                width: 80%;
-            }
-
-            .close {
-                color: #aaa;
-                font-size: 28px;
-                font-weight: bold;
-                float: right;
-            }
-
-            .close:hover,
-            .close:focus {
-                color: black;
-                text-decoration: none;
-                cursor: pointer;
-            }
-        </style>
     </head>
 
-    <body>
+    <body style="font-family: Arial, sans-serif;">
+
         <div class="container">
-            <div class="header">
+            <div class="header" style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #ddd; padding: 15px 15px 15px 0px;">
                 <h2>My addresses</h2>
-                <button class="btn btn-add" onclick="openAddModal()">+ Add new address</button>
+                <button class="btn btn-add" style="background: red; color: white; padding: 5px 5px; cursor: pointer; border: none;" onclick="openAddModal()">+ Add new address</button>
             </div>
+
+            <h4 style="padding: 15px 0 0 0">Address</h4>
+
             <div id="addressList">
                 <br>
-                <h4>Address</h4>
-                <div class="address">
+                <div class="address" style="border-bottom: 1px solid #ddd; display: flex; justify-content: space-between; align-items: center;">
                     <div>
                         <strong>Bùi Minh Nhựt</strong> (+84) 349 311 805
                         <p>Nguyễn Văn Trường, Phường Long Tuyền, Quận Bình Thủy, Cần Thơ</p>
-                        <span class="default">Default</span>
+                        <span class="default" style="color: red; font-weight: bold;">Default</span>
                     </div>
-                    <div class="actions">
-                        <div class="btn1">
-                            <button class="btn btn-update" onclick="openUpdateModal()">Update</button>
-                            <button class="btn btn-delete">Delete</button>
+                    <div class="actions" style="display: flex; flex-direction: column;">
+                        <div class="btn1" style="display: flex; flex-direction: row;">
+                            <button class="btn btn-update" style="color: blue; padding: 5px 5px; cursor: pointer; border: none; margin-left: 5px;" onclick="openUpdateModal()">Update</button>
+                            <button class="btn btn-delete" style="color: red; background: none; padding: 5px 5px; cursor: pointer; border: none; margin-left: 5px;">Delete</button>
                         </div>
-                        <button class="btn btn-default" onclick="setDefault(this)">Set as default</button>
+                        <button class="btn btn-default" style="background: #f5f5f5; padding: 5px 5px; cursor: pointer; border: none; margin-left: 5px;" onclick="setDefault(this)">Set as default</button>
                     </div>
                 </div>
             </div>
         </div>
 
         <!-- Add Address Modal -->
-        <div id="addModal" class="modal">
-            <div class="modal-content">
-                <span class="close" onclick="closeAddModal()">&times;</span>
+        <div id="addModal" class="modal" style="display: none; position: fixed; z-index: 1; left: 0; top: 0; width: 100%; height: 100%; overflow: auto; background-color: rgba(0, 0, 0, 0.4); padding-top: 60px;">
+            <div class="modal-content" style="background-color: #fefefe; margin: 5% auto; padding: 20px; border: 1px solid #888; width: 60%;">
+                <span class="close" style="color: #aaa; font-size: 28px; font-weight: bold; float: right; cursor: pointer;" onclick="closeAddModal()">&times;</span>
                 <h2>Add New Address</h2>
-                <form>
-                    <label for="name">Name:</label><br>
-                    <input type="text" id="name" name="name"><br><br>
-                    <label for="phone">Phone:</label><br>
-                    <input type="text" id="phone" name="phone"><br><br>
-                    <label for="address">Address:</label><br>
-                    <input type="text" id="address" name="address"><br><br>
-                    <button type="submit" class="btn btn-add">Add Address</button>
+                <form style="background-color: #fff; padding: 20px; border-radius: 8px; box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); max-width: 800px; margin: auto; display: flex; flex-wrap: wrap;">
+                    <div style="margin-bottom: 16px; display: flex; flex-wrap: wrap; align-items: center;">
+                        <label for="name" style="font-weight: bold; margin-right: 10px; color: #333; width: 120px;">Name:</label>
+                        <input type="text" id="name" name="name" style="padding: 10px; margin: 8px 0; border: 1px solid #ddd; border-radius: 4px; font-size: 16px; width: 100%; box-sizing: border-box; max-width: 300px;">
+                    </div>
+
+                    <div style="margin-bottom: 16px; display: flex; flex-wrap: wrap; align-items: center;">
+                        <label for="phone" style="font-weight: bold; margin-right: 10px; color: #333; width: 120px;">Phone:</label>
+                        <input type="text" id="phone" name="phone" style="padding: 10px; margin: 8px 0; border: 1px solid #ddd; border-radius: 4px; font-size: 16px; width: 100%; box-sizing: border-box; max-width: 300px;">
+                    </div>
+
+                    <div style="margin-bottom: 16px; display: flex; flex-wrap: wrap; align-items: center;">
+                        <label for="province" style="font-weight: bold; margin-right: 10px; color: #333; width: 120px;">Tỉnh:</label>
+                        <select id="searchable-combo" style="padding: 10px; margin: 8px 0; border: 1px solid #ddd; border-radius: 4px; font-size: 16px; width: 100%; max-width: 200px; box-sizing: border-box;">
+                            <option value="">Chọn tỉnh</option>
+                        </select>
+                    </div>
+
+                    <div style="margin-bottom: 16px; display: flex; flex-wrap: wrap; align-items: center;">
+                        <label for="district" style="font-weight: bold; margin-right: 10px; color: #333; width: 120px;">Huyện:</label>
+                        <select id="searchable-combo" style="padding: 10px; margin: 8px 0; border: 1px solid #ddd; border-radius: 4px; font-size: 16px; width: 100%; max-width: 200px; box-sizing: border-box;">
+                            <option value="">Chọn huyện</option>
+                        </select>
+                    </div>
+
+                    <div style="margin-bottom: 16px; display: flex; flex-wrap: wrap; align-items: center;">
+                        <label for="ward" style="font-weight: bold; margin-right: 10px; color: #333; width: 120px;">Xã:</label>
+                        <select id="searchable-combo" style="padding: 10px; margin: 8px 0; border: 1px solid #ddd; border-radius: 4px; font-size: 16px; width: 100%; max-width: 200px; box-sizing: border-box;">
+                            <option value="">Chọn xã</option>
+                        </select>
+                    </div>
+
+                    <div style="margin-bottom: 16px; display: flex; flex-wrap: wrap; align-items: center;">
+                        <button type="submit" style="padding: 12px; background-color: #ff4d4d; border: none; color: white; font-size: 16px; cursor: pointer; border-radius: 4px; width: 100%;">Add Address</button>
+                    </div>
                 </form>
             </div>
         </div>
 
         <!-- Update Address Modal -->
-        <div id="updateModal" class="modal">
-            <div class="modal-content">
-                <span class="close" onclick="closeUpdateModal()">&times;</span>
+        <div id="updateModal" class="modal" style="display: none; position: fixed; z-index: 1; left: 0; top: 0; width: 100%; height: 100%; overflow: auto; background-color: rgba(0, 0, 0, 0.4); padding-top: 60px;">
+            <div class="modal-content" style="background-color: #fefefe; margin: 5% auto; padding: 20px; border: 1px solid #888; width: 60%;">
+                <span class="close" style="color: #aaa; font-size: 28px; font-weight: bold; float: right; cursor: pointer;" onclick="closeUpdateModal()">&times;</span>
                 <h2>Update Address</h2>
-                <form>
-                    <label for="updateName">Name:</label><br>
-                    <input type="text" id="updateName" name="updateName"><br><br>
-                    <label for="updatePhone">Phone:</label><br>
-                    <input type="text" id="updatePhone" name="updatePhone"><br><br>
-                    <label for="updateAddress">Address:</label><br>
-                    <input type="text" id="updateAddress" name="updateAddress"><br><br>
-                    <button type="submit" class="btn btn-update">Update Address</button>
+                <form style="background-color: #fff; padding: 20px; border-radius: 8px; box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); max-width: 800px; margin: auto; display: flex; flex-wrap: wrap;">
+                    <div style="margin-bottom: 16px; display: flex; flex-wrap: wrap; align-items: center;">
+                        <label for="name" style="font-weight: bold; margin-right: 10px; color: #333; width: 120px;">Name:</label>
+                        <input type="text" id="name" name="name" style="padding: 10px; margin: 8px 0; border: 1px solid #ddd; border-radius: 4px; font-size: 16px; width: 100%; box-sizing: border-box; max-width: 300px;">
+                    </div>
+
+                    <div style="margin-bottom: 16px; display: flex; flex-wrap: wrap; align-items: center;">
+                        <label for="phone" style="font-weight: bold; margin-right: 10px; color: #333; width: 120px;">Phone:</label>
+                        <input type="text" id="phone" name="phone" style="padding: 10px; margin: 8px 0; border: 1px solid #ddd; border-radius: 4px; font-size: 16px; width: 100%; box-sizing: border-box; max-width: 300px;">
+                    </div>
+
+                    <div style="margin-bottom: 16px; display: flex; flex-wrap: wrap; align-items: center;">
+                        <label for="province" style="font-weight: bold; margin-right: 10px; color: #333; width: 120px;">Tỉnh:</label>
+                        <select id="searchable-combo" style="padding: 10px; margin: 8px 0; border: 1px solid #ddd; border-radius: 4px; font-size: 16px; width: 100%; max-width: 200px; box-sizing: border-box;">
+                            <option value="">Chọn tỉnh</option>
+                        </select>
+                    </div>
+
+                    <div style="margin-bottom: 16px; display: flex; flex-wrap: wrap; align-items: center;">
+                        <label for="district" style="font-weight: bold; margin-right: 10px; color: #333; width: 120px;">Huyện:</label>
+                        <select id="searchable-combo" style="padding: 10px; margin: 8px 0; border: 1px solid #ddd; border-radius: 4px; font-size: 16px; width: 100%; max-width: 200px; box-sizing: border-box;">
+                            <option value="">Chọn huyện</option>
+                        </select>
+                    </div>
+
+                    <div style="margin-bottom: 16px; display: flex; flex-wrap: wrap; align-items: center;">
+                        <label for="ward" style="font-weight: bold; margin-right: 10px; color: #333; width: 120px;">Xã:</label>
+                        <select id="searchable-combo" style="padding: 10px; margin: 8px 0; border: 1px solid #ddd; border-radius: 4px; font-size: 16px; width: 100%; max-width: 200px; box-sizing: border-box;">
+                            <option value="">Chọn xã</option>
+                        </select>
+                    </div>
+
+                    <div style="margin-bottom: 16px; display: flex; flex-wrap: wrap; align-items: center;">
+                        <button type="submit" style="padding: 12px; background-color: #ff4d4d; border: none; color: white; font-size: 16px; cursor: pointer; border-radius: 4px; width: 100%;">Update Address</button>
+                    </div>
                 </form>
             </div>
         </div>
 
         <script>
-            // Open and close modal functions
+
+            $(document).ready(function () {
+                $('#searchable-combo').select2({
+                    placeholder: "Choose products",
+                    allowClear: true
+                });
+            }
+            );
+
+            const locationData = {
+                "Hà Nội": {
+                    "Ba Đình": ["Điện Biên", "Đội Cấn", "Kim Mã"],
+                    "Hoàn Kiếm": ["Hàng Bạc", "Hàng Đào", "Hàng Trống"]
+                },
+                "Hồ Chí Minh": {
+                    "Quận 1": ["Bến Nghé", "Bến Thành", "Phạm Ngũ Lão"],
+                    "Quận 3": ["Võ Thị Sáu", "Phường 7", "Phường 8"]
+                }
+            };
+
+            $(document).ready(function () {
+                // Kích hoạt Select2
+                $('#province, #district, #ward').select2({placeholder: "Chọn một mục", allowClear: true});
+
+                // Nạp danh sách tỉnh
+                Object.keys(locationData).forEach(province => {
+                    $('#province').append(new Option(province, province));
+                });
+
+                // Khi chọn tỉnh
+                $('#province').on('change', function () {
+                    let selectedProvince = $(this).val();
+                    $('#district').empty().append(new Option("Chọn huyện", ""));
+                    $('#ward').empty().append(new Option("Chọn xã", ""));
+
+                    if (selectedProvince) {
+                        Object.keys(locationData[selectedProvince]).forEach(district => {
+                            $('#district').append(new Option(district, district));
+                        });
+                    }
+                });
+
+                // Khi chọn huyện
+                $('#district').on('change', function () {
+                    let selectedProvince = $('#province').val();
+                    let selectedDistrict = $(this).val();
+                    $('#ward').empty().append(new Option("Chọn xã", ""));
+
+                    if (selectedProvince && selectedDistrict) {
+                        locationData[selectedProvince][selectedDistrict].forEach(ward => {
+                            $('#ward').append(new Option(ward, ward));
+                        });
+                    }
+                });
+            });
             function openAddModal() {
                 document.getElementById("addModal").style.display = "block";
             }
@@ -189,16 +197,16 @@
                 document.getElementById("updateModal").style.display = "none";
             }
 
-            // Set Default Address
             function setDefault(button) {
                 document.querySelectorAll('.default').forEach(el => el.remove());
                 let span = document.createElement('span');
                 span.classList.add('default');
                 span.innerText = 'Mặc định';
+                span.style.color = 'red';
+                span.style.fontWeight = 'bold';
                 button.closest('.address').querySelector('div').appendChild(span);
             }
         </script>
-    </body>
 
+    </body>
 </html>
-    
