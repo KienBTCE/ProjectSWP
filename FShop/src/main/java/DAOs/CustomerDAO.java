@@ -9,6 +9,7 @@ import Models.Address;
 import Models.Customer;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -18,7 +19,10 @@ import java.time.LocalDate;
  *
  * @author TuongMPCE180644
  */
-public class CustomerDAO extends DBContext {
+public class CustomerDAO {
+
+    DBContext db = new DBContext();
+    Connection connector = db.getConnection();
 
     private String getMD5(String input) {
         try {
@@ -42,8 +46,8 @@ public class CustomerDAO extends DBContext {
             throw new RuntimeException("MD5 algorithm not found!", e);
         }
     }
-    
-    public Customer getCustomerById(int id){
+
+    public Customer getCustomerById(int id) {
         String sql = "SELECT * FROM Customers WHERE CustomerID = ?;";
         try ( PreparedStatement ps = connector.prepareStatement(sql)) {
             ps.setInt(1, id);
@@ -72,7 +76,7 @@ public class CustomerDAO extends DBContext {
 
         return null; // Không tìm thấy khách hàng
     }
-    
+
     public Customer getCustomerLogin(String email, String password) {
         String sql = "SELECT * FROM Customers WHERE Email = ? AND Password = ?";
         try ( PreparedStatement ps = connector.prepareStatement(sql)) {
@@ -159,12 +163,10 @@ public class CustomerDAO extends DBContext {
         }
         return false;
     }
-    
-    
-    
+
     public static void main(String[] args) {
         CustomerDAO c = new CustomerDAO();
-        
+
         System.out.println(LocalDate.now());
         System.out.println(c.getDefaultAddress(1).getWardNameEn());
     }

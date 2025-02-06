@@ -15,9 +15,10 @@ import java.sql.SQLException;
  */
 public class DBContext {
 
-    protected Connection connector = null;
+    
 
-    public DBContext() {
+    public Connection getConnection() {
+        Connection connector = null;
         try {
             Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver"); // regist a class Database of Microsoft to memory
             String dbURL = "jdbc:sqlserver://localhost:1433;"
@@ -38,7 +39,9 @@ public class DBContext {
         } catch (ClassNotFoundException | SQLException ex) {
             System.out.println(ex);
         }
+        return connector;
     }
+
     public static void main(String[] args) {
         DBContext db = new DBContext();
     }

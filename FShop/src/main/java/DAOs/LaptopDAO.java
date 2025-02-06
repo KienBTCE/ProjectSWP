@@ -6,6 +6,7 @@ package DAOs;
 
 import DB.DBContext;
 import Models.Laptop;
+import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
@@ -14,11 +15,10 @@ import java.util.ArrayList;
  *
  * @author KienBTCE180180
  */
-public class LaptopDAO extends DBContext {
+public class LaptopDAO {
 
-    public LaptopDAO() {
-        super();
-    }
+    DBContext db = new DBContext();
+    Connection connector = db.getConnection();
 
     public ArrayList<Laptop> GetAllLaptops() {
         ArrayList<Laptop> list = new ArrayList<>();

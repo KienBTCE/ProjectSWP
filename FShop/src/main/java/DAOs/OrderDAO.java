@@ -6,6 +6,7 @@ package DAOs;
 
 import DB.DBContext;
 import Models.Order;
+import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -14,7 +15,10 @@ import java.sql.SQLException;
  *
  * @author NhutBMCE180569
  */
-public class OrderDAO extends DBContext {
+public class OrderDAO {
+
+    DBContext db = new DBContext();
+    Connection connector = db.getConnection();
 
     public int getNewestOrderID() {
         int id = 0;

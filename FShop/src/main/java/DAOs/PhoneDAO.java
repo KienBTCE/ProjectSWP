@@ -7,6 +7,7 @@ package DAOs;
 import DB.DBContext;
 import Models.Phone;
 import Models.Product;
+import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
@@ -16,11 +17,10 @@ import java.util.List;
  *
  * @author KienBTCE180180
  */
-public class PhoneDAO extends DBContext {
+public class PhoneDAO {
 
-    public PhoneDAO() {
-        super();
-    }
+    DBContext db = new DBContext();
+    Connection connector = db.getConnection();
 
     public ArrayList<Phone> GetAllPhones() {
         ArrayList<Phone> list = new ArrayList<>();

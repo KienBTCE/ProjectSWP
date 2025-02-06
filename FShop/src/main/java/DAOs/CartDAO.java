@@ -7,6 +7,7 @@ package DAOs;
 import DB.DBContext;
 import Models.Cart;
 import Models.Product;
+import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -17,11 +18,10 @@ import java.util.List;
  *
  * @author NhutBMCE180569
  */
-public class CartDAO extends DBContext {
+public class CartDAO {
 
-    public CartDAO() {
-        super();
-    }
+    DBContext db = new DBContext();
+    Connection connector = db.getConnection();
 
     public List<Cart> getCartOfAccountID(int accountID) {
         List<Cart> list = new ArrayList<>();

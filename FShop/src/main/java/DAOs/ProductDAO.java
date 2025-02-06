@@ -6,6 +6,7 @@ package DAOs;
 
 import DB.DBContext;
 import Models.Product;
+import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
@@ -14,11 +15,10 @@ import java.util.ArrayList;
  *
  * @author KienBTCE180180
  */
-public class ProductDAO extends DBContext {
+public class ProductDAO {
 
-    public ProductDAO() {
-        super();
-    }
+    DBContext db = new DBContext();
+    Connection connector = db.getConnection();
 
     public ArrayList<Product> GetAllProducts() {
         ArrayList<Product> list = new ArrayList<>();
