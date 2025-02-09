@@ -38,92 +38,106 @@
         </div>
 
         <!-- Add Address Modal -->
-        <div id="addModal" class="modal" style="display: none; position: fixed; z-index: 1; left: 0; top: 0; width: 100%; height: 100%; overflow: auto; background-color: rgba(0, 0, 0, 0.4); padding-top: 60px;">
-            <div class="modal-content" style="background-color: #fefefe; margin: 5% auto; padding: 20px; border: 1px solid #888; width: 60%;">
+        <div id="addModal" class="modal" style="display: none; position: fixed; z-index: 1; left: 0; top: 0; width: 100%; height: 100%; overflow: hidden; background-color: rgba(0, 0, 0, 0.4); padding-top: 60px;">
+            <div class="modal-content" style="background-color: #fff; margin: 5% auto; padding: 20px; border-radius: 8px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); width: 60%; max-width: 600px; height: auto; margin-top: 10px;">
                 <span class="close" style="color: #aaa; font-size: 28px; font-weight: bold; float: right; cursor: pointer;" onclick="closeAddModal()">&times;</span>
-                <h2>Add New Address</h2>
-                <form style="background-color: #fff; padding: 20px; border-radius: 8px; box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); max-width: 800px; margin: auto; display: flex; flex-wrap: wrap;">
-                    <div style="margin-bottom: 16px; display: flex; flex-wrap: wrap; align-items: center;">
+                <h2 style="text-align: center; font-size: 24px; color: #333;">Add New Address</h2>
+                <form style="display: flex; flex-direction: column; gap: 20px; background-color: #f9f9f9; padding: 20px; border-radius: 8px; box-shadow: 0 0 12px rgba(0, 0, 0, 0.1);">
+                    <div style="display: flex; flex-wrap: wrap; align-items: center;">
                         <label for="name" style="font-weight: bold; margin-right: 10px; color: #333; width: 120px;">Name:</label>
-                        <input type="text" id="name" name="name" style="padding: 10px; margin: 8px 0; border: 1px solid #ddd; border-radius: 4px; font-size: 16px; width: 100%; box-sizing: border-box; max-width: 300px;">
+                        <input type="text" id="name" name="name" style="padding: 10px; margin: 8px 0; border: 1px solid #ddd; border-radius: 4px; font-size: 16px; flex: 1;">
                     </div>
 
-                    <div style="margin-bottom: 16px; display: flex; flex-wrap: wrap; align-items: center;">
+                    <div style="display: flex; flex-wrap: wrap; align-items: center;">
                         <label for="phone" style="font-weight: bold; margin-right: 10px; color: #333; width: 120px;">Phone:</label>
-                        <input type="text" id="phone" name="phone" style="padding: 10px; margin: 8px 0; border: 1px solid #ddd; border-radius: 4px; font-size: 16px; width: 100%; box-sizing: border-box; max-width: 300px;">
+                        <input type="text" id="phone" name="phone" style="padding: 10px; margin: 8px 0; border: 1px solid #ddd; border-radius: 4px; font-size: 16px; flex: 1;">
                     </div>
 
-                    <div style="margin-bottom: 16px; display: flex; flex-wrap: wrap; align-items: center;">
-                        <label for="province" style="font-weight: bold; margin-right: 10px; color: #333; width: 120px;">Tỉnh:</label>
-                        <select id="searchable-combo" style="padding: 10px; margin: 8px 0; border: 1px solid #ddd; border-radius: 4px; font-size: 16px; width: 100%; max-width: 200px; box-sizing: border-box;">
-                            <option value="">Chọn tỉnh</option>
+                    <div style="display: flex; flex-wrap: wrap; align-items: center;">
+                        <label for="street" style="font-weight: bold; margin-right: 10px; color: #333; width: 120px;">Street:</label>
+                        <input type="text" id="street" name="street" style="padding: 10px; margin: 8px 0; border: 1px solid #ddd; border-radius: 4px; font-size: 16px; flex: 1;">
+                    </div>
+
+                    <div style="display: flex; flex-wrap: wrap; align-items: center;">
+                        <label for="province" style="font-weight: bold; margin-right: 10px; color: #333; width: 120px;">Province:</label>
+                        <select id="province" style="padding: 10px; margin: 8px 0; border: 1px solid #ddd; border-radius: 4px; font-size: 16px; flex: 1;">
+                            <option value="">Select Province</option>
                         </select>
                     </div>
 
-                    <div style="margin-bottom: 16px; display: flex; flex-wrap: wrap; align-items: center;">
-                        <label for="district" style="font-weight: bold; margin-right: 10px; color: #333; width: 120px;">Huyện:</label>
-                        <select id="searchable-combo" style="padding: 10px; margin: 8px 0; border: 1px solid #ddd; border-radius: 4px; font-size: 16px; width: 100%; max-width: 200px; box-sizing: border-box;">
-                            <option value="">Chọn huyện</option>
+                    <div style="display: flex; flex-wrap: wrap; align-items: center;">
+                        <label for="district" style="font-weight: bold; margin-right: 10px; color: #333; width: 120px;">District:</label>
+                        <select id="district" style="padding: 10px; margin: 8px 0; border: 1px solid #ddd; border-radius: 4px; font-size: 16px; flex: 1;">
+                            <option value="">Select District</option>
                         </select>
                     </div>
 
-                    <div style="margin-bottom: 16px; display: flex; flex-wrap: wrap; align-items: center;">
-                        <label for="ward" style="font-weight: bold; margin-right: 10px; color: #333; width: 120px;">Xã:</label>
-                        <select id="searchable-combo" style="padding: 10px; margin: 8px 0; border: 1px solid #ddd; border-radius: 4px; font-size: 16px; width: 100%; max-width: 200px; box-sizing: border-box;">
-                            <option value="">Chọn xã</option>
+                    <div style="display: flex; flex-wrap: wrap; align-items: center;">
+                        <label for="ward" style="font-weight: bold; margin-right: 10px; color: #333; width: 120px;">Ward:</label>
+                        <select id="ward" style="padding: 10px; margin: 8px 0; border: 1px solid #ddd; border-radius: 4px; font-size: 16px; flex: 1;">
+                            <option value="">Select Ward</option>
                         </select>
                     </div>
 
-                    <div style="margin-bottom: 16px; display: flex; flex-wrap: wrap; align-items: center;">
-                        <button type="submit" style="padding: 12px; background-color: #ff4d4d; border: none; color: white; font-size: 16px; cursor: pointer; border-radius: 4px; width: 100%;">Add Address</button>
+                    <div style="display: flex; justify-content: center;">
+                        <button type="submit" style="padding: 12px 20px; background-color: #ff4d4d; border: none; color: white; font-size: 16px; cursor: pointer; border-radius: 4px; width: 100%; max-width: 300px;">Add Address</button>
                     </div>
                 </form>
             </div>
         </div>
+
+
+
 
         <!-- Update Address Modal -->
-        <div id="updateModal" class="modal" style="display: none; position: fixed; z-index: 1; left: 0; top: 0; width: 100%; height: 100%; overflow: auto; background-color: rgba(0, 0, 0, 0.4); padding-top: 60px;">
-            <div class="modal-content" style="background-color: #fefefe; margin: 5% auto; padding: 20px; border: 1px solid #888; width: 60%;">
+        <div id="updateModal" class="modal" style="display: none; position: fixed; z-index: 1; left: 0; top: 0; width: 100%; height: 100%; overflow: hidden; background-color: rgba(0, 0, 0, 0.4); padding-top: 60px;">
+            <div class="modal-content" style="background-color: #fff; margin: 5% auto; padding: 20px; border-radius: 8px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); width: 60%; max-width: 600px; height: auto; margin-top: 10px;">
                 <span class="close" style="color: #aaa; font-size: 28px; font-weight: bold; float: right; cursor: pointer;" onclick="closeUpdateModal()">&times;</span>
-                <h2>Update Address</h2>
-                <form style="background-color: #fff; padding: 20px; border-radius: 8px; box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); max-width: 800px; margin: auto; display: flex; flex-wrap: wrap;">
-                    <div style="margin-bottom: 16px; display: flex; flex-wrap: wrap; align-items: center;">
+                <h2 style="text-align: center; font-size: 24px; color: #333;">Add New Address</h2>
+                <form style="display: flex; flex-direction: column; gap: 20px; background-color: #f9f9f9; padding: 20px; border-radius: 8px; box-shadow: 0 0 12px rgba(0, 0, 0, 0.1);">
+                    <div style="display: flex; flex-wrap: wrap; align-items: center;">
                         <label for="name" style="font-weight: bold; margin-right: 10px; color: #333; width: 120px;">Name:</label>
-                        <input type="text" id="name" name="name" style="padding: 10px; margin: 8px 0; border: 1px solid #ddd; border-radius: 4px; font-size: 16px; width: 100%; box-sizing: border-box; max-width: 300px;">
+                        <input type="text" id="name" name="name" style="padding: 10px; margin: 8px 0; border: 1px solid #ddd; border-radius: 4px; font-size: 16px; flex: 1;">
                     </div>
 
-                    <div style="margin-bottom: 16px; display: flex; flex-wrap: wrap; align-items: center;">
+                    <div style="display: flex; flex-wrap: wrap; align-items: center;">
                         <label for="phone" style="font-weight: bold; margin-right: 10px; color: #333; width: 120px;">Phone:</label>
-                        <input type="text" id="phone" name="phone" style="padding: 10px; margin: 8px 0; border: 1px solid #ddd; border-radius: 4px; font-size: 16px; width: 100%; box-sizing: border-box; max-width: 300px;">
+                        <input type="text" id="phone" name="phone" style="padding: 10px; margin: 8px 0; border: 1px solid #ddd; border-radius: 4px; font-size: 16px; flex: 1;">
                     </div>
 
-                    <div style="margin-bottom: 16px; display: flex; flex-wrap: wrap; align-items: center;">
-                        <label for="province" style="font-weight: bold; margin-right: 10px; color: #333; width: 120px;">Tỉnh:</label>
-                        <select id="searchable-combo" style="padding: 10px; margin: 8px 0; border: 1px solid #ddd; border-radius: 4px; font-size: 16px; width: 100%; max-width: 200px; box-sizing: border-box;">
-                            <option value="">Chọn tỉnh</option>
+                    <div style="display: flex; flex-wrap: wrap; align-items: center;">
+                        <label for="street" style="font-weight: bold; margin-right: 10px; color: #333; width: 120px;">Street:</label>
+                        <input type="text" id="street" name="street" style="padding: 10px; margin: 8px 0; border: 1px solid #ddd; border-radius: 4px; font-size: 16px; flex: 1;">
+                    </div>
+
+                    <div style="display: flex; flex-wrap: wrap; align-items: center;">
+                        <label for="province" style="font-weight: bold; margin-right: 10px; color: #333; width: 120px;">Province:</label>
+                        <select id="province" style="padding: 10px; margin: 8px 0; border: 1px solid #ddd; border-radius: 4px; font-size: 16px; flex: 1;">
+                            <option value="">Select Province</option>
                         </select>
                     </div>
 
-                    <div style="margin-bottom: 16px; display: flex; flex-wrap: wrap; align-items: center;">
-                        <label for="district" style="font-weight: bold; margin-right: 10px; color: #333; width: 120px;">Huyện:</label>
-                        <select id="searchable-combo" style="padding: 10px; margin: 8px 0; border: 1px solid #ddd; border-radius: 4px; font-size: 16px; width: 100%; max-width: 200px; box-sizing: border-box;">
-                            <option value="">Chọn huyện</option>
+                    <div style="display: flex; flex-wrap: wrap; align-items: center;">
+                        <label for="district" style="font-weight: bold; margin-right: 10px; color: #333; width: 120px;">District:</label>
+                        <select id="district" style="padding: 10px; margin: 8px 0; border: 1px solid #ddd; border-radius: 4px; font-size: 16px; flex: 1;">
+                            <option value="">Select District</option>
                         </select>
                     </div>
 
-                    <div style="margin-bottom: 16px; display: flex; flex-wrap: wrap; align-items: center;">
-                        <label for="ward" style="font-weight: bold; margin-right: 10px; color: #333; width: 120px;">Xã:</label>
-                        <select id="searchable-combo" style="padding: 10px; margin: 8px 0; border: 1px solid #ddd; border-radius: 4px; font-size: 16px; width: 100%; max-width: 200px; box-sizing: border-box;">
-                            <option value="">Chọn xã</option>
+                    <div style="display: flex; flex-wrap: wrap; align-items: center;">
+                        <label for="ward" style="font-weight: bold; margin-right: 10px; color: #333; width: 120px;">Ward:</label>
+                        <select id="ward" style="padding: 10px; margin: 8px 0; border: 1px solid #ddd; border-radius: 4px; font-size: 16px; flex: 1;">
+                            <option value="">Select Ward</option>
                         </select>
                     </div>
 
-                    <div style="margin-bottom: 16px; display: flex; flex-wrap: wrap; align-items: center;">
-                        <button type="submit" style="padding: 12px; background-color: #ff4d4d; border: none; color: white; font-size: 16px; cursor: pointer; border-radius: 4px; width: 100%;">Update Address</button>
+                    <div style="display: flex; justify-content: center;">
+                        <button type="submit" style="padding: 12px 20px; background-color: #ff4d4d; border: none; color: white; font-size: 16px; cursor: pointer; border-radius: 4px; width: 100%; max-width: 300px;">Add Address</button>
                     </div>
                 </form>
             </div>
         </div>
+
 
         <script>
 
