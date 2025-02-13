@@ -33,326 +33,177 @@ GO
 
 -----------------------------------------------------------------------------------
 
--- CREATE Roles TABLE
-
 CREATE TABLE Roles (
     RoleID INT PRIMARY KEY,
-    [Name] NVARCHAR(50)
+    [Name] NVARCHAR(50) NOT NULL
 );
 
--- CREATE Employees TABLE
-
 CREATE TABLE Employees (
-    EmployeeID INT IDENTITY(1,1) PRIMARY KEY,
-    FullName VARCHAR(255),
+    EmployeeID INT PRIMARY KEY,
+    FullName VARCHAR(255) NOT NULL,
     Birthday DATE,
-    [Password] VARCHAR(500),
-    PhoneNumber VARCHAR(15) UNIQUE,
+    [Password] VARCHAR(500) NOT NULL,
+    PhoneNumber VARCHAR(15),
     Email VARCHAR(254),
-    Gender CHAR(6) CHECK (gender IN ('Male', 'Female', 'Other')),
-    CreatedAt DATETIME DEFAULT GETDATE(),
-    [Status] VARCHAR(20) DEFAULT 'Active',
+    Gender CHAR(6),
+    CreatedDate DATETIME,
     Avatar TEXT,
     RoleID INT,
     FOREIGN KEY (RoleID) REFERENCES Roles(RoleID)
 );
 
--- CREATE Categories TABLE
-
-CREATE TABLE Categories (
-    CategoryID INT IDENTITY(1,1) PRIMARY KEY,
-    TypeName NVARCHAR(100) NOT NULL,
-    [Status] NVARCHAR(20) NOT NULL
-);
-
--- CREATE Brands TABLE
-
-CREATE TABLE Brands (
-    BrandID INT IDENTITY(1,1) PRIMARY KEY,
-    BrandName NVARCHAR(50) NOT NULL
-);
-
--- CREATE Suppliers TABLE
-
-CREATE TABLE Suppliers (
-    SupplierID INT IDENTITY(1,1) PRIMARY KEY,
-    [Name] NVARCHAR(255) NOT NULL,
-    [Address] NTEXT NOT NULL,
-    PhoneNumber VARCHAR(30),
-    Email TEXT,
-    TIN NVARCHAR(15) UNIQUE,
-    Status INT
-);
-
--- CREATE Products TABLE
-
-CREATE TABLE Products (
-    SKU INT IDENTITY(1,1) PRIMARY KEY,
-    BrandID INT,
-    CategoryID INT,
-    Model VARCHAR(50),
-    FullName NVARCHAR(255) NOT NULL,
-	[Description] TEXT,
-    [Status] NVARCHAR(20) NOT NULL,
-	[Image] TEXT,
-    FOREIGN KEY (BrandID) REFERENCES Brands(BrandID),
-	FOREIGN KEY (CategoryID) REFERENCES Categories(CategoryID)
-);
-
--- CREATE InventoryStatus TABLE
-
-CREATE TABLE InventoryStatus (
-    StatusID INT PRIMARY KEY,
-	[Description] NVARCHAR(20) NOT NULL
-);
-
---CREATE InventoryProducts TABLE 
-
-CREATE TABLE InventoryProducts (
-	PackageID INT IDENTITY (1,1),
-	SKU INT,
-	PRIMARY KEY (PackageID, SKU),
-	SupplierID INT NOT NULL,
-	ProductCost BIGINT NOT NULL,
-	Stock INT NOT NULL,
-	FOREIGN KEY (SKU) REFERENCES Products(SKU),
-	FOREIGN KEY (SupplierID) REFERENCES Suppliers(SupplierID)
-)
-
--- CREATE InventoryHistories TABLE
-
-CREATE TABLE InventoryHistories (
-    HistoryID INT IDENTITY(1,1) PRIMARY KEY,
-    PackageID INT,
-	SKU INT,
-	EmployeeID INT NOT NULL,
-    TransactionAt DATETIME NOT NULL,
-	StatusID INT,
-	Price BIGINT,
-    Quantity INT NOT NULL,
-	Note TEXT,
-	FOREIGN KEY (PackageID, SKU) REFERENCES InventoryProducts(PackageID, SKU),
-	FOREIGN KEY (EmployeeID) REFERENCES Employees(EmployeeID),
-	FOREIGN KEY (StatusID) REFERENCES InventoryStatus(StatusID)
-);
-
---CREATE ShopProducts TABLE
-
-CREATE TABLE ShopProducts (
-	PackageID INT,
-	SKU INT UNIQUE,
-	Primary key (SKU, PackageID),
-	Price BIGINT NOT NULL,
-	Quantity INT NOT NULL,
-	Note TEXT,
-	FOREIGN KEY (PackageID, SKU) REFERENCES InventoryProducts(PackageID, SKU),
-	FOREIGN KEY (SKU) REFERENCES Products(SKU)
-)
-
--- CREATE Attributes TABLE
-
-CREATE TABLE Attributes (
-    AttributeID INT IDENTITY(1,1) PRIMARY KEY,
-    CategoryID INT NOT NULL,
-    AttributeName VARCHAR(100) NOT NULL,
-    FOREIGN KEY (CategoryID) REFERENCES Categories(CategoryID)
-);
-
--- CREATE AttributeDetails TABLE
-
-CREATE TABLE AttributeDetails (
-    AttributeID INT,
-    AttributeInfor VARCHAR(100) NOT NULL,
-    SKU INT,
-    FOREIGN KEY (AttributeID) REFERENCES Attributes(AttributeID),
-    FOREIGN KEY (SKU) REFERENCES Products(SKU)
-);
-
--- CREATE Customers TABLE
-
 CREATE TABLE Customers (
-    CustomerID INT IDENTITY(1,1) PRIMARY KEY,
+    CustomerID INT PRIMARY KEY,
     FullName VARCHAR(255) NOT NULL,
     Birthday DATE,
     [Password] VARCHAR(500) NOT NULL,
-    PhoneNumber VARCHAR(15) UNIQUE,
-    Email VARCHAR(254) NOT NULL,
-    Gender CHAR(6) CHECK (gender IN ('Male', 'Female', 'Other')),
-    CreatedAt DATETIME DEFAULT GETDATE(),
-    [Status] VARCHAR(255),
-    Avatar TEXT,
-    LoyalPoint BIGINT
+    PhoneNumber VARCHAR(15),
+    Email VARCHAR(254),
+    Gender CHAR(6),
+    CreatedDate DATETIME,
+    IsBlock BIT,
+    IsDeleted BIT,
+    Avatar TEXT
 );
 
--- CREATE ProductRatings TABLE
+CREATE TABLE Addresses (
+    AddressID INT PRIMARY KEY,
+    CustomerID INT,
+    AddressDetails NTEXT,
+    FOREIGN KEY (CustomerID) REFERENCES Customers(CustomerID)
+);
 
-CREATE TABLE ProductRatings(
-	RateID INT IDENTITY(1,1) Primary key,
-	CustomerID INT,
-	SKU INT,
-    CreatedAt DATETIME DEFAULT GETDATE(),
-	Star INT NOT NULL CHECK (Star BETWEEN 1 AND 5),
-	Comment NTEXT,
-	[Status] VARCHAR(20)
-	FOREIGN KEY (CustomerID) REFERENCES Customers(CustomerID),
-	FOREIGN KEY (SKU) REFERENCES Products(SKU)
-)
+CREATE TABLE Suppliers (
+    SupplierID INT PRIMARY KEY,
+    TaxID VARCHAR(20),
+    [Name] NVARCHAR(255) NOT NULL,
+    Email VARCHAR(254),
+    PhoneNumber VARCHAR(15),
+    [Address] VARCHAR(255),
+    CreatedDate DATETIME,
+    LastModify DATETIME,
+    IsDeleted BIT
+);
 
--- CREATE RatingReplies TABLE
+CREATE TABLE Categories (
+    CategoryID INT PRIMARY KEY,
+    [Name] NVARCHAR(50) NOT NULL
+);
 
-CREATE TABLE RatingReplies (
-	ReplyID INT IDENTITY(1,1) Primary key,
-	EmployeeID INT,
-	RateID INT,
-	Answer NTEXT
-	FOREIGN KEY (EmployeeID) REFERENCES Employees(EmployeeID),
-	FOREIGN KEY (RateID) REFERENCES ProductRatings(RateID)
+CREATE TABLE Brands (
+    BrandID INT PRIMARY KEY,
+    [Name] NVARCHAR(50) NOT NULL
+);
 
-)
--- CREATE OrderStatus TABLE
+CREATE TABLE Products (
+    ProductID INT PRIMARY KEY,
+    BrandID INT,
+    CategoryID INT,
+    Model NVARCHAR(50),
+    FullName VARCHAR(255),
+    Description TEXT,
+    Image TEXT,
+    Price BIGINT,
+    FOREIGN KEY (BrandID) REFERENCES Brands(BrandID),
+    FOREIGN KEY (CategoryID) REFERENCES Categories(CategoryID)
+);
 
-CREATE TABLE OrderStatus(
-	ID INT Primary key,
-	[Status] NTEXT
-)
+CREATE TABLE Attributes (
+    AttributeID INT PRIMARY KEY,
+    [Name] NVARCHAR(100) NOT NULL
+);
 
--- CREATE Orders TABLE
+CREATE TABLE AttributeDetails (
+    AttributeID INT,
+    ProductID INT,
+    AttributeValue VARCHAR(100),
+    PRIMARY KEY (AttributeID, ProductID),
+    FOREIGN KEY (AttributeID) REFERENCES Attributes(AttributeID),
+    FOREIGN KEY (ProductID) REFERENCES Products(ProductID)
+);
 
 CREATE TABLE Orders (
-    OrderID INT IDENTITY(1,1) PRIMARY KEY,
+    OrderID INT PRIMARY KEY,
     CustomerID INT,
-    FullName NVARCHAR(100),
-    [Address] NTEXT,
-    PhoneNumber VARCHAR(15),
-    OrderDate DATETIME DEFAULT GETDATE(),
+    FullName VARCHAR(100) NOT NULL,
+    [Address] NTEXT NOT NULL,
+    PhoneNumber VARCHAR(15) NOT NULL,
+    OrderDate DATETIME NOT NULL,
     DeliveredDate DATETIME,
-    [Status] INT NOT NULL,
+    [Status]INT,
     TotalAmount BIGINT,
-    Discount DECIMAL(10,2),
-    FOREIGN KEY (CustomerID) REFERENCES Customers(CustomerID),
-	FOREIGN KEY ([Status]) REFERENCES OrderStatus (ID)
+    FOREIGN KEY (CustomerID) REFERENCES Customers(CustomerID)
 );
-
--- CREATE OrderDetails TABLE
 
 CREATE TABLE OrderDetails (
     OrderID INT,
-    SKU INT,
+    ProductID INT,
     Quantity INT,
     Price BIGINT,
-    PRIMARY KEY (OrderID, SKU),
+    PRIMARY KEY (OrderID, ProductID),
     FOREIGN KEY (OrderID) REFERENCES Orders(OrderID),
-    FOREIGN KEY (SKU) REFERENCES Products(SKU)
+    FOREIGN KEY (ProductID) REFERENCES Products(ProductID)
 );
 
--- CREATE PaymentHistories TABLE
-
-CREATE TABLE PaymentHistories (
-    PaymentID INT IDENTITY(1,1) PRIMARY KEY,
-    OrderID INT,
-    PaidAmount INT,
-    RemainingAmount INT,
-    [Status] NVARCHAR(20),
-    PaymentDate DATETIME DEFAULT GETDATE(),
-    FOREIGN KEY (OrderID) REFERENCES Orders(OrderID)
+CREATE TABLE OrderStatus (
+    ID INT PRIMARY KEY,
+    [Status]NVARCHAR(50) NOT NULL
 );
 
--- CREATE Carts TABLE
+CREATE TABLE ImportOrders (
+    IOID INT PRIMARY KEY,
+    EmployeeID INT,
+    SupplierID INT,
+    ImportDate DATETIME,
+    TotalCost BIGINT,
+    IsDeleted BIT,
+    LastModify DATETIME,
+    FOREIGN KEY (EmployeeID) REFERENCES Employees(EmployeeID),
+    FOREIGN KEY (SupplierID) REFERENCES Suppliers(SupplierID)
+);
+
+CREATE TABLE ImportOrderDetails (
+    IOID INT,
+    ProductID INT,
+    Quantity INT,
+    ImportPrice BIGINT,
+    PRIMARY KEY (IOID, ProductID),
+    FOREIGN KEY (IOID) REFERENCES ImportOrders(IOID),
+    FOREIGN KEY (ProductID) REFERENCES Products(ProductID)
+);
+
+CREATE TABLE ProductRatings (
+    RateID INT PRIMARY KEY,
+    CustomerID INT,
+    ProductID INT,
+    CreateDate DATETIME,
+    Star INT,
+    Comment NVARCHAR(300),
+    IsDeleted BIT,
+    IsRead BIT,
+    FOREIGN KEY (CustomerID) REFERENCES Customers(CustomerID),
+    FOREIGN KEY (ProductID) REFERENCES Products(ProductID)
+);
+
+CREATE TABLE RatingReplies (
+    ReplyID INT PRIMARY KEY,
+    EmployeeID INT,
+    RateID INT,
+    Answer NVARCHAR(300),
+    IsRead BIT,
+    FOREIGN KEY (EmployeeID) REFERENCES Employees(EmployeeID),
+    FOREIGN KEY (RateID) REFERENCES ProductRatings(RateID)
+);
 
 CREATE TABLE Carts (
-    CustomerID INT FOREIGN KEY (CustomerID) REFERENCES Customers(CustomerID),
-    SKU INT FOREIGN KEY (SKU) REFERENCES Products(SKU),
-    Quantity INT,
-    PRIMARY KEY (CustomerID, SKU)
-);
-
-
--- CREATE AdministrativeRegions TABLE
-
-CREATE TABLE AdministrativeRegions (
-	ID INT PRIMARY KEY NOT NULL,
-	[Name] varchar(255) NOT NULL,
-	NameEn varchar(255) NOT NULL,
-	CodeName varchar(255) NOT NULL,
-	CodeNameEn varchar(255) NOT NULL,
-);
-
-
--- CREATE AdministrativeUnits TABLE
-
-CREATE TABLE AdministrativeUnits (
-	ID INT PRIMARY KEY NOT NULL,
-	FullName nvarchar(255) NOT NULL,
-	FullNameEn varchar(255) NOT NULL,
-	ShortName varchar(255) NOT NULL,
-	ShortNameEn varchar(255) NOT NULL,
-	CodeName varchar(255) NOT NULL,
-	CodeNameEn varchar(255) NOT NULL,
-);
-
-
--- CREATE Provinces TABLE
-
-CREATE TABLE Provinces (
-	Code varchar(20) PRIMARY KEY NOT NULL,
-	[Name] nvarchar(255) NOT NULL,
-	NameEn varchar(255)  NOT NULL,
-	FullName nvarchar(255) NOT NULL,
-	FullNameEn varchar(255) NOT NULL,
-	CodeName varchar(255) NOT NULL,
-	AdministrativeUnitID INT FOREIGN KEY REFERENCES AdministrativeUnits(ID) NOT NULL,
-	AdministrativeRegionID INT FOREIGN KEY REFERENCES AdministrativeRegions(ID) NOT NULL
-);
-
-
-
--- CREATE Districts TABLE
-
-CREATE TABLE Districts (
-	Code varchar(20) PRIMARY KEY NOT NULL,
-	[Name] nvarchar(255) NOT NULL,
-	NameEn varchar(255)  NOT NULL,
-	FullName nvarchar(255) NOT NULL,
-	FullNameEn varchar(255) NOT  NULL,
-	CodeName varchar(255) NOT NULL,
-	ProvinceCode varchar(20) FOREIGN KEY REFERENCES Provinces(Code) NOT NULL,
-	AdministrativeUnitID INT FOREIGN KEY REFERENCES AdministrativeUnits(ID) NOT NULL
-);
-
-
-
-
--- CREATE Wards TABLE
-
-CREATE TABLE Wards (
-	Code varchar(20) PRIMARY KEY NOT NULL,
-	Name nvarchar(255) NOT NULL,
-	NameEn varchar(255) NOT NULL,
-	FullName nvarchar(255)  NOT NULL,
-	FullNameEn varchar(255) NOT NULL,
-	CodeName varchar(255) NOT NULL,
-	DistrictCode varchar(20) FOREIGN KEY REFERENCES Districts(Code) NOT NULL,
-	AdministrativeUnitID INT FOREIGN KEY REFERENCES AdministrativeUnits(ID) NOT NULL
-
-);
-
-
--- CREATE Cart TABLE
-
-CREATE TABLE Addresses (
-    AddressID INT IDENTITY(1,1) PRIMARY KEY,
     CustomerID INT,
-    IsDefault BIT,
-    Street NVARCHAR(20),
-    Ward VARCHAR(20),
-    Province VARCHAR(20),
-    District VARCHAR(20),
+    ProductID INT,
+    Quantity INT,
+    PRIMARY KEY (CustomerID, ProductID),
     FOREIGN KEY (CustomerID) REFERENCES Customers(CustomerID),
-	FOREIGN KEY (District) REFERENCES Districts(Code),
-	FOREIGN KEY (Ward) REFERENCES Wards(Code),
-	FOREIGN KEY (Province) REFERENCES Provinces(Code)
-
+    FOREIGN KEY (ProductID) REFERENCES Products(ProductID)
 );
+
 /*******************************************************************************
    Schema for UI/UX Testing
 ********************************************************************************/
