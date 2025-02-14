@@ -9,18 +9,25 @@ import Models.Customer;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
+import jakarta.servlet.annotation.MultipartConfig;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
+import jakarta.servlet.http.Part;
 
 /**
  *
- * @author TuongMPCE180644
+ * @author nhutb
  */
-@WebServlet(name = "RegisterServlet", urlPatterns = {"/register"})
-public class RegisterServlet extends HttpServlet {
+@WebServlet(name = "UpdateProfileServlet", urlPatterns = {"/updateProfile"})
+@MultipartConfig(
+        fileSizeThreshold = 1024 * 1024 * 1,
+        maxFileSize = 1024 * 1024 * 10,
+        maxRequestSize = 1024 * 1024 * 100
+)
+public class UpdateProfileServlet extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -39,10 +46,10 @@ public class RegisterServlet extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet RegisterServlet</title>");
+            out.println("<title>Servlet UpdateProfileServlet</title>");
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet RegisterServlet at " + request.getContextPath() + "</h1>");
+            out.println("<h1>Servlet UpdateProfileServlet at " + request.getContextPath() + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }
@@ -60,7 +67,7 @@ public class RegisterServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        request.getRequestDispatcher("/register.jsp").forward(request, response);
+        processRequest(request, response);
     }
 
     /**
@@ -74,29 +81,21 @@ public class RegisterServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        String fullName = request.getParameter("fullName");
-        String birthday = request.getParameter("birthday");
-        String gender = request.getParameter("gender");
-        String phoneNumber = request.getParameter("phoneNumber");
-        String email = request.getParameter("email");
-        String password = request.getParameter("password");
-
-        CustomerDAO ctmDAO = new CustomerDAO();
         HttpSession session = request.getSession();
-
-        if (ctmDAO.checkEmailExisted(email) == 1) {
-            session.setAttribute("message", "This email already exists!");
-            request.getRequestDispatcher("/register.jsp").forward(request, response);
-        } else {
-            if (ctmDAO.addNewCustomer(new Customer(0, fullName, password, birthday, gender, phoneNumber, email, "", 0, 0, "")) != 0) {
-                session.setAttribute("message", "Registation Success!");
-                response.sendRedirect("/customerLogin");
-            } else {
-                session.setAttribute("message", "Registation Failed!");
-                request.getRequestDispatcher("/register.jsp").forward(request, response);
-            }
+        Customer cus = (Customer) session.getAttribute("customer");
+        Part img = request.getPart("avatar");
+        String filename = img.getSubmittedFileName();
+        CustomerDAO cusDAO = new CustomerDAO();
+        cusDAO.updateAvatar(cus.getId() + ".jpg", cus.getId());
+        for (Part part : request.getParts()) {
+            part.write("E:\\HocTap\\Ky5\\SWP\\ProjectSWP\\FShop\\src\\main\\webapp\\assets\\imgs\\CustomerAvatar\\" + cus.getId() + ".jpg");
         }
-
+        try {
+            Thread.sleep(2500); // 15 giây = 15000 mili giây
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        response.sendRedirect("viewProfile");
     }
 
     /**

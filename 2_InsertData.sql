@@ -11,10 +11,10 @@ INSERT INTO Categories (CategoryID, [Name])
 VALUES (1, 'Laptop'), (2, 'Smartphone');
 
 -- Insert Brands
-INSERT INTO Brands (BrandID, [Name]) 
-VALUES (1, 'Apple'), (2, 'Samsung'), (3, 'Sony'), (4, 'Huawei'), (5, 'Xiaomi'),
-       (6, 'Dell'), (7, 'HP'), (8, 'Asus'), (9, 'Lenovo'), (10, 'Acer'),
-       (11, 'MSI'), (12, 'Microsoft'), (13, 'Google'), (14, 'LG'), (15, 'Razer'), (16, 'Vivo');
+INSERT INTO Brands ( [Name]) 
+VALUES ('Apple'), ('Samsung'), ('Sony'), ('Huawei'), ( 'Xiaomi'),
+       ('Dell'), ('HP'), ('Asus'), ('Lenovo'), ('Acer'),
+       ( 'MSI'), ( 'Microsoft'), ('Google'), ( 'LG'), ('Razer'), ( 'Vivo');
 
 -- Insert Suppliers
 INSERT INTO Suppliers (SupplierID, TaxID, [Name], Email, PhoneNumber, [Address], CreatedDate, LastModify, IsDeleted) 
@@ -32,11 +32,11 @@ VALUES
 (4, 'Camera'), (5, 'Battery'), (6, 'Screen Size');
 
 -- Insert Products
-INSERT INTO Products (ProductID, BrandID, CategoryID, Model, FullName, Description, Image, Price)
+INSERT INTO Products (BrandID, CategoryID, Model, FullName, Description, Image, Price)
 VALUES 
-(1, 1, 1, 'Macbook Pro 14', 'Apple Macbook Pro 14 inch M1 Pro chip', 'New model from Apple', 'macbook-pro-2021-apple-m1.jpg', 50000000),
-(2, 2, 2, 'Galaxy S23 Ultra', 'Samsung Galaxy S23 Ultra 5G 256GB', 'Latest flagship from Samsung', 'samsung-galaxy-s23.jpg', 30000000),
-(3, 3, 1, 'Sony Vaio Z900', 'Sony Vaio Z900 Core i7 16GB RAM', 'High-performance laptop', 'sony-vaio-z900.jpg', 20000000);
+(1, 1, 'Macbook Pro 14', 'Apple Macbook Pro 14 inch M1 Pro chip', 'New model from Apple', '250-7038-macbook-pro-2021-apple-m1-1.jpg', 50000000),
+( 2, 2, 'Galaxy S23 Ultra', 'Samsung Galaxy S23 Ultra 5G 256GB', 'Latest flagship from Samsung', 'samsung-galaxy-s23-xanh-600x600-1.jpg', 30000000),
+( 3, 1, 'Sony Vaio Z900', 'Sony Vaio Z900 Core i7 16GB RAM', 'High-performance laptop', 'sony-vaio-z900.jpg', 20000000);
 
 -- Insert AttributeDetails
 INSERT INTO AttributeDetails (AttributeID, ProductID, AttributeValue)
@@ -54,14 +54,14 @@ VALUES
 ('Nguyen Van A', '1995-05-15', '6ad14ba9986e3615423dfca256d04e3f', '0901234567', 'nguyenvana@example.com', 'Male', GETDATE(), 0, 0, 'person.jpg');
 
 -- Insert Orders
-INSERT INTO Orders (OrderID, CustomerID, FullName, [Address], PhoneNumber, OrderDate, DeliveredDate, [Status], TotalAmount)
+INSERT INTO Orders ( CustomerID, FullName, [Address], PhoneNumber, OrderDate, DeliveredDate, [Status], TotalAmount)
 VALUES 
-(1, 1, 'Nguyen Van A', '123 Tech Street, District 1, Ho Chi Minh City', '0901234567', GETDATE(), NULL, 1, 50000000);
+( 1, 'Nguyen Van A', '123 Tech Street, District 1, Ho Chi Minh City', '0901234567', GETDATE(), NULL, 1, 50000000);
 
 -- Insert Employees
-INSERT INTO Employees (EmployeeID, FullName, Birthday, [Password], PhoneNumber, Email, Gender, CreatedDate, Avatar, RoleID)
+INSERT INTO Employees ( FullName, Birthday, [Password], PhoneNumber, Email, Gender, CreatedDate, Avatar, RoleID)
 VALUES 
-(1, 'Nguyen Van A', '1990-01-01', 'encrypted_password_here', '0123456789', 'nguyen.vana@example.com', 'Male', GETDATE(), 'avatar_image_url_here', 1);
+('Nguyen Van A', '1990-01-01', 'encrypted_password_here', '0123456789', 'nguyen.vana@example.com', 'Male', GETDATE(), 'avatar_image_url_here', 1);
 
 -- Insert Carts
 INSERT INTO Carts (CustomerID, ProductID, Quantity)
@@ -77,3 +77,5 @@ VALUES
 (3, 'Waiting for delivery'),
 (4, 'Delivered'),
 (5, 'Canceled');
+
+INSERT INTO Addresses VALUES (1 , 'Ap Tra Coi A, My Huong, My Tu, Soc Trang', 1)

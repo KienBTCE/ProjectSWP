@@ -26,10 +26,9 @@ public class CartDAO {
     public List<Cart> getCartOfAccountID(int accountID) {
         List<Cart> list = new ArrayList<>();
         try {
-            PreparedStatement pre = connector.prepareStatement("SELECT c.SKU, c.Quantity, p.[Image], p.FullName, sp.Price, p.CategoryID  \n"
-                    + "FROM Carts c \n"
-                    + "LEFT JOIN Products p ON c.SKU = p.SKU\n"
-                    + "LEFT JOIN ShopProducts sp ON p.SKU = sp.SKU\n"
+            PreparedStatement pre = connector.prepareStatement("SELECT c.ProductID, c.Quantity, p.[Image], p.FullName, p.Price, p.CategoryID\n"
+                    + "FROM Carts c\n"
+                    + "LEFT JOIN Products p ON c.ProductID = p.ProductID\n"
                     + "WHERE c.CustomerID = ?");
             pre.setInt(1, accountID);
             ResultSet rs = pre.executeQuery();
@@ -58,7 +57,7 @@ public class CartDAO {
     }
 
     public void updateProductQuantity(int productSKU, int quantity, int id) {
-        String sql = "UPDATE Carts SET Quantity = ? WHERE SKU = ? AND CustomerID = ?";
+        String sql = "UPDATE Carts SET Quantity = ? WHERE ProductID = ? AND CustomerID = ?";
         try {
             PreparedStatement preparedStatement = connector.prepareStatement(sql);
             preparedStatement.setInt(1, quantity);
@@ -73,7 +72,7 @@ public class CartDAO {
 
     public void deleteProductOnCart(int productSKU, int id) {
         try {
-            PreparedStatement preparedStatement = connector.prepareStatement("Delete from Carts where SKU = ? and CustomerID = ?");
+            PreparedStatement preparedStatement = connector.prepareStatement("Delete from Carts where ProductID = ? and CustomerID = ?");
             preparedStatement.setInt(1, productSKU);
             preparedStatement.setInt(2, id);
             preparedStatement.executeUpdate();

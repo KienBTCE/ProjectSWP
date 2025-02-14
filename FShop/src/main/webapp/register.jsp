@@ -71,6 +71,36 @@
                     min-width: 0px;
                 }
             }
+            /* Popup styles */
+            .popup {
+                display: none;
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background-color: rgba(0, 0, 0, 0.5);
+                justify-content: center;
+                align-items: center;
+            }
+            .popup-content {
+                background-color: white;
+                padding: 30px;
+                border-radius: 8px;
+                text-align: center;
+                width: 300px;
+            }
+            .popup button {
+                background-color: #007bff;
+                color: white;
+                padding: 10px 20px;
+                border: none;
+                border-radius: 5px;
+                cursor: pointer;
+            }
+            .popup button:hover {
+                background-color: #0056b3;
+            }
         </style>
     </head>
     <body>
@@ -148,40 +178,63 @@
                     <p>Up to 70% off new products, you can be sure of the best price.</p>
                 </div>
             </div>
+            <!-- Popup -->
+            <div class="popup" id="loginFailPopup">
+                <div class="popup-content">
+                    <h3>${sessionScope.message}</h3>
+                <button onclick="closePopup()">Close</button>
+            </div>
+        </div>
 
         <jsp:include page="footer.jsp"></jsp:include>
 
-        <!-- Bootstrap JS -->
-        <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-        <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.4.4/dist/umd/popper.min.js"></script>
-        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+            <!-- Bootstrap JS -->
+            <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+            <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.4.4/dist/umd/popper.min.js"></script>
+            <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 
-        <!-- Custom JS -->
-        <script>
-            document.getElementById("registerForm").addEventListener("submit", function (event) {
-                const password = document.getElementById("password").value;
-                const confirmPassword = document.getElementById("confirmPassword").value;
-                const passwordRules = document.getElementById("passwordRules");
-                const passwordError = document.getElementById("passwordError");
+            <!-- Custom JS -->
+            <script>
+                    document.getElementById("registerForm").addEventListener("submit", function (event) {
+                        const password = document.getElementById("password").value;
+                        const confirmPassword = document.getElementById("confirmPassword").value;
+                        const passwordRules = document.getElementById("passwordRules");
+                        const passwordError = document.getElementById("passwordError");
 
-                // Kiểm tra mật khẩu có đáp ứng yêu cầu không
-                const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@#$%!&*?]).{8,}$/;
-                if (!passwordRegex.test(password)) {
-                    event.preventDefault();
-                    passwordRules.textContent = "Password must be at least 8 characters, include one uppercase, one lowercase, one number, and one special character.";
-                    return;
-                } else {
-                    passwordRules.textContent = "";
+                        // Kiểm tra mật khẩu có đáp ứng yêu cầu không
+                        const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@#$%!&*?]).{8,}$/;
+                        if (!passwordRegex.test(password)) {
+                            event.preventDefault();
+                            passwordRules.textContent = "Password must be at least 8 characters, include one uppercase, one lowercase, one number, and one special character.";
+                            return;
+                        } else {
+                            passwordRules.textContent = "";
+                        }
+
+                        // Kiểm tra Confirm Password có khớp với Password không
+                        if (password !== confirmPassword) {
+                            event.preventDefault();
+                            passwordError.textContent = "Password and Confirm Password do not match.";
+                        } else {
+                            passwordError.textContent = "";
+                        }
+                    });
+                    function showPopup() {
+                        document.getElementById("loginFailPopup").style.display = "flex";
+                    }
+
+                    function closePopup() {
+                        document.getElementById("loginFailPopup").style.display = "none";
+                    }
+
+                    // Show popup if login fails (you can trigger this with backend error)
+                    // For example, if you're using a session attribute or response error:
+            <%
+                if (session.getAttribute("message") != null) {
+                    out.print("showPopup();");
                 }
-
-                // Kiểm tra Confirm Password có khớp với Password không
-                if (password !== confirmPassword) {
-                    event.preventDefault();
-                    passwordError.textContent = "Password and Confirm Password do not match.";
-                } else {
-                    passwordError.textContent = "";
-                }
-            });
+                session.removeAttribute("message");
+            %>
         </script>
     </body>
 </html>

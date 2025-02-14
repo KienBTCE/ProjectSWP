@@ -1,121 +1,50 @@
-<%-- 
-    Document   : myInfor
-    Created on : Jan 31, 2025, 2:57:46 PM
-    Author     : nhutb
---%>
-
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <!DOCTYPE html>
 <html lang="en">
+
     <head>
         <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <title>My Profile</title>
-
-        <!-- Bootstrap CSS -->
-        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-        <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
-
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Profile Management</title>
         <style>
-            body {
-                background-color: #f5f5f5;
-            }
-            .container-fluid {
-                display: flex;
-                min-height: 100vh;
-            }
-            .sidebar {
-                width: 250px;
-                background: white;
-                padding: 20px;
-                box-shadow: 2px 0 5px rgba(0,0,0,0.1);
-            }
-            .sidebar-link {
-                text-decoration: none;
-                color: #333;
-                display: block;
-                padding: 10px 0;
-            }
-            .sidebar-link.active {
-                background-color: #f8f9fa;
-                color: #007bff;
-            }
-            .content {
-                flex: 1;
-                padding: 30px;
-                background: white;
-                margin: 20px;
-                border-radius: 5px;
-                box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            #avatar {
+                width: 150px;
+                height: 150px;
+                border-radius: 50%;
+                object-fit: cover;
             }
         </style>
     </head>
+
     <body>
-
-        <jsp:include page="header.jsp"></jsp:include>
-
-            <div class="container">
-                <div class="container-fluid">
-                    <!-- Sidebar -->
-                    <aside class="sidebar">
-                        <h5 class="text-center">${sessionScope.customer.getFullName()}</h5>
-                    <p class="text-center"><a href="Logout">Log out</a></p>
-                    <nav>
-                        <a href="#" class="sidebar-link" data-page="profile.jsp">Profile</a>
-                        <a href="#" class="sidebar-link" data-page="address.jsp">Address</a>
-                        <a href="#" class="sidebar-link" data-page="orders.jsp">Orders</a>
-                        <a href="#" class="sidebar-link" data-page="notifications.jsp">Notifications</a>
-                        <a href="#" class="sidebar-link" data-page="shopping.jsp">Shopping</a>
-                        <a href="#" class="sidebar-link" data-page="change-password.jsp">Change Password</a>
-                        <a href="#" class="sidebar-link" data-page="voucher.jsp">Voucher</a>
-                        <a href="#" class="sidebar-link" data-page="coins.jsp">Coins</a>
-                    </nav>
-                </aside>
-
-                <!-- Nội dung động -->
-                <div id="content" class="content">
-                    <jsp:include page="profile.jsp"></jsp:include>
-                    <jsp:include page="address.jsp"></jsp:include>
-
-                        </main>
-                    </div>
+        <!-- Sidebar -->
+        <main style="margin: 0; font-family: Arial, sans-serif; height: auto;">
+            <div class="sidebar" style="width: 100%; background-color: rgba(231, 220, 220, 0); height: 100%; padding: 20px; ">
+                <div class="text-center">
+                    <c:if test="${sessionScope.customer.getAvatar() != null}">
+                        <img id="avatar" class="avatar-preview mb-3" src="assets/imgs/CustomerAvatar/${sessionScope.customer.getAvatar()}" alt="Avatar">
+                    </c:if>
+                    <c:if test="${sessionScope.customer == null || sessionScope.customer.getAvatar() == null}">
+                        <img id="avatar" class="avatar-preview mb-3" src="assets/imgs/icon/person.jpg" alt="Avatar">
+                    </c:if>                      
+                    <h4>${sessionScope.customer.getFullName()}</h4>
+                    <a class="text-center" href="Logout">Logout</a>
                 </div>
+
+                <ul style="list-style-type: none; padding: 0; color: black; ">
+                    <li style="margin: 15px 0;"><a  href="profile.jsp" class="sidebar-link" data-page="" style="color: black; text-decoration: none;">Profile</a></li>
+                    <li style="margin: 15px 0;"><a  href="address.jsp" class="sidebar-link" data-page="" style="color: black; text-decoration: none; ">Address</a></li>
+                    <li style="margin: 15px 0;"><a  href="orders.jsp" class="sidebar-link" data-page="" style="color: black; text-decoration: none; ">Orders</a></li>
+                    <li style="margin: 15px 0;"><a href="#" class="sidebar-link" data-page="notifications.jsp" style="color: black; text-decoration: none; ;">Notifications</a></li>
+                    <li style="margin: 15px 0;"><a href="#" class="sidebar-link" data-page="shopping.jsp" style="color: black; text-decoration: none; ">Shopping</a></li>
+                    <li style="margin: 15px 0;"><a href="#" class="sidebar-link" data-page="change-password.jsp" style="color: black; text-decoration: none; ">Change Password</a></li>
+                    <li style="margin: 15px 0;"><a href="#" class="sidebar-link" data-page="coins.jsp" style="color: black; text-decoration: none; ">Request to disable account</a></li>
+                    
+                </ul>
             </div>
 
-        <jsp:include page="footer.jsp"></jsp:include>
-
-        <!-- Bootstrap JS -->
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-
-        <!-- Script to load content dynamically -->
-        <script>
-            document.addEventListener("DOMContentLoaded", function () {
-                function loadPage(page) {
-                    fetch("/" + page)
-                            .then(response => response.text())
-                            .then(data => {
-                                document.getElementById("content").innerHTML = data;
-                            })
-                            .catch(error => console.error("Error loading page:", error));
-                }
-
-                document.querySelectorAll(".sidebar-link").forEach(link => {
-                    link.addEventListener("click", function (event) {
-                        event.preventDefault();
-                        document.querySelectorAll(".sidebar-link").forEach(link => link.classList.remove("active"));
-                        this.classList.add("active");
-
-                        let page = this.getAttribute("data-page");
-                        loadPage(page);
-                    });
-                });
-
-                // Load default page (Profile)
-                loadPage("profile.jsp");
-            });
-        </script>
-
+        </main>
     </body>
-</html>
 
+</html>

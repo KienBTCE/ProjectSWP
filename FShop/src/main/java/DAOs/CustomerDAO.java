@@ -13,7 +13,6 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.time.LocalDate;
 
 /**
  *
@@ -62,7 +61,10 @@ public class CustomerDAO {
                             rs.getString("PhoneNumber"),
                             rs.getString("Email"),
                             rs.getString("CreatedDate"),
-                            rs.getString("Avatar"));
+                            rs.getInt("IsBlock"),
+                            rs.getInt("IsDeleted"),
+                            rs.getString("Avatar")
+                    );
                 }
             }
         } catch (SQLException e) {
@@ -92,6 +94,7 @@ public class CustomerDAO {
                             rs.getString("Email"),
                             rs.getString("CreatedDate"),
                             rs.getInt("IsBlock"),
+                            rs.getInt("IsDeleted"),
                             rs.getString("Avatar")
                     );
                 }
@@ -105,57 +108,57 @@ public class CustomerDAO {
         return null; // Không tìm thấy khách hàng
     }
 
-    public Address getDefaultAddress(int customerID) {
-        try {
-            PreparedStatement pr = connector.prepareStatement("SELECT a.AddressID, a.Street, w.FullNameEn, d.FullNameEn, p.FullNameEn, a.IsDefault FROM Addresses a\n"
-                    + "LEFT JOIN Provinces p ON a.Province = p.Code\n"
-                    + "LEFT JOIN Districts d ON a.District = d.Code\n"
-                    + "LEFT JOIN Wards w ON a.Ward = w.Code\n"
-                    + "Where CustomerID = ? AND a.IsDefault = 1");
-            pr.setInt(1, customerID);
-            ResultSet rs = pr.executeQuery();
-            if (rs.next()) {
-                return new Address(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getString(4), rs.getString(5));
-            }
-        } catch (SQLException e) {
-            System.out.println(e + " ");
-        }
-        return null;
-    }
-
-    public boolean checkEmailExisted(String email) {
+    public int checkEmailExisted(String email) {
         try {
             PreparedStatement pr = connector.prepareStatement("SELECT * FROM Customers WHERE Email = ?;");
             pr.setString(1, email);
             ResultSet rs = pr.executeQuery();
             if (rs.next()) {
-                return true;
+                return 1;
             }
         } catch (SQLException e) {
             System.out.println(e + " ");
         }
-        return false;
+        return 0;
     }
 
-    public boolean addNewCustomer(Customer ctm) {
+    public int addNewCustomer(Customer ctm) {
         try {
-            PreparedStatement pr = connector.prepareStatement("INSERT INTO Customers (FullName, Birthday, [Password], PhoneNumber, Email, Gender, CreatedDate, Avatar)\n"
-                    + "VALUES\n"
-                    + "(?, ?, ?, ?, ?, ?, ?, ?);");
+            PreparedStatement pr = connector.prepareStatement(
+                    "INSERT INTO Customers (FullName, Birthday, [Password], PhoneNumber, Email, Gender, CreatedDate, IsBlock, IsDeleted, Avatar) "
+                    + "VALUES (?, ?, ?, ?, ?, ?, GETDATE(), ?, ?, ?);"
+            );
             pr.setString(1, ctm.getFullName());
             pr.setString(2, ctm.getBirthday());
             pr.setString(3, getMD5(ctm.getPassword()));
             pr.setString(4, ctm.getPhoneNumber());
             pr.setString(5, ctm.getEmail());
             pr.setString(6, ctm.getGender());
-            pr.setString(7, LocalDate.now() + "");
-            pr.setString(8, ctm.getAvatar());
+            pr.setInt(7, ctm.getIsBlock()); // Giá trị mặc định của IsBlock
+            pr.setInt(8, ctm.getIsDeleted()); // Giá trị mặc định của IsDeleted
+            pr.setString(9, ctm.getAvatar());
+
             int rs = pr.executeUpdate();
-            return rs == 1;
+            return rs;
         } catch (SQLException e) {
-            System.out.println(e + " ");
+            System.out.println("Lỗi khi thêm khách hàng: " + e.getMessage());
         }
-        return false;
+        return 0;
+    }
+
+    public int updateAvatar(String img, int ID) {
+        try {
+            PreparedStatement pr = connector.prepareStatement(
+                    "Update Customers SET Avatar = ? Where CustomerID = ?"
+            );
+            pr.setString(1, img);
+            pr.setInt(2, ID);
+            int rs = pr.executeUpdate();
+            return rs;
+        } catch (SQLException e) {
+            System.out.println("Lỗi khi thêm khách hàng: " + e.getMessage());
+        }
+        return 0;
     }
 
     public static void main(String[] args) {

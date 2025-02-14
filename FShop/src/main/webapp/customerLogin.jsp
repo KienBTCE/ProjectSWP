@@ -229,31 +229,29 @@
             <!-- Popup -->
             <div class="popup" id="loginFailPopup">
                 <div class="popup-content">
-                    <h3>Login Failed</h3>
-                    <p>Invalid email or password. Please try again.</p>
-                    <button onclick="closePopup()">Close</button>
-                </div>
+                    <h3>${sessionScope.message}</h3>
+                <button onclick="closePopup()">Close</button>
             </div>
+        </div>
 
-            <script>
-                function showPopup() {
-                    document.getElementById("loginFailPopup").style.display = "flex";
+        <script>
+            function showPopup() {
+                document.getElementById("loginFailPopup").style.display = "flex";
+            }
+
+            function closePopup() {
+                document.getElementById("loginFailPopup").style.display = "none";
+            }
+
+            // Show popup if login fails (you can trigger this with backend error)
+            // For example, if you're using a session attribute or response error:
+            <%
+                if (session.getAttribute("message") != null) {
+                    out.print("showPopup();");
                 }
-
-                function closePopup() {
-                    document.getElementById("loginFailPopup").style.display = "none";
-                }
-
-                // Show popup if login fails (you can trigger this with backend error)
-                // For example, if you're using a session attribute or response error:
-                <% 
-                    String message = (String) session.getAttribute("message");
-                    if (message != null && message.equals("Login Failed")) {
-                        out.print("showPopup();");
-                        session.removeAttribute("message"); // Xóa thông báo sau khi hiển thị
-                    }
-                %>
-            </script>
+                session.removeAttribute("message");
+            %>
+        </script>
 
         <jsp:include page="footer.jsp"></jsp:include>
     </body>

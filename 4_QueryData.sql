@@ -104,3 +104,5 @@ WHERE Laptops.pd_ID IN (
       AND brandID IN (8) 
       AND (price BETWEEN 25000000 AND 30000000 OR price BETWEEN 30000000 AND 35000000)
 );
+
+SELECT * FROM Orders

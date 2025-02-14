@@ -70,6 +70,7 @@ CREATE TABLE Addresses (
     AddressID INT PRIMARY KEY IDENTITY(1,1),
     CustomerID INT,
     AddressDetails NTEXT,
+	IsDefault BIT, 
     FOREIGN KEY (CustomerID) REFERENCES Customers(CustomerID)
 );
 
@@ -101,8 +102,8 @@ CREATE TABLE Products (
     CategoryID INT,
     Model NVARCHAR(50),
     FullName VARCHAR(255),
-    Description TEXT,
-    Image TEXT,
+    [Description] TEXT,
+    [Image] TEXT,
     Price BIGINT,
     FOREIGN KEY (BrandID) REFERENCES Brands(BrandID),
     FOREIGN KEY (CategoryID) REFERENCES Categories(CategoryID)

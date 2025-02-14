@@ -4,6 +4,7 @@
  */
 package Controllers;
 
+import DAOs.AddressDAO;
 import DAOs.CustomerDAO;
 import Models.Address;
 import Models.Cart;
@@ -72,9 +73,9 @@ public class CheckoutServlet extends HttpServlet {
         String selectedProductIds[] = request.getParameterValues("cartSelected");
         List<Cart> cartSelected = new ArrayList<>();
         Customer cus = (Customer) session.getAttribute("customer");
-        CustomerDAO cdao = new CustomerDAO();
+        AddressDAO cdao = new AddressDAO();
         Address add = cdao.getDefaultAddress(cus.getId());
-        String address = add.getStreet() + ", " + add.getWardNameEn() + ", " + add.getDistrictNameEn() + ", " + add.getProvinceNameEn();
+        String address = add.getAddressDetails();
         int count = 0;
         long totalAmount = 0;
         for (int i = 0; i < cart.size(); i++) {
