@@ -156,6 +156,7 @@ CREATE TABLE ImportOrders (
     SupplierID INT,
     ImportDate DATETIME,
     TotalCost BIGINT,
+	IsComplete BIT,
     IsDeleted BIT,
     LastModify DATETIME,
     FOREIGN KEY (EmployeeID) REFERENCES Employees(EmployeeID),
