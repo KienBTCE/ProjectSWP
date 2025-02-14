@@ -61,11 +61,8 @@ public class CustomerDAO {
                             rs.getString("Gender"),
                             rs.getString("PhoneNumber"),
                             rs.getString("Email"),
-                            rs.getString("CreatedAt"),
-                            rs.getString("Status"),
-                            rs.getString("Avatar"),
-                            rs.getDouble("LoyalPoint")
-                    );
+                            rs.getString("CreatedDate"),
+                            rs.getString("Avatar"));
                 }
             }
         } catch (SQLException e) {
@@ -93,10 +90,9 @@ public class CustomerDAO {
                             rs.getString("Gender"),
                             rs.getString("PhoneNumber"),
                             rs.getString("Email"),
-                            rs.getString("CreatedAt"),
-                            rs.getString("Status"),
-                            rs.getString("Avatar"),
-                            rs.getDouble("LoyalPoint")
+                            rs.getString("CreatedDate"),
+                            rs.getInt("IsBlock"),
+                            rs.getString("Avatar")
                     );
                 }
             }
@@ -143,9 +139,9 @@ public class CustomerDAO {
 
     public boolean addNewCustomer(Customer ctm) {
         try {
-            PreparedStatement pr = connector.prepareStatement("INSERT INTO Customers (FullName, Birthday, [Password], PhoneNumber, Email, Gender, CreatedAt, [Status], Avatar, LoyalPoint)\n"
+            PreparedStatement pr = connector.prepareStatement("INSERT INTO Customers (FullName, Birthday, [Password], PhoneNumber, Email, Gender, CreatedDate, Avatar)\n"
                     + "VALUES\n"
-                    + "(?, ?, ?, ?, ?, ?, ?, ?, ?, ?);");
+                    + "(?, ?, ?, ?, ?, ?, ?, ?);");
             pr.setString(1, ctm.getFullName());
             pr.setString(2, ctm.getBirthday());
             pr.setString(3, getMD5(ctm.getPassword()));
@@ -153,9 +149,7 @@ public class CustomerDAO {
             pr.setString(5, ctm.getEmail());
             pr.setString(6, ctm.getGender());
             pr.setString(7, LocalDate.now() + "");
-            pr.setString(8, ctm.getStatus());
-            pr.setString(9, ctm.getAvatar());
-            pr.setDouble(10, ctm.getLoyalPoint());
+            pr.setString(8, ctm.getAvatar());
             int rs = pr.executeUpdate();
             return rs == 1;
         } catch (SQLException e) {
@@ -166,8 +160,9 @@ public class CustomerDAO {
 
     public static void main(String[] args) {
         CustomerDAO c = new CustomerDAO();
-
-        System.out.println(LocalDate.now());
-        System.out.println(c.getDefaultAddress(1).getWardNameEn());
+        System.out.println(c.getCustomerLogin("nguyenvana@example.com", "user123"));
+//        System.out.println(LocalDate.now());
+//        System.out.println(c.getDefaultAddress(1).getWardNameEn());
+        System.out.println(c.getMD5("user123"));
     }
 }

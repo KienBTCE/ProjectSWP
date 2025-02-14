@@ -88,11 +88,11 @@ public class RegisterServlet extends HttpServlet {
             session.setAttribute("message", "This email already exists!");
             request.getRequestDispatcher("/register.jsp").forward(request, response);
         } else {
-            if (ctmDAO.addNewCustomer(new Customer(0, fullName, password, birthday, gender, phoneNumber, email, "", "Active", "", 0))) {
+            if (ctmDAO.addNewCustomer(new Customer(0, fullName, password, birthday, gender, phoneNumber, email, "", ""))) {
                 response.sendRedirect("/customerLogin");
             } else {
                 session.setAttribute("message", "Registation Failed!");
-                processRequest(request, response);
+                response.sendRedirect("customerLogin.jsp");
             }
         }
 

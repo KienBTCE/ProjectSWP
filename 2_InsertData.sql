@@ -1,4 +1,6 @@
-﻿INSERT INTO Roles VALUES 
+﻿USE FShop
+
+INSERT INTO Roles VALUES 
 (1, 'Admin'),
 (2, 'Shop Manager'),
 (3, 'Order Manager'),
@@ -47,9 +49,9 @@ VALUES
 (3, 3, '512GB SSD');
 
 -- Insert Customers
-INSERT INTO Customers (CustomerID, FullName, Birthday, [Password], PhoneNumber, Email, Gender, CreatedDate, IsBlock, IsDeleted, Avatar)
+INSERT INTO Customers (FullName, Birthday, [Password], PhoneNumber, Email, Gender, CreatedDate, IsBlock, IsDeleted, Avatar)
 VALUES 
-(1, 'Nguyen Van A', '1995-05-15', '055c03b195d4c31b8918cabf04bbd255', '0901234567', 'nguyenvana@example.com', 'Male', GETDATE(), 0, 0, 'avatar_link.jpg');
+('Nguyen Van A', '1995-05-15', '6ad14ba9986e3615423dfca256d04e3f', '0901234567', 'nguyenvana@example.com', 'Male', GETDATE(), 0, 0, 'person.jpg');
 
 -- Insert Orders
 INSERT INTO Orders (OrderID, CustomerID, FullName, [Address], PhoneNumber, OrderDate, DeliveredDate, [Status], TotalAmount)

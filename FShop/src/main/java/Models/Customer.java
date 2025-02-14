@@ -11,6 +11,7 @@ import java.sql.Date;
  * @author TuongMPCE180644
  */
 public class Customer {
+
     private int id;
     private String fullName;
     private String password;
@@ -18,15 +19,15 @@ public class Customer {
     private String gender;
     private String phoneNumber;
     private String email;
-    private String createAt;
-    private String status;
+    private String createDate;
+    private int isBlock;
+    private int isDeleted;
     private String avatar;
-    private double loyalPoint;
 
     public Customer() {
     }
 
-    public Customer(int id, String fullName, String password, String birthday, String gender, String phoneNumber, String email, String createAt, String status, String avatar, double loyalPoint) {
+    public Customer(int id, String fullName, String password, String birthday, String gender, String phoneNumber, String email, String createDate, int isBlock, int isDeleted, String avatar) {
         this.id = id;
         this.fullName = fullName;
         this.password = password;
@@ -34,10 +35,35 @@ public class Customer {
         this.gender = gender;
         this.phoneNumber = phoneNumber;
         this.email = email;
-        this.createAt = createAt;
-        this.status = status;
+        this.createDate = createDate;
+        this.isBlock = isBlock;
+        this.isDeleted = isDeleted;
         this.avatar = avatar;
-        this.loyalPoint = loyalPoint;
+    }
+
+    public Customer(int id, String fullName, String password, String birthday, String gender, String phoneNumber, String email, String createDate, int isBlock, String avatar) {
+        this.id = id;
+        this.fullName = fullName;
+        this.password = password;
+        this.birthday = birthday;
+        this.gender = gender;
+        this.phoneNumber = phoneNumber;
+        this.email = email;
+        this.createDate = createDate;
+        this.isBlock = isBlock;
+        this.avatar = avatar;
+    }
+
+    public Customer(int id, String fullName, String password, String birthday, String gender, String phoneNumber, String email, String createAt, String avatar) {
+        this.id = id;
+        this.fullName = fullName;
+        this.password = password;
+        this.birthday = birthday;
+        this.gender = gender;
+        this.phoneNumber = phoneNumber;
+        this.email = email;
+        this.createDate = createAt;
+        this.avatar = avatar;
     }
 
     public int getId() {
@@ -69,19 +95,11 @@ public class Customer {
     }
 
     public String getCreateAt() {
-        return createAt;
-    }
-
-    public String getStatus() {
-        return status;
+        return createDate;
     }
 
     public String getAvatar() {
         return avatar;
-    }
-
-    public double getLoyalPoint() {
-        return loyalPoint;
     }
 
     public void setId(int id) {
@@ -113,20 +131,35 @@ public class Customer {
     }
 
     public void setCreateAt(String createAt) {
-        this.createAt = createAt;
+        this.createDate = createAt;
     }
 
-    public void setStatus(String status) {
-        this.status = status;
+    public String getCreateDate() {
+        return createDate;
+    }
+
+    public void setCreateDate(String createDate) {
+        this.createDate = createDate;
+    }
+
+    public int getIsBlock() {
+        return isBlock;
+    }
+
+    public void setIsBlock(int isBlock) {
+        this.isBlock = isBlock;
+    }
+
+    public int getIsDeleted() {
+        return isDeleted;
+    }
+
+    public void setIsDeleted(int isDeleted) {
+        this.isDeleted = isDeleted;
     }
 
     public void setAvatar(String avatar) {
         this.avatar = avatar;
     }
 
-    public void setLoyalPoint(double loyalPoint) {
-        this.loyalPoint = loyalPoint;
-    }
-    
-    
 }

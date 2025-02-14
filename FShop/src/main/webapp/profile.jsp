@@ -140,7 +140,12 @@
                 <div class="mb-3 avatar">
                     <label class="form-label">Avatar:</label>
                     <div class="d-block align-items-center">
-                        <img id="avatarPreview" class="avatar-preview mb-3" src="${sessionScope.customer.getAvatar() != null ? sessionScope.customer.getAvatar() : 'assets/imgs/icon/person.jpg'}" alt="Avatar">
+                        <c:if test="${sessionScope.customer != null}">
+                            <img id="avatarPreview" class="avatar-preview mb-3" src="assets/imgs/icon/${sessionScope.customer.getAvatar()}" alt="Avatar">
+                        </c:if>
+                        <c:if test="${sessionScope.customer == null}">
+                            <img id="avatarPreview" class="avatar-preview mb-3" src="assets/imgs/icon/person.jpg" alt="Avatar">
+                        </c:if>  
                         <input type="file" class="form-control" name="avatar" onchange="previewImage(event)" >
                     </div>
                 </div>

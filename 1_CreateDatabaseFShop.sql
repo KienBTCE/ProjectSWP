@@ -39,7 +39,7 @@ CREATE TABLE Roles (
 );
 
 CREATE TABLE Employees (
-    EmployeeID INT PRIMARY KEY,
+    EmployeeID INT PRIMARY KEY IDENTITY(1,1),
     FullName VARCHAR(255) NOT NULL,
     Birthday DATE,
     [Password] VARCHAR(500) NOT NULL,
@@ -53,7 +53,7 @@ CREATE TABLE Employees (
 );
 
 CREATE TABLE Customers (
-    CustomerID INT PRIMARY KEY,
+    CustomerID INT  PRIMARY KEY IDENTITY(1,1),
     FullName VARCHAR(255) NOT NULL,
     Birthday DATE,
     [Password] VARCHAR(500) NOT NULL,
@@ -67,7 +67,7 @@ CREATE TABLE Customers (
 );
 
 CREATE TABLE Addresses (
-    AddressID INT PRIMARY KEY,
+    AddressID INT PRIMARY KEY IDENTITY(1,1),
     CustomerID INT,
     AddressDetails NTEXT,
     FOREIGN KEY (CustomerID) REFERENCES Customers(CustomerID)
@@ -91,12 +91,12 @@ CREATE TABLE Categories (
 );
 
 CREATE TABLE Brands (
-    BrandID INT PRIMARY KEY,
+    BrandID INT PRIMARY KEY IDENTITY(1,1),
     [Name] NVARCHAR(50) NOT NULL
 );
 
 CREATE TABLE Products (
-    ProductID INT PRIMARY KEY,
+    ProductID INT PRIMARY KEY IDENTITY(1,1),
     BrandID INT,
     CategoryID INT,
     Model NVARCHAR(50),
@@ -123,7 +123,7 @@ CREATE TABLE AttributeDetails (
 );
 
 CREATE TABLE Orders (
-    OrderID INT PRIMARY KEY,
+    OrderID INT PRIMARY KEY IDENTITY(1,1),
     CustomerID INT,
     FullName VARCHAR(100) NOT NULL,
     [Address] NTEXT NOT NULL,
@@ -151,7 +151,7 @@ CREATE TABLE OrderStatus (
 );
 
 CREATE TABLE ImportOrders (
-    IOID INT PRIMARY KEY,
+    IOID INT PRIMARY KEY IDENTITY(1,1),
     EmployeeID INT,
     SupplierID INT,
     ImportDate DATETIME,
