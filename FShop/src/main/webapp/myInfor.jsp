@@ -25,7 +25,7 @@
                     <c:if test="${sessionScope.customer.getAvatar() != null}">
                         <img id="avatar" class="avatar-preview mb-3" src="assets/imgs/CustomerAvatar/${sessionScope.customer.getAvatar()}" alt="Avatar">
                     </c:if>
-                    <c:if test="${sessionScope.customer == null || sessionScope.customer.getAvatar() == null}">
+                    <c:if test="${sessionScope.customer.getAvatar() == null}">
                         <img id="avatar" class="avatar-preview mb-3" src="assets/imgs/icon/person.jpg" alt="Avatar">
                     </c:if>                      
                     <h4>${sessionScope.customer.getFullName()}</h4>
