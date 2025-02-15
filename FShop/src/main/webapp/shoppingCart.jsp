@@ -153,9 +153,6 @@
                                        style="height:35px;width: 200px; border-radius: 20px; color: gray; background-color: white;">
                                 <button>Clear Shopping Cart</button>
                             </div>
-                            <div>
-                                <button>Update Shopping Cart</button>
-                            </div>
                         </div>
                     </div>
                     <div class="col-md-4 right">
@@ -164,7 +161,7 @@
 
                         </div>
                         <div>
-                            <div class="tax">
+<!--                            <div class="tax">
                                 <p>Apply Discount Code</p>
                                 <button onclick="toggleDisplay('detail2')"
                                         style="width: 10%; border: white solid; border-radius: 30px; height: auto;"><svg
@@ -191,7 +188,7 @@
                                             Discount</button>
                                     </form>
                                 </div>
-                            </div>
+                            </div>-->
                         </div>
 
                         <svg width="385" height="2" viewBox="0 0 385 2" fill="none"

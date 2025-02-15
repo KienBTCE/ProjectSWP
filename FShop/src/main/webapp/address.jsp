@@ -91,7 +91,7 @@
                 <br>
             </div>
 
-            <div class="overlay" id="overlay" onclick="closeAddPopup()"></div>
+            <div class="overlay" id="overlay" onclick=""></div>
 
             <div class="popup" id="addPopup">
                 <div class="">
@@ -132,7 +132,7 @@
                     </div>
                 </div>
             </div>            
-            <div class="overlay" id="overlay" onclick="closeUpdatePopup()"></div>
+            <div class="overlay" id="overlay" onclick=""></div>
             <div class="popup" id="updatePopup">
                 <div class="">
                     <div class="">
@@ -144,24 +144,24 @@
                                 <div class="mb-3">
                                     <label for="province" class="form-label">Province/City:</label>
                                     <select id="province" name="province" class="form-select" required>
-                                        <option value="">Select Province</option>
+                                        <option value="">Cần Thơ</option>
                                     </select>
                                 </div>
                                 <div class="mb-3">
                                     <label for="district" class="form-label">District:</label>
                                     <select id="district" name="district" class="form-select" required>
-                                        <option value="">Select District</option>
+                                        <option value="">Quận Bình Thủy</option>
                                     </select>
                                 </div>
                                 <div class="mb-3">
                                     <label for="ward" class="form-label">Ward/Commune:</label>
                                     <select id="ward" name="ward" class="form-select" required>
-                                        <option value="">Select Ward</option>
+                                        <option value="">Phường Long Tuyền</option>
                                     </select>
                                 </div>
                                 <div class="mb-3">
                                     <label for="address" class="form-label">Detailed Address:</label>
-                                    <input type="text" id="address" name="address" class="form-control" required>
+                                    <input type="text" id="address" name="address" class="form-control" required value="Nguyễn Văn Trường, Phường Long Tuyền, Quận Bình Thủy, Cần Thơ">
                                 </div>
                                 <div class="modal-footer">
                                     <button type="button" class="btn btn-secondary" onclick="closeUpdatePopup()" data-bs-dismiss="modal">Close</button>
