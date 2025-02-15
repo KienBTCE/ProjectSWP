@@ -17,7 +17,7 @@
     </head>
 
     <body>
-        <footer style="background-color: #1f1a1a; color: white;">
+        <footer style="background-color: #1f1a1a; color: white; width: 100%">
             <div class="container" style="color: white;">
                 <div class="row" style="display: flex; align-items: center; justify-content: space-between;">
                     <div class="col-md-6" style="padding: 10px;">

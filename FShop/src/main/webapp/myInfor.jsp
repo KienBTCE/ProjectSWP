@@ -5,6 +5,8 @@
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+
         <title>Profile Management</title>
         <style>
             #avatar {
@@ -67,54 +69,86 @@
             .droppeddown.active .droppeddown-menu {
                 display: block;
             }
+            .content{
+                margin-top: 30px;
+            }
         </style>
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
     </head>
 
     <body>
-        <!-- Sidebar -->
-        <main style="margin: 0; font-family: Arial, sans-serif; height: auto;">
-            <div class="sidebar" style="width: 100%; background-color: rgba(231, 220, 220, 0); height: 100%; padding: 20px; ">
-                <div class="text-center">
-                    <c:if test="${sessionScope.customer.getAvatar() != null}">
-                        <img id="avatar" class="avatar-preview mb-3" src="assets/imgs/CustomerAvatar/${sessionScope.customer.getAvatar()}" alt="Avatar">
-                    </c:if>
-                    <c:if test="${sessionScope.customer.getAvatar() == null}">
-                        <img id="avatar" class="avatar-preview mb-3" src="assets/imgs/icon/person.jpg" alt="Avatar">
-                    </c:if>                      
-                    <h4>${sessionScope.customer.getFullName()}</h4>
-                    <a class="text-center" href="Logout">Logout</a>
-                </div>
-
-                <div class="sidebar">
-                    <ul style="list-style-type: none; padding: 0; color: black; ">
-                        <a href="#" class="menu-item">🔔 Notification</a>
-
-                        <div class="droppeddown">
-                            <a href="#" class="menu-item droppeddown-toggle">👤 My Information</a>
-                            <div class="droppeddown-menu">
-                                <a href="viewProfile">My profile</a>
-                                <a href="address.jsp">Address</a>
-                                <a href="#">Change password</a>
-                            </div>
+        <jsp:include page="header.jsp"></jsp:include>
+            <main>
+                <!-- Sidebar -->
+                <div class="container-fluid" style="font-family: Arial, sans-serif; height: auto; background: rgb(245,245,245); ">
+                    <div class="row">
+                        <div class="sidebar col-md-3" style=" height: auto; padding: 20px;">
+                            <div class="text-center">
+                            <c:if test="${sessionScope.customer.getAvatar() != null}">
+                                <img id="avatar" class="avatar-preview mb-3" src="assets/imgs/CustomerAvatar/${sessionScope.customer.getAvatar()}" alt="Avatar">
+                            </c:if>
+                            <c:if test="${sessionScope.customer.getAvatar() == null}">
+                                <img id="avatar" class="avatar-preview mb-3" src="assets/imgs/icon/person.jpg" alt="Avatar">
+                            </c:if>                      
+                            <h4>${sessionScope.customer.getFullName()}</h4>
+                            <a class="text-center" href="Logout">Logout</a>
                         </div>
 
-                        <a href="orders.jsp" class="menu-item">📦 Orders</a>
-                    </ul>
+                        <div class="sidebar">
+                            <ul style="list-style-type: none; padding: 0; color: black; ">
+                                <a href="#" class="menu-item">🔔 Notification</a>
+
+                                <div class="droppeddown">
+                                    <a href="#" class="menu-item droppeddown-toggle">👤 My Information</a>
+                                    <div class="droppeddown-menu">
+                                        <a href="#" onclick="loadPage('profile.jsp')">My profile</a>
+                                        <a href="#" onclick="loadPage('address.jsp')">Address</a>
+                                        <a href="#">Change password</a>
+                                    </div>
+                                </div>
+                                <a href="#" class="menu-item" onclick="loadPage('orders.jsp')">📦 Orders</a>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="col-md-9 content" id="content" style="padding: 15px; border-radius: 5px; ">
+                        <jsp:include page="profile.jsp"></jsp:include>
+                        <jsp:include page="address.jsp"></jsp:include>
+                        <jsp:include page="orders.jsp"></jsp:include>
+                        </div>
+                    </div>
                 </div>
-            </div>
+            </main>
 
-        </main>
-        <script>
-            document.addEventListener("DOMContentLoaded", function () {
-                const dropdownToggle = document.querySelector(".droppeddown-toggle");
-                const dropdown = document.querySelector(".droppeddown");
+            <script>
+                function loadPage(page = 'profile.jsp') {
+                    fetch(page)
+                            .then(response => response.text())
+                            .then(data => {
+                                document.getElementById("content").innerHTML = data;
+                            })
+                            .catch(error => console.error("Error loading page:", error));
+                }
 
-                dropdownToggle.addEventListener("click", function (event) {
-                    event.preventDefault(); // Ngăn chặn reload trang
-                    dropdown.classList.toggle("active"); // Thêm hoặc xóa class active
+                document.addEventListener("DOMContentLoaded", function () {
+                    loadPage(); // Load profile.jsp mặc định khi trang được mở
                 });
-            });
-        </script>
+
+                document.addEventListener("DOMContentLoaded", function () {
+                    const dropdownToggle = document.querySelector(".droppeddown-toggle");
+                    const dropdown = document.querySelector(".droppeddown");
+
+                    dropdownToggle.addEventListener("click", function (event) {
+                        event.preventDefault(); // Ngăn chặn reload trang
+                        dropdown.classList.toggle("active"); // Thêm hoặc xóa class active
+                    });
+                });
+
+            </script>
+            <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+            <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+        <jsp:include page="footer.jsp"></jsp:include>
+
     </body>
 
 </html>
