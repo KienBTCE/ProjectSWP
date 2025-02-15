@@ -70,7 +70,7 @@ CREATE TABLE Addresses (
     AddressID INT PRIMARY KEY IDENTITY(1,1),
     CustomerID INT,
     AddressDetails NTEXT,
-	IsDefault BIT, 
+	IsDefault BIT,	
     FOREIGN KEY (CustomerID) REFERENCES Customers(CustomerID)
 );
 

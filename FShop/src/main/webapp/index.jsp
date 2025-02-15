@@ -71,7 +71,9 @@
             <div class="container">
                 <div class="row">
                     <div class="gap-section banner-content">
+                        <!-- 
                         <img src="assets/imgs/Banners/banner-home.svg" alt="alt"/>
+                        comment -->
                     </div>
                 </div>
                 <div class="row">
