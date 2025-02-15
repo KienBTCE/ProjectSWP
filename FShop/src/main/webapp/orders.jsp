@@ -55,7 +55,7 @@
                         <div class="col-md-9" style="background: rgba(231, 220, 220, 0); margin: 20px 0px 20px 0px; border-radius: 10px; padding: 30px 0px 30px 0px">
                             <div class="nav">
                                 <nav class="nav" style="background: white">
-                                    <a href="#" class="tab-link active" data-tab="waiting">Waiting for acceptance</a>
+                                    <a href="#" class="tab-link active" data-tab="waiting">Waiting for confirmation</a>
                                     <a href="#" class="tab-link" data-tab="transport">Transport</a>
                                     <a href="#" class="tab-link" data-tab="delivery">Waiting for delivery</a>
                                     <a href="#" class="tab-link" data-tab="delivered">Delivered</a>
@@ -66,36 +66,6 @@
                                 <br>
                             </div>
                             <div id="waiting" class="order-list active" >
-                                <div style="background-color: white; width: 100%; border-radius: 10px;">
-                                    <div style="text-align: right; padding: 15px; border-bottom: 0.5px solid gray; color:rgb(238,84,61) ;">
-                                        <h5>Canceled</h5>
-                                    </div>
-                                    <br>
-                                    <div class="container-fluid" style="border-bottom: 0.5px solid gray;">
-                                        <div class="row" style="display: flex; align-items: center;">
-                                            <div class="col-md-2">
-                                                <img style="border: 0.5px solid gray;" width="100px" height="auto"
-                                                     src="./assets/imgs/Laptop/0yp3jx9d-1090-lenovo-legion-pro-5-y9000p-2023-core-i9-13900hx-16gb-1tb-rtx-4050-6gb-16-wqxga-240hz-new.jpg"
-                                                     alt="">
-                                            </div>
-                                            <div class="col-md-8">
-                                                <div>
-                                                    Laptop
-                                                </div>
-                                                <div>
-                                                    Quantity: 1
-                                                </div>
-                                            </div>
-                                            <div class="col-md-2" style="color: rgb(238,84,61); text-align: right;">20.000.000VND</div>
-                                        </div>
-                                        <br>
-                                    </div>
-                                    <div style="text-align: right; padding: 10px; margin-top: 10px;">Total: <h4 style="color: rgb(238,84,61);">20.000.000VND</h4>
-                                    </div>
-                                </div>
-                                <div style="width: 100%; background: rgba(231, 220, 220, 0);">
-                                    <br>
-                                </div>
 
                             </div>
                             <div id="transport" class="order-list">
@@ -108,7 +78,37 @@
                                 <p>Order #1213 - Delivered</p>
                             </div>
                             <div id="canceled" class="order-list">
-                                <p>Order #1415 - Canceled</p>
+                                <div style="background-color: white; width: 100%; border-radius: 10px;">
+                                    <div style="text-align: right; padding: 15px; border-bottom: 0.5px solid rgb(226, 214, 214); color:rgb(238,84,61); width: 95%; margin: 0 auto">
+                                        <h5>Canceled</h5>
+                                    </div>
+                                    <br>
+                                    <div class="container-fluid" style="border-bottom: 0.1px rgb(226, 214, 214) solid;  width: 95%; margin: 0 auto">
+                                        <div class="row" style="display: flex; align-items: center;">
+                                            <div class="col-md-2">
+                                                <img style="border: 0.5px solid gray;" width="100px" height="auto"
+                                                     src="./assets/imgs/Laptop/0yp3jx9d-1090-lenovo-legion-pro-5-y9000p-2023-core-i9-13900hx-16gb-1tb-rtx-4050-6gb-16-wqxga-240hz-new.jpg"
+                                                     alt="">
+                                            </div>
+                                            <div class="col-md-8">
+                                                <div>
+                                                    <a href="orderDetails.jsp" style="text-decoration: none; color: black;"> Laptop</a>
+                                                </div>
+                                                <div>
+                                                    Quantity: 1
+                                                </div>
+                                            </div>
+                                            <div class="col-md-2" style="color: rgb(238,84,61); text-align: right;">20.000.000VND</div>
+                                        </div>
+                                        <br>
+                                    </div>
+                                    <div style="text-align: right; padding: 10px; margin-top: 10px;  width: 95%; margin: 0 auto">Total: <h4 style="color: rgb(238,84,61);">20.000.000VND</h4>
+                                    </div>
+                                </div>
+                                <div style="width: 100%; background: rgba(231, 220, 220, 0);">
+                                    <br>
+                                </div>
+
                             </div>
                         </div>
                     </div>

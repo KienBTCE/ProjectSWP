@@ -22,7 +22,7 @@
                         </div>
                         <div class="col-md-9" style="background: white; margin: 20px 0px 20px 0px; border-radius: 10px; padding: 30px">
                             <div class="header"
-                                 style=" display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #ddd;     ">
+                                 style=" display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #ddd; padding-bottom: 20px">
                                 <h2>My addresses</h2>
                                 <button class="btn btn-add"
                                         style="background: red; color: white; padding: 5px 5px; cursor: pointer; border: none;"
@@ -55,13 +55,86 @@
                                 </div>
 
                             </div>
+                            <div id="addressList">
+                                <br>
+                                <div class="address"
+                                     style="border-bottom: 1px solid #ddd; display: flex; justify-content: space-between; align-items: center;">
+                                    <div>
+                                        <strong>Bùi Minh Nhựt</strong> (+84) 349 311 805
+                                        <p>Nguyễn Văn Trường, Phường Long Tuyền, Quận Bình Thủy, Cần Thơ</p>
+                                        <span class="default" style="color: red; font-weight: bold;">Default</span>
+                                    </div>
+                                    <div class="actions" style="display: flex; flex-direction: column;">
+                                        <div class="btn1" style="display: flex; flex-direction: row;">
+                                            <button class="btn btn-update"
+                                                    style="color: blue; padding: 5px 5px; cursor: pointer; border: none; margin-left: 5px;"
+                                                    data-bs-toggle="modal" data-bs-target="#updateModal">Update</button>
+                                            <button class="btn btn-delete"
+                                                    style="color: red; background: none; padding: 5px 5px; cursor: pointer; border: none; margin-left: 5px;">Delete</button>
+                                        </div>
+                                        <button class="btn btn-default"
+                                                style="background: #f5f5f5; padding: 5px 5px; cursor: pointer; border: none; margin-left: 5px;"
+                                                onclick="setDefault(this)">Set as default</button>
+                                    </div>
+                                </div>
+
+                            </div>
+                            <div id="addressList">
+                                <br>
+                                <div class="address"
+                                     style="border-bottom: 1px solid #ddd; display: flex; justify-content: space-between; align-items: center;">
+                                    <div>
+                                        <strong>Bùi Minh Nhựt</strong> (+84) 349 311 805
+                                        <p>Nguyễn Văn Trường, Phường Long Tuyền, Quận Bình Thủy, Cần Thơ</p>
+                                        <span class="default" style="color: red; font-weight: bold;">Default</span>
+                                    </div>
+                                    <div class="actions" style="display: flex; flex-direction: column;">
+                                        <div class="btn1" style="display: flex; flex-direction: row;">
+                                            <button class="btn btn-update"
+                                                    style="color: blue; padding: 5px 5px; cursor: pointer; border: none; margin-left: 5px;"
+                                                    data-bs-toggle="modal" data-bs-target="#updateModal">Update</button>
+                                            <button class="btn btn-delete"
+                                                    style="color: red; background: none; padding: 5px 5px; cursor: pointer; border: none; margin-left: 5px;">Delete</button>
+                                        </div>
+                                        <button class="btn btn-default"
+                                                style="background: #f5f5f5; padding: 5px 5px; cursor: pointer; border: none; margin-left: 5px;"
+                                                onclick="setDefault(this)">Set as default</button>
+                                    </div>
+                                </div>
+
+                            </div>
+                            <div id="addressList">
+                                <br>
+                                <div class="address"
+                                     style="border-bottom: 1px solid #ddd; display: flex; justify-content: space-between; align-items: center;">
+                                    <div>
+                                        <strong>Bùi Minh Nhựt</strong> (+84) 349 311 805
+                                        <p>Nguyễn Văn Trường, Phường Long Tuyền, Quận Bình Thủy, Cần Thơ</p>
+                                        <span class="default" style="color: red; font-weight: bold;">Default</span>
+                                    </div>
+                                    <div class="actions" style="display: flex; flex-direction: column;">
+                                        <div class="btn1" style="display: flex; flex-direction: row;">
+                                            <button class="btn btn-update"
+                                                    style="color: blue; padding: 5px 5px; cursor: pointer; border: none; margin-left: 5px;"
+                                                    data-bs-toggle="modal" data-bs-target="#updateModal">Update</button>
+                                            <button class="btn btn-delete"
+                                                    style="color: red; background: none; padding: 5px 5px; cursor: pointer; border: none; margin-left: 5px;">Delete</button>
+                                        </div>
+                                        <button class="btn btn-default"
+                                                style="background: #f5f5f5; padding: 5px 5px; cursor: pointer; border: none; margin-left: 5px;"
+                                                onclick="setDefault(this)">Set as default</button>
+                                    </div>
+                                </div>
+
+                            </div>
+                            
                         </div>
                     </div>
                 </div>
             </div>
 
             <!-- Add Address Modal -->
-            <div style="" class="modal fade" id="addModal" tabindex="-1" aria-labelledby="addModalLabel" aria-hidden="true">
+            <div style="margin-top: 100px" class="modal fade" id="addModal" tabindex="-1" aria-labelledby="addModalLabel" aria-hidden="true">
                 <div class="modal-dialog modal-lg">
                     <div class="modal-content">
                         <div class="modal-header">
@@ -128,7 +201,7 @@
             </div>
 
             <!-- Update Address Modal -->
-            <div class="modal fade" id="updateModal" tabindex="-1" aria-labelledby="updateModalLabel" aria-hidden="true">
+            <div  style="margin-top: 100px" class="modal fade" id="updateModal" tabindex="-1" aria-labelledby="updateModalLabel" aria-hidden="true">
                 <div class="modal-dialog modal-lg">
                     <div class="modal-content">
                         <div class="modal-header">

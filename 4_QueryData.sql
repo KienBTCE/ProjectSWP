@@ -34,7 +34,7 @@ FROM Carts c
 LEFT JOIN Products p ON c.SKU = p.SKU
 LEFT JOIN ShopProducts sp ON p.SKU = sp.SKU
 WHERE c.CustomerID = 1
-
+SELECT * FROM Customers
 -- Query Accounts
 SELECT * 
 FROM Customers;
