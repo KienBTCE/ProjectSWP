@@ -6,6 +6,7 @@
 
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@page import="Models.Cart" %>
+<%@page import="Models.Customer" %>
 <%@page import="java.util.List" %>
 <%@page contentType="text/html" pageEncoding="UTF-8" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
@@ -44,15 +45,13 @@
                         <div class="col-md-8">
                             <div class="title">
                                 <div>
-                                    <h1>Checkout</h1>
+                                    <h1>Confirmation</h1>
                                 </div>
-                                <div><button type="submit"
-                                             style="background-color: white; border: #0156ff solid 1px; color: #0156ff;"><b>Sign
-                                            in</b></button></div>
+
                             </div>
                         </div>
                         <div class="col-md-4" style="text-align: right;">
-                            <img src="./assets/imgs/CheckoutImg/status.jpg" alt="" width="350px">
+                            <img src="./assets/imgs/CheckoutImg/status2.jpg" alt="" width="350px">
                         </div>
                     </div>
                     <br>
@@ -75,8 +74,12 @@
                                     <th style="width: 70%;"></th>
                                 </tr>
                                 <tr style="padding: 20px 20px 20px 0px;">
-                                    <td style="padding: 20px 20px 20px 0px;"><b>Fullname</b></td>
-                                    <td style="padding: 20px 20px 20px 0px;">${sessionScope.order.getFullName()}</td>
+                                    <td style="padding: 20px 20px 20px 0px;"><b>Email:</b></td>
+                                    <td style="padding: 20px 20px 20px 0px;">${sessionScope.customer.getEmail()}</td>
+                            </tr>
+                            <tr style="padding: 20px 20px 20px 0px;">
+                                <td style="padding: 20px 20px 20px 0px;"><b>Fullname</b></td>
+                                <td style="padding: 20px 20px 20px 0px;">${sessionScope.order.getFullName()}</td>
                             </tr>
                             <tr style="padding: 20px 20px 20px 0px;">
                                 <td style="padding: 20px 20px 20px 0px;"><b>Phone number</b></td>
@@ -132,7 +135,7 @@
                     <input type="number" name="totalAmount" value="${total}" hidden>
                     <button type="submit"
                             style="background-color: #0156ff; border: #0156ff solid 1px; color: white;">
-                        Order
+                        Place order
                     </button>
                 </form>
             </div>

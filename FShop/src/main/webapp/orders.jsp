@@ -52,6 +52,9 @@
                 <a href="#" class="tab-link" onclick="showTab('canceled', this)">Canceled</a>
             </nav>
         </div>
+        <div style="width: 100%; background: rgba(231, 220, 220, 0);">
+            <br>
+        </div>
         <div style="width: 100%; background: rgba(231, 220, 220, 0);"></div>
         <div id="waiting" class="order-list active"></div>
         <div id="transport" class="order-list">
