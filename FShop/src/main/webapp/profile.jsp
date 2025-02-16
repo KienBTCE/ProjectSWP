@@ -96,7 +96,7 @@
                         <p>
                             ********<span id="phoneDisplay">${sessionScope.customer.getPhoneNumber().substring(sessionScope.customer.getPhoneNumber().length()-2)}</span> 
                             <input id="phoneInput" name="phoneNumber" type="tel" value="${sessionScope.customer.getPhoneNumber()}" hidden>
-                            <button type="button" onclick="openModal()">Change</button>
+                            <a href="#" onclick="openModal()">Change</a>
                         </p>
                     </div>
 

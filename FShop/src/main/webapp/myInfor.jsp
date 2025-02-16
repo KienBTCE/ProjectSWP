@@ -103,7 +103,7 @@
                                     <div class="droppeddown-menu">
                                         <a href="#" onclick="loadPage('profile.jsp')">My profile</a>
                                         <a href="#" onclick="loadPage('address.jsp')">Address</a>
-                                        <a href="#">Change password</a>
+                                        <a href="#" onclick="loadPage('changePassword.jsp')">Change password</a>
                                     </div>
                                 </div>
                                 <a href="#" class="menu-item" onclick="loadPage('orders.jsp')">📦 Orders</a>
@@ -114,6 +114,7 @@
                         <jsp:include page="profile.jsp"></jsp:include>
                         <jsp:include page="address.jsp"></jsp:include>
                         <jsp:include page="orders.jsp"></jsp:include>
+                        <jsp:include page="changePassword.jsp"></jsp:include>
                         </div>
                     </div>
                 </div>

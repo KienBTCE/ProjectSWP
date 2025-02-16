@@ -137,7 +137,7 @@
 
                 <div class="form-box">
                     <p>If you have an account, sign in with your email address.</p>
-                    <form action="customerLogin" method="post">
+                    <form action="employeeLogin" method="post">
                         <label for="email">Email</label>
                         <input type="email" id="email" name="email" placeholder="Your Email" required>
 
