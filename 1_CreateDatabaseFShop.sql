@@ -49,6 +49,7 @@ CREATE TABLE Employees (
     CreatedDate DATETIME,
     Avatar TEXT,
     RoleID INT,
+	[Status] NVARCHAR(20),
     FOREIGN KEY (RoleID) REFERENCES Roles(RoleID)
 );
 
