@@ -123,6 +123,10 @@
                                     <label for="address" class="form-label">Detailed Address:</label>
                                     <input type="text" id="address" name="address" class="form-control" required>
                                 </div>
+                                <div class="mb-3 form-check form-switch">
+                                    <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault">
+                                    <label class="form-check-label" for="flexSwitchCheckDefault">Set as default</label>
+                                </div>
                                 <div class="modal-footer">
                                     <button type="button" class="btn btn-secondary" onclick="closeAddPopup()" data-bs-dismiss="modal">Close</button>
                                     <button type="submit" class="btn btn-danger">Save</button>
@@ -162,6 +166,10 @@
                                 <div class="mb-3">
                                     <label for="address" class="form-label">Detailed Address:</label>
                                     <input type="text" id="address" name="address" class="form-control" required value="Nguyễn Văn Trường">
+                                </div>
+                                <div class="mb-3 form-check form-switch">
+                                    <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault">
+                                    <label class="form-check-label" for="flexSwitchCheckDefault">Set as default</label>
                                 </div>
                                 <div class="modal-footer">
                                     <button type="button" class="btn btn-secondary" onclick="closeUpdatePopup()" data-bs-dismiss="modal">Close</button>
