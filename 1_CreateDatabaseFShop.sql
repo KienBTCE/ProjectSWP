@@ -34,7 +34,7 @@ GO
 -----------------------------------------------------------------------------------
 
 CREATE TABLE Roles (
-    RoleID INT PRIMARY KEY,
+    RoleID INT PRIMARY KEY IDENTITY(1,1),
     [Name] NVARCHAR(50) NOT NULL
 );
 
@@ -47,14 +47,14 @@ CREATE TABLE Employees (
     Email VARCHAR(254),
     Gender CHAR(6),
     CreatedDate DATETIME,
+	[Status] NVARCHAR(20),
     Avatar TEXT,
     RoleID INT,
-	[Status] NVARCHAR(20),
     FOREIGN KEY (RoleID) REFERENCES Roles(RoleID)
 );
 
 CREATE TABLE Customers (
-    CustomerID INT  PRIMARY KEY IDENTITY(1,1),
+    CustomerID INT PRIMARY KEY IDENTITY(1,1),
     FullName VARCHAR(255) NOT NULL,
     Birthday DATE,
     [Password] VARCHAR(500) NOT NULL,
@@ -84,11 +84,12 @@ CREATE TABLE Suppliers (
     [Address] VARCHAR(255),
     CreatedDate DATETIME,
     LastModify DATETIME,
-    IsDeleted BIT
+    IsDeleted BIT,
+	IsActivate BIT
 );
 
 CREATE TABLE Categories (
-    CategoryID INT PRIMARY KEY,
+    CategoryID INT PRIMARY KEY IDENTITY(1,1),
     [Name] NVARCHAR(50) NOT NULL
 );
 
@@ -104,21 +105,24 @@ CREATE TABLE Products (
     Model NVARCHAR(50),
     FullName VARCHAR(255),
     [Description] TEXT,
+	IsDeleted BIT,
+	Price BIGINT,
     [Image] TEXT,
-    Price BIGINT,
+    Quantity INT,
+	Stock INT
     FOREIGN KEY (BrandID) REFERENCES Brands(BrandID),
     FOREIGN KEY (CategoryID) REFERENCES Categories(CategoryID)
 );
 
 CREATE TABLE Attributes (
-    AttributeID INT PRIMARY KEY,
+    AttributeID INT PRIMARY KEY IDENTITY(1,1),
     [Name] NVARCHAR(100) NOT NULL
 );
 
 CREATE TABLE AttributeDetails (
     AttributeID INT,
     ProductID INT,
-    AttributeValue VARCHAR(100),
+    AttributeInfor VARCHAR(100),
     PRIMARY KEY (AttributeID, ProductID),
     FOREIGN KEY (AttributeID) REFERENCES Attributes(AttributeID),
     FOREIGN KEY (ProductID) REFERENCES Products(ProductID)
@@ -130,7 +134,7 @@ CREATE TABLE Orders (
     FullName VARCHAR(100) NOT NULL,
     [Address] NTEXT NOT NULL,
     PhoneNumber VARCHAR(15) NOT NULL,
-    OrderDate DATETIME NOT NULL,
+    OrderedDate DATETIME NOT NULL,
     DeliveredDate DATETIME,
     [Status]INT,
     TotalAmount BIGINT,
@@ -158,8 +162,6 @@ CREATE TABLE ImportOrders (
     SupplierID INT,
     ImportDate DATETIME,
     TotalCost BIGINT,
-	IsComplete BIT,
-    IsDeleted BIT,
     LastModify DATETIME,
     FOREIGN KEY (EmployeeID) REFERENCES Employees(EmployeeID),
     FOREIGN KEY (SupplierID) REFERENCES Suppliers(SupplierID)
@@ -179,11 +181,13 @@ CREATE TABLE ProductRatings (
     RateID INT PRIMARY KEY,
     CustomerID INT,
     ProductID INT,
-    CreateDate DATETIME,
+	OrderID INT,
+    CreatedDate DATETIME,
     Star INT,
     Comment NVARCHAR(300),
     IsDeleted BIT,
     IsRead BIT,
+	FOREIGN KEY (OrderID) REFERENCES Orders(OrderID),
     FOREIGN KEY (CustomerID) REFERENCES Customers(CustomerID),
     FOREIGN KEY (ProductID) REFERENCES Products(ProductID)
 );
