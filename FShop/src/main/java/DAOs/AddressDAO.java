@@ -20,6 +20,11 @@ public class AddressDAO {
     DBContext db = new DBContext();
     Connection connector = db.getConnection();
     
+    /**
+     *
+     * @param customerID
+     * @return
+     */
     public Address getDefaultAddress(int customerID) {
         try {
             PreparedStatement pr = connector.prepareStatement("SELECT AddressID, AddressDetails FROM Addresses Where CustomerID = ? AND IsDefault = 1");
@@ -34,4 +39,13 @@ public class AddressDAO {
         return null;
     }
 
+    /**
+     *
+     * @param args
+     */
+    public static void main(String[] args) {
+        AddressDAO a = new AddressDAO();
+        System.out.println(a.getDefaultAddress(1).getAddressDetails());
+    }
+    
 }

@@ -78,9 +78,9 @@
 
     <body>
         <jsp:include page="header.jsp"></jsp:include>
-            <main>
+            <main style=" background: rgb(245,245,245);">
                 <!-- Sidebar -->
-                <div class="container-fluid" style="font-family: Arial, sans-serif; height: auto; background: rgb(245,245,245); ">
+                <div class="container" style="font-family: Arial, sans-serif; height: auto; ">
                     <div class="row">
                         <div class="sidebar col-md-3" style=" height: auto; padding: 20px;">
                             <div class="text-center">
@@ -101,39 +101,29 @@
                                 <div class="droppeddown">
                                     <a href="#" class="menu-item droppeddown-toggle">👤 My Information</a>
                                     <div class="droppeddown-menu">
-                                        <a href="#" onclick="loadPage('profile.jsp')">My profile</a>
-                                        <a href="#" onclick="loadPage('address.jsp')">Address</a>
-                                        <a href="#" onclick="loadPage('changePassword.jsp')">Change password</a>
+                                        <a href="#" class="menu-item load-content" data-url="profile.jsp">My profile</a>
+                                        <a href="#" class="menu-item load-content" data-url="address.jsp">Address</a>
+                                        <a href="#" class="menu-item load-content" data-url="changePassword.jsp">Change password</a>
+
                                     </div>
                                 </div>
-                                <a href="#" class="menu-item" onclick="loadPage('orders.jsp')">📦 Orders</a>
+                                <a href="#" class="menu-item load-content" data-url="orders.jsp">📦 Orders</a>
                             </ul>
                         </div>
                     </div>
                     <div class="col-md-9 content" id="content" style="padding: 15px; border-radius: 5px; ">
-                        <jsp:include page="profile.jsp"></jsp:include>
+
                         <jsp:include page="address.jsp"></jsp:include>
+                        <jsp:include page="profile.jsp"></jsp:include>
                         <jsp:include page="orders.jsp"></jsp:include>
                         <jsp:include page="changePassword.jsp"></jsp:include>
+
                         </div>
                     </div>
                 </div>
             </main>
 
             <script>
-                function loadPage(page = 'profile.jsp') {
-                    fetch(page)
-                            .then(response => response.text())
-                            .then(data => {
-                                document.getElementById("content").innerHTML = data;
-                            })
-                            .catch(error => console.error("Error loading page:", error));
-                }
-
-                document.addEventListener("DOMContentLoaded", function () {
-                    loadPage(); // Load profile.jsp mặc định khi trang được mở
-                });
-
                 document.addEventListener("DOMContentLoaded", function () {
                     const dropdownToggle = document.querySelector(".droppeddown-toggle");
                     const dropdown = document.querySelector(".droppeddown");
@@ -142,6 +132,50 @@
                         event.preventDefault(); // Ngăn chặn reload trang
                         dropdown.classList.toggle("active"); // Thêm hoặc xóa class active
                     });
+                });
+
+                document.addEventListener("DOMContentLoaded", function () {
+                    let contentDiv = document.getElementById("content");
+
+                    // Mặc định load profile.jsp khi trang mở
+                    fetch("profile.jsp")
+                            .then(response => response.text())
+                            .then(data => {
+                                contentDiv.innerHTML = data;
+                                executeScripts(contentDiv);
+                            })
+                            .catch(error => console.error("Error loading profile:", error));
+
+                    // Xử lý khi click vào menu
+                    document.querySelectorAll(".load-content").forEach(item => {
+                        item.addEventListener("click", function (event) {
+                            event.preventDefault(); // Ngăn không cho chuyển trang
+
+                            let page = this.getAttribute("data-url"); // Lấy URL từ data-url
+                            fetch(page)
+                                    .then(response => response.text())
+                                    .then(data => {
+                                        contentDiv.innerHTML = data;
+                                        executeScripts(contentDiv); // Chạy lại script
+                                    })
+                                    .catch(error => console.error("Error loading page:", error));
+                        });
+                    });
+
+                    // Hàm chạy lại script trong nội dung được load
+                    function executeScripts(element) {
+                        let scripts = element.getElementsByTagName("script");
+                        for (let script of scripts) {
+                            if (script.src) { // Nếu là script có src
+                                let newScript = document.createElement("script");
+                                newScript.src = script.src;
+                                newScript.async = true;
+                                document.body.appendChild(newScript);
+                            } else { // Nếu là script inline
+                                eval(script.innerText);
+                            }
+                        }
+                    }
                 });
 
             </script>

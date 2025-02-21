@@ -45,8 +45,9 @@
     <body>
         <div class="nav">
             <nav class="nav" style="background: white">
+                <a href="#" class="tab-link" onclick="showTab('all', this)">All</a>
                 <a href="#" class="tab-link" onclick="showTab('waiting', this)">Waiting for confirmation</a>
-                <a href="#" class="tab-link" onclick="showTab('transport', this)">Transport</a>
+                <a href="#" class="tab-link" onclick="showTab('transport', this)">Packaging</a>
                 <a href="#" class="tab-link" onclick="showTab('delivery', this)">Waiting for delivery</a>
                 <a href="#" class="tab-link" onclick="showTab('delivered', this)">Delivered</a>
                 <a href="#" class="tab-link" onclick="showTab('canceled', this)">Canceled</a>
@@ -56,6 +57,9 @@
             <br>
         </div>
         <div style="width: 100%; background: rgba(231, 220, 220, 0);"></div>
+        <div id="all" class="order-list active">
+            All of your order will be here
+        </div>
         <div id="waiting" class="order-list active"></div>
         <div id="transport" class="order-list">
             <p>Order #5678 - In transport</p>

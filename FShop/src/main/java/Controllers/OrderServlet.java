@@ -90,7 +90,7 @@ public class OrderServlet extends HttpServlet {
         List<Cart> cartSelected = (List<Cart>) session.getAttribute("cartSelected");
         for (Cart c : cartSelected) {
             od.addOrderDetail(od.getNewestOrderID(), c.getSKU(), c.getQuantity(), c.getPrice());
-            //od.subtractQuantityAfterBuy(c.getSKU(), c.getQuantity());
+            od.subtractQuantityAfterBuy(c.getSKU(), c.getQuantity());
             ca.deleteProductOnCart(c.getSKU(), cus.getId());
         }
         session.setAttribute("orderStatus", "success");

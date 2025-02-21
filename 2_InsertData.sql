@@ -38,8 +38,8 @@ VALUES
 -- Insert Products
 INSERT INTO Products (BrandID, CategoryID, Model, FullName, [Description], [Image], Price)
 VALUES 
-(1, 1, 'Macbook Pro 14', 'Apple Macbook Pro 14 inch M1 Pro chip', 'New model from Apple', 'macbook-pro-2021.jpg', 50000000),
-(2, 2, 'Galaxy S23 Ultra', 'Samsung Galaxy S23 Ultra 5G 256GB', 'Latest flagship from Samsung', 's23-ultra.jpg', 30000000),
+(1, 1, 'Macbook Pro 14', 'Apple Macbook Pro 14 inch M1 Pro chip', 'New model from Apple', '250-7038-macbook-pro-2021-apple-m1-1.jpg', 50000000),
+(2, 2, 'Galaxy S23 Ultra', 'Samsung Galaxy S23 Ultra 5G 256GB', 'Latest flagship from Samsung', 'samsung-galaxy-s23-xanh-600x600-1.jpg', 30000000),
 (3, 1, 'Sony Vaio Z900', 'Sony Vaio Z900 Core i7 16GB RAM', 'High-performance laptop', 'vaio-z900.jpg', 20000000);
 
 -- Insert AttributeDetails
@@ -55,7 +55,7 @@ VALUES
 -- Insert Customers
 INSERT INTO Customers (FullName, Birthday, [Password], PhoneNumber, Email, Gender, CreatedDate, IsBlock, IsDeleted, Avatar)
 VALUES 
-('Nguyen Van A', '1995-05-15', 'hashed_password_1', '0901234567', 'nguyenvana@example.com', 'Male', GETDATE(), 0, 0, 'avatar1.jpg');
+('Nguyen Van A', '1995-05-15', '6ad14ba9986e3615423dfca256d04e3f', '0901234567', 'nguyenvana@example.com', 'Male', GETDATE(), 0, 0, 'avatar1.jpg');
 
 -- Insert Orders
 INSERT INTO Orders (CustomerID, FullName, [Address], PhoneNumber, OrderedDate, DeliveredDate, Status, TotalAmount)
@@ -83,6 +83,7 @@ VALUES
 (5, 'Canceled');
 
 -- Insert Addresses
-INSERT INTO Addresses (CustomerID, AddressDetails)
+INSERT INTO Addresses (CustomerID, AddressDetails, IsDefault)
 VALUES 
-(1, 'Ap Tra Coi A, My Huong, My Tu, Soc Trang');
+(1, 'Ap Tra Coi A, My Huong, My Tu, Soc Trang', 1);
+

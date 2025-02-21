@@ -43,8 +43,8 @@ public class OrderDAO {
             data += "N'" + o.getAddress() + "',";
             data += o.getTotalAmount() + "";
 
-            PreparedStatement pre = connector.prepareStatement("Insert into [Orders] (CustomerID, FullName, PhoneNumber, [Address], TotalAmount, [Status])"
-                    + " values (" + data + ", 1)");
+            PreparedStatement pre = connector.prepareStatement("Insert into [Orders] (CustomerID, FullName, PhoneNumber, [Address], TotalAmount, [Status], OrderedDate)"
+                    + " values (" + data + ", 1, GETDATE())");
             pre.executeUpdate();
         } catch (SQLException e) {
             System.out.println(e);
@@ -67,7 +67,7 @@ public class OrderDAO {
 
     public void subtractQuantityAfterBuy(int productID, int quantity) {
         try {
-            PreparedStatement pr = connector.prepareStatement("Update Products set quantity = quantity - ? where pd_SKU=?");
+            PreparedStatement pr = connector.prepareStatement("Update Products set Quantity = quantity - ? where ProductID=?");
             pr.setInt(1, quantity);
             pr.setInt(2, productID);
             pr.executeUpdate();
