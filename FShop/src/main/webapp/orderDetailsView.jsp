@@ -204,9 +204,13 @@
                         <option value="2" <c:if test="${data.status == 2}">selected</c:if>>Packaging</option>
                         <option value="3" <c:if test="${data.status == 3}">selected</c:if>>Waiting For Delivery</option>
                         <option value="4" <c:if test="${data.status == 4}">selected</c:if>>Delivered</option>
-                    </select>
-                </div>
-                <input type="submit" value="Update" />
+                        </select>
+                    </div>
+                    <input type="submit" value="Update" />
+                </form>
+                <form action="DeleteOrderServlet" method="POST">
+                    <input  type="hidden" type="submit" value="${data.orderID}" name="delete"  />
+                <input type="submit" value="Delete" />
             </form>
         </div>
 

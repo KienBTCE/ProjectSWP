@@ -26,7 +26,7 @@ public class OrderDAO {
 
     public List<Order> getOrderList() {
         List<Order> list = new ArrayList<>();
-        String url = "select * from Orders ";
+        String url = "select * from Orders where Orders.Status != 6 ";
         try {
 
             PreparedStatement pre = connector.prepareStatement(url);
@@ -136,10 +136,24 @@ public class OrderDAO {
       } catch (Exception e) {
           Logger.getLogger(OrderDAO.class.getName()).log(Level.SEVERE, null, e);
       }
-    }
+    
   
 //    public static void main(String[] args) {
 //        OrderDAO o = new OrderDAO();
 //        o.addOrderDetail(1, 1, 3, 34000000);
 //    }
 }
+  public void DeleteOrder(String orderID){
+    
+    String query ="Update Orders SET Orders.Status= 6 WHERE Orders.OrderID=?";
+      try {
+          PreparedStatement pre = connector.prepareStatement(query);
+       
+          pre.setString(1, orderID);
+          pre.executeUpdate();
+      } catch (Exception e) {
+          Logger.getLogger(OrderDAO.class.getName()).log(Level.SEVERE, null, e);
+      }
+    }
+}
+  

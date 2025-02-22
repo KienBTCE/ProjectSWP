@@ -23,6 +23,10 @@
         <servlet-name>UpdateOrderServlet</servlet-name>
         <servlet-class>Controllers.UpdateOrderServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>DeleteOrderServlet</servlet-name>
+        <servlet-class>Controllers.DeleteOrderServlet</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>default</servlet-name>
         <url-pattern>/assets/*</url-pattern>
@@ -54,6 +58,10 @@
     <servlet-mapping>
         <servlet-name>UpdateOrderServlet</servlet-name>
         <url-pattern>/UpdateOrderServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>DeleteOrderServlet</servlet-name>
+        <url-pattern>/DeleteOrderServlet</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>
