@@ -11,6 +11,10 @@
         <servlet-name>ViewPhoneServlet</servlet-name>
         <servlet-class>Controllers.ViewPhoneServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>CustomerListServlet</servlet-name>
+        <servlet-class>Controllers.CustomerListServlet</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>default</servlet-name>
         <url-pattern>/assets/*</url-pattern>
@@ -30,6 +34,10 @@
     <servlet-mapping>
         <servlet-name>ViewPhoneServlet</servlet-name>
         <url-pattern>/Phone</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>CustomerListServlet</servlet-name>
+        <url-pattern>/CustomerListServlet</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

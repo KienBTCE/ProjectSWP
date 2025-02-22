@@ -13,6 +13,9 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -159,6 +162,51 @@ public class CustomerDAO {
             System.out.println("Lỗi khi thêm khách hàng: " + e.getMessage());
         }
         return 0;
+    }
+
+    //Lay danh sach khach hang - shop manager
+    public ResultSet getCustomerList() {
+        ResultSet rs = null;
+        try {
+            Statement st = connector.createStatement();
+            String sql = "SELECT CustomerID, FullName, Email, PhoneNumber, isBlock FROM Customers";
+            rs = st.executeQuery(sql);
+        } catch (SQLException ex) {
+            Logger.getLogger(ProductDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return rs;
+    }
+
+    public void toggleStatus(int customerID) {
+        try (
+                 PreparedStatement ps = connector.prepareStatement("UPDATE Customers SET isBlock = 1 - isBlock WHERE CustomerID = ?")) {
+            ps.setInt(1, customerID);
+            ps.executeUpdate();
+        } catch (Exception e) {
+        }
+    }
+
+    public Customer getCustomerById2(int id) {
+        Customer customer = null;
+        try {
+            String query = "SELECT * FROM Customers WHERE CustomerID = ?";
+            PreparedStatement ps = connector.prepareStatement(query);
+            ps.setInt(1, id);
+            ResultSet rs = ps.executeQuery();
+
+            if (rs.next()) {
+                customer = new Customer(
+                        rs.getInt("CustomerID"),
+                        rs.getString("FullName"),
+                        rs.getString("Email"),
+                        rs.getString("PhoneNumber"),
+                        rs.getInt("isBlock")
+                );
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return customer;
     }
 
     public static void main(String[] args) {
