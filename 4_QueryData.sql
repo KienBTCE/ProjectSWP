@@ -67,6 +67,9 @@ SELECT * FROM Wards WHERE DistrictCode LIKE '944'
 SELECT * FROM ShopProducts
 
 SELECT * 
+FROM Products;
+
+SELECT * 
 FROM Suppliers;
 
 SELECT * 
@@ -103,6 +106,4 @@ WHERE Laptops.pd_ID IN (
     WHERE pd_ID IN (SELECT pd_ID FROM Laptops) 
       AND brandID IN (8) 
       AND (price BETWEEN 25000000 AND 30000000 OR price BETWEEN 30000000 AND 35000000)
-);
-
-SELECT * FROM Orders
+);select * from Products where CategoryID = 1

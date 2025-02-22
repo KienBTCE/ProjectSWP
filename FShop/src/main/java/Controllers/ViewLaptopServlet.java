@@ -90,11 +90,11 @@ public class ViewLaptopServlet extends HttpServlet {
         }
 
         if (!filtersInput.isEmpty()) {
-            laptops = lD.GetFilterLaptops(filtersInput);
+//            laptops = lD.GetFilterLaptops(filtersInput);
             isFilter = true;
         }
         if (!isFilter) {
-            laptops = lD.GetAllLaptops();
+//            laptops = lD.GetAllLaptops();
         }
 
         try {
@@ -106,9 +106,9 @@ public class ViewLaptopServlet extends HttpServlet {
                 }
             }
 
-            ArrayList<String> brands = lD.GetAllBrandLaptop();
+//            ArrayList<String> brands = lD.GetAllBrandLaptop();
             request.setAttribute("laptopProducts", laptops);
-            request.setAttribute("brands", brands);
+//            request.setAttribute("brands", brands);
             request.setAttribute("numberRow", numberRow);
             request.setAttribute("uri", request.getServletPath().substring(1));
             request.setAttribute("filters", filters);

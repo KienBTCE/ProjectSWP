@@ -14,33 +14,54 @@ import java.util.Locale;
  */
 public class Product {
 
+    private int productId;
+    private int brandId;
+    private int categoryId;
     private String model;
-    private int ID;
-    private int brandID;
     private String fullName;
-    private String status;
-    private String note;
+    private String description;
+    private int isDeleted;
+    private long price;
+    private String image;
     private int quantity;
-    private int price;
-    private Date importDate;
-    private int categoryID;
-    private int supplierID;
+    private int stock;
 
-    public Product() {
+    public Product(int productId, int brandId, int categoryId, String model, String fullName, String description, int isDeleted, long price, String image, int quantity, int stock) {
+        this.productId = productId;
+        this.brandId = brandId;
+        this.categoryId = categoryId;
+        this.model = model;
+        this.fullName = fullName;
+        this.description = description;
+        this.isDeleted = isDeleted;
+        this.price = price;
+        this.image = image;
+        this.quantity = quantity;
+        this.stock = stock;
     }
 
-    public Product(String model, int ID, int brandID, String fullName, String status, String note, int quantity, int price, Date importDate, int categoryID, int supplierID) {
-        this.model = model;
-        this.ID = ID;
-        this.brandID = brandID;
-        this.fullName = fullName;
-        this.status = status;
-        this.note = note;
-        this.quantity = quantity;
-        this.price = price;
-        this.importDate = importDate;
-        this.categoryID = categoryID;
-        this.supplierID = supplierID;
+    public int getProductId() {
+        return productId;
+    }
+
+    public void setProductId(int productId) {
+        this.productId = productId;
+    }
+
+    public int getBrandId() {
+        return brandId;
+    }
+
+    public void setBrandId(int brandId) {
+        this.brandId = brandId;
+    }
+
+    public int getCategoryId() {
+        return categoryId;
+    }
+
+    public void setCategoryId(int categoryId) {
+        this.categoryId = categoryId;
     }
 
     public String getModel() {
@@ -51,22 +72,6 @@ public class Product {
         this.model = model;
     }
 
-    public int getID() {
-        return ID;
-    }
-
-    public void setID(int ID) {
-        this.ID = ID;
-    }
-
-    public int getBrandID() {
-        return brandID;
-    }
-
-    public void setBrandID(int brandID) {
-        this.brandID = brandID;
-    }
-
     public String getFullName() {
         return fullName;
     }
@@ -75,20 +80,36 @@ public class Product {
         this.fullName = fullName;
     }
 
-    public String getStatus() {
-        return status;
+    public String getDescription() {
+        return description;
     }
 
-    public void setStatus(String status) {
-        this.status = status;
+    public void setDescription(String description) {
+        this.description = description;
     }
 
-    public String getNote() {
-        return note;
+    public int isIsDeleted() {
+        return isDeleted;
     }
 
-    public void setNote(String note) {
-        this.note = note;
+    public void setIsDeleted(int isDeleted) {
+        this.isDeleted = isDeleted;
+    }
+
+    public long getPrice() {
+        return price;
+    }
+
+    public void setPrice(long price) {
+        this.price = price;
+    }
+
+    public String getImage() {
+        return image;
+    }
+
+    public void setImage(String image) {
+        this.image = image;
     }
 
     public int getQuantity() {
@@ -99,36 +120,12 @@ public class Product {
         this.quantity = quantity;
     }
 
-    public int getPrice() {
-        return price;
+    public int getStock() {
+        return stock;
     }
 
-    public void setPrice(int price) {
-        this.price = price;
-    }
-
-    public Date getImportDate() {
-        return importDate;
-    }
-
-    public void setImportDate(Date importDate) {
-        this.importDate = importDate;
-    }
-
-    public int getCategoryID() {
-        return categoryID;
-    }
-
-    public void setCategoryID(int categoryID) {
-        this.categoryID = categoryID;
-    }
-
-    public int getSupplierID() {
-        return supplierID;
-    }
-
-    public void setSupplierID(int supplierID) {
-        this.supplierID = supplierID;
+    public void setStock(int stock) {
+        this.stock = stock;
     }
 
     public String getPriceFormatted() {

@@ -9,6 +9,7 @@ import Models.Product;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 
 /**
@@ -25,32 +26,39 @@ public class ProductDAO {
 
         String query = "SELECT * FROM Products";
 
-        try ( PreparedStatement ps = connector.prepareStatement(query)) {
-            try ( ResultSet rs = ps.executeQuery()) { // nen doi rs sang resuleSet cho dong bo voi sequence diagram
-                while (rs.next()) {
-                    list.add(new Product(
-                            rs.getString("model"),
-                            rs.getInt("pd_ID"),
-                            rs.getInt("brandID"),
-                            rs.getString("fullName"),
-                            rs.getString("status"),
-                            rs.getString("note"),
-                            rs.getInt("quantity"),
-                            rs.getInt("price"),
-                            rs.getDate("importDate"),
-                            rs.getInt("categoryID"),
-                            rs.getInt("supplierID")
-                    ));
-                }
-                return list;
-            } catch (Exception e) {
-                System.out.println(e);
+        try {
+            PreparedStatement ps = connector.prepareStatement(query);
+            ResultSet rs = ps.executeQuery();
+
+            while (rs.next()) {
+                list.add(new Product(
+                        rs.getInt("ProductID"),
+                        rs.getInt("BrandID"),
+                        rs.getInt("CategoryID"),
+                        rs.getString("Model"),
+                        rs.getString("FullName"),
+                        rs.getString("Description"),
+                        rs.getInt("IsDeleted"),
+                        rs.getLong("Price"),
+                        rs.getString("Image"),
+                        rs.getInt("Quantity"),
+                        rs.getInt("Stock")
+                ));
             }
-        } catch (Exception e) {
+            return list;
+        } catch (SQLException e) {
             System.out.println(e);
         }
 
-        return null;
+        return list;
+    }
+    
+    public static void main(String[] args) {
+        ProductDAO pd = new ProductDAO();
+        ArrayList<Product> l = new ArrayList<>();
+        l = pd.GetAllProducts();
+        
+        System.out.println(l.get(1).getFullName());
     }
 
 }

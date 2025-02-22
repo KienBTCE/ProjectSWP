@@ -7,7 +7,6 @@ package Controllers;
 import DAOs.PhoneDAO;
 import Models.Phone;
 import java.io.IOException;
-import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
@@ -91,11 +90,11 @@ public class ViewPhoneServlet extends HttpServlet {
         }
 
         if (!filtersInput.isEmpty()) {
-            phones = phD.GetFilterLaptops(filtersInput);
+//            phones = phD.GetFilterLaptops(filtersInput);
             isFilter = true;
         }
         if (!isFilter) {
-            phones = phD.GetAllPhones();
+//            phones = phD.GetAllPhones();
         }
 
         try {
@@ -107,9 +106,9 @@ public class ViewPhoneServlet extends HttpServlet {
                 }
             }
 
-            ArrayList<String> brands = phD.GetAllBrandPhone();
+//            ArrayList<String> brands = phD.GetAllBrandPhone();
             request.setAttribute("phoneProducts", phones);
-            request.setAttribute("brands", brands);
+//            request.setAttribute("brands", brands);
             request.setAttribute("numberRow", numberRow);
             request.setAttribute("uri", request.getServletPath().substring(1));
             request.setAttribute("filters", filters);
