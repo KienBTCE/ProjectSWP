@@ -4,6 +4,7 @@
     Author     : KienBTCE180180
 --%>
 
+<%@page import="Models.Product"%>
 <%@page import="Models.Laptop"%>
 <%@page import="java.util.ArrayList"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
@@ -84,9 +85,9 @@
             <main>
                 <div class="container">
                     <div class="row">
-                        <div class="gap-section banner-content">
-                            <img src="assets/imgs/Banners/banner-laptop.svg" alt="alt"/>
-                        </div>
+                        <!--                        <div class="gap-section banner-content">
+                                                    <img src="assets/imgs/Banners/banner-laptop.svg" alt="alt"/>
+                                                </div>-->
                     </div>
                     <div class="row">
                         <h4 class="title-content">${uri}</h4>
@@ -101,18 +102,27 @@
 
                         <form class="filter-form">
                             <fieldset>
-                                <legend style="font-size: 100%; font-weight: bold;">Brands</legend>
-                                <c:forEach items="${brands}" var="b">
-                                    <label><input type="checkbox" name="brand" value="${b}" <c:if test="${fn:contains(filters, b)}">checked</c:if> >${b}</label>
-                                    </c:forEach>
+                                <legend style="font-size: 100%; font-weight: bold; cursor: pointer;" onclick="toggleFilter('brandFilter')">
+                                    Brands <span id="brandArrow">▼</span>
+                                </legend>
+                                <div id="brandFilter" style="display: none;">
+                                    <c:forEach items="${brands}" var="b">
+                                        <label><input type="checkbox" name="brand" value="${b}" <c:if test="${fn:contains(filters, b)}">checked</c:if> >${b}</label>
+                                        </c:forEach>
+                                </div>
                             </fieldset>
                             <fieldset>
-                                <legend style="font-size: 100%; font-weight: bold;">Price</legend>
-                                <label><input type="checkbox" name="price" value="20-25" <c:if test="${fn:contains(filters, '20-25')}">checked</c:if> >20 - 25 million</label>
-                                <label><input type="checkbox" name="price" value="25-30" <c:if test="${fn:contains(filters, '25-30')}">checked</c:if> >25 - 30 million</label>
-                                <label><input type="checkbox" name="price" value="30-over" <c:if test="${fn:contains(filters, '30-over')}">checked</c:if> >Over 30 million</label>
+                                <legend style="font-size: 100%; font-weight: bold; cursor: pointer;" onclick="toggleFilter('priceFilter')">
+                                    Price <span id="priceArrow">▼</span>
+                                </legend>
+                                <div id="priceFilter" style="display: none;">
+                                    <label><input type="checkbox" name="price" value="20-25" <c:if test="${fn:contains(filters, '20-25')}">checked</c:if> >20 - 25 million</label>
+                                    <label><input type="checkbox" name="price" value="25-30" <c:if test="${fn:contains(filters, '25-30')}">checked</c:if> >25 - 30 million</label>
+                                    <label><input type="checkbox" name="price" value="30-over" <c:if test="${fn:contains(filters, '30-over')}">checked</c:if> >Over 30 million</label>
+                                    </div>
                                 </fieldset>
                             </form>
+
 
                         </div>
 
@@ -122,10 +132,10 @@
 
                             <div class="section-content">
 
-                                <c:forEach items="${laptopProducts}" var="p" varStatus="status">
+                                <c:forEach items="${products}" var="p" varStatus="status">
                                     <c:if test="${status.index >= (i * 4 - 4) && status.index < (i * 4)}">
                                         <div class="frame-represent">
-                                            <img src="assets/imgs/Laptop/${p.getImage()}" width="150px" height="150px" alt="alt"/>
+                                            <img src="assets/imgs/Products/${p.getImage()}" width="150px" height="150px" alt="alt"/>
                                             <div class="star-rating">
                                                 <!-- Các ngôi sao -->
                                                 <span class="star">★</span>
@@ -137,7 +147,7 @@
                                                 <span class="count">Reviews(4)</span>
                                             </div>
                                             <h6>${p.getFullName()}</h6>
-                                            <p>${p.getPriceFormatted()}</p>
+                                            <p>${p.getPrice()}</p>
                                         </div>
                                     </c:if>
                                 </c:forEach>
@@ -225,6 +235,19 @@
 
                 updateSelectedValues();
             });
+
+            function toggleFilter(id) {
+                let filterDiv = document.getElementById(id);
+                let arrow = document.getElementById(id.replace('Filter', 'Arrow'));
+
+                if (filterDiv.style.display === "none") {
+                    filterDiv.style.display = "block";
+                    arrow.innerHTML = "▲";
+                } else {
+                    filterDiv.style.display = "none";
+                    arrow.innerHTML = "▼";
+                }
+            }
 
         </script>
         <script src="assets/js/bootstrap.min.js"></script>

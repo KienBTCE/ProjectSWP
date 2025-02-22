@@ -31,20 +31,37 @@ public class ViewProductServlet extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        System.out.println("===== Servlet is running =====");
-        System.out.println("Request received in: " + this.getClass().getSimpleName());
 
         ProductDAO pd = new ProductDAO();
-        
-        ArrayList<Product> products = pd.GetAllProducts();
-        
-        System.out.println(request.getRequestURL());
-        
-        try {
-            request.setAttribute("products", products);
-            request.getRequestDispatcher("ProductListView.jsp").forward(request, response);
-        } catch (NullPointerException e) {
-            System.out.println(e);
+        ArrayList<Product> products;
+
+        String pathInfo = request.getRequestURI();
+        if (pathInfo != null && pathInfo.contains("Laptop")) {
+
+            products = pd.getAllLaptops();
+            try {
+                int numberRow = 0;
+                if (products != null) {
+                    numberRow = products.size() / 4;
+                    if (products.size() % 4 != 0) {
+                        numberRow++;
+                    }
+                }
+                request.setAttribute("numberRow", numberRow);
+                request.setAttribute("products", products);
+                request.getRequestDispatcher("LaptopListView.jsp").forward(request, response);
+            } catch (NullPointerException e) {
+                System.out.println(e);
+            }
+        } else {
+            products = pd.getAllProducts();
+
+            try {
+                request.setAttribute("products", products);
+                request.getRequestDispatcher("ProductListView.jsp").forward(request, response);
+            } catch (NullPointerException e) {
+                System.out.println(e);
+            }
         }
 
     }
