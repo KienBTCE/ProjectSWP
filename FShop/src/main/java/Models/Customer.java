@@ -66,6 +66,15 @@ public class Customer {
         this.avatar = avatar;
     }
 
+    //xem danh sach khach hang
+    public Customer(int id, String fullName, String email, String phoneNumber, int isBlock) {
+        this.id = id;
+        this.fullName = fullName;
+        this.email = email;
+        this.phoneNumber = phoneNumber;
+        this.isBlock = isBlock;
+    }
+
     public int getId() {
         return id;
     }
