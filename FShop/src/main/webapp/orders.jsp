@@ -1,4 +1,9 @@
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+
+<fmt:setLocale value="vi_VN" />
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@page import="Models.Order"%>
+<%@page import="Models.OrderDetail"%>
 
 <html>
     <head>
@@ -46,7 +51,7 @@
         <div class="nav">
             <nav class="nav" style="background: white">
                 <a href="#" class="tab-link" onclick="showTab('all', this)">All</a>
-                <a href="#" class="tab-link" onclick="showTab('waiting', this)">Waiting for confirmation</a>
+                <a href="#" class="tab-link" onclick="showTab('waiting', this)">Waiting for acceptance</a>
                 <a href="#" class="tab-link" onclick="showTab('transport', this)">Packaging</a>
                 <a href="#" class="tab-link" onclick="showTab('delivery', this)">Waiting for delivery</a>
                 <a href="#" class="tab-link" onclick="showTab('delivered', this)">Delivered</a>
@@ -56,61 +61,294 @@
         <div style="width: 100%; background: rgba(231, 220, 220, 0);">
             <br>
         </div>
-        <div style="width: 100%; background: rgba(231, 220, 220, 0);"></div>
         <div id="all" class="order-list active">
-            All of your order will be here
-        </div>
-        <div id="waiting" class="order-list"></div>
-        <div id="transport" class="order-list">
-            <p>Order #5678 - In transport</p>
-        </div>
-        <div id="delivery" class="order-list">
-            <p>Order #91011 - Waiting for delivery</p>
-        </div>
-        <div id="delivered" class="order-list">
-            <p>Order #1213 - Delivered</p>
-        </div>
-        <div id="canceled" class="order-list">
-            <div style="background-color: white; width: 100%; border-radius: 10px;">
-                <div style="text-align: right; padding: 15px; border-bottom: 0.5px solid rgb(226, 214, 214); color:rgb(238,84,61); width: 95%; margin: 0 auto">
-                    <h5>Canceled</h5>
-                </div>
-                <br>
-                <div class="container-fluid" style="border-bottom: 0.1px rgb(226, 214, 214) solid; width: 95%; margin: 0 auto">
-                    <div class="row" style="display: flex; align-items: center;">
-                        <div class="col-md-2">
-                            <img style="border: 0.5px solid gray;" width="100px" height="auto"
-                                 src="./assets/imgs/Laptop/0yp3jx9d-1090-lenovo-legion-pro-5-y9000p-2023-core-i9-13900hx-16gb-1tb-rtx-4050-6gb-16-wqxga-240hz-new.jpg"
-                                 alt="">
-                        </div>
-                        <div class="col-md-8">
-                            <div>
-                                <a href="orderDetails.jsp" style="text-decoration: none; color: black;"> Laptop</a>
-                            </div>
-                            <div>
-                                Quantity: 1
-                            </div>
-                        </div>
-                        <div class="col-md-2" style="color: rgb(238,84,61); text-align: right;">20.000.000VND</div>
+            <c:forEach items="${sessionScope.orderList}" var="o">
+                <div style="background-color: white; width: 100%; border-radius: 10px;">
+                    <div style="text-align: right; padding: 15px; border-bottom: 0.5px solid rgb(226, 214, 214); color:rgb(238,84,61); width: 95%; margin: 0 auto">
+                        <c:choose>
+                            <c:when test="${o.getStatus() == 1}">Waiting For Acceptance</c:when>
+                            <c:when test="${o.getStatus() == 2}">Packaging</c:when>
+                            <c:when test="${o.getStatus() == 3}">Waiting For Delivery</c:when>
+                            <c:when test="${o.getStatus() == 4}">Delivered</c:when>
+                            <c:otherwise>Cancelled</c:otherwise>
+                        </c:choose>
                     </div>
                     <br>
+                    <div class="container-fluid" style="border-bottom: 0.1px rgb(226, 214, 214) solid; width: 95%; margin: 0 auto">
+                        <div class="row" style="display: flex; align-items: center;">
+                            <c:forEach var="od" items="${sessionScope.orderDetailList}">
+                                <c:if test="${o.getOrderID() == od.getOrderID()}">
+                                    <div class="col-md-2">
+                                        <img style="border: 0.5px solid gray;" width="100px" height="auto"
+                                             src="./assets/imgs/Products/${od.getImage()}"
+                                             alt="">
+                                    </div>
+                                    <div class="col-md-8">
+                                        <div>
+                                            <a href="orderDetails.jsp" style="text-decoration: none; color: black;">${od.getProductName()}</a>
+                                        </div>
+                                        <div>
+                                            Quantity: ${od.getQuantity()}
+                                        </div>
+                                    </div>
+                                    <div class="col-md-2" style="color: rgb(238,84,61); text-align: right;"><fmt:formatNumber value="${od.getPrice()}" type="currency"/></div>
+                                </div>
+                            </c:if>
+                        </c:forEach>
+                        <br>
+                    </div>
+                    <div style="text-align: right; padding: 10px; margin-top: 10px; width: 95%; margin: 0 auto">Total: <h4 style="color: rgb(238,84,61);"><fmt:formatNumber value="${o.getTotalAmount()}" type="currency" /></h4>
+                    </div>
                 </div>
-                <div style="text-align: right; padding: 10px; margin-top: 10px; width: 95%; margin: 0 auto">Total: <h4 style="color: rgb(238,84,61);">20.000.000VND</h4>
+                <div style="width: 100%; background: rgba(231, 220, 220, 0);">
+                    <br>
                 </div>
-            </div>
-            <div style="width: 100%; background: rgba(231, 220, 220, 0);">
-                <br>
-            </div>
+            </c:forEach>
         </div>
 
-        <script>
-            function showTab(tabId, element) {
-                document.querySelectorAll('.tab-link').forEach(tab => tab.classList.remove('active'));
-                document.querySelectorAll('.order-list').forEach(order => order.classList.remove('active'));
+        <div id="waiting" class="order-list">
+            <c:forEach items="${sessionScope.orderList}" var="o">
+                <c:if test="${o.getStatus() == 1}">
+                    <div style="background-color: white; width: 100%; border-radius: 10px;">
+                        <div style="text-align: right; padding: 15px; border-bottom: 0.5px solid rgb(226, 214, 214); color:rgb(238,84,61); width: 95%; margin: 0 auto">
+                            <c:choose>
+                                <c:when test="${o.getStatus() == 1}">Waiting For Acceptance</c:when>
+                                <c:when test="${o.getStatus() == 2}">Packaging</c:when>
+                                <c:when test="${o.getStatus() == 3}">Waiting For Delivery</c:when>
+                                <c:when test="${o.getStatus() == 4}">Delivered</c:when>
+                                <c:otherwise>Cancelled</c:otherwise>
+                            </c:choose>
+                        </div>
+                        <br>
+                        <div class="container-fluid" style="border-bottom: 0.1px rgb(226, 214, 214) solid; width: 95%; margin: 0 auto">
+                            <div class="row" style="display: flex; align-items: center;">
+                                <c:forEach var="od" items="${sessionScope.orderDetailList}">
+                                    <c:if test="${o.getOrderID() == od.getOrderID()}">
+                                        <div class="col-md-2">
+                                            <img style="border: 0.5px solid gray;" width="100px" height="auto"
+                                                 src="./assets/imgs/Products/${od.getImage()}"
+                                                 alt="">
+                                        </div>
+                                        <div class="col-md-8">
+                                            <div>
+                                                <a href="orderDetails.jsp" style="text-decoration: none; color: black;">${od.getProductName()}</a>
+                                            </div>
+                                            <div>
+                                                Quantity: ${od.getQuantity()}
+                                            </div>
+                                        </div>
+                                        <div class="col-md-2" style="color: rgb(238,84,61); text-align: right;"><fmt:formatNumber value="${od.getPrice()}" type="currency"/></div>
+                                    </div>
+                                </c:if>
+                            </c:forEach>
+                            <br>
+                        </div>
+                        <div style="text-align: right; padding: 10px; margin-top: 10px; width: 95%; margin: 0 auto">Total: <h4 style="color: rgb(238,84,61);"><fmt:formatNumber value="${o.getTotalAmount()}" type="currency" /></h4>
+                        </div>
+                    </div>
+                    <div style="width: 100%; background: rgba(231, 220, 220, 0);">
+                        <br>
+                    </div>
+                </c:if>
+            </c:forEach>
+        </div>
+        <div id="transport" class="order-list">
+            <c:forEach items="${sessionScope.orderList}" var="o">
+                <c:if test="${o.getStatus() == 2}">
+                    <div style="background-color: white; width: 100%; border-radius: 10px;">
+                        <div style="text-align: right; padding: 15px; border-bottom: 0.5px solid rgb(226, 214, 214); color:rgb(238,84,61); width: 95%; margin: 0 auto">
+                            <c:choose>
+                                <c:when test="${o.getStatus() == 1}">Waiting For Acceptance</c:when>
+                                <c:when test="${o.getStatus() == 2}">Packaging</c:when>
+                                <c:when test="${o.getStatus() == 3}">Waiting For Delivery</c:when>
+                                <c:when test="${o.getStatus() == 4}">Delivered</c:when>
+                                <c:otherwise>Cancelled</c:otherwise>
+                            </c:choose>
+                        </div>
+                        <br>
+                        <div class="container-fluid" style="border-bottom: 0.1px rgb(226, 214, 214) solid; width: 95%; margin: 0 auto">
+                            <div class="row" style="display: flex; align-items: center;">
+                                <c:forEach var="od" items="${sessionScope.orderDetailList}">
+                                    <c:if test="${o.getOrderID() == od.getOrderID()}">
+                                        <div class="col-md-2">
+                                            <img style="border: 0.5px solid gray;" width="100px" height="auto"
+                                                 src="./assets/imgs/Products/${od.getImage()}"
+                                                 alt="">
+                                        </div>
+                                        <div class="col-md-8">
+                                            <div>
+                                                <a href="orderDetails.jsp" style="text-decoration: none; color: black;">${od.getProductName()}</a>
+                                            </div>
+                                            <div>
+                                                Quantity: ${od.getQuantity()}
+                                            </div>
+                                        </div>
+                                        <div class="col-md-2" style="color: rgb(238,84,61); text-align: right;"><fmt:formatNumber value="${od.getPrice()}" type="currency"/></div>
+                                    </div>
+                                </c:if>
+                            </c:forEach>
+                            <br>
+                        </div>
+                        <div style="text-align: right; padding: 10px; margin-top: 10px; width: 95%; margin: 0 auto">Total: <h4 style="color: rgb(238,84,61);"><fmt:formatNumber value="${o.getTotalAmount()}" type="currency" /></h4>
+                        </div>
+                    </div>
+                    <div style="width: 100%; background: rgba(231, 220, 220, 0);">
+                        <br>
+                    </div>
+                </c:if>
+            </c:forEach>
+        </div>
+        <div id="delivery" class="order-list">
+            <c:forEach items="${sessionScope.orderList}" var="o">
+                <c:if test="${o.getStatus() == 3}">
+                    <div style="background-color: white; width: 100%; border-radius: 10px;">
+                        <div style="text-align: right; padding: 15px; border-bottom: 0.5px solid rgb(226, 214, 214); color:rgb(238,84,61); width: 95%; margin: 0 auto">
+                            <c:choose>
+                                <c:when test="${o.getStatus() == 1}">Waiting For Acceptance</c:when>
+                                <c:when test="${o.getStatus() == 2}">Packaging</c:when>
+                                <c:when test="${o.getStatus() == 3}">Waiting For Delivery</c:when>
+                                <c:when test="${o.getStatus() == 4}">Delivered</c:when>
+                                <c:otherwise>Cancelled</c:otherwise>
+                            </c:choose>
+                        </div>
+                        <br>
+                        <div class="container-fluid" style="border-bottom: 0.1px rgb(226, 214, 214) solid; width: 95%; margin: 0 auto">
+                            <div class="row" style="display: flex; align-items: center;">
+                                <c:forEach var="od" items="${sessionScope.orderDetailList}">
+                                    <c:if test="${o.getOrderID() == od.getOrderID()}">
+                                        <div class="col-md-2">
+                                            <img style="border: 0.5px solid gray;" width="100px" height="auto"
+                                                 src="./assets/imgs/Products/${od.getImage()}"
+                                                 alt="">
+                                        </div>
+                                        <div class="col-md-8">
+                                            <div>
+                                                <a href="orderDetails.jsp" style="text-decoration: none; color: black;">${od.getProductName()}</a>
+                                            </div>
+                                            <div>
+                                                Quantity: ${od.getQuantity()}
+                                            </div>
+                                        </div>
+                                        <div class="col-md-2" style="color: rgb(238,84,61); text-align: right;"><fmt:formatNumber value="${od.getPrice()}" type="currency"/></div>
+                                    </div>
+                                </c:if>
+                            </c:forEach>
+                            <br>
+                        </div>
+                        <div style="text-align: right; padding: 10px; margin-top: 10px; width: 95%; margin: 0 auto">Total: <h4 style="color: rgb(238,84,61);"><fmt:formatNumber value="${o.getTotalAmount()}" type="currency" /></h4>
+                        </div>
+                    </div>
+                    <div style="width: 100%; background: rgba(231, 220, 220, 0);">
+                        <br>
+                    </div>
+                </c:if>
+            </c:forEach>
+        </div>
+        <div id="delivered" class="order-list">
+            <c:forEach items="${sessionScope.orderList}" var="o">
+                <c:if test="${o.getStatus() == 4}">
+                    <div style="background-color: white; width: 100%; border-radius: 10px;">
+                        <div style="text-align: right; padding: 15px; border-bottom: 0.5px solid rgb(226, 214, 214); color:rgb(238,84,61); width: 95%; margin: 0 auto">
+                            <c:choose>
+                                <c:when test="${o.getStatus() == 1}">Waiting For Acceptance</c:when>
+                                <c:when test="${o.getStatus() == 2}">Packaging</c:when>
+                                <c:when test="${o.getStatus() == 3}">Waiting For Delivery</c:when>
+                                <c:when test="${o.getStatus() == 4}">Delivered</c:when>
+                                <c:otherwise>Cancelled</c:otherwise>
+                            </c:choose>
+                        </div>
+                        <br>
+                        <div class="container-fluid" style="border-bottom: 0.1px rgb(226, 214, 214) solid; width: 95%; margin: 0 auto">
+                            <div class="row" style="display: flex; align-items: center;">
+                                <c:forEach var="od" items="${sessionScope.orderDetailList}">
+                                    <c:if test="${o.getOrderID() == od.getOrderID()}">
+                                        <div class="col-md-2">
+                                            <img style="border: 0.5px solid gray;" width="100px" height="auto"
+                                                 src="./assets/imgs/Products/${od.getImage()}"
+                                                 alt="">
+                                        </div>
+                                        <div class="col-md-8">
+                                            <div>
+                                                <a href="orderDetails.jsp" style="text-decoration: none; color: black;">${od.getProductName()}</a>
+                                            </div>
+                                            <div>
+                                                Quantity: ${od.getQuantity()}
+                                            </div>
+                                        </div>
+                                        <div class="col-md-2" style="color: rgb(238,84,61); text-align: right;"><fmt:formatNumber value="${od.getPrice()}" type="currency"/></div>
+                                    </div>
+                                </c:if>
+                            </c:forEach>
+                            <br>
+                        </div>
+                        <div style="text-align: right; padding: 10px; margin-top: 10px; width: 95%; margin: 0 auto">Total: <h4 style="color: rgb(238,84,61);"><fmt:formatNumber value="${o.getTotalAmount()}" type="currency" /></h4>
+                        </div>
+                    </div>
+                    <div style="width: 100%; background: rgba(231, 220, 220, 0);">
+                        <br>
+                    </div>
+                </c:if>
+            </c:forEach>
+        </div>
+        <div id="canceled" class="order-list">
+            <c:forEach items="${sessionScope.orderList}" var="o">
+                <c:if test="${o.getStatus() == 5}">
+                    <div style="background-color: white; width: 100%; border-radius: 10px;">
+                        <div style="text-align: right; padding: 15px; border-bottom: 0.5px solid rgb(226, 214, 214); color:rgb(238,84,61); width: 95%; margin: 0 auto">
+                            <c:choose>
+                                <c:when test="${o.getStatus() == 1}">Waiting For Acceptance</c:when>
+                                <c:when test="${o.getStatus() == 2}">Packaging</c:when>
+                                <c:when test="${o.getStatus() == 3}">Waiting For Delivery</c:when>
+                                <c:when test="${o.getStatus() == 4}">Delivered</c:when>
+                                <c:otherwise>Cancelled</c:otherwise>
+                            </c:choose>
+                        </div>
+                        <br>
+                        <div class="container-fluid" style="border-bottom: 0.1px rgb(226, 214, 214) solid; width: 95%; margin: 0 auto">
+                            <div class="row" style="display: flex; align-items: center;">
+                                <c:forEach var="od" items="${sessionScope.orderDetailList}">
+                                    <c:if test="${o.getOrderID() == od.getOrderID()}">
+                                        <div class="col-md-2">
+                                            <img style="border: 0.5px solid gray;" width="100px" height="auto"
+                                                 src="./assets/imgs/Products/${od.getImage()}"
+                                                 alt="">
+                                        </div>
+                                        <div class="col-md-8">
+                                            <div>
+                                                <a href="orderDetails.jsp" style="text-decoration: none; color: black;">${od.getProductName()}</a>
+                                            </div>
+                                            <div>
+                                                Quantity: ${od.getQuantity()}
+                                            </div>
+                                        </div>
+                                        <div class="col-md-2" style="color: rgb(238,84,61); text-align: right;"><fmt:formatNumber value="${od.getPrice()}" type="currency"/></div>
+                                    </div>
+                                </c:if>
+                            </c:forEach>
+                            <br>
+                        </div>
+                        <div style="text-align: right; padding: 10px; margin-top: 10px; width: 95%; margin: 0 auto">Total: <h4 style="color: rgb(238,84,61);"><fmt:formatNumber value="${o.getTotalAmount()}" type="currency" /></h4>
+                        </div>
+                    </div>
+                    <div style="width: 100%; background: rgba(231, 220, 220, 0);">
+                        <br>
+                    </div>
+                </c:if>
+            </c:forEach>
+        </div>
+        <div style="width: 100%; background: rgba(231, 220, 220, 0);">
+            <br>
+        </div>
+    </div>
 
-                element.classList.add('active');
-                document.getElementById(tabId).classList.add('active');
-            }
-        </script>
-    </body>
+    <script>
+        function showTab(tabId, element) {
+            document.querySelectorAll('.tab-link').forEach(tab => tab.classList.remove('active'));
+            document.querySelectorAll('.order-list').forEach(order => order.classList.remove('active'));
+
+            element.classList.add('active');
+            document.getElementById(tabId).classList.add('active');
+        }
+    </script>
+</body>
 </html>

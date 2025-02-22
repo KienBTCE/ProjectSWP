@@ -99,15 +99,14 @@
                                 <a href="#" class="menu-item">🔔 Notification</a>
 
                                 <div class="droppeddown">
-                                    <a href="#" class="menu-item droppeddown-toggle">👤 My Information</a>
+                                    <a href="#" class="menu-item droppeddown-toggle" data-url="profile.jsp">👤 My Information</a>
                                     <div class="droppeddown-menu">
                                         <a href="#" class="menu-item load-content" data-url="profile.jsp">My profile</a>
                                         <a href="#" class="menu-item load-content" data-url="address.jsp">Address</a>
                                         <a href="#" class="menu-item load-content" data-url="changePassword.jsp">Change password</a>
-
                                     </div>
                                 </div>
-                                <a href="#" class="menu-item load-content" data-url="orders.jsp">📦 Orders</a>
+                                <a href="viewOrderHistory?profilePage=orders.jsp" class="menu-item" >📦 Orders</a>
                             </ul>
                         </div>
                     </div>
@@ -122,7 +121,6 @@
                     </div>
                 </div>
             </main>
-
             <script>
                 document.addEventListener("DOMContentLoaded", function () {
                     const dropdownToggle = document.querySelector(".droppeddown-toggle");
@@ -138,13 +136,30 @@
                     let contentDiv = document.getElementById("content");
 
                     // Mặc định load profile.jsp khi trang mở
-                    fetch("profile.jsp")
+            <%
+                String requestPage;
+                if (request.getParameter("profilePage") != null) {
+            %>
+                    fetch("<%= request.getParameter("profilePage")%>")
                             .then(response => response.text())
                             .then(data => {
                                 contentDiv.innerHTML = data;
                                 executeScripts(contentDiv);
                             })
                             .catch(error => console.error("Error loading profile:", error));
+            <%
+            } else {
+            %>
+                    fetch("${requestScope.profilePage}")
+                            .then(response => response.text())
+                            .then(data => {
+                                contentDiv.innerHTML = data;
+                                executeScripts(contentDiv);
+                            });
+            <%
+                }
+            %>
+
 
                     // Xử lý khi click vào menu
                     document.querySelectorAll(".load-content").forEach(item => {
@@ -178,10 +193,10 @@
                     }
                 });
 
-            </script>
-            <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+        </script>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
-            <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
         <jsp:include page="footer.jsp"></jsp:include>
 
     </body>

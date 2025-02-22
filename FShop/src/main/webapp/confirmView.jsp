@@ -137,6 +137,7 @@
                             style="background-color: #0156ff; border: #0156ff solid 1px; color: white;">
                         Place order
                     </button>
+                    <input name="buyProductAction" value="placeOrder" hidden="">
                 </form>
             </div>
             <br>
@@ -145,7 +146,7 @@
                     <h3>Order Successful</h3>
                     <p>Your order is waiting for acceptance by the shop.</p>
                     <div style="display: flex; justify-content: center;">
-                        <button onclick="closePopup()"><a style="text-decoration: none; color: white;" href="viewOrderHistory">OK</a></button>
+                        <button><a style="text-decoration: none; color: white;" href="viewOrderHistory">OK</a></button>
                         <button><a style="text-decoration: none; color: white;" href="HomeServlet">Back to home</a></button>
                     </div>
                 </div>
@@ -159,16 +160,16 @@
         </body>
 
         <script>
-                            function showPopup() {
-                                document.getElementById("orderPopup").style.display = "flex";
-                            }
+            function showPopup() {
+                document.getElementById("orderPopup").style.display = "flex";
+            }
 
-                            function closePopup() {
-                                document.getElementById("orderPopup").style.display = "none";
-                            }
+            function closePopup() {
+                document.getElementById("orderPopup").style.display = "none";
+            }
 
-                            // Show popup if login fails (you can trigger this with backend error)
-                            // For example, if you're using a session attribute or response error:
+            // Show popup if login fails (you can trigger this with backend error)
+            // For example, if you're using a session attribute or response error:
         <%
             String message = (String) session.getAttribute("orderStatus");
             if (message != null && message.equals("success")) {

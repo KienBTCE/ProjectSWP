@@ -19,7 +19,6 @@ public class Order {
     String orderDate;
     String deliveredDate;
     int status;
-    
 
     public Order(String fullName, String phone, String address) {
         this.fullName = fullName;
@@ -33,6 +32,18 @@ public class Order {
         this.phone = phone;
         this.address = address;
         this.totalAmount = totalAmount;
+    }
+
+    public Order(int orderID, int accountID, String fullName, String address, String phone, String orderDate, String deliveredDate, int status, long totalAmount) {
+        this.orderID = orderID;
+        this.accountID = accountID;
+        this.fullName = fullName;
+        this.phone = phone;
+        this.address = address;
+        this.totalAmount = totalAmount;
+        this.orderDate = orderDate;
+        this.deliveredDate = deliveredDate;
+        this.status = status;
     }
 
     public int getOrderID() {
@@ -106,6 +117,5 @@ public class Order {
     public void setStatus(int status) {
         this.status = status;
     }
-    
-    
+
 }

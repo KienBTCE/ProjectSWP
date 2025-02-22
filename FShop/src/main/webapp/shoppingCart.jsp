@@ -47,12 +47,12 @@
                                     </tr>
 
 
-                                    <form id="cartSelected" action="checkout" method="get">
+                                    <form id="cartSelected" action="order" method="post">
                                         <c:forEach items="${sessionScope.cartList}" var="p">
                                             <c:if test="${p.getQuantity() == 0}">
                                                 <tr>
                                                     <td>
-                                                        <input disabled type="checkbox" name="cartSelected" value="${p.getSKU()}">
+                                                        <input disabled type="checkbox" name="cartSelected" value="${p.getProductID()}">
                                                     </td>
                                                     <td class="td"><img
                                                             src="./assets/imgs/Products/${p.getImage()}"
@@ -77,8 +77,8 @@
                                                         </h6>
                                                     </td>
                                                     <td class="th">
-                                                        <a href="updateCart?id=${p.getSKU()}"><img src="./assets/imgs/ShoppingCartImg/x.jpg" alt=""
-                                                                                                   width="25px" ></a>
+                                                        <a href="updateCart?id=${p.getProductID()}"><img src="./assets/imgs/ShoppingCartImg/x.jpg" alt=""
+                                                                                                         width="25px" ></a>
                                                         <!--                                                        <a href=""><img src="./assets/imgs/ShoppingCartImg/pen.jpg" alt="" width="25px"
                                                                                                                                 style="margin-top: 5px;"></a>-->
                                                     </td>
@@ -87,7 +87,7 @@
                                             <c:if test="${p.getQuantity() > 0}">
                                                 <tr>
                                                     <td>
-                                                        <input type="checkbox" name="cartSelected" value="${p.getSKU()}">
+                                                        <input type="checkbox" name="cartSelected" value="${p.getProductID()}">
                                                     </td>
                                                     <td class="td"><img
                                                             src="./assets/imgs/Products/${p.getImage()}"
@@ -105,8 +105,8 @@
                                                             min="1" 
                                                             value="${p.getQuantity()}" 
                                                             name="quantity" 
-                                                            id="quantity-${p.getSKU()}" 
-                                                            onchange="updateQuantity(${p.getSKU()}, this.value)">
+                                                            id="quantity-${p.getProductID()}" 
+                                                            onchange="updateQuantity(${p.getProductID()}, this.value)">
                                                     </td>
                                                     <td class="th">
                                                         <h6>
@@ -114,8 +114,8 @@
                                                         </h6>
                                                     </td>
                                                     <td class="th">
-                                                        <a href="deletePOC?id=${p.getSKU()}"><img src="./assets/imgs/ShoppingCartImg/x.jpg" alt=""
-                                                                                                  width="25px" ></a>
+                                                        <a href="deletePOC?id=${p.getProductID()}"><img src="./assets/imgs/ShoppingCartImg/x.jpg" alt=""
+                                                                                                        width="25px" ></a>
                                                         <!--                                                        <a href=""><img src="./assets/imgs/ShoppingCartImg/pen.jpg" alt="" width="25px"
                                                                                                                                 style="margin-top: 5px;"></a>-->
                                                     </td>
@@ -123,6 +123,7 @@
                                             </c:if>
                                             <c:set var="total" value="${total + (p.getPrice() * p.getQuantity())}" />
                                         </c:forEach>
+                                        <input name="buyProductAction" value="checkout" hidden="">         
                                     </form>
                                 </table>
                             </c:if>
@@ -161,34 +162,34 @@
 
                         </div>
                         <div>
-<!--                            <div class="tax">
-                                <p>Apply Discount Code</p>
-                                <button onclick="toggleDisplay('detail2')"
-                                        style="width: 10%; border: white solid; border-radius: 30px; height: auto;"><svg
-                                        width="16" height="15" viewBox="0 0 16 15" fill="none"
-                                        xmlns="http://www.w3.org/2000/svg">
-                                    <path d="M6 9.20209L8 7.20209L10 9.20209" stroke="black" stroke-width="1.6"
-                                          stroke-linecap="round" />
-                                    </svg>
-                                </button>
-                            </div>
-                            <div id="detail2" style="display: none; color: gray;">
-                                <div>
-                                    <form action="" class="discount">
-                                        <div class="form-group">
-                                            <div class="control-label" style="text-align: left;">Enter discount code
-                                            </div>
-                                            <div class="">
-                                                <input type="text" class="form-control" value="" required
-                                                       placeholder="Enter Discount code" />
-                                            </div>
-                                        </div>
-                                        <button type="submit"
-                                                style="background-color: white; border: #0156ff solid 1px; color: #0156ff;">Apply
-                                            Discount</button>
-                                    </form>
-                                </div>
-                            </div>-->
+                            <!--                            <div class="tax">
+                                                            <p>Apply Discount Code</p>
+                                                            <button onclick="toggleDisplay('detail2')"
+                                                                    style="width: 10%; border: white solid; border-radius: 30px; height: auto;"><svg
+                                                                    width="16" height="15" viewBox="0 0 16 15" fill="none"
+                                                                    xmlns="http://www.w3.org/2000/svg">
+                                                                <path d="M6 9.20209L8 7.20209L10 9.20209" stroke="black" stroke-width="1.6"
+                                                                      stroke-linecap="round" />
+                                                                </svg>
+                                                            </button>
+                                                        </div>
+                                                        <div id="detail2" style="display: none; color: gray;">
+                                                            <div>
+                                                                <form action="" class="discount">
+                                                                    <div class="form-group">
+                                                                        <div class="control-label" style="text-align: left;">Enter discount code
+                                                                        </div>
+                                                                        <div class="">
+                                                                            <input type="text" class="form-control" value="" required
+                                                                                   placeholder="Enter Discount code" />
+                                                                        </div>
+                                                                    </div>
+                                                                    <button type="submit"
+                                                                            style="background-color: white; border: #0156ff solid 1px; color: #0156ff;">Apply
+                                                                        Discount</button>
+                                                                </form>
+                                                            </div>
+                                                        </div>-->
                         </div>
 
                         <svg width="385" height="2" viewBox="0 0 385 2" fill="none"
@@ -332,7 +333,7 @@
                     x.style.display = "none";
                 }
             }
-            
+
         </script>
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
                 integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
