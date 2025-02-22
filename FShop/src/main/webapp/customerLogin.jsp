@@ -192,7 +192,7 @@
                             <input type="password" id="password" name="password" placeholder="Your Password" required>
 
                             <button class="summit" type="submit">Sign In</button>
-                            <a class="forgotpass" href="#">Forgot Your Password?</a>
+                            <a class="forgotpass" href="forgotPassword.jsp">Forgot Your Password?</a>
                         </form>
 
                     </div>

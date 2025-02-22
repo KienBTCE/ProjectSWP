@@ -40,6 +40,16 @@ public class Product {
         this.stock = stock;
     }
 
+    public Product(int productId, int categoryId, int brandId, String fullName, long price, int quantity, int isDeleted) {
+        this.productId = productId;
+        this.brandId = brandId;
+        this.categoryId = categoryId;
+        this.fullName = fullName;
+        this.isDeleted = isDeleted;
+        this.price = price;
+        this.quantity = quantity;
+    }
+
     public int getProductId() {
         return productId;
     }
