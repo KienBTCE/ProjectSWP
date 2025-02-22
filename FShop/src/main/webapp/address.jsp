@@ -44,7 +44,7 @@
                 <h2>My addresses</h2>
                 <button class="btn btn-add"
                         style="background: red; color: white; padding: 5px 5px; cursor: pointer; border: none;"
-                        onclick="openAddPopup('','','')">+ Add address</button>
+                        onclick="openPopup(false)">+ Add address</button>
             </div>
 
             <h4 style="padding: 15px 0 0 0">Address</h4>
@@ -62,7 +62,7 @@
                             <button class="btn btn-update"
                                     style="color: blue; padding: 5px 5px; cursor: pointer; border: none; margin-left: 5px;"
                                     data-bs-toggle="modal" data-bs-target="#updateModal"
-                                    onclick="openAddPopup('Cần Thơ', 'Bình Thủy', 'Long Tuyền')">Update</button>
+                                    onclick="openPopup(true)">Update</button>
                             <button class="btn btn-delete"
                                     style="color: red; background: none; padding: 5px 5px; cursor: pointer; border: none; margin-left: 5px;">Delete</button>
                         </div>
@@ -86,7 +86,7 @@
                             <button class="btn btn-update"
                                     style="color: blue; padding: 5px 5px; cursor: pointer; border: none; margin-left: 5px;"
                                     data-bs-toggle="modal" data-bs-target="#updateModal"
-                                    onclick="openAddPopup()">Update</button>
+                                    onclick="openPopup(true)">Update</button>
                             <button class="btn btn-delete"
                                     style="color: red; background: none; padding: 5px 5px; cursor: pointer; border: none; margin-left: 5px;">Delete</button>
                         </div>
@@ -192,30 +192,14 @@
                                 }
                             }
 
-// Hàm mở popup và điền dữ liệu cũ vào select box
-                            function openAddPopup(cityName, districtName, wardName) {
+                            function openPopup(var isUpdate) {
                                 document.getElementById("addPopup").style.display = "block";
                                 document.getElementById("overlay").style.display = "block";
-
-                                // Tìm ID của tỉnh/thành
-                                let cityData = allData.find(n => n.Name === cityName);
-                                if (cityData) {
-                                    citis.value = cityData.Id;
-                                    loadDistricts(cityData.Id);
-
-                                    // Tìm ID của quận/huyện
-                                    let districtData = cityData.Districts.find(n => n.Name === districtName);
-                                    if (districtData) {
-                                        districts.value = districtData.Id;
-                                        loadWards(districtData.Id);
-
-                                        // Tìm ID của phường/xã
-                                        let wardData = districtData.Wards.find(n => n.Name === wardName);
-                                        if (wardData) {
-                                            wards.value = wardData.Id;
-                                        }
-                                    }
+                                
+                                if(isUpdate){
+                                    document.getElementById("addPopup").title = "Update Address";
                                 }
+                               
                             }
                             function closeAddPopup(){
                                 document.getElementById("addPopup").style.display = "none";

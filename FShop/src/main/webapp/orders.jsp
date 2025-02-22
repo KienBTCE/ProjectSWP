@@ -60,7 +60,7 @@
         <div id="all" class="order-list active">
             All of your order will be here
         </div>
-        <div id="waiting" class="order-list active"></div>
+        <div id="waiting" class="order-list"></div>
         <div id="transport" class="order-list">
             <p>Order #5678 - In transport</p>
         </div>
