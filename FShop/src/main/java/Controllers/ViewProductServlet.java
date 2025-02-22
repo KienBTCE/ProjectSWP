@@ -18,7 +18,7 @@ import java.util.ArrayList;
  *
  * @author KienBTCE180180
  */
-public class HomeServlet extends HttpServlet {
+public class ViewProductServlet extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -31,49 +31,18 @@ public class HomeServlet extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-//        ArrayList<Product> productList = null;
-//        HttpSession session = request.getSession();
-////        ProductDAO pD = new ProductDAO();
-////        ArrayList<Product> products = pD.GetAllProducts();
-//        LaptopDAO lD = new LaptopDAO();
-//        ArrayList<Laptop> laptops = lD.GetAllLaptops();
-//        PhoneDAO phD = new PhoneDAO();
-//        ArrayList<Phone> phones = phD.GetAllPhones();
-//        if(session.getAttribute("customer") != null){
-//            CartDAO c = new CartDAO();
-//            Customer cus = (Customer)session.getAttribute("customer");
-//            session.setAttribute("numOfProCartOfCus", c.getNumberOfProduct(cus.getId()));
-//        }
-//        CartDAO c = new CartDAO();
-//        try {
-//            request.setAttribute("laptops", laptops);
-//            request.setAttribute("phones", phones);
-//            request.getRequestDispatcher("index.jsp").forward(request, response);
-//        } catch (NullPointerException e) {
-//            System.out.println(e);
-//        }
-
-//        ProductDAO pd = new ProductDAO();
-//        ArrayList<Product> products = new ArrayList<>();
-//        products = pd.GetAllProducts();
-//        
-//        try {
-//            request.setAttribute("products", products);
-//            request.getRequestDispatcher("index.jsp").forward(request, response);
-//        } catch (NullPointerException e) {
-//            System.out.println(e);
-//        }
         System.out.println("===== Servlet is running =====");
         System.out.println("Request received in: " + this.getClass().getSimpleName());
 
         ProductDAO pd = new ProductDAO();
+        
         ArrayList<Product> products = pd.GetAllProducts();
         
-        System.out.println(products.size());
+        System.out.println(request.getRequestURL());
         
         try {
             request.setAttribute("products", products);
-            request.getRequestDispatcher("index.jsp").forward(request, response);
+            request.getRequestDispatcher("ProductListView.jsp").forward(request, response);
         } catch (NullPointerException e) {
             System.out.println(e);
         }

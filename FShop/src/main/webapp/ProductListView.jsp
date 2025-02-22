@@ -106,8 +106,6 @@
                 </div>
             </div>
 
-
-
             <div class="row">
                 <h4 class="title-content"><a href="Phone">Phone</a></h4>
                 <div class="gap-section section-content">
@@ -135,9 +133,7 @@
                     </c:forEach>
                 </div>
             </div>
-
-
-
+                    
         </div>
         <jsp:include page="footer.jsp"></jsp:include>
 
