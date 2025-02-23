@@ -3,12 +3,14 @@
     <welcome-file-list>
         <welcome-file>ProductListView</welcome-file>
     </welcome-file-list>
-    
+    <servlet>
+        <servlet-name>ViewImportOrderServlet</servlet-name>
+        <servlet-class>Controllers.ViewImportOrderServlet</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>default</servlet-name>
         <url-pattern>/assets/*</url-pattern>
     </servlet-mapping>
-    
     <servlet>
         <servlet-name>ViewSupplierServlet</servlet-name>
         <servlet-class>Controllers.ViewSupplierServlet</servlet-class>
@@ -25,7 +27,6 @@
         <servlet-name>ProductListView</servlet-name>
         <servlet-class>Controllers.ViewProductServlet</servlet-class>
     </servlet>
-    
     <servlet-mapping>
         <servlet-name>ViewLaptopServlet</servlet-name>
         <url-pattern>/Laptop</url-pattern>
@@ -41,6 +42,10 @@
     <servlet-mapping>
         <servlet-name>ViewSupplierServlet</servlet-name>
         <url-pattern>/Supplier</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ViewImportOrderServlet</servlet-name>
+        <url-pattern>/ImportOrder</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

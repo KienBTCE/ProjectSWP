@@ -52,15 +52,14 @@ public class SupplierDAO {
         return list;
     }
     
-    public Supplier getSupplierByID(String supplierId) {
-        int sId = Integer.parseInt(supplierId);
+    public Supplier getSupplierByID(int supplierId) {
         Supplier s = null;
 
         String query = "SELECT * FROM Suppliers WHERE SupplierId = ?";
         
         try {
             PreparedStatement ps = connector.prepareStatement(query);
-            ps.setInt(sId, 1);
+            ps.setInt(supplierId, 1);
             ResultSet rs = ps.executeQuery();
 
             while (rs.next()) {

@@ -44,6 +44,10 @@ public class Product {
         this.stock = stock;
     }
 
+    public Product(int aInt, String string, String string0, long aLong, String string1, int aInt0) {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+
     public int getProductId() {
         return productId;
     }
