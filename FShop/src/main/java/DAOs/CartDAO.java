@@ -56,12 +56,12 @@ public class CartDAO {
         return num;
     }
 
-    public void updateProductQuantity(int productSKU, int quantity, int id) {
+    public void updateProductQuantity(int productID, int quantity, int id) {
         String sql = "UPDATE Carts SET Quantity = ? WHERE ProductID = ? AND CustomerID = ?";
         try {
             PreparedStatement preparedStatement = connector.prepareStatement(sql);
             preparedStatement.setInt(1, quantity);
-            preparedStatement.setInt(2, productSKU);
+            preparedStatement.setInt(2, productID);
             preparedStatement.setInt(3, id);
             preparedStatement.executeUpdate();
             System.out.println("Update Ok");
@@ -70,10 +70,10 @@ public class CartDAO {
         }
     }
 
-    public void deleteProductOnCart(int productSKU, int id) {
+    public void deleteProductOnCart(int productID, int id) {
         try {
             PreparedStatement preparedStatement = connector.prepareStatement("Delete from Carts where ProductID = ? and CustomerID = ?");
-            preparedStatement.setInt(1, productSKU);
+            preparedStatement.setInt(1, productID);
             preparedStatement.setInt(2, id);
             preparedStatement.executeUpdate();
         } catch (SQLException e) {

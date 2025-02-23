@@ -10,7 +10,7 @@ package Models;
  */
 public class Cart {
 
-    private int SKU;
+    private int productID;
     private int quantity;
     private String image;
     private String fullName;
@@ -20,8 +20,8 @@ public class Cart {
     public Cart() {
     }
 
-    public Cart(int SKU, int quantity, String image, String fullName, int price, int category) {
-        this.SKU = SKU;
+    public Cart(int productID, int quantity, String image, String fullName, int price, int category) {
+        this.productID = productID;
         this.quantity = quantity;
         this.image = image;
         this.fullName = fullName;
@@ -29,12 +29,12 @@ public class Cart {
         this.category = category;
     }
 
-    public int getSKU() {
-        return SKU;
+    public int getProductID() {
+        return productID;
     }
 
-    public void setSKU(int SKU) {
-        this.SKU = SKU;
+    public void setProductID(int productID) {
+        this.productID = productID;
     }
 
     public int getQuantity() {
@@ -76,5 +76,7 @@ public class Cart {
     public void setCategory(int category) {
         this.category = category;
     }
+
+   
 
 }

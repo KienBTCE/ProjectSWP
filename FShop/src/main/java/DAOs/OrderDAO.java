@@ -12,8 +12,10 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
 
 /**
  *
@@ -102,12 +104,12 @@ public class OrderDAO {
         }
     }
 
-    public void addOrderDetail(int orderID, int pd_SKU, int quantity, int price) {
+    public void addOrderDetail(int orderID, int productID, int quantity, int price) {
         try {
             PreparedStatement pre = connector.prepareStatement("Insert into [OrderDetails] values"
                     + "(?, ?, ?, ?)");
             pre.setInt(1, orderID);
-            pre.setInt(2, pd_SKU);
+            pre.setInt(2, productID);
             pre.setInt(3, quantity);
             pre.setInt(4, price);
             pre.executeUpdate();
@@ -125,6 +127,7 @@ public class OrderDAO {
         } catch (Exception e) {
         }
     }
+
   public void UpdateOrder(String orderID, String status){
     
     String query ="Update Orders SET Orders.Status= ? WHERE Orders.OrderID=?";
@@ -154,6 +157,31 @@ public class OrderDAO {
       } catch (Exception e) {
           Logger.getLogger(OrderDAO.class.getName()).log(Level.SEVERE, null, e);
       }
+
+
+    public List<Order> getAllOrderOfCustomer(int customerID) {
+        List<Order> list = new ArrayList<>();
+        try {
+            PreparedStatement pre = connector.prepareStatement("SELECT * FROM Orders WHERE CustomerID = ?");
+            pre.setInt(1, customerID);
+            ResultSet rs = pre.executeQuery();
+            while (rs.next()) {
+                list.add(new Order(rs.getInt(1), rs.getInt(2), rs.getString(3), rs.getString(4), rs.getString(5), rs.getString(6), rs.getString(7), rs.getInt(8), rs.getInt(9)));
+            }
+        } catch (SQLException e) {
+            System.out.println(e + "");
+        }
+        return list;
+    }
+
+    public static void main(String[] args) {
+        OrderDAO o = new OrderDAO();
+//        o.addOrderDetail(1, 1, 3, 34000000);
+        List<Order> list = o.getAllOrderOfCustomer(1);
+        for (Order order : list) {
+            System.out.println(order.getAddress());
+        }
+
     }
 }
   

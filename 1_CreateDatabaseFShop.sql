@@ -77,11 +77,11 @@ CREATE TABLE Addresses (
 
 CREATE TABLE Suppliers (
     SupplierID INT PRIMARY KEY,
-    TaxID VARCHAR(20),
-    [Name] NVARCHAR(255) NOT NULL,
-    Email VARCHAR(254),
-    PhoneNumber VARCHAR(15),
-    [Address] VARCHAR(255),
+    TaxID VARCHAR(20) UNIQUE,
+    [Name] NVARCHAR(255) UNIQUE NOT NULL,
+    Email VARCHAR(254) UNIQUE,
+    PhoneNumber VARCHAR(15) UNIQUE,
+    [Address] VARCHAR(255) UNIQUE,
     CreatedDate DATETIME,
     LastModify DATETIME,
     IsDeleted BIT,

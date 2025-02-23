@@ -68,32 +68,7 @@ public class CheckoutServlet extends HttpServlet {
             throws ServletException, IOException {
 //        long total = Long.parseLong(request.getParameter("total"));
 //        request.setAttribute("total", total);
-        HttpSession session = request.getSession();
-        List<Cart> cart = (List<Cart>) session.getAttribute("cartList");
-        String selectedProductIds[] = request.getParameterValues("cartSelected");
-        List<Cart> cartSelected = new ArrayList<>();
-        Customer cus = (Customer) session.getAttribute("customer");
-        AddressDAO cdao = new AddressDAO();
-        Address add = cdao.getDefaultAddress(cus.getId());
-        String address = add.getAddressDetails();
-        int count = 0;
-        long totalAmount = 0;
-        for (int i = 0; i < cart.size(); i++) {
-            for (String selectedProductId : selectedProductIds) {
-                if (cart.get(i).getSKU() == Integer.parseInt(selectedProductId)) {
-                    cartSelected.add(cart.get(i));
-                    totalAmount += cart.get(i).getPrice() * cart.get(i).getQuantity();
-                    count++;
-                    System.out.println(cart.get(i).getFullName());
-                }
-            }
-        }
-        
-        session.setAttribute("cartSelected", cartSelected);
-        session.setAttribute("totalAmount", totalAmount);
-        session.setAttribute("shipAddress", address);
-        session.setAttribute("numOfItems", count);
-        request.getRequestDispatcher("checkout.jsp").forward(request, response);
+
     }
 
     /**
@@ -107,14 +82,7 @@ public class CheckoutServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        String fullname = request.getParameter("fullname");
-        String phone = request.getParameter("phone");
-        String address = request.getParameter("address");
-        System.out.println(fullname + " " +address);
-        HttpSession session = request.getSession();
-        session.setAttribute("order", new Order(fullname, phone, address));
-        request.getRequestDispatcher("payment.jsp").forward(request, response);
-
+        
     }
 
     /**

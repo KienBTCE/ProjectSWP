@@ -1,55 +1,38 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <web-app version="3.1" xmlns="http://xmlns.jcp.org/xml/ns/javaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd">
     <welcome-file-list>
-        <welcome-file>HomeServlet</welcome-file>
+        <welcome-file>ProductListView</welcome-file>
     </welcome-file-list>
-    <servlet>
-        <servlet-name>ViewLaptopServlet</servlet-name>
-        <servlet-class>Controllers.ViewLaptopServlet</servlet-class>
-    </servlet>
-    <servlet>
-        <servlet-name>ViewPhoneServlet</servlet-name>
-        <servlet-class>Controllers.ViewPhoneServlet</servlet-class>
-    </servlet>
-    <servlet>
-        <servlet-name>ViewOrderListServlet</servlet-name>
-        <servlet-class>Controllers.ViewOrderListServlet</servlet-class>
-    </servlet>
-    <servlet>
-        <servlet-name>ViewOrderDetailServlet</servlet-name>
-        <servlet-class>Controllers.ViewOrderDetailServlet</servlet-class>
-    </servlet>
-    <servlet>
-        <servlet-name>UpdateOrderServlet</servlet-name>
-        <servlet-class>Controllers.UpdateOrderServlet</servlet-class>
-    </servlet>
-    <servlet>
-        <servlet-name>DeleteOrderServlet</servlet-name>
-        <servlet-class>Controllers.DeleteOrderServlet</servlet-class>
-    </servlet>
-    <servlet>
-        <servlet-name>CommentServlet</servlet-name>
-        <servlet-class>Controllers.CommentServlet</servlet-class>
-    </servlet>
+
     <servlet-mapping>
         <servlet-name>default</servlet-name>
         <url-pattern>/assets/*</url-pattern>
     </servlet-mapping>
-    <servlet>
-        <servlet-name>HomeServlet</servlet-name>
-        <servlet-class>Controllers.HomeServlet</servlet-class>
+   
+   <servlet>
+        <servlet-name>ViewSupplierServlet</servlet-name>
+        <servlet-class>Controllers.ViewSupplierServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>CustomerListServlet</servlet-name>
+        <servlet-class>Controllers.CustomerListServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>ProductListView</servlet-name>
+        <servlet-class>Controllers.ViewProductServlet</servlet-class>
+    </servlet>
+    
     <servlet-mapping>
-        <servlet-name>HomeServlet</servlet-name>
-        <url-pattern>/HomeServlet</url-pattern>
+        <servlet-name>ProductListView</servlet-name>
+        <url-pattern>/</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
-        <servlet-name>ViewLaptopServlet</servlet-name>
-        <url-pattern>/Laptop</url-pattern>
+        <servlet-name>CustomerListServlet</servlet-name>
+        <url-pattern>/CustomerListServlet</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
-        <servlet-name>ViewPhoneServlet</servlet-name>
-        <url-pattern>/Phone</url-pattern>
+        <servlet-name>ViewSupplierServlet</servlet-name>
+        <url-pattern>/Supplier</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>ViewOrderListServlet</servlet-name>

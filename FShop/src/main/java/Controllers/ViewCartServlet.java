@@ -64,7 +64,31 @@ public class ViewCartServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        doPost(request, response);
+        ProductDAO p = new ProductDAO();
+        HttpSession session = request.getSession();
+        if (session.getAttribute("customer") != null) {
+
+            Customer cus = (Customer) session.getAttribute("customer");
+            CartDAO c = new CartDAO();
+            List<Cart> cartList = c.getCartOfAccountID(cus.getId());
+            System.out.println(cus.getId());
+            // List<Product> pList = p.GetAllProducts();
+//            for (Product product : pList) {
+//                for (Cart cart : cartList) {
+//                    //System.out.println(cart.getFullName());
+//                    if (product.getQuantity() == 0 && product.SKU() == cart.getProductSKU()) {
+//                        cart.setQuantity(product.getQuantity());
+//                    }
+//                }
+//            }
+            session.setAttribute(
+                    "cartList", cartList);
+            request.getRequestDispatcher(
+                    "cartView.jsp").forward(request, response);
+        } else {
+            // your code about Cart guest
+            response.sendRedirect("cartView.jsp");
+        }
     }
 
     /**
@@ -78,31 +102,6 @@ public class ViewCartServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        ProductDAO p = new ProductDAO();
-        HttpSession session = request.getSession();
-        if (session.getAttribute("customer") != null) {
-
-            Customer cus = (Customer) session.getAttribute("customer");
-            CartDAO c = new CartDAO();
-            List<Cart> cartList = c.getCartOfAccountID(cus.getId());
-            System.out.println(cus.getId());
-           // List<Product> pList = p.GetAllProducts();
-//            for (Product product : pList) {
-//                for (Cart cart : cartList) {
-//                    //System.out.println(cart.getFullName());
-//                    if (product.getQuantity() == 0 && product.SKU() == cart.getProductSKU()) {
-//                        cart.setQuantity(product.getQuantity());
-//                    }
-//                }
-//            }
-            session.setAttribute(
-                    "cartList", cartList);
-            request.getRequestDispatcher(
-                    "shoppingCart.jsp").forward(request, response);
-        } else {
-            // your code about Cart guest
-            response.sendRedirect("shoppingCart.jsp");
-        }
 
     }
 

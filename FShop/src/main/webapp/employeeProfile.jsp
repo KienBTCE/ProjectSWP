@@ -1,214 +1,139 @@
-<%-- 
-    Document   : employeeProfile
-    Created on : Feb 16, 2025, 4:25:00 PM
-    Author     : TuongMPCE180644
---%>
-
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <!DOCTYPE html>
-<html>
+<html lang="en">
     <head>
-        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>Employee Profile Page</title>
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-
         <style>
-            .profile-content {
-                flex: 1;
-                padding: 30px;
+            body {
+                background-color: #f8f9fa;
+            }
+            .profile-container {
+                max-width: 1600px;
+                height: auto;
+                margin: 20px auto;
                 background: white;
-                margin: 20px;
-                border-radius: 5px;
-                box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+                padding: 40px;
+                border-radius: 10px;
+                box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+            }
+            .form-container {
+                width: 60%;
+            }
+            .avatar-container {
+                text-align: center;
+                width: 35%;
             }
             .avatar-preview {
-                width: 150px;
-                height: 150px;
+                width: 180px;
+                height: 180px;
                 border-radius: 50%;
                 object-fit: cover;
+                border: 3px solid #ddd;
             }
-
-            .profile {
-                background: white;
-                display: flex;
-                flex-wrap: wrap;
-                align-items: center;
-                justify-content: space-between;
-                padding: 20px;
+            .btn-save {
+                background-color: #007bff;
+                color: white;
             }
-
-            .info {
-                width: 50%;
-                min-width: 400px;
+            .btn-change {
+                background-color: #dc3545;
+                color: white;
             }
-
-            .avatar {
-                width: 50%;
-                min-width: 400px;
-                text-align: center;
-                padding: 20px;
-            }
-
-            /* CSS cho Modal */
-            .phone {
-                display: none;
-                position: fixed;
-                z-index: 1000;
-                left: 0;
-                top: 0;
-                width: 100%;
-                height: 100%;
-                background-color: rgba(0,0,0,0.4);
-            }
-            .phone-content {
-                background-color: white;
-                margin: 10% auto;
-                padding: 20px;
-                width: 300px;
-                border-radius: 5px;
-                box-shadow: 0 2px 10px rgba(0,0,0,0.3);
-                text-align: center;
-            }
-            .close-phone {
-                float: right;
-                font-size: 24px;
-                cursor: pointer;
+            
+            .value{
+                width: 150px;
+                
             }
         </style>
     </head>
     <body>
         <form action="updateProfile" method="post" enctype="multipart/form-data">
-            <div class="profile">
-                <div class="info">
-                    <h3>My Profile</h3>
-                    <p class="text-muted">Manage your profile information to secure your account</p>
 
-                    <div class="mb-3">
-                        <label class="form-label">Email:</label>
+            <div class="profile-container">
+
+                <div class="form-container">
+
+                    <div class="mb-3 d-flex">
+                        <label class="value">Email:</label>
                         <p>nguyenvana@example.com</p>
                     </div>
 
-                    <div class="mb-3">
-                        <label class="form-label">Name:</label>
-                        <input type="text" class="form-control" name="fullname" value="Nguyen Van A" >
-                    </div>
-                    
-                    <div class="mb-3">
-                        <label class="form-label">Role:</label>
-                        <input type="text" class="form-control" name="role" value="Shop Manager" readonly>
-                    </div>
-                    
-                    <div class="mb-3">
-                        <label class="form-label">Phone Number:</label>
-                        <p>
-                            ********<span id="phoneDisplay">24</span> 
-                            <input id="phoneInput" name="phoneNumber" type="tel" value="" hidden>
-                            <a href="#" onclick="openModal()">Change</a>
-                        </p>
+                    <div class="mb-3 d-flex">
+                        <label class="value">Role:</label>
+                        <p class="fw-bold">Shop Manager</p>
                     </div>
 
-                    <div class="mb-3">
-                        <label class="form-label">Gender:</label>
-                        <div>
-                            <input type="radio" name="gender" value="Male" checked> Male
-                            <input type="radio" name="gender" value="Female" > Female
-                            <input type="radio" name="gender" value="Other" > Other
-                        </div>
+                    <div class="mb-3 d-flex">
+                        <label class="form-label value">Full Name</label>
+                        <input type="text" class="form-control" name="fullName" value="${sessionScope.employee.getFullName()}" required>
                     </div>
 
-                    <div class="mb-3">
-                        <label class="form-label">Date of Birth:</label>
-                        <div class="row">
-                            <div class="col">
-                                <select class="form-select" name="day">
-                                    <option>Day</option>
-                                    <c:forEach var="i" begin="1" end="31">
-                                        <option ${"08".equals(String.format("%02d", i)) ? 'selected' : ''}>${i}</option>
-                                    </c:forEach>
-                                </select>
-                            </div>
-                            <div class="col">
-                                <select class="form-select" name="month">
-                                    <option>Month</option>
-                                    <c:forEach var="i" begin="1" end="12">
-                                        <option ${"10".equals(String.format("%02d", i)) ? 'selected' : ''}>${i}</option>
-                                    </c:forEach>
-                                </select>
-                            </div>
-                            <div class="col">
-                                <select class="form-select" name="year">
-                                    <option>Year</option>
-                                    <c:forEach var="i" begin="1900" end="2024">
-                                        <option ${i == 2004 ? "selected" : ""}>${i}</option>
-                                    </c:forEach>
-                                </select>
-                            </div>
-                        </div>
+                    <div class="mb-3 d-flex">
+                        <label class="form-label value" value>Gender</label>
+                        <select class="form-select" name="gender" required>
+                            <option value="Female" ${sessionScope.employee.getGender() == 'Female' ? 'selected' : ''}>Female</option>
+                            <option value="Male" ${sessionScope.employee.getGender() == 'Male' ? 'selected' : ''}>Male</option>
+                        </select>
                     </div>
+
+                    <div class="mb-3 d-flex">
+                        <label class="form-label value">Phone</label>
+                        <input type="text" class="form-control" name="phone" value="${sessionScope.employee.getPhone()}" required>
+                    </div>
+
+                    <div class="mb-3 d-flex">
+                        <label class="form-label value">Date Of Birth</label>
+                        <input type="date" class="form-control" name="dob" value="${sessionScope.employee.getDob()}" required>
+                    </div>
+
+                    <div class="d-flex gap-3" style="justify-content: space-between;">
+                        <button type="submit" class="btn btn-save px-4 py-2">Save</button>
+                        <button type="button" class="btn btn-change px-4 py-2" onclick="changePassword()">Change Password</button>
+                    </div>
+
                 </div>
 
-                <div class="mb-3 avatar">
-                    <label class="form-label">Avatar:</label>
-                    <div class="d-block align-items-center">
-                        <c:if test="${sessionScope.employee.getAvatar() != null}">
-                            <img id="avatarPreview" class="avatar-preview mb-3" src="assets/imgs/CustomerAvatar/${sessionScope.employee.getAvatar()}" alt="Avatar">
-                        </c:if>
-                        <c:if test="${sessionScope.employee == null || sessionScope.employee.getAvatar() == null}">
-                            <img id="avatarPreview" class="avatar-preview mb-3" src="assets/imgs/icon/person.jpg" alt="Avatar">
-                        </c:if>  
-                        <input type="file" class="form-control" name="avatar" onchange="previewImage(event)" >
+                <div class="avatar-container">
+                    <label class="form-label">Avatar</label>
+                    <div class="mb-3">
+                        <c:choose>
+                            <c:when test="${not empty sessionScope.employee.getAvatar()}">
+                                <img id="avatarPreview" class="avatar-preview" src="assets/imgs/CustomerAvatar/${sessionScope.employee.getAvatar()}" alt="Avatar">
+                            </c:when>
+                            <c:otherwise>
+                                <img id="avatarPreview" class="avatar-preview" src="assets/imgs/icon/person.jpg" alt="Avatar">
+                            </c:otherwise>
+                        </c:choose>
                     </div>
+                    <input type="file" class="form-control" name="avatar" accept="image/*" onchange="previewImage(event)">
                 </div>
-                <button type="submit" class="btn btn-danger">Save</button>
+
+
             </div>
         </form>
 
 
-        <!-- Popup nh?p s? ?i?n tho?i -->
-        <div id="phoneModal" class="phone">
-            <div class="phone-content">
-                <span class="close-phone" onclick="closeModal()">&times;</span>
-                <h3>Update Phone Number</h3>
-                <input type="tel" id="newPhoneNumber" name="phoneNumber" class="form-control" placeholder="Enter new phone number">
-                <button onclick="updatePhone()" class="mt-2 btn btn-primary">Save</button>
-            </div>
-        </div>
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
         <script>
-                    function previewImage(event) {
-                        var reader = new FileReader();
-                        reader.onload = function () {
-                            var output = document.getElementById('avatarPreview');
-                            output.src = reader.result;
-                        };
-                        reader.readAsDataURL(event.target.files[0]);
-                    }
+            function previewImage(event) {
+                var reader = new FileReader();
+                reader.onload = function () {
+                    var output = document.getElementById('avatarPreview');
+                    output.src = reader.result;
+                };
+                reader.readAsDataURL(event.target.files[0]);
+            }
 
-                    function openModal() {
-                        document.getElementById("phoneModal").style.display = "block";
-                    }
+            function changePassword() {
+                window.location.href = 'changePassword.jsp';
+            }
+        </script>
 
-                    function closeModal() {
-                        document.getElementById("phoneModal").style.display = "none";
-                    }
-
-                    function updatePhone() {
-                        let newPhone = document.getElementById("newPhoneNumber").value;
-
-                        if (!newPhone.match(/^\d{10}$/)) {
-                            alert("Invalid phone number. Please enter a 10-digit number.");
-                            return;
-                        }
-
-                        // C?p nh?t s? ?i?n tho?i vào giao di?n
-                        document.getElementById("phoneDisplay").innerText = newPhone.slice(-2);
-                        document.getElementById("phoneInput").value = newPhone;
-
-                        // ?óng modal
-                        closeModal();
-                    }
-        </script>   
-
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     </body>
 </html>

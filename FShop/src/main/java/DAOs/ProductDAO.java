@@ -9,6 +9,7 @@ import Models.Product;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 
 /**
@@ -20,37 +21,130 @@ public class ProductDAO {
     DBContext db = new DBContext();
     Connection connector = db.getConnection();
 
-    public ArrayList<Product> GetAllProducts() {
+    public ArrayList<Product> getAllProducts() {
         ArrayList<Product> list = new ArrayList<>();
 
         String query = "SELECT * FROM Products";
 
+        try {
+            PreparedStatement ps = connector.prepareStatement(query);
+            ResultSet rs = ps.executeQuery();
+
+            while (rs.next()) {
+                list.add(new Product(
+                        rs.getInt("ProductID"),
+                        rs.getInt("BrandID"),
+                        rs.getInt("CategoryID"),
+                        rs.getString("Model"),
+                        rs.getString("FullName"),
+                        rs.getString("Description"),
+                        rs.getInt("IsDeleted"),
+                        rs.getLong("Price"),
+                        rs.getString("Image"),
+                        rs.getInt("Quantity"),
+                        rs.getInt("Stock")
+                ));
+            }
+            return list;
+        } catch (SQLException e) {
+            System.out.println(e);
+        }
+
+        return list;
+    }
+
+    public ArrayList<Product> getAllLaptops() {
+        ArrayList<Product> list = new ArrayList<>();
+
+        String query = "SELECT * FROM Products P JOIN Categories C ON P.CategoryID = C.CategoryID WHERE C.Name = 'Laptop'";
+
+        try {
+            PreparedStatement ps = connector.prepareStatement(query);
+            ResultSet rs = ps.executeQuery();
+
+            while (rs.next()) {
+                list.add(new Product(
+                        rs.getInt("ProductID"),
+                        rs.getInt("BrandID"),
+                        rs.getInt("CategoryID"),
+                        rs.getString("Model"),
+                        rs.getString("FullName"),
+                        rs.getString("Description"),
+                        rs.getInt("IsDeleted"),
+                        rs.getLong("Price"),
+                        rs.getString("Image"),
+                        rs.getInt("Quantity"),
+                        rs.getInt("Stock")
+                ));
+            }
+            return list;
+        } catch (SQLException e) {
+            System.out.println(e);
+        }
+
+        return list;
+    }
+
+    public ArrayList<Product> findProductsByFilter(ArrayList<String> filters) {
+        ArrayList<Product> list = null;
+
+        String query = "SELECT * FROM Products P JOIN Brands B ON P.BrandID = B.BrandID WHERE B.Name IN (SELECT Name FROM Brands WHERE ";
+
+        for (String filter : filters) {
+            query += filter;
+        }
+
+        query += ")";
+
+        System.out.println("QUERY " + query);
+
         try ( PreparedStatement ps = connector.prepareStatement(query)) {
-            try ( ResultSet rs = ps.executeQuery()) { // nen doi rs sang resuleSet cho dong bo voi sequence diagram
+            try ( ResultSet rs = ps.executeQuery()) {
+                list = new ArrayList<>();
                 while (rs.next()) {
                     list.add(new Product(
-                            rs.getString("model"),
-                            rs.getInt("pd_ID"),
-                            rs.getInt("brandID"),
-                            rs.getString("fullName"),
-                            rs.getString("status"),
-                            rs.getString("note"),
-                            rs.getInt("quantity"),
-                            rs.getInt("price"),
-                            rs.getDate("importDate"),
-                            rs.getInt("categoryID"),
-                            rs.getInt("supplierID")
+                            rs.getInt("ProductID"),
+                            rs.getInt("BrandID"),
+                            rs.getInt("CategoryID"),
+                            rs.getString("Model"),
+                            rs.getString("FullName"),
+                            rs.getString("Description"),
+                            rs.getInt("IsDeleted"),
+                            rs.getLong("Price"),
+                            rs.getString("Image"),
+                            rs.getInt("Quantity"),
+                            rs.getInt("Stock")
                     ));
                 }
                 return list;
             } catch (Exception e) {
-                System.out.println(e);
             }
         } catch (Exception e) {
             System.out.println(e);
         }
 
-        return null;
+        return list;
+    }
+
+    public ArrayList<String> getAllBrandLaptop() {
+        ArrayList<String> list = null;
+
+        String query = "SELECT Name FROM Brands";
+
+        try ( PreparedStatement ps = connector.prepareStatement(query)) {
+            try ( ResultSet rs = ps.executeQuery()) {
+                list = new ArrayList<>();
+                while (rs.next()) {
+                    list.add(rs.getString("Name"));
+                }
+                return list;
+            } catch (Exception e) {
+            }
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+
+        return list;
     }
 
 }

@@ -153,7 +153,7 @@
             <div class="nav-container container">
                 <div class="nav-infor row">
                     <div class="nav-infor-content col-md-4">
-                        <a href="HomeServlet"><img src="assets/imgs/HeaderImgs/Vector-Header-Logo.svg" alt="Shop Logo" style="width: 50px; height: 50px;"></a>
+                        <a href="/"><img src="assets/imgs/HeaderImgs/Vector-Header-Logo.svg" alt="Shop Logo" style="width: 50px; height: 50px;"></a>
                     </div>
                     <div class="nav-infor-content list-cat col-md-4">
                         <ul class="list-categories">
@@ -188,7 +188,7 @@
                         <div style="display: flex; align-items: center; font-size: 12px">
                             <c:if test="${sessionScope.customer != null}">
                                 <c:if test="${sessionScope.customer.getAvatar() != null}">
-                                    <a href="viewProfile"><img style="border-radius: 50%; border: 1px solid gray;" width="30px" height="30px" src="./assets/imgs/CustomerAvatar/${sessionScope.customer.getAvatar()}" alt="alt"/></a>
+                                    <a href="viewCustomerProfile"><img style="border-radius: 50%; border: 1px solid gray;" width="30px" height="30px" src="./assets/imgs/CustomerAvatar/${sessionScope.customer.getAvatar()}" alt="alt"/></a>
                                     </c:if>
                                 </c:if>
                                 <c:if test="${sessionScope.customer == null}">

@@ -5,7 +5,9 @@
 package Controllers;
 
 import DAOs.LaptopDAO;
+import DAOs.ProductDAO;
 import Models.Laptop;
+import Models.Product;
 import java.io.IOException;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
@@ -30,8 +32,10 @@ public class ViewLaptopServlet extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        LaptopDAO lD = new LaptopDAO();
-        ArrayList<Laptop> laptops = null;
+
+        ProductDAO pd = new ProductDAO();
+
+        ArrayList<Product> products = null;
         ArrayList<String> filters = new ArrayList<>();
         ArrayList<String> filtersInput = new ArrayList<>();
         boolean isFilter = false;
@@ -42,9 +46,9 @@ public class ViewLaptopServlet extends HttpServlet {
 
             for (int i = 0; i < brandFilters.length; i++) {
                 if (brandFilters.length == 1) {
-                    filtersInput.add(" AND brand IN ('" + brandFilters[i].trim() + "')");
+                    filtersInput.add("Name IN ('" + brandFilters[i].trim() + "')");
                 } else if (i == 0) {
-                    filtersInput.add(" AND brand IN ('" + brandFilters[i].trim() + "', ");
+                    filtersInput.add("Name IN ('" + brandFilters[i].trim() + "', ");
                 } else if (i == brandFilters.length - 1) {
                     filtersInput.add("'" + brandFilters[i].trim() + "')");
                 } else {
@@ -54,8 +58,8 @@ public class ViewLaptopServlet extends HttpServlet {
             }
 
         }
-
         String price = request.getParameter("price");
+
         if (price != null) {
             ArrayList<String> priceFilters = new ArrayList<>();
             for (String string : price.split(",")) {
@@ -80,7 +84,7 @@ public class ViewLaptopServlet extends HttpServlet {
                 if (priceFilters.size() == 1) {
                     filtersInput.add(" AND price " + priceFilters.get(i).trim());
                 } else if (i == 0) {
-                    filtersInput.add(" AND (price " + priceFilters.get(i).trim());
+                    filtersInput.add("( AND price " + priceFilters.get(i).trim());
                 } else if (i == priceFilters.size() - 1) {
                     filtersInput.add(" OR price " + priceFilters.get(i).trim() + ")");
                 } else {
@@ -90,29 +94,30 @@ public class ViewLaptopServlet extends HttpServlet {
         }
 
         if (!filtersInput.isEmpty()) {
-            laptops = lD.GetFilterLaptops(filtersInput);
+            products = pd.findProductsByFilter(filtersInput);
             isFilter = true;
         }
         if (!isFilter) {
-            laptops = lD.GetAllLaptops();
+            products = pd.getAllLaptops();
         }
 
+        System.out.println("View Laptop Servlet" + filters.size());
         try {
             int numberRow = 0;
-            if (laptops != null) {
-                numberRow = laptops.size() / 4;
-                if (laptops.size() % 4 != 0) {
+            if (products != null) {
+                numberRow = products.size() / 4;
+                if (products.size() % 4 != 0) {
                     numberRow++;
                 }
             }
 
-            ArrayList<String> brands = lD.GetAllBrandLaptop();
-            request.setAttribute("laptopProducts", laptops);
+            ArrayList<String> brands = pd.getAllBrandLaptop();
+            request.setAttribute("products", products);
             request.setAttribute("brands", brands);
             request.setAttribute("numberRow", numberRow);
-            request.setAttribute("uri", request.getServletPath().substring(1));
+//            request.setAttribute("uri", request.getServletPath().substring(1));
             request.setAttribute("filters", filters);
-            request.getRequestDispatcher("viewLaptop.jsp").forward(request, response);
+            request.getRequestDispatcher("LaptopListView.jsp").forward(request, response);
         } catch (NullPointerException e) {
             System.out.println(e);
         }
