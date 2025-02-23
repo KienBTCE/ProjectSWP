@@ -157,7 +157,7 @@ public class OrderDAO {
       } catch (Exception e) {
           Logger.getLogger(OrderDAO.class.getName()).log(Level.SEVERE, null, e);
       }
-
+  }
 
     public List<Order> getAllOrderOfCustomer(int customerID) {
         List<Order> list = new ArrayList<>();
