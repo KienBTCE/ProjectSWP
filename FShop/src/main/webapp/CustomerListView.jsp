@@ -1,7 +1,7 @@
 <%-- 
     Document   : CustomerListView
     Created on : 22-Feb-2025, 15:25:44
-    Author     : kiuth
+    Author     : kiuthi
 --%>
 
 <%@page import="java.sql.ResultSet"%>
@@ -56,16 +56,6 @@
                 display: inline-block;
             }
 
-            /* Reset table alignment */
-            .table th {
-                vertical-align: middle;
-                text-align: center;
-            }
-
-            .table td {
-                vertical-align: middle;
-                text-align: left;
-            }
 
             /* Custom buttons for edit and delete */
             .btn-edit {
@@ -92,22 +82,59 @@
             }
 
             /* Ensuring proper table display */
+            /* Mở rộng bảng cho phù hợp trang */
             .table-container {
-                margin-top: 20px;
-                width: 100%;
-                margin-left: auto;
-                margin-right: auto;
+                width: 100%; /* Chiếm toàn bộ chiều rộng */
+                max-width: 100%; /* Giới hạn tối đa */
+                margin: 0 auto; /* Căn giữa */
             }
 
+            /* Căn chỉnh bảng để không bị dính vào lề */
+            .table {
+                width: 82%;
+                table-layout: fixed; /* Giúp căn chỉnh tự động */
+            }
 
+            /* Căn chỉnh lại các cột */
+            .table th, .table td {
+                padding: 10px;
+                font-size: 14px;
+                text-align: left;
+
+                word-wrap: break-word; /* Đảm bảo chữ không bị tràn */
+            }
+
+            h1 {
+                font-size: 24px;
+            }
+
+            .table th:nth-child(1), /* ID */
+            .table td:nth-child(1),
+            .table th:nth-child(5), /* Status */
+            .table td:nth-child(5),
+            .table th:nth-child(6), /* Actions */
+            .table td:nth-child(6) {
+                width: 1%; /* Giới hạn kích thước cột */
+                white-space: nowrap; /* Tránh xuống dòng */
+            }
+
+            .table th:nth-child(2), /* ID */
+            .table td:nth-child(2),
+            .table th:nth-child(3), /* Status */
+            .table td:nth-child(3),
+            .table th:nth-child(4), /* Actions */
+            .table td:nth-child(4) {
+                width: 3%; /* Giới hạn kích thước cột */
+                white-space: nowrap; /* Tránh xuống dòng */
+            }
         </style>
     </head>
 
     <body>
-
+        <jsp:include page="leftshopmanager.jsp" />
+        <jsp:include page="managerHeader.jsp" />
         <!-- Main container -->
-        <div class="container mt-4">
-            <h1>Customer List</h1>
+        <div class="container mt-4 table-container">
 
             <!-- Product Table -->
             <table class="table table-bordered table-hover align-middle">
@@ -119,7 +146,6 @@
                         <th>Phone</th>
                         <th>Status</th>
                         <th>Actions</th>
-                        <th></th>
                     </tr>
                 </thead>
                 <tbody>

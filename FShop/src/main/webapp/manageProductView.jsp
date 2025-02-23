@@ -48,12 +48,11 @@
             }
 
             .btn-add {
-                margin-bottom: 20px;
                 background-color: #003375;
                 color: white;
                 border: none;
-                padding: 10px 20px;
                 display: inline-block;
+                padding: 5px 10px;
             }
 
             /* Reset table alignment */
@@ -91,23 +90,26 @@
                 border-radius: 5px;
             }
 
-            /* Ensuring proper table display */
-            .table-container {
-                margin-top: 20px;
-                width: 100%;
-                margin-left: auto;
-                margin-right: auto;
+            .container {
+                margin-left: 270px; /* Dịch sang phải để tránh sidebar */
+                max-width: 80%; /* Giới hạn chiều rộng */
             }
+
+            .table-container {
+                margin: 20px auto;
+                width: 100%;
+            }
+
 
 
         </style>
     </head>
 
     <body>
-
+        <jsp:include page="leftshopmanager.jsp" />
+        <jsp:include page="managerHeader.jsp" />
         <!-- Main container -->
         <div class="container mt-4">
-            <h1>Product List</h1>
 
             <!-- Product Table -->
             <table class="table table-bordered table-hover align-middle">
@@ -158,6 +160,8 @@
                     }
                 </script>
                 <td>
+                    <button class="btn btn-add" onclick="">Update</button>
+                    <button class="btn btn-delete" onclick="">Delete</button>
                     <button class="btn btn-edit" onclick="showProductDetail(<%= rs.getInt("ProductID")%>)">Detail</button>
                 </td>
 
