@@ -21,7 +21,27 @@
         <servlet-name>ProductListView</servlet-name>
         <servlet-class>Controllers.ViewProductServlet</servlet-class>
     </servlet>
-    
+    <servlet>
+        <servlet-name>ViewOrderListServlet</servlet-name>
+        <servlet-class>Controllers.ViewOrderListServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>ViewOrderDetailServlet</servlet-name>
+        <servlet-class>Controllers.ViewOrderDetailServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>UpdateOrderServlet</servlet-name>
+        <servlet-class>Controllers.UpdateOrderServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>DeleteOrderServlet</servlet-name>
+        <servlet-class>Controllers.DeleteOrderServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>CommentServlet</servlet-name>
+        <servlet-class>Controllers.CommentServlet</servlet-class>
+    </servlet>
+
     <servlet-mapping>
         <servlet-name>ProductListView</servlet-name>
         <url-pattern>/</url-pattern>
@@ -54,6 +74,7 @@
         <servlet-name>CommentServlet</servlet-name>
         <url-pattern>/CommentServlet</url-pattern>
     </servlet-mapping>
+    
     <session-config>
         <session-timeout>
             30
