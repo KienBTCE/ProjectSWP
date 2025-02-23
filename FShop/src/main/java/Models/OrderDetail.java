@@ -17,9 +17,7 @@ package Models;
 //    private String category;
 //    private String productName;
 //    private String image;
-=======
- * @author NhutBMCE180569
- */
+
 public class OrderDetail {
 
     private int OrderID;

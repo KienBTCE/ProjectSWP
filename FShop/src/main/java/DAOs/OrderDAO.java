@@ -16,7 +16,6 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-
 /**
  *
  * @author NhutBMCE180569
@@ -128,36 +127,37 @@ public class OrderDAO {
         }
     }
 
-  public void UpdateOrder(String orderID, String status){
-    
-    String query ="Update Orders SET Orders.Status= ? WHERE Orders.OrderID=?";
-      try {
-          PreparedStatement pre = connector.prepareStatement(query);
-          pre.setString(1, status);
-          pre.setString(2, orderID);
-          pre.executeUpdate();
-      } catch (Exception e) {
-          Logger.getLogger(OrderDAO.class.getName()).log(Level.SEVERE, null, e);
-      }
-    
-  
+    public void UpdateOrder(String orderID, String status) {
+
+        String query = "Update Orders SET Orders.Status= ? WHERE Orders.OrderID=?";
+        try {
+            PreparedStatement pre = connector.prepareStatement(query);
+            pre.setString(1, status);
+            pre.setString(2, orderID);
+            pre.executeUpdate();
+        } catch (Exception e) {
+            Logger.getLogger(OrderDAO.class.getName()).log(Level.SEVERE, null, e);
+        }
+
 //    public static void main(String[] args) {
 //        OrderDAO o = new OrderDAO();
 //        o.addOrderDetail(1, 1, 3, 34000000);
 //    }
-}
-  public void DeleteOrder(String orderID){
-    
-    String query ="Update Orders SET Orders.Status= 6 WHERE Orders.OrderID=?";
-      try {
-          PreparedStatement pre = connector.prepareStatement(query);
-       
-          pre.setString(1, orderID);
-          pre.executeUpdate();
-      } catch (Exception e) {
-          Logger.getLogger(OrderDAO.class.getName()).log(Level.SEVERE, null, e);
-      }
+    }
 
+    public void DeleteOrder(String orderID) {
+
+        String query = "Update Orders SET Orders.Status= 6 WHERE Orders.OrderID=?";
+        try {
+            PreparedStatement pre = connector.prepareStatement(query);
+
+            pre.setString(1, orderID);
+            pre.executeUpdate();
+        } catch (Exception e) {
+            Logger.getLogger(OrderDAO.class.getName()).log(Level.SEVERE, null, e);
+        }
+
+    }
 
     public List<Order> getAllOrderOfCustomer(int customerID) {
         List<Order> list = new ArrayList<>();
@@ -184,4 +184,3 @@ public class OrderDAO {
 
     }
 }
-  
