@@ -27,6 +27,10 @@
         <servlet-name>DeleteOrderServlet</servlet-name>
         <servlet-class>Controllers.DeleteOrderServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>CommentServlet</servlet-name>
+        <servlet-class>Controllers.CommentServlet</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>default</servlet-name>
         <url-pattern>/assets/*</url-pattern>
@@ -62,6 +66,10 @@
     <servlet-mapping>
         <servlet-name>DeleteOrderServlet</servlet-name>
         <url-pattern>/DeleteOrderServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>CommentServlet</servlet-name>
+        <url-pattern>/CommentServlet</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

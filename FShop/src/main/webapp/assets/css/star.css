@@ -1,0 +1,120 @@
+body{
+    display: flex;
+    min-height: 100vh;
+    align-items: center;
+    justify-content: center;
+}
+.rating-css div{
+    margin-left: 25%;
+    color: #ffe400;
+}
+.rating-css input {
+    display: none;
+}
+.rating-css input + label {
+    text-shadow: 1px 1px;
+    cursor: pointer;
+}
+.rating-css input:checked + label ~ label{
+    color: #838383;
+}
+.rating-css label:active{
+    transform: scale(0.7);
+    transition: 0.3s ease;
+}
+.form-css {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+    width: 500px;
+    height: auto;
+    border: 1px solid black; 
+    border-radius: 1%;
+    padding: 20px;
+    box-sizing: border-box;
+}
+
+.box {
+    width: 100%;
+    height: 50px;
+  
+}
+.box1 {
+    display: inline-flex;
+    margin: 5%;
+    position: relative;
+    top: 10px;
+    left: 10px;
+    z-index: 2;
+}
+
+.box2 {
+    display: inline-flex;
+    margin: 1%;
+    position: relative;
+    top: 10px;
+   
+    z-index: 1; 
+}
+textarea {
+    width: 100%;
+    height: 150px;
+    padding: 10px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    margin-top: 10px;
+    resize: none;
+}
+button {
+    display: inline-block;
+    position: relative;
+    left: 50%;
+    transform: translateX(-50%);;
+    margin-top: 10px;
+    padding: 10px 20px;
+    background-color: #f0f4f1;
+    color: rgb(0, 0, 0);
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    border: 1px solid black;
+}
+
+button:hover {
+    background-color: #218838;
+}
+.header {
+    display: inline-block;
+    position: relative;
+    left: 50%;
+    transform: translateX(-50%);;
+}
+img {
+    width: 60px; 
+    height: 60px;
+    border-radius: 50%; 
+    margin-right: 15px;
+}
+h4 {
+    display: inline-block;
+    margin: 0;
+    vertical-align: middle;
+}
+.profile {
+    display: flex;
+    align-items: center;
+   
+    margin: 0;
+    padding: 0; 
+    width: 100%;
+    margin-bottom: 5px;
+}
+.checked {
+    color: #ffe400; 
+}
+
+
+.fa-star {
+    color: #838383;
+}
