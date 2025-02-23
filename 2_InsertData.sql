@@ -63,6 +63,9 @@ INSERT INTO Orders (CustomerID, FullName, [Address], PhoneNumber, OrderedDate, D
 VALUES 
 (1, 'Nguyen Van A', '123 Tech Street, District 1, Ho Chi Minh City', '0901234567', GETDATE(), NULL, 1, 50000000);
 
+INSERT INTO OrderDetails VALUES (1, 1, 3, 50000000);
+
+
 -- Insert Employees
 INSERT INTO Employees (FullName, Birthday, [Password], PhoneNumber, Email, Gender, CreatedDate, Avatar, RoleID)
 VALUES 

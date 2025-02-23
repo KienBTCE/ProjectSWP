@@ -164,34 +164,34 @@
                     </div>
                     <div class="col-md-9 content" id="content" style="padding: 15px; border-radius: 5px; ">
                         <jsp:include page="addressView.jsp"></jsp:include>
+                        </div>
                     </div>
                 </div>
-            </div>
-        </main>
+            </main>
 
-        <div class="modal fade" id="confirmDeleteAccount" tabindex="-1" aria-labelledby="confirmDeleteAccountLabel" aria-hidden="true">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="confirmDeleteAccountLabel">Confirm Account Deletion</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
-                    <div class="modal-body">
-                        <p>Are you sure you want to delete your account? This action cannot be undone.</p>
-                        <form id="deleteAccountForm" method="POST" action="requestToDeleteAccount">
-                            <div class="mb-3">
-                                <label for="confirmPassword" class="form-label">Enter your password to confirm:</label>
-                                <input type="password" class="form-control" id="confirmPassword" name="confirmPassword" required>
-                            </div>
-                            <div class="modal-footer">
-                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                                <button type="submit" class="btn btn-danger">Delete Account</button>
-                            </div>
-                        </form>
+            <div class="modal fade" id="confirmDeleteAccount" tabindex="-1" aria-labelledby="confirmDeleteAccountLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="confirmDeleteAccountLabel">Confirm Account Deletion</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <p>Are you sure you want to delete your account? This action cannot be undone.</p>
+                            <form id="deleteAccountForm" method="POST" action="requestToDeleteAccount">
+                                <div class="mb-3">
+                                    <label for="confirmPassword" class="form-label">Enter your password to confirm:</label>
+                                    <input type="password" class="form-control" id="confirmPassword" name="confirmPassword" required>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                                    <button type="submit" class="btn btn-danger">Delete Account</button>
+                                </div>
+                            </form>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
         <%
             String message = (String) session.getAttribute("message");
             System.out.println("Session message: " + message + request.getRequestURI());
@@ -207,92 +207,93 @@
             </div>
         </div>
         <%
+            session.setAttribute("message", null);
             }
         %>
         <script>
-                    function closePopup() {
-                        document.getElementById("Popup").style.display = "none";
-                    }
+            function closePopup() {
+                document.getElementById("Popup").style.display = "none";
+            }
 
-                    document.getElementById('deleteAccountForm').addEventListener('submit', function (event) {
-                        const password = document.getElementById('confirmPassword').value;
-                        if (!password) {
-                            event.preventDefault();
-                            alert('Please enter your password to confirm account deletion.');
-                        }
-                    });
+            document.getElementById('deleteAccountForm').addEventListener('submit', function (event) {
+                const password = document.getElementById('confirmPassword').value;
+                if (!password) {
+                    event.preventDefault();
+                    alert('Please enter your password to confirm account deletion.');
+                }
+            });
 
-                    document.addEventListener("DOMContentLoaded", function () {
-                        const dropdownToggle = document.querySelector(".droppeddown-toggle");
-                        const dropdown = document.querySelector(".droppeddown");
+            document.addEventListener("DOMContentLoaded", function () {
+                const dropdownToggle = document.querySelector(".droppeddown-toggle");
+                const dropdown = document.querySelector(".droppeddown");
 
-                        dropdownToggle.addEventListener("click", function (event) {
-                            event.preventDefault(); // Ngăn chặn reload trang
-                            dropdown.classList.toggle("active"); // Thêm hoặc xóa class active
-                        });
-                    });
+                dropdownToggle.addEventListener("click", function (event) {
+                    event.preventDefault(); // Ngăn chặn reload trang
+                    dropdown.classList.toggle("active"); // Thêm hoặc xóa class active
+                });
+            });
 
-                    document.addEventListener("DOMContentLoaded", function () {
-                        let contentDiv = document.getElementById("content");
+            document.addEventListener("DOMContentLoaded", function () {
+                let contentDiv = document.getElementById("content");
 
-                        // Mặc định load profile.jsp khi trang mở
+                // Mặc định load profile.jsp khi trang mở
             <%
                 String requestPage;
                 if (request.getParameter("profilePage") != null) {
             %>
-                        fetch("<%= request.getParameter("profilePage")%>")
-                                .then(response => response.text())
-                                .then(data => {
-                                    contentDiv.innerHTML = data;
-                                    executeScripts(contentDiv);
-                                })
-                                .catch(error => console.error("Error loading profile:", error));
+                fetch("<%= request.getParameter("profilePage")%>")
+                        .then(response => response.text())
+                        .then(data => {
+                            contentDiv.innerHTML = data;
+                            executeScripts(contentDiv);
+                        })
+                        .catch(error => console.error("Error loading profile:", error));
             <%
             } else {
             %>
-                        fetch("${requestScope.profilePage}")
-                                .then(response => response.text())
-                                .then(data => {
-                                    contentDiv.innerHTML = data;
-                                    executeScripts(contentDiv);
-                                });
+                fetch("${requestScope.profilePage}")
+                        .then(response => response.text())
+                        .then(data => {
+                            contentDiv.innerHTML = data;
+                            executeScripts(contentDiv);
+                        });
             <%
                 }
             %>
 
 
-                        // Xử lý khi click vào menu
-                        document.querySelectorAll(".load-content").forEach(item => {
-                            item.addEventListener("click", function (event) {
-                                event.preventDefault(); // Ngăn không cho chuyển trang
+                // Xử lý khi click vào menu
+                document.querySelectorAll(".load-content").forEach(item => {
+                    item.addEventListener("click", function (event) {
+                        event.preventDefault(); // Ngăn không cho chuyển trang
 
-                                let page = this.getAttribute("data-url"); // Lấy URL từ data-url
-                                fetch(page)
-                                        .then(response => response.text())
-                                        .then(data => {
-                                            contentDiv.innerHTML = data;
-                                            executeScripts(contentDiv); // Chạy lại script
+                        let page = this.getAttribute("data-url"); // Lấy URL từ data-url
+                        fetch(page)
+                                .then(response => response.text())
+                                .then(data => {
+                                    contentDiv.innerHTML = data;
+                                    executeScripts(contentDiv); // Chạy lại script
 
-                                        })
-                                        .catch(error => console.error("Error loading page:", error));
-                            });
-                        });
-
-                        // Hàm chạy lại script trong nội dung được load
-                        function executeScripts(element) {
-                            let scripts = element.getElementsByTagName("script");
-                            for (let script of scripts) {
-                                if (script.src) { // Nếu là script có src
-                                    let newScript = document.createElement("script");
-                                    newScript.src = script.src;
-                                    newScript.async = true;
-                                    document.body.appendChild(newScript);
-                                } else { // Nếu là script inline
-                                    eval(script.innerText);
-                                }
-                            }
-                        }
+                                })
+                                .catch(error => console.error("Error loading page:", error));
                     });
+                });
+
+                // Hàm chạy lại script trong nội dung được load
+                function executeScripts(element) {
+                    let scripts = element.getElementsByTagName("script");
+                    for (let script of scripts) {
+                        if (script.src) { // Nếu là script có src
+                            let newScript = document.createElement("script");
+                            newScript.src = script.src;
+                            newScript.async = true;
+                            document.body.appendChild(newScript);
+                        } else { // Nếu là script inline
+                            eval(script.innerText);
+                        }
+                    }
+                }
+            });
 
         </script>
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
