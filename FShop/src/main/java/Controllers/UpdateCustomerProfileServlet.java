@@ -21,13 +21,13 @@ import jakarta.servlet.http.Part;
  *
  * @author nhutb
  */
-@WebServlet(name = "UpdateProfileServlet", urlPatterns = {"/updateProfile"})
+@WebServlet(name = "UpdateProfileServlet", urlPatterns = {"/updateCustomerProfile"})
 @MultipartConfig(
         fileSizeThreshold = 1024 * 1024 * 1,
         maxFileSize = 1024 * 1024 * 10,
         maxRequestSize = 1024 * 1024 * 100
 )
-public class UpdateProfileServlet extends HttpServlet {
+public class UpdateCustomerProfileServlet extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -82,20 +82,45 @@ public class UpdateProfileServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         HttpSession session = request.getSession();
+        CustomerDAO cusDAO = new CustomerDAO();
         Customer cus = (Customer) session.getAttribute("customer");
         Part img = request.getPart("avatar");
-        String filename = img.getSubmittedFileName();
-        CustomerDAO cusDAO = new CustomerDAO();
-        cusDAO.updateAvatar(cus.getId() + ".jpg", cus.getId());
-        for (Part part : request.getParts()) {
-            part.write("E:\\HocTap\\Ky5\\SWP\\ProjectSWP\\FShop\\src\\main\\webapp\\assets\\imgs\\CustomerAvatar\\" + cus.getId() + ".jpg");
+
+        String fullname = request.getParameter("fullname");
+        String phoneNumber = request.getParameter("phoneNumber");
+        String gender = request.getParameter("gender");
+        String day = request.getParameter("day");
+        String month = request.getParameter("month");
+        String year = request.getParameter("year");
+
+        cus.setFullName(fullname);
+        cus.setPhoneNumber(phoneNumber);
+        cus.setGender(gender);
+        cus.setBirthday(year + "-" + month + "-" + day);
+        cus.setAvatar(cus.getId() + ".jpg");
+        int rs = cusDAO.updateCustomerProfile(cus);
+        if (rs == 0) {   
+            session.setAttribute("message", "Update customer fail!");
+        } else {
+            session.setAttribute("customer", cus);
+            session.setAttribute("message", "Update customer susscessfull!");
         }
-        try {
-            Thread.sleep(2500); // 15 giây = 15000 mili giây
-        } catch (InterruptedException e) {
-            e.printStackTrace();
+
+        //String filename = img.getSubmittedFileName();
+        //cusDAO.updateAvatar(cus.getId() + ".jpg", cus.getId());
+        if (img != null && img.getSize() > 0) {
+            for (Part part : request.getParts()) {
+                part.write("D:\\HocDeKi05\\SWP391\\ProjectSWP\\FShop\\src\\main\\webapp\\assets\\imgs\\CustomerAvatar\\" + cus.getId() + ".jpg");
+            }
+            try {
+                Thread.sleep(2500); // 15 giây = 15000 mili giây
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
         }
-        response.sendRedirect("viewProfile");
+
+        request.setAttribute("profilePage", "customerProfile.jsp");
+        request.getRequestDispatcher("myInfor.jsp").forward(request, response);
     }
 
     /**

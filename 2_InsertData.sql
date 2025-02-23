@@ -57,6 +57,7 @@ INSERT INTO Customers (FullName, Birthday, [Password], PhoneNumber, Email, Gende
 VALUES 
 ('Nguyen Van A', '1995-05-15', '6ad14ba9986e3615423dfca256d04e3f', '0901234567', 'nguyenvana@example.com', 'Male', GETDATE(), 0, 0, 'avatar1.jpg');
 
+
 -- Insert Orders
 INSERT INTO Orders (CustomerID, FullName, [Address], PhoneNumber, OrderedDate, DeliveredDate, Status, TotalAmount)
 VALUES 

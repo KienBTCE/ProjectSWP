@@ -19,8 +19,8 @@ import jakarta.servlet.http.HttpSession;
  *
  * @author TuongMPCE180644
  */
-@WebServlet(name = "ViewProfileServlet", urlPatterns = {"/viewProfile"})
-public class ViewProfileServlet extends HttpServlet {
+@WebServlet(name = "ChangePasswordServlet", urlPatterns = {"/changeCustomerPassword"})
+public class ChangeCustomerPasswordServlet extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -39,10 +39,10 @@ public class ViewProfileServlet extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet ViewProfileServlet</title>");
+            out.println("<title>Servlet ChangePasswordServlet</title>");
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet ViewProfileServlet at " + request.getContextPath() + "</h1>");
+            out.println("<h1>Servlet ChangePasswordServlet at " + request.getContextPath() + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }
@@ -60,17 +60,7 @@ public class ViewProfileServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        HttpSession session = request.getSession();
-        if (session.getAttribute("customer") == null) {
-            response.sendRedirect("/customerLogin");
-        } else {
-            CustomerDAO ctmDAO = new CustomerDAO();
-            Customer customer = (Customer)session.getAttribute("customer");
-            Customer ctm = ctmDAO.getCustomerById(customer.getId());
-            session.setAttribute("customer", ctm);
-            request.setAttribute("profilePage", "profile.jsp");
-            request.getRequestDispatcher("myInfor.jsp").forward(request, response);
-        }
+        processRequest(request, response);
     }
 
     /**
@@ -84,7 +74,29 @@ public class ViewProfileServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        String currentPassword = request.getParameter("currentPassword");
+        String newPassword = request.getParameter("newPassword");
+        HttpSession session = request.getSession();
+        Customer cus = (Customer) session.getAttribute("customer");
+//        try (PrintWriter out = response.getWriter()) {
+//            /* TODO output your page here. You may use following sample code. */
+//            out.println(currentPassword);
+//            out.println(newPassword);
+//            out.println(confirmPassword);
+//        }
+        CustomerDAO cusDAO = new CustomerDAO();
+        if (cusDAO.cofirmPassword(cus.getId(), currentPassword) > 0) {
+            if (cusDAO.changeCustomerPassword(cus.getId(), newPassword) > 0) {
+                session.setAttribute("message", "Change Password Success!");
+            } else {
+                session.setAttribute("message", "Change Password Fail!");
+            }
+        } else {
+            session.setAttribute("message", "Your Current Password Is Not Correct!");
+        }
+
+        request.setAttribute("profilePage", "changeCustomerPassword.jsp");
+        request.getRequestDispatcher("myInfor.jsp").forward(request, response);
     }
 
     /**

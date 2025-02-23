@@ -85,7 +85,7 @@
                                     </div>
                                     <div class="col-md-8">
                                         <div>
-                                            <a href="orderDetails.jsp" style="text-decoration: none; color: black;">${od.getProductName()}</a>
+                                            <a href="myInfor.jsp?profilePage=orderDetails.jsp" style="text-decoration: none; color: black;">${od.getProductName()}</a>
                                         </div>
                                         <div>
                                             Quantity: ${od.getQuantity()}

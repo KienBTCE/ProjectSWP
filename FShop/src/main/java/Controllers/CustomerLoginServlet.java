@@ -80,32 +80,40 @@ public class CustomerLoginServlet extends HttpServlet {
         HttpSession session = request.getSession();
         CustomerDAO ctmDAO = new CustomerDAO();
 
+        if (ctmDAO.checkEmailExisted(email) != 1) {
+            session.setAttribute("message", "Account does not exist!");
+            System.out.println("Email does not exist");
+            request.getRequestDispatcher("customerLogin.jsp").forward(request, response);
+            return;
+        }
+
         if (ctmDAO.checkEmailExisted(email) == 1) {
             Customer customer = ctmDAO.getCustomerLogin(email, password);
-            if (customer != null) {
-                if (customer.getIsDeleted() == 0 && customer.getIsBlock() == 0) {
-                    session.setAttribute("customer", customer);
-                    System.out.println("success");
-                    request.getRequestDispatcher("HomeServlet").forward(request, response);
-                } else if (customer.getIsDeleted() == 1) {
-                    session.setAttribute("message", "Account does not exist!");
-                    System.out.println("is deleted");
-                    request.getRequestDispatcher("customerLogin.jsp").forward(request, response);
-                } else if (customer.getIsBlock() == 1) {
-                    session.setAttribute("message", "Your account has been locked!");
-                    System.out.println("is block");
-                    request.getRequestDispatcher("customerLogin.jsp").forward(request, response);
-                }
-            } else {
-                session.setAttribute("message", "Incorect email or password!");
-                System.out.println("wrong");
+            if (customer == null) {
+                session.setAttribute("message", "Incorrect email or password!");
+                System.out.println("Wrong credentials");
                 request.getRequestDispatcher("customerLogin.jsp").forward(request, response);
+                return;
             }
-        } else {
-            session.setAttribute("message", "Account does not exist!");
-            System.out.println("Email does not existed");
-            request.getRequestDispatcher("customerLogin.jsp").forward(request, response);
+
+            if (customer.getIsDeleted() == 1) {
+                session.setAttribute("message", "Account does not exist!");
+                System.out.println("Account is deleted");
+            } else if (customer.getIsBlock() == 1) {
+                session.setAttribute("message", "Your account has been locked!");
+                System.out.println("Account is blocked");
+            } else {
+                session.setAttribute("customer", customer);
+                System.out.println("Login success");
+                request.getRequestDispatcher("HomeServlet").forward(request, response);
+                return;
+            }
+        } else{
+             session.setAttribute("message", "Account does not exist!");
         }
+        
+        request.getRequestDispatcher("customerLogin.jsp").forward(request, response);
+
     }
 
     /**
