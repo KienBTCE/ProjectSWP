@@ -8,19 +8,7 @@
         <servlet-name>default</servlet-name>
         <url-pattern>/assets/*</url-pattern>
     </servlet-mapping>
-    
-    <servlet>
-        <servlet-name>ViewLaptopServlet</servlet-name>
-        <servlet-class>Controllers.ViewLaptopServlet</servlet-class>
-    </servlet>
-    <servlet>
-        <servlet-name>ViewPhoneServlet</servlet-name>
-        <servlet-class>Controllers.ViewPhoneServlet</servlet-class>
-    </servlet>
-    <servlet>
-        <servlet-name>CustomerListServlet</servlet-name>
-        <servlet-class>Controllers.CustomerListServlet</servlet-class>
-    </servlet>
+   
     <servlet>
         <servlet-name>CustomerListServlet</servlet-name>
         <servlet-class>Controllers.CustomerListServlet</servlet-class>
@@ -32,7 +20,7 @@
     
     <servlet-mapping>
         <servlet-name>ProductListView</servlet-name>
-        <url-pattern>/ProductListView</url-pattern>
+        <url-pattern>/</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>CustomerListServlet</servlet-name>
@@ -41,10 +29,6 @@
     <servlet-mapping>
         <servlet-name>ViewSupplierServlet</servlet-name>
         <url-pattern>/Supplier</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>CustomerListServlet</servlet-name>
-        <url-pattern>/CustomerListServlet</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>
