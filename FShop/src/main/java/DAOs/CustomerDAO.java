@@ -187,27 +187,27 @@ public class CustomerDAO {
     }
 
     public Customer getCustomerById2(int id) {
-    Customer customer = null;
-    try {
-        String query = "SELECT * FROM Customers WHERE CustomerID = ?";
-        PreparedStatement ps = connector.prepareStatement(query);
-        ps.setInt(1, id);
-        ResultSet rs = ps.executeQuery();
+        Customer customer = null;
+        try {
+            String query = "SELECT * FROM Customers WHERE CustomerID = ?";
+            PreparedStatement ps = connector.prepareStatement(query);
+            ps.setInt(1, id);
+            ResultSet rs = ps.executeQuery();
 
-        if (rs.next()) {
-            customer = new Customer(
-                rs.getInt("CustomerID"),
-                rs.getString("FullName"),
-                rs.getString("Email"),
-                rs.getString("PhoneNumber"),
-                rs.getInt("isBlock")
-            );
+            if (rs.next()) {
+                customer = new Customer(
+                        rs.getInt("CustomerID"),
+                        rs.getString("FullName"),
+                        rs.getString("Email"),
+                        rs.getString("PhoneNumber"),
+                        rs.getInt("isBlock")
+                );
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
-    } catch (Exception e) {
-        e.printStackTrace();
+        return customer;
     }
-    return customer;
-}
 
     public static void main(String[] args) {
         CustomerDAO c = new CustomerDAO();
