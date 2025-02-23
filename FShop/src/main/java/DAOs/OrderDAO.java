@@ -13,6 +13,10 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
+
 /**
  *
  * @author NhutBMCE180569
@@ -21,6 +25,53 @@ public class OrderDAO {
 
     DBContext db = new DBContext();
     Connection connector = db.getConnection();
+
+    public List<Order> getOrderList() {
+        List<Order> list = new ArrayList<>();
+        String url = "select * from Orders where Orders.Status != 6 ";
+        try {
+
+            PreparedStatement pre = connector.prepareStatement(url);
+            ResultSet rs = pre.executeQuery();
+
+            while (rs.next()) {
+                Order o = new Order(rs.getInt("OrderID"),
+                        rs.getInt("CustomerID"),
+                        rs.getString("FullName"),
+                        rs.getString("PhoneNumber"),
+                        rs.getString("Address"),
+                        rs.getInt("TotalAmount"),
+                        rs.getString("OrderedDate"),
+                        rs.getInt("Status"));
+                list.add(o);
+            }
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+        return list;
+    }
+
+    public Order getOrderByID(String orderID) {
+        Order o = new Order();
+        String query = "select * from Orders where Orders.OrderID = ?";
+        try {
+            PreparedStatement pre = connector.prepareStatement(query);
+            pre.setString(1, orderID);
+            ResultSet rs = pre.executeQuery();
+            if (rs.next()) {
+                o.setOrderID(rs.getInt("OrderID"));
+                o.setAccountID(rs.getInt("CustomerID"));
+                o.setFullName(rs.getString("FullName"));
+                o.setPhone(rs.getString("PhoneNumber"));
+                o.setAddress(rs.getString("Address"));
+                o.setTotalAmount(rs.getInt("TotalAmount"));
+                o.setOrderDate(rs.getString("OrderedDate"));
+                o.setStatus(rs.getInt("Status"));
+            }
+        } catch (Exception e) {
+        }
+        return o;
+    }
 
     public int getNewestOrderID() {
         int id = 0;
@@ -77,6 +128,37 @@ public class OrderDAO {
         }
     }
 
+  public void UpdateOrder(String orderID, String status){
+    
+    String query ="Update Orders SET Orders.Status= ? WHERE Orders.OrderID=?";
+      try {
+          PreparedStatement pre = connector.prepareStatement(query);
+          pre.setString(1, status);
+          pre.setString(2, orderID);
+          pre.executeUpdate();
+      } catch (Exception e) {
+          Logger.getLogger(OrderDAO.class.getName()).log(Level.SEVERE, null, e);
+      }
+    
+  
+//    public static void main(String[] args) {
+//        OrderDAO o = new OrderDAO();
+//        o.addOrderDetail(1, 1, 3, 34000000);
+//    }
+}
+  public void DeleteOrder(String orderID){
+    
+    String query ="Update Orders SET Orders.Status= 6 WHERE Orders.OrderID=?";
+      try {
+          PreparedStatement pre = connector.prepareStatement(query);
+       
+          pre.setString(1, orderID);
+          pre.executeUpdate();
+      } catch (Exception e) {
+          Logger.getLogger(OrderDAO.class.getName()).log(Level.SEVERE, null, e);
+      }
+
+
     public List<Order> getAllOrderOfCustomer(int customerID) {
         List<Order> list = new ArrayList<>();
         try {
@@ -99,5 +181,7 @@ public class OrderDAO {
         for (Order order : list) {
             System.out.println(order.getAddress());
         }
+
     }
 }
+  
