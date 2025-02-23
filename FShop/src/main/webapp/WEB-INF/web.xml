@@ -9,6 +9,10 @@
         <url-pattern>/assets/*</url-pattern>
     </servlet-mapping>
    
+   <servlet>
+        <servlet-name>ViewSupplierServlet</servlet-name>
+        <servlet-class>Controllers.ViewSupplierServlet</servlet-class>
+    </servlet>
     <servlet>
         <servlet-name>CustomerListServlet</servlet-name>
         <servlet-class>Controllers.CustomerListServlet</servlet-class>
