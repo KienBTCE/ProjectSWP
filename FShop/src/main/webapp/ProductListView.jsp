@@ -6,7 +6,6 @@
 
 <%@page import="java.util.List"%>
 <%@page import="DAOs.ProductDAO"%>
-<%@page import="Models.Laptop"%>
 <%@page import="Models.Product"%>
 <%@page import="java.util.ArrayList"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
@@ -71,12 +70,6 @@
     <body>
         <jsp:include page="header.jsp"></jsp:include>
             <div class="container">
-            <%
-                System.out.println("helo");
-                ArrayList<Product> l = (ArrayList<Product>) request.getAttribute("products");
-
-                System.out.println("helo 1" + l.get(0).getFullName());
-            %>
 
             <div class="row">
                 <h4 class="title-content"><a href="Laptop">Laptop</a></h4>
