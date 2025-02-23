@@ -10,8 +10,6 @@ package Models;
  */
 public class Order {
 
-
-
     public Order() {
     }
 
@@ -24,7 +22,6 @@ public class Order {
     String orderDate;
     String deliveredDate;
     int status;
-
 
     public Order(String fullName, String phone, String address) {
         this.fullName = fullName;
@@ -40,17 +37,16 @@ public class Order {
         this.totalAmount = totalAmount;
     }
 
-
     public Order(int orderID, int accountID, String fullName, String phone, String address, long totalAmount, String orderDate, int status) {
-   this.orderID = orderID;
+        this.orderID = orderID;
         this.accountID = accountID;
         this.fullName = fullName;
         this.phone = phone;
         this.address = address;
         this.totalAmount = totalAmount;
         this.orderDate = orderDate;
-      this.status = status;
-}
+        this.status = status;
+    }
 
     public Order(int orderID, int accountID, String fullName, String address, String phone, String orderDate, String deliveredDate, int status, long totalAmount) {
 
@@ -61,7 +57,6 @@ public class Order {
         this.address = address;
         this.totalAmount = totalAmount;
         this.orderDate = orderDate;
-
 
         this.deliveredDate = deliveredDate;
 
@@ -139,6 +134,5 @@ public class Order {
     public void setStatus(int status) {
         this.status = status;
     }
-
 
 }

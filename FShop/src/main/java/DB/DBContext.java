@@ -22,10 +22,16 @@ public class DBContext {
             String dbURL = "jdbc:sqlserver://localhost:1433;"
 
  
+//<<<<<<< HEAD
                     + "databaseName=FShop;"
                     + "user=sa;" // Enter your user SQL Server
                     + "password=123;" // Enter your password SQL Server
 
+//=======
+//                    + "databaseName=FSHOP;"
+//                    + "user=;" // Enter your user SQL Server
+//                    + "password=;" // Enter your password SQL Server
+//>>>>>>> e29642a491e61163dac269a3d9e0bc78f00dd8ef
                     + "encrypt=true;trustServerCertificate=true";
 
             connector = DriverManager.getConnection(dbURL); // connect to database server follow the dbURL string
