@@ -179,7 +179,7 @@ public class CustomerDAO {
 
     public void toggleStatus(int customerID) {
         try (
-                 PreparedStatement ps = connector.prepareStatement("UPDATE Customers SET isBlock = 1 - isBlock WHERE CustomerID = ?")) {
+            PreparedStatement ps = connector.prepareStatement("UPDATE Customers SET isBlock = 1 - isBlock WHERE CustomerID = ?")) {
             ps.setInt(1, customerID);
             ps.executeUpdate();
         } catch (Exception e) {

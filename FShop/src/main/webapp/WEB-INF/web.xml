@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <web-app version="3.1" xmlns="http://xmlns.jcp.org/xml/ns/javaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd">
     <welcome-file-list>
-        <welcome-file>HomeServlet</welcome-file>
+        <welcome-file>ProductListView</welcome-file>
     </welcome-file-list>
     <servlet>
         <servlet-name>ViewLaptopServlet</servlet-name>
@@ -27,21 +27,28 @@
         <servlet-name>default</servlet-name>
         <url-pattern>/assets/*</url-pattern>
     </servlet-mapping>
+    
     <servlet>
-        <servlet-name>HomeServlet</servlet-name>
-        <servlet-class>Controllers.HomeServlet</servlet-class>
+        <servlet-name>CustomerListServlet</servlet-name>
+        <servlet-class>Controllers.CustomerListServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>ProductListView</servlet-name>
+        <servlet-class>Controllers.ViewProductServlet</servlet-class>
+    </servlet>
+    
+    
     <servlet-mapping>
-        <servlet-name>HomeServlet</servlet-name>
-        <url-pattern>/HomeServlet</url-pattern>
+        <servlet-name>ProductListView</servlet-name>
+        <url-pattern>/ProductListView</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
-        <servlet-name>ViewLaptopServlet</servlet-name>
-        <url-pattern>/Laptop</url-pattern>
+        <servlet-name>CustomerListServlet</servlet-name>
+        <url-pattern>/CustomerListServlet</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
-        <servlet-name>ViewPhoneServlet</servlet-name>
-        <url-pattern>/Phone</url-pattern>
+        <servlet-name>ViewSupplierServlet</servlet-name>
+        <url-pattern>/Supplier</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>CustomerListServlet</servlet-name>

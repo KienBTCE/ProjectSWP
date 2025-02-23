@@ -6,6 +6,8 @@ package Models;
 
 import java.sql.Date;
 import java.text.NumberFormat;
+import java.util.HashMap;
+import java.util.List;
 import java.util.Locale;
 
 /**
@@ -25,6 +27,8 @@ public class Product {
     private String image;
     private int quantity;
     private int stock;
+
+    private HashMap<String, String> attributes;
 
     public Product(int productId, int brandId, int categoryId, String model, String fullName, String description, int isDeleted, long price, String image, int quantity, int stock) {
         this.productId = productId;
@@ -136,6 +140,14 @@ public class Product {
 
     public void setStock(int stock) {
         this.stock = stock;
+    }
+
+    public HashMap<String, String> getAttributes() {
+        return attributes;
+    }
+
+    public void setAttributes(HashMap<String, String> attributes) {
+        this.attributes = attributes;
     }
 
     public String getPriceFormatted() {
