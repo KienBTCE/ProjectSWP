@@ -341,14 +341,6 @@
         </div>
     </div>
 
-    <script>
-        function showTab(tabId, element) {
-            document.querySelectorAll('.tab-link').forEach(tab => tab.classList.remove('active'));
-            document.querySelectorAll('.order-list').forEach(order => order.classList.remove('active'));
-
-            element.classList.add('active');
-            document.getElementById(tabId).classList.add('active');
-        }
-    </script>
+    <script src="./assets/js/order.js"></script>
 </body>
 </html>
