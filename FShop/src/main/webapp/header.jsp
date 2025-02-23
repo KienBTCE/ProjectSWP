@@ -153,7 +153,7 @@
             <div class="nav-container container">
                 <div class="nav-infor row">
                     <div class="nav-infor-content col-md-4">
-                        <a href="HomeServlet"><img src="assets/imgs/HeaderImgs/Vector-Header-Logo.svg" alt="Shop Logo" style="width: 50px; height: 50px;"></a>
+                        <a href="/"><img src="assets/imgs/HeaderImgs/Vector-Header-Logo.svg" alt="Shop Logo" style="width: 50px; height: 50px;"></a>
                     </div>
                     <div class="nav-infor-content list-cat col-md-4">
                         <ul class="list-categories">

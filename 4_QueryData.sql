@@ -70,6 +70,13 @@ SELECT *
 FROM Products;
 
 SELECT * 
+FROM Products JOIN Products ON Laptops.pd_SKU = Products.pd_SKU
+JOIN Suppliers ON Products.brandID = Suppliers.supplierID;
+
+SELECT * FROM Products WHERE  AND price BETWEEN 20000000 AND 25000000)
+
+
+SELECT * 
 FROM Suppliers;
 
 SELECT * 
@@ -95,6 +102,19 @@ WHERE Laptops.pd_ID IN (
       AND brandID IN (9) 
       AND (price BETWEEN 25000000 AND 30000000 OR price BETWEEN 35000000 AND 40000000)
 );
+
+
+
+SELECT * FROM Products P JOIN Brands B ON P.BrandID = B.BrandID
+WHERE B.Name IN (SELECT Name FROM Brands WHERE [Name] IN ('Apple'))
+
+SELECT * FROM Products P JOIN Brands B ON P.BrandID = B.BrandID
+WHERE B.Name IN (SELECT Name FROM Brands WHERE Name IN ('Apple'))
+
+select * from Brands
+
+
+
 
 -- Query for Laptops with Asus brand and specific price range
 SELECT * 
