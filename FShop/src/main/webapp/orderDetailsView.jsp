@@ -128,6 +128,57 @@
                 background-color: #0056b3;
             }
 
+            /* Modal */
+            .modal {
+                display: none;
+                position: fixed;
+                z-index: 1;
+                left: 0;
+                top: 0;
+                width: 100%;
+                height: 100%;
+                background-color: rgba(0, 0, 0, 0.5);
+                justify-content: center;
+                align-items: center;
+            }
+
+            .modal-content {
+                background-color: #fff;
+                padding: 30px;
+                border-radius: 10px;
+                text-align: center;
+                box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+                width: 400px;
+                max-width: 90%;
+            }
+
+            .modal-content h3 {
+                font-size: 18px;
+                font-weight: bold;
+                margin-bottom: 20px;
+            }
+
+            .modal-buttons {
+                display: flex;
+                justify-content: space-between;
+                margin-top: 20px;
+            }
+
+            .modal-btn {
+                padding: 10px 20px;
+                font-size: 16px;
+                background-color: #007bff;
+                color: white;
+                border: none;
+                border-radius: 5px;
+                cursor: pointer;
+                transition: background-color 0.3s;
+            }
+
+            .modal-btn:hover {
+                background-color: #0056b3;
+            }
+
             /* Responsiveness */
             @media (max-width: 768px) {
                 .container {
@@ -208,11 +259,44 @@
                     </div>
                     <input type="submit" value="Update" />
                 </form>
-                <form action="DeleteOrderServlet" method="POST">
-                    <input  type="hidden" type="submit" value="${data.orderID}" name="delete"  />
+
+                <!-- Delete Order Form -->
+                <form  id="deleteForm" action="DeleteOrderServlet" method="POST" onsubmit="return confirmDelete();">
+                    <input type="hidden" name="orderID" value="${data.orderID}" />
                 <input type="submit" value="Delete" />
             </form>
+
+
         </div>
 
+        <!-- Custom Confirmation Modal -->
+        <div id="confirmationModal" class="modal">
+            <div class="modal-content">
+                <h3>Are you sure you want to delete this order?</h3>
+                <div class="modal-buttons">
+                    <button id="confirmBtn" class="modal-btn">Yes, Delete</button>
+                    <button id="cancelBtn" class="modal-btn">Cancel</button>
+                </div>
+            </div>
+        </div>
+
+        <script type="text/javascript">
+            function confirmDelete() {
+                // Show custom modal
+                document.getElementById("confirmationModal").style.display = "flex";
+                // Prevent form submission until confirmation
+                return false;
+            }
+
+            // If user clicks 'Yes', submit the form
+            document.getElementById("confirmBtn").onclick = function () {
+                document.querySelector("deleteForm").submit();
+            };
+
+            // If user clicks 'Cancel', hide the modal
+            document.getElementById("cancelBtn").onclick = function () {
+                document.getElementById("confirmationModal").style.display = "none";
+            };
+        </script>
     </body>
 </html>

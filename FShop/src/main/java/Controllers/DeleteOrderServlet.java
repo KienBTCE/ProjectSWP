@@ -67,10 +67,11 @@ public class DeleteOrderServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
-         String orderID = request.getParameter("delete");
+         String orderID = request.getParameter("orderID");
           OrderDAO oDAO = new OrderDAO();
          if(orderID!= null){
              oDAO.DeleteOrder(orderID);
+              System.out.println("Received Order ID: " + orderID);
              response.sendRedirect(request.getContextPath() + "/ViewOrderListServlet");
          }
     }
