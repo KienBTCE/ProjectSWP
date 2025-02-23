@@ -72,10 +72,12 @@
                 font-size: 24px;
                 cursor: pointer;
             }
+
+
         </style>
     </head>
     <body>
-        <form action="updateProfile" method="post" enctype="multipart/form-data">
+        <form action="updateCustomerProfile" method="post" enctype="multipart/form-data">
             <div class="profile">
                 <div class="info">
                     <h3>My Profile</h3>
@@ -124,7 +126,11 @@
                                 <select class="form-select" name="month">
                                     <option>Month</option>
                                     <c:forEach var="i" begin="1" end="12">
-                                        <option ${sessionScope.customer.getBirthday() != null && sessionScope.customer.getBirthday().split("-")[1].equals(String.format("%02d", i)) ? 'selected' : ''}>${i}</option>
+                                        <c:set var="formattedMonth" value="${String.format('%02d', i)}" />
+                                        <option value="${formattedMonth}"
+                                                ${sessionScope.customer.getBirthday() != null && sessionScope.customer.getBirthday().split('-')[1] == formattedMonth ? 'selected' : ''}>
+                                            ${formattedMonth}
+                                        </option>
                                     </c:forEach>
                                 </select>
                             </div>
@@ -166,41 +172,11 @@
                 <button onclick="updatePhone()" class="mt-2 btn btn-primary">Save</button>
             </div>
         </div>
+
+
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-        <script>
-                    function previewImage(event) {
-                        var reader = new FileReader();
-                        reader.onload = function () {
-                            var output = document.getElementById('avatarPreview');
-                            output.src = reader.result;
-                        };
-                        reader.readAsDataURL(event.target.files[0]);
-                    }
+        <script src="./assets/js/profile.js"></script>
 
-                    function openModal() {
-                        document.getElementById("phoneModal").style.display = "block";
-                    }
-
-                    function closeModal() {
-                        document.getElementById("phoneModal").style.display = "none";
-                    }
-
-                    function updatePhone() {
-                        let newPhone = document.getElementById("newPhoneNumber").value;
-
-                        if (!newPhone.match(/^\d{10}$/)) {
-                            alert("Invalid phone number. Please enter a 10-digit number.");
-                            return;
-                        }
-
-                        // C?p nh?t s? ?i?n tho?i vào giao di?n
-                        document.getElementById("phoneDisplay").innerText = newPhone.slice(-2);
-                        document.getElementById("phoneInput").value = newPhone;
-
-                        // ?óng modal
-                        closeModal();
-                    }
-        </script>   
 
     </body>
 

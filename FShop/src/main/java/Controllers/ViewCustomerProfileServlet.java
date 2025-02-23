@@ -9,25 +9,18 @@ import Models.Customer;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
-import jakarta.servlet.annotation.MultipartConfig;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
-import jakarta.servlet.http.Part;
 
 /**
  *
- * @author nhutb
+ * @author TuongMPCE180644
  */
-@WebServlet(name = "UpdateProfileServlet", urlPatterns = {"/updateProfile"})
-@MultipartConfig(
-        fileSizeThreshold = 1024 * 1024 * 1,
-        maxFileSize = 1024 * 1024 * 10,
-        maxRequestSize = 1024 * 1024 * 100
-)
-public class UpdateProfileServlet extends HttpServlet {
+@WebServlet(name = "ViewProfileServlet", urlPatterns = {"/viewCustomerProfile"})
+public class ViewCustomerProfileServlet extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -46,10 +39,10 @@ public class UpdateProfileServlet extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet UpdateProfileServlet</title>");
+            out.println("<title>Servlet ViewProfileServlet</title>");
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet UpdateProfileServlet at " + request.getContextPath() + "</h1>");
+            out.println("<h1>Servlet ViewProfileServlet at " + request.getContextPath() + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }
@@ -67,7 +60,18 @@ public class UpdateProfileServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        HttpSession session = request.getSession();
+        if (session.getAttribute("customer") == null) {
+            response.sendRedirect("/customerLogin");
+        } else {
+            CustomerDAO ctmDAO = new CustomerDAO();
+            Customer customer = (Customer) session.getAttribute("customer");
+            Customer ctm = ctmDAO.getCustomerById(customer.getId());
+            session.setAttribute("customer", ctm);
+
+            request.setAttribute("profilePage", "customerProfileView.jsp");
+            request.getRequestDispatcher("profileManagementView.jsp").forward(request, response);
+        }
     }
 
     /**
@@ -81,21 +85,7 @@ public class UpdateProfileServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        HttpSession session = request.getSession();
-        Customer cus = (Customer) session.getAttribute("customer");
-        Part img = request.getPart("avatar");
-        String filename = img.getSubmittedFileName();
-        CustomerDAO cusDAO = new CustomerDAO();
-        cusDAO.updateAvatar(cus.getId() + ".jpg", cus.getId());
-        for (Part part : request.getParts()) {
-            part.write("E:\\HocTap\\Ky5\\SWP\\ProjectSWP\\FShop\\src\\main\\webapp\\assets\\imgs\\CustomerAvatar\\" + cus.getId() + ".jpg");
-        }
-        try {
-            Thread.sleep(2500); // 15 giây = 15000 mili giây
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-        response.sendRedirect("viewProfile");
+        processRequest(request, response);
     }
 
     /**

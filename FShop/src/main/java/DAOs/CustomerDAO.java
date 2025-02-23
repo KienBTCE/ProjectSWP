@@ -48,6 +48,55 @@ public class CustomerDAO {
             throw new RuntimeException("MD5 algorithm not found!", e);
         }
     }
+    
+    public int requestToDeleteAccount(int id){
+        try {
+            PreparedStatement pr = connector.prepareStatement(
+                    "Update Customers SET IsDeleted = 1 Where CustomerID = ?"
+            );
+            pr.setInt(1, id);
+
+            int rs = pr.executeUpdate();
+            return rs;
+        } catch (SQLException e) {
+            System.out.println("Lỗi khi xoa khach hang: " + e.getMessage());
+        }
+        return 0;
+    }
+
+    public int cofirmPassword(int id, String password) {
+        String pass = null;
+        try {
+            PreparedStatement pr = connector.prepareStatement("SELECT Password FROM Customers WHERE CustomerID = ?;");
+            pr.setInt(1, id);
+            ResultSet rs = pr.executeQuery();
+            if (rs.next()) {
+                pass = rs.getString("Password");
+            }
+        } catch (SQLException e) {
+            System.out.println(e + " ");
+        }
+        if (pass.equals(getMD5(password))) {
+            return 1;
+        }
+        return 0;
+    }
+
+    public int changeCustomerPassword(int id, String newPass) {
+        try {
+            PreparedStatement pr = connector.prepareStatement(
+                    "Update Customers SET Password = ? Where CustomerID = ?"
+            );
+            pr.setString(1, getMD5(newPass));
+            pr.setInt(2, id);
+
+            int rs = pr.executeUpdate();
+            return rs;
+        } catch (SQLException e) {
+            System.out.println("Lỗi khi thêm khách hàng: " + e.getMessage());
+        }
+        return 0;
+    }
 
     public Customer getCustomerById(int id) {
         String sql = "SELECT * FROM Customers WHERE CustomerID = ?;";
@@ -149,13 +198,18 @@ public class CustomerDAO {
         return 0;
     }
 
-    public int updateAvatar(String img, int ID) {
+    public int updateCustomerProfile(Customer cus) {
         try {
             PreparedStatement pr = connector.prepareStatement(
-                    "Update Customers SET Avatar = ? Where CustomerID = ?"
+                    "Update Customers SET FullName = ?, PhoneNumber = ?, Gender = ?, Birthday = ?, Avatar = ?  Where CustomerID = ?"
             );
-            pr.setString(1, img);
-            pr.setInt(2, ID);
+            pr.setString(1, cus.getFullName());
+            pr.setString(2, cus.getPhoneNumber());
+            pr.setString(3, cus.getGender());
+            pr.setString(4, cus.getBirthday());
+            pr.setString(5, cus.getAvatar());
+            pr.setInt(6, cus.getId());
+
             int rs = pr.executeUpdate();
             return rs;
         } catch (SQLException e) {
