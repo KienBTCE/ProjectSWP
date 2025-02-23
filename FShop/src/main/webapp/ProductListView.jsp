@@ -92,7 +92,7 @@
                                     <span class="count">Reviews(4)</span>
                                 </div>
                                 <h6>${p.getFullName()}</h6>
-                                <p>${p.getPrice()}</p>
+                                <p>${p.getPriceFormatted()}</p>
                             </div>
                         </c:if>
                     </c:forEach>
@@ -120,7 +120,7 @@
                                     <span class="count">Reviews(4)</span>
                                 </div>
                                 <h6>${p.getFullName()}</h6>
-                                <p>${p.getPrice()}</p>
+                                <p>${p.getPriceFormatted()}</p>
                             </div>
                         </c:if>
                     </c:forEach>

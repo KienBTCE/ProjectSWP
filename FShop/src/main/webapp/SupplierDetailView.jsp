@@ -89,7 +89,7 @@
 <body>
     <div class="sidebar">
         <img src="assets/imgs/Dashboard/Group 1521.svg" class="logo-side-bar">
-        <h6><a href="#">Warehouse Management</a></h6>
+        <h6><a href="ImportOrder">Warehouse Management</a></h6>
         <a href="#">Import Order</a>
         <a href="Supplier">Supplier</a>
         <a href="#">Product Management</a>

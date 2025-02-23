@@ -67,9 +67,11 @@ INSERT INTO OrderDetails VALUES (1, 1, 3, 50000000);
 
 
 -- Insert Employees
-INSERT INTO Employees (FullName, Birthday, [Password], PhoneNumber, Email, Gender, CreatedDate, Avatar, RoleID)
-VALUES 
-('Nguyen Van A', '1990-01-01', 'encrypted_password_here', '0123456789', 'nguyen.vana@example.com', 'Male', GETDATE(), 'avatar_image.jpg', 1);
+SET IDENTITY_INSERT Employees ON;
+INSERT INTO Employees (EmployeeID, FullName, Birthday, [Password], PhoneNumber, Email, Gender, CreatedDate, Avatar, RoleID) VALUES
+(1, 'Nguyen Van A', '1990-01-01', 'encrypted_password_here', '0123456789', 'nguyen.vana@example.com', 'Male', GETDATE(), 'avatar_image.jpg', 1),
+(2, 'Nguyen Van B', '1990-01-01', 'encrypted_password_here', '0123456788', 'nguyen.vanb@example.com', 'Male', GETDATE(), 'avatar_image.jpg', 4);
+SET IDENTITY_INSERT Employees OFF;
 
 -- Insert Carts
 INSERT INTO Carts (CustomerID, ProductID, Quantity)
@@ -91,3 +93,15 @@ INSERT INTO Addresses (CustomerID, AddressDetails, IsDefault)
 VALUES 
 (1, 'Ap Tra Coi A, My Huong, My Tu, Soc Trang', 1);
 
+-- Insert ImportOrders
+INSERT INTO ImportOrders (EmployeeID, SupplierID, ImportDate, TotalCost, LastModify)
+VALUES
+(2, 1, GETDATE(), 100000000, GETDATE()),
+(2, 2, GETDATE(), 50000000, GETDATE());
+
+-- Insert ImportOrderDetails
+INSERT INTO ImportOrderDetails (IOID, ProductID, Quantity, ImportPrice)
+VALUES
+(1, 1, 10, 45000000),
+(2, 2, 20, 28000000),
+(2, 3, 15, 18000000);

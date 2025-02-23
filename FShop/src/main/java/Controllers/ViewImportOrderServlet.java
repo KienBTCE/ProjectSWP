@@ -4,8 +4,8 @@
  */
 package Controllers;
 
-import DAOs.SupplierDAO;
-import Models.Supplier;
+import DAOs.ImportOrderDAO;
+import Models.ImportOrder;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -18,7 +18,7 @@ import java.util.ArrayList;
  *
  * @author KienBTCE180180
  */
-public class ViewSupplierServlet extends HttpServlet {
+public class ViewImportOrderServlet extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -32,42 +32,42 @@ public class ViewSupplierServlet extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 //        response.setContentType("text/html;charset=UTF-8");
-//        try ( PrintWriter out = response.getWriter()) {
+//        try (PrintWriter out = response.getWriter()) {
 //            /* TODO output your page here. You may use following sample code. */
 //            out.println("<!DOCTYPE html>");
 //            out.println("<html>");
 //            out.println("<head>");
-//            out.println("<title>Servlet ViewSupplierServlet</title>");
+//            out.println("<title>Servlet ViewImportOrderServlet</title>");  
 //            out.println("</head>");
 //            out.println("<body>");
-//            out.println("<h1>Servlet ViewSupplierServlet at " + request.getContextPath() + "</h1>");
+//            out.println("<h1>Servlet ViewImportOrderServlet at " + request.getContextPath () + "</h1>");
 //            out.println("</body>");
 //            out.println("</html>");
 //        }
-        
-        SupplierDAO sd = new SupplierDAO();
-        ArrayList<Supplier> suppliers;
+
+        ImportOrderDAO importD = new ImportOrderDAO();
+        ArrayList<ImportOrder> importOrders;
 
         String detailID = request.getParameter("id");
-
+        
         if (detailID != null) {
             int id = Integer.parseInt(detailID);
-            Supplier supplier = sd.getSupplierByID(id);
+            ImportOrder importOrder = importD.getImportOrderDetailsByID(id);
             try {
-                request.setAttribute("supplier", supplier);
-                request.getRequestDispatcher("SupplierDetailView.jsp").forward(request, response);
+                request.setAttribute("importOrder", importOrder);
+                request.getRequestDispatcher("ImportOrderDetailsView.jsp").forward(request, response);
             } catch (NullPointerException e) {
                 System.out.println(e);
             }
         }
-        suppliers = sd.getAllSuppliers();
+        
+        importOrders = importD.getAllImportOrders();
         try {
-            request.setAttribute("suppliers", suppliers);
-            request.getRequestDispatcher("SupplierListView.jsp").forward(request, response);
+            request.setAttribute("importOrders", importOrders);
+            request.getRequestDispatcher("ImportOrderListView.jsp").forward(request, response);
         } catch (NullPointerException e) {
             System.out.println(e);
         }
-
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

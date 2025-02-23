@@ -8,8 +8,12 @@
         <servlet-name>default</servlet-name>
         <url-pattern>/assets/*</url-pattern>
     </servlet-mapping>
-   
-   <servlet>
+
+    <servlet>
+        <servlet-name>ViewImportOrderServlet</servlet-name>
+        <servlet-class>Controllers.ViewImportOrderServlet</servlet-class>
+    </servlet>
+    <servlet>
         <servlet-name>ViewSupplierServlet</servlet-name>
         <servlet-class>Controllers.ViewSupplierServlet</servlet-class>
     </servlet>
@@ -74,7 +78,11 @@
         <servlet-name>CommentServlet</servlet-name>
         <url-pattern>/CommentServlet</url-pattern>
     </servlet-mapping>
-    
+    <servlet-mapping>
+        <servlet-name>ViewImportOrderServlet</servlet-name>
+        <url-pattern>/ImportOrder</url-pattern>
+    </servlet-mapping>
+
     <session-config>
         <session-timeout>
             30

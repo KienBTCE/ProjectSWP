@@ -1,6 +1,6 @@
 <%-- 
-    Document   : SupplierListView
-    Created on : Feb 23, 2025, 9:42:07 AM
+    Document   : ImportOrderListView
+    Created on : Feb 23, 2025, 7:44:24 PM
     Author     : KienBTCE180180
 --%>
 
@@ -111,7 +111,7 @@
                 max-width: 300px;
                 margin-bottom: 10px;
             }
-            
+
             .table-navigate{
                 display: flex;
                 justify-content: space-between;
@@ -121,8 +121,8 @@
     <body>
         <div class="sidebar">
             <img src="assets/imgs/Dashboard/Group 1521.svg" class="logo-side-bar">
-            <h6><a href="#">Warehouse Management</a></h6>
-            <a href="ImportOrder">Import Order</a>
+            <h6><a href="ImportOrder">Warehouse Management</a></h6>
+            <a href="#">Import Order</a>
             <a href="Supplier">Supplier</a>
             <a href="#">Product Management</a>
         </div>
@@ -135,41 +135,40 @@
                 </div>
             </div>
             <div class="table-navigate">
-                <input type="text" id="searchInput" class="form-control search-box" placeholder="Find by name ..." onkeyup="filterTable()">
-                <button class="btn btn-detail" style="background-color: #BDF3BD; height: 100%">Create</button>
+                <div class="table-navigate">
+                    <label for="startDate" class="me-2">From:</label>
+                    <input type="date" id="startDate" class="form-control me-3">
+
+                    <label for="endDate" class="me-2">To:</label>
+                    <input type="date" id="endDate" class="form-control me-3">
+
+                    <button onclick="filterByDate()" class="btn btn-primary">Filter</button>
+                </div>
             </div>
 
             <div class="table-container">
                 <div>
-                    <h3>Suppliers</h3>
+                    <h3>Import Order History</h3>
                 </div>
                 <table class="table table-hover">
                     <thead>
                         <tr>
-                            <th>Tax ID</th>
-                            <th>Name</th>
-                            <th>Phone Number</th>
-                            <th>Email</th>
-                            <th>Address</th>
-                            <th>Status</th>
+                            <th>Import ID</th>
+                            <th>Date & Time</th>
+                            <th>Amount</th>
+                            <th>Supplier</th>
                             <th>Action</th>
                         </tr>
                     </thead>
                     <tbody id="supplierTable">
-                        <c:forEach items="${suppliers}" var="s">
+                        <c:forEach items="${importOrders}" var="i">
                             <tr>
-                                <td>${s.getTaxId()}</td>
-                                <td>${s.getName()}</td>
-                                <td>${s.getPhoneNumber()}</td>
-                                <td>${s.getEmail()}</td>
-                                <td>${s.getShortedAddress()}</td>
+                                <td>${i.getIoid()}</td>
+                                <td>${i.getImportDate()}</td>
+                                <td>${i.getPriceFormatted()}</td>
+                                <td>${i.getSupplier().getName()}</td>
                                 <td>
-                                    <span class="badge ${s.isIsActivate() ? 'bg-success' : 'bg-danger'}">
-                                        ${s.getStatus()}
-                                    </span>
-                                </td>
-                                <td>
-                                    <a href="Supplier?id=${s.getSupplierId()}" class="btn btn-detail" style="background-color: #BDF3BD">Detail</a>
+                                    <a href="ImportOrder?id=${i.getIoid()}" class="btn btn-detail" style="background-color: #BDF3BD">Detail</a>
                                 </td>
                             </tr>
                         </c:forEach>
@@ -177,24 +176,35 @@
                 </table>
             </div>
         </div>
+    </div>
 
-        <script>
-            function filterTable() {
-                let input = document.getElementById("searchInput");
-                let filter = input.value.toLowerCase();
-                let table = document.getElementById("supplierTable");
-                let rows = table.getElementsByTagName("tr");
+    <script>
+        function filterByDate() {
+            let startDate = document.getElementById("startDate").value;
+            let endDate = document.getElementById("endDate").value;
+            let table = document.getElementById("supplierTable");
+            let rows = table.getElementsByTagName("tr");
 
-                for (let i = 0; i < rows.length; i++) {
-                    let nameCell = rows[i].getElementsByTagName("td")[1];
-                    if (nameCell) {
-                        let nameText = nameCell.textContent || nameCell.innerText;
-                        rows[i].style.display = nameText.toLowerCase().includes(filter) ? "" : "none";
+            // Chuyển đổi định dạng ngày về timestamp để so sánh
+            let startTimestamp = new Date(startDate).getTime();
+            let endTimestamp = new Date(endDate).getTime();
+
+            for (let i = 0; i < rows.length; i++) {
+                let dateCell = rows[i].getElementsByTagName("td")[1]; // Lấy cột ngày
+                if (dateCell) {
+                    let rowDate = new Date(dateCell.textContent.trim()).getTime();
+
+                    if ((!startDate || rowDate >= startTimestamp) &&
+                            (!endDate || rowDate <= endTimestamp)) {
+                        rows[i].style.display = "";
+                    } else {
+                        rows[i].style.display = "none";
                     }
                 }
             }
-        </script>
+        }
+    </script>
 
-    </div>
 </body>
 </html>
+
