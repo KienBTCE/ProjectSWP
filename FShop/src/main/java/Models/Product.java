@@ -18,6 +18,8 @@ public class Product {
 
     private int productId;
     private int brandId;
+    private String categoryName;
+    private String brandName;
     private int categoryId;
     private String model;
     private String fullName;
@@ -44,10 +46,26 @@ public class Product {
         this.stock = stock;
     }
 
-    public Product(int productId, int categoryId, int brandId, String fullName, long price, int quantity, int isDeleted) {
+    public String getCategoryName() {
+        return categoryName;
+    }
+
+    public void setCategoryName(String categoryName) {
+        this.categoryName = categoryName;
+    }
+
+    public String getBrandName() {
+        return brandName;
+    }
+
+    public void setBrandName(String brandName) {
+        this.brandName = brandName;
+    }
+
+    public Product(int productId, String categoryName, String brandName, String fullName, long price, int quantity, int isDeleted) {
         this.productId = productId;
-        this.brandId = brandId;
-        this.categoryId = categoryId;
+        this.categoryName = categoryName;
+        this.brandName = brandName;
         this.fullName = fullName;
         this.isDeleted = isDeleted;
         this.price = price;

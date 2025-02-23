@@ -177,6 +177,7 @@ public class CustomerDAO {
         return rs;
     }
 
+    //Doi trang thai button - shop manager
     public void toggleStatus(int customerID) {
         try (
             PreparedStatement ps = connector.prepareStatement("UPDATE Customers SET isBlock = 1 - isBlock WHERE CustomerID = ?")) {
@@ -186,6 +187,7 @@ public class CustomerDAO {
         }
     }
 
+    //Thong tin chi tiet cua khach hang - shop manager
     public Customer getCustomerById2(int id) {
         Customer customer = null;
         try {

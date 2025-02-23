@@ -5,6 +5,9 @@
 
 package Controllers;
 
+import DAOs.ProductDAO;
+import Models.Product;
+import com.google.gson.Gson;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -53,6 +56,41 @@ public class ProductListServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
+      String action = request.getParameter("action");
+
+        if ("toggleStatus".equals(action)) {
+            try {
+                int productID = Integer.parseInt(request.getParameter("id"));
+                ProductDAO dao = new ProductDAO();
+                dao.toggleStatus(productID);
+                response.sendRedirect("manageProductView.jsp");
+                return;
+            } catch (IOException | NumberFormatException e) {
+                response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Invalid Request");
+                return;
+            }
+        }
+
+        // Xử lý request lấy thông tin khách hàng theo ID (AJAX)
+        String productIDParam = request.getParameter("id");
+        if (productIDParam != null) {
+            try {
+                int productID = Integer.parseInt(productIDParam);
+                ProductDAO dao = new ProductDAO();
+                Product product = dao.getProductById2(productID);
+
+                if (product != null) {
+                    response.setContentType("application/json");
+                    response.setCharacterEncoding("UTF-8");
+                    response.getWriter().write(new Gson().toJson(product));
+                } else {
+                    response.sendError(HttpServletResponse.SC_NOT_FOUND, "Product not found");
+                }
+            } catch (NumberFormatException e) {
+                response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Invalid ID");
+            }
+            return; // Dừng lại nếu là request AJAX
+        }
         processRequest(request, response);
     } 
 
