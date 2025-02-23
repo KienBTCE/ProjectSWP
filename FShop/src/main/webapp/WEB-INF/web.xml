@@ -3,6 +3,12 @@
     <welcome-file-list>
         <welcome-file>ProductListView</welcome-file>
     </welcome-file-list>
+    
+    <servlet-mapping>
+        <servlet-name>default</servlet-name>
+        <url-pattern>/assets/*</url-pattern>
+    </servlet-mapping>
+    
     <servlet>
         <servlet-name>ViewLaptopServlet</servlet-name>
         <servlet-class>Controllers.ViewLaptopServlet</servlet-class>
@@ -15,11 +21,6 @@
         <servlet-name>CustomerListServlet</servlet-name>
         <servlet-class>Controllers.CustomerListServlet</servlet-class>
     </servlet>
-    <servlet-mapping>
-        <servlet-name>default</servlet-name>
-        <url-pattern>/assets/*</url-pattern>
-    </servlet-mapping>
-    
     <servlet>
         <servlet-name>CustomerListServlet</servlet-name>
         <servlet-class>Controllers.CustomerListServlet</servlet-class>
@@ -28,7 +29,6 @@
         <servlet-name>ProductListView</servlet-name>
         <servlet-class>Controllers.ViewProductServlet</servlet-class>
     </servlet>
-    
     
     <servlet-mapping>
         <servlet-name>ProductListView</servlet-name>
