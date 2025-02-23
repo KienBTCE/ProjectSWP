@@ -5,7 +5,6 @@
 --%>
 
 <%@page import="Models.Product"%>
-<%@page import="Models.Laptop"%>
 <%@page import="java.util.ArrayList"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@ taglib prefix = "c" uri = "http://java.sun.com/jsp/jstl/core" %>
@@ -72,7 +71,7 @@
                 user-select: none;
             }
             .filter-form label:hover{
-                font-weight: bold;
+                /*font-weight: bold;*/
             }
             fieldset{
                 display: flex;

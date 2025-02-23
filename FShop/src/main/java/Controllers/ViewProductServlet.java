@@ -33,12 +33,77 @@ public class ViewProductServlet extends HttpServlet {
             throws ServletException, IOException {
 
         ProductDAO pd = new ProductDAO();
-        ArrayList<Product> products;
+        ArrayList<Product> products = null;
 
         String pathInfo = request.getRequestURI();
         if (pathInfo != null && pathInfo.contains("Laptop")) {
 
-            products = pd.getAllLaptops();
+            ArrayList<String> filters = new ArrayList<>();
+            ArrayList<String> filtersInput = new ArrayList<>();
+            boolean isFilter = false;
+
+            String brand = request.getParameter("brand");
+            if (brand != null) {
+                String[] brandFilters = brand.split(",");
+
+                for (int i = 0; i < brandFilters.length; i++) {
+                    if (brandFilters.length == 1) {
+                        filtersInput.add("Name IN ('" + brandFilters[i].trim() + "')");
+                    } else if (i == 0) {
+                        filtersInput.add("Name IN ('" + brandFilters[i].trim() + "', ");
+                    } else if (i == brandFilters.length - 1) {
+                        filtersInput.add("'" + brandFilters[i].trim() + "')");
+                    } else {
+                        filtersInput.add("'" + brandFilters[i].trim() + "', ");
+                    }
+                    filters.add(brandFilters[i].trim());
+                }
+
+            }
+            String price = request.getParameter("price");
+
+            if (price != null) {
+                ArrayList<String> priceFilters = new ArrayList<>();
+                for (String string : price.split(",")) {
+                    switch (string.trim()) {
+                        case "20-25":
+                            priceFilters.add("BETWEEN 20000000 AND 25000000");
+                            break;
+                        case "25-30":
+                            priceFilters.add("BETWEEN 25000000 AND 30000000");
+                            break;
+                        case "30-over":
+                            priceFilters.add("> 30000000");
+                            break;
+                        default:
+                            priceFilters.add("BETWEEN 0 AND 1000000000");
+                            break;
+                    }
+                    filters.add(string.trim());
+                }
+
+                for (int i = 0; i < priceFilters.size(); i++) {
+                    if (priceFilters.size() == 1) {
+                        filtersInput.add(" AND price " + priceFilters.get(i).trim());
+                    } else if (i == 0) {
+                        filtersInput.add("( AND price " + priceFilters.get(i).trim());
+                    } else if (i == priceFilters.size() - 1) {
+                        filtersInput.add(" OR price " + priceFilters.get(i).trim() + ")");
+                    } else {
+                        filtersInput.add(" OR price " + priceFilters.get(i).trim());
+                    }
+                }
+            }
+
+            if (!filtersInput.isEmpty()) {
+                products = pd.findProductsByFilter(filtersInput);
+                isFilter = true;
+            }
+            if (!isFilter) {
+                products = pd.getAllLaptops();
+            }
+
+            System.out.println("View Laptop Servlet" + filters.size());
             try {
                 int numberRow = 0;
                 if (products != null) {
@@ -47,12 +112,18 @@ public class ViewProductServlet extends HttpServlet {
                         numberRow++;
                     }
                 }
-                request.setAttribute("numberRow", numberRow);
+
+                ArrayList<String> brands = pd.getAllBrandLaptop();
                 request.setAttribute("products", products);
+                request.setAttribute("brands", brands);
+                request.setAttribute("numberRow", numberRow);
+//            request.setAttribute("uri", request.getServletPath().substring(1));
+                request.setAttribute("filters", filters);
                 request.getRequestDispatcher("LaptopListView.jsp").forward(request, response);
             } catch (NullPointerException e) {
                 System.out.println(e);
             }
+
         } else {
             products = pd.getAllProducts();
 

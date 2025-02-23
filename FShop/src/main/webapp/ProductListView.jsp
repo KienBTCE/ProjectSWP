@@ -6,7 +6,6 @@
 
 <%@page import="java.util.List"%>
 <%@page import="DAOs.ProductDAO"%>
-<%@page import="Models.Laptop"%>
 <%@page import="Models.Product"%>
 <%@page import="java.util.ArrayList"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
