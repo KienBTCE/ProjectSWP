@@ -1,11 +1,11 @@
 <%-- 
-    Document   : CustomerListView
-    Created on : 22-Feb-2025, 15:25:44
-    Author     : kiuthi
+    Document   : manageProduct
+    Created on : 23-Feb-2025, 22:36:47
+    Author     : kiuth
 --%>
 
+<%@page import="DAOs.ProductDAO"%>
 <%@page import="java.sql.ResultSet"%>
-<%@page import="DAOs.CustomerDAO"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
@@ -48,14 +48,23 @@
             }
 
             .btn-add {
-                margin-bottom: 20px;
                 background-color: #003375;
                 color: white;
                 border: none;
-                padding: 10px 20px;
                 display: inline-block;
+                padding: 5px 10px;
             }
 
+            /* Reset table alignment */
+            .table th {
+                vertical-align: middle;
+                text-align: center;
+            }
+
+            .table td {
+                vertical-align: middle;
+                text-align: left;
+            }
 
             /* Custom buttons for edit and delete */
             .btn-edit {
@@ -81,52 +90,18 @@
                 border-radius: 5px;
             }
 
-            /* Ensuring proper table display */
-            /* Mở rộng bảng cho phù hợp trang */
+            .container {
+                margin-left: 270px; /* Dịch sang phải để tránh sidebar */
+                max-width: 80%; /* Giới hạn chiều rộng */
+            }
+
             .table-container {
-                width: 100%; /* Chiếm toàn bộ chiều rộng */
-                max-width: 100%; /* Giới hạn tối đa */
-                margin: 0 auto; /* Căn giữa */
+                margin: 20px auto;
+                width: 100%;
             }
 
-            /* Căn chỉnh bảng để không bị dính vào lề */
-            .table {
-                width: 82%;
-                table-layout: fixed; /* Giúp căn chỉnh tự động */
-            }
 
-            /* Căn chỉnh lại các cột */
-            .table th, .table td {
-                padding: 10px;
-                font-size: 14px;
-                text-align: left;
 
-                word-wrap: break-word; /* Đảm bảo chữ không bị tràn */
-            }
-
-            h1 {
-                font-size: 24px;
-            }
-
-            .table th:nth-child(1), /* ID */
-            .table td:nth-child(1),
-            .table th:nth-child(5), /* Status */
-            .table td:nth-child(5),
-            .table th:nth-child(6), /* Actions */
-            .table td:nth-child(6) {
-                width: 1%; /* Giới hạn kích thước cột */
-                white-space: nowrap; /* Tránh xuống dòng */
-            }
-
-            .table th:nth-child(2), /* ID */
-            .table td:nth-child(2),
-            .table th:nth-child(3), /* Status */
-            .table td:nth-child(3),
-            .table th:nth-child(4), /* Actions */
-            .table td:nth-child(4) {
-                width: 3%; /* Giới hạn kích thước cột */
-                white-space: nowrap; /* Tránh xuống dòng */
-            }
         </style>
     </head>
 
@@ -134,53 +109,60 @@
         <jsp:include page="leftshopmanager.jsp" />
         <jsp:include page="managerHeader.jsp" />
         <!-- Main container -->
-        <div class="container mt-4 table-container">
+        <div class="container mt-4">
 
             <!-- Product Table -->
             <table class="table table-bordered table-hover align-middle">
                 <thead class="table-dark">
                     <tr>
                         <th>ID</th>
-                        <th>Customer Name</th>
-                        <th>Email</th>
-                        <th>Phone</th>
+                        <th>Category</th>
+                        <th>Brand</th>
+                        <th>Name</th>
+                        <th>Price</th>
+                        <th>Quantity</th>
                         <th>Status</th>
                         <th>Actions</th>
+                        <th></th>
                     </tr>
                 </thead>
                 <tbody>
                     <%
                         // Step 1: Initialize DAO to interact with the database
-                        CustomerDAO dao = new CustomerDAO();
+                        ProductDAO dao = new ProductDAO();
 
                         // Step 2: Call method to get the list of products
-                        ResultSet rs = dao.getCustomerList();
+                        ResultSet rs = dao.getProductList();
 
                         // Step 3: Loop through the list of products
                         while (rs.next()) {
                     %>
-
                     <tr>
-                        <td><%= rs.getInt("CustomerID")%></td>
+                        <td><%= rs.getInt("ProductID")%></td>
+                        <td><%= rs.getString("CategoryName")%></td>
+                        <td><%= rs.getString("BrandName")%></td>
                         <td><%= rs.getString("FullName")%></td>
-                        <td><%= rs.getString("Email")%></td>
-                        <td><%= rs.getString("PhoneNumber")%></td>
+                        <td><%= rs.getLong("Price")%></td>
+                        <td><%= rs.getInt("Quantity")%></td>
+                        <td><%= rs.getInt("isDeleted")%></td>
                         <td>
-                            <button class="btn btn-sm <%= rs.getInt("isBlock") == 0 ? "btn-success" : "btn-danger"%>"
-                                    onclick="confirmToggle(<%= rs.getInt("CustomerID")%>, <%= rs.getInt("isBlock")%>);">
-                                <%= rs.getInt("isBlock") == 0 ? "Activate" : "Block"%>
+                            <button class="btn btn-sm <%= rs.getInt("isDeleted") == 0 ? "btn-success" : "btn-danger"%>"
+                                    onclick="confirmToggle(<%= rs.getInt("ProductID")%>, <%= rs.getInt("isDeleted")%>);">
+                                <%= rs.getInt("isDeleted") == 0 ? "Activate" : "Block"%>
                             </button>
                         </td>
                 <script>
-                    function confirmToggle(customerID, currentStatus) {
+                    function confirmToggle(productID, currentStatus) {
                         let action = currentStatus === 0 ? "Activate" : "Block";
-                        if (confirm("Are you sure you want to " + action + " this customer?")) {
-                            window.location.href = "CustomerList?action=toggleStatus&id=" + customerID;
+                        if (confirm("Are you sure you want to " + action + " this product?")) {
+                            window.location.href = "ProductListServlet?action=toggleStatus&id=" + productID;
                         }
                     }
                 </script>
                 <td>
-                    <button class="btn btn-edit" onclick="showCustomerDetail(<%= rs.getInt("CustomerID")%>)">Detail</button>
+                    <button class="btn btn-add" onclick="">Update</button>
+                    <button class="btn btn-delete" onclick="">Delete</button>
+                    <button class="btn btn-edit" onclick="showProductDetail(<%= rs.getInt("ProductID")%>)">Detail</button>
                 </td>
 
                 </tr>
@@ -190,20 +172,21 @@
                 </tbody>
             </table>
         </div>
-        <!-- Customer Detail Modal -->
-        <div class="modal fade" id="customerDetailModal" tabindex="-1" aria-hidden="true">
+        <div class="modal fade" id="productDetailModal" tabindex="-1" aria-hidden="true">
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title">Customer Details</h5>
+                        <h5 class="modal-title">Product Details</h5>
                         <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                     </div>
                     <div class="modal-body">
-                        <p><strong>ID:</strong> <span id="CustomerID"></span></p>
+                        <p><strong>ID:</strong> <span id="ProductID"></span></p>
+                        <p><strong>Category:</strong> <span id="CategoryName"></span></p>
+                        <p><strong>Brand:</strong> <span id="BrandName"></span></p>
                         <p><strong>Name:</strong> <span id="FullName"></span></p>
-                        <p><strong>Email:</strong> <span id="Email"></span></p>
-                        <p><strong>Phone:</strong> <span id="PhoneNumber"></span></p>
-                        <p><strong>Status:</strong> <span id="isBlock"></span></p>
+                        <p><strong>Price:</strong> <span id="Price"></span></p>
+                        <p><strong>Quantity:</strong> <span id="Quantity"></span></p>
+                        <p><strong>Status:</strong> <span id="isDeleted"></span></p>
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
@@ -212,22 +195,31 @@
             </div>
         </div>
         <script>
-            function showCustomerDetail(customerID) {
-                fetch("CustomerListServlet?id=" + customerID)
+            function showProductDetail(productID) {
+                fetch("ProductListServlet?id=" + productID)
                         .then(response => response.json())
                         .then(data => {
-                            document.getElementById("CustomerID").textContent = data.customerID; // Kiểm tra key thực tế
-                            document.getElementById("FullName").textContent = data.fullName;  // Key chữ thường
-                            document.getElementById("Email").textContent = data.email;
-                            document.getElementById("PhoneNumber").textContent = data.phoneNumber;
-                            document.getElementById("isBlock").textContent = data.isBlock == 0 ? "Active" : "Blocked";
+                            console.log(data); // Kiểm tra dữ liệu
 
+                            if (data.error) {
+                                alert(data.error);
+                                return;
+                            }
 
-                            // Hiển thị popup
-                            var customerModal = new bootstrap.Modal(document.getElementById("customerDetailModal"));
-                            customerModal.show();
+                            document.getElementById("ProductID").textContent = data.productID;
+                            document.getElementById("CategoryName").textContent = data.categoryName;
+                            document.getElementById("BrandName").textContent = data.brandName;
+                            document.getElementById("FullName").textContent = data.fullName;
+                            document.getElementById("Price").textContent = data.price;
+                            document.getElementById("Quantity").textContent = data.quantity;
+                            document.getElementById("isDeleted").textContent = data.isDeleted == 0 ? "Active" : "Blocked";
+
+                            var productModal = new bootstrap.Modal(document.getElementById("productDetailModal"));
+                            productModal.show();
                         })
                         .catch(error => console.error('Error:', error));
+            }
+
             }
         </script>
 

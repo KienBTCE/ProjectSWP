@@ -10,7 +10,10 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -145,6 +148,64 @@ public class ProductDAO {
         }
 
         return list;
+    }
+
+    //Lay danh sach san pham - shop manager
+    public ResultSet getProductList() {
+        ResultSet rs = null;
+        try {
+            Statement st = connector.createStatement();
+            String sql = "SELECT p.ProductID, c.Name AS CategoryName, b.Name AS BrandName, "
+                    + "p.FullName, p.Price, p.Quantity, p.isDeleted "
+                    + "FROM Products p "
+                    + "JOIN Categories c ON p.CategoryID = c.CategoryID "
+                    + "JOIN Brands b ON p.BrandID = b.BrandID";
+            rs = st.executeQuery(sql);
+        } catch (SQLException ex) {
+            Logger.getLogger(ProductDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return rs;
+    }
+
+    //Doi trang thai button - shop manager
+    public void toggleStatus(int customerID) {
+        try (
+                 PreparedStatement ps = connector.prepareStatement("UPDATE Products SET isDeleted = 1 - isDeleted WHERE ProductID = ?")) {
+            ps.setInt(1, customerID);
+            ps.executeUpdate();
+        } catch (Exception e) {
+        }
+    }
+
+    //Thong tin chi tiet cua san pham - shop manager
+    public Product getProductById2(int id) {
+        Product product = null;
+        try {
+            String query = "SELECT p.ProductID, c.Name AS CategoryName, b.Name AS BrandName, "
+                    + "p.FullName, p.Price, p.Quantity, p.isDeleted "
+                    + "FROM Products p "
+                    + "JOIN Categories c ON p.CategoryID = c.CategoryID "
+                    + "JOIN Brands b ON p.BrandID = b.BrandID "
+                    + "WHERE p.ProductID = ?";
+            PreparedStatement ps = connector.prepareStatement(query);
+            ps.setInt(1, id);
+            ResultSet rs = ps.executeQuery();
+
+            if (rs.next()) {
+                product = new Product(
+                        rs.getInt("ProductID"),
+                        rs.getString("CategoryName"),
+                        rs.getString("BrandName"),
+                        rs.getString("FullName"),
+                        rs.getLong("Price"),
+                        rs.getInt("Quantity"),
+                        rs.getInt("isDeleted")
+                );
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return product;
     }
 
 }
