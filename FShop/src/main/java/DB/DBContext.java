@@ -23,7 +23,6 @@ public class DBContext {
                     + "databaseName=FSHOP;"
                     + "user=sa;" // Enter your user SQL Server
                     + "password=admin;" // Enter your password SQL Server
-                    + "password=12345;" // Enter your password SQL Server
                     + "encrypt=true;trustServerCertificate=true";
 
             connector = DriverManager.getConnection(dbURL); // connect to database server follow the dbURL string
@@ -39,5 +38,10 @@ public class DBContext {
             System.out.println(ex);
         }
         return connector;
+    }
+    public static void main(String[] args) {
+        
+       DBContext db = new DBContext();
+       db.getConnection();
     }
 }
