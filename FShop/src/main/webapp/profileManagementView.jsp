@@ -122,6 +122,12 @@
             .popup button:hover {
                 background-color: #0056b3;
             }
+            .avatar-preview {
+                width: 150px;
+                height: 150px;
+                border-radius: 50%;
+                object-fit: cover;
+            }
         </style>
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
     </head>
@@ -134,12 +140,12 @@
                     <div class="row">
                         <div class="sidebar col-md-3" style=" height: auto; padding: 20px;">
                             <div class="text-center">
-                            <c:if test="${sessionScope.customer.getAvatar() != null}">
-                                <img id="avatar" class="avatar-preview mb-3" src="assets/imgs/CustomerAvatar/${sessionScope.customer.getAvatar()}" alt="Avatar">
+                            <c:if test="${sessionScope.customer.getAvatar() != ''}">
+                                <img id="avatarPreview" class="avatar-preview mb-3" src="assets/imgs/CustomerAvatar/${sessionScope.customer.getAvatar()}" alt="Avatar">
                             </c:if>
-                            <c:if test="${sessionScope.customer.getAvatar() == null}">
-                                <img id="avatar" class="avatar-preview mb-3" src="assets/imgs/icon/person.jpg" alt="Avatar">
-                            </c:if>                      
+                            <c:if test="${sessionScope.customer.getAvatar() == ''}">
+                                <img id="avatarPreview" class="avatar-preview mb-3" src="assets/imgs/icon/person.jpg" alt="Avatar">
+                            </c:if>                    
                             <h4>${sessionScope.customer.getFullName()}</h4>
                             <a class="text-center" href="Logout">Logout</a>
                         </div>

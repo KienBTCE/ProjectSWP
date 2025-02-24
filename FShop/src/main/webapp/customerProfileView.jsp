@@ -149,12 +149,12 @@
                 <div class="mb-3 avatar">
                     <label class="form-label">Avatar:</label>
                     <div class="d-block align-items-center">
-                        <c:if test="${sessionScope.customer.getAvatar() != null}">
+                        <c:if test="${sessionScope.customer.getAvatar() != ''}">
                             <img id="avatarPreview" class="avatar-preview mb-3" src="assets/imgs/CustomerAvatar/${sessionScope.customer.getAvatar()}" alt="Avatar">
                         </c:if>
-                        <c:if test="${sessionScope.customer == null || sessionScope.customer.getAvatar() == null}">
+                        <c:if test="${sessionScope.customer.getAvatar() == ''}">
                             <img id="avatarPreview" class="avatar-preview mb-3" src="assets/imgs/icon/person.jpg" alt="Avatar">
-                        </c:if>  
+                        </c:if>
                         <input type="file" class="form-control" name="avatar" onchange="previewImage(event)" >
                     </div>
                 </div>
