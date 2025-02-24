@@ -29,12 +29,27 @@
             .section-content{
                 display: flex;
                 align-items: center;
-                justify-content: space-around;
+                /*justify-content: space-around;*/
             }
             .frame-represent{
                 width: 234px;
                 height: 346px;
                 text-align: center;
+                margin: 10px;
+                background: white;
+                border: 1px solid #F5F5F9;
+                border-radius: 10px;
+
+                text-decoration: none;
+                color: inherit;
+                transition: 0.3s;
+            }
+
+            .frame-represent:hover {
+                opacity: 0.8;
+                text-decoration: none;
+                color: inherit;
+                transition: 0.3s;
             }
 
             .filter-table{
@@ -84,9 +99,9 @@
             <main>
                 <div class="container">
                     <div class="row">
-                        <!--                        <div class="gap-section banner-content">
-                                                    <img src="assets/imgs/Banners/banner-laptop.svg" alt="alt"/>
-                                                </div>-->
+                        <!--<div class="gap-section banner-content">
+                            <img src="assets/imgs/Banners/banner-laptop.svg" alt="alt"/>
+                        </div>-->
                     </div>
                     <div class="row">
                         <h4 class="title-content">${uri}</h4>
@@ -114,7 +129,7 @@
                                 <legend style="font-size: 100%; font-weight: bold; cursor: pointer;" onclick="toggleFilter('priceFilter')">
                                     Price <span id="priceArrow">▼</span>
                                 </legend>
-                                <div id="priceFilter" style="display: none;">
+                                <div id="priceFilter" style="display: none">
                                     <label><input type="checkbox" name="price" value="20-25" <c:if test="${fn:contains(filters, '20-25')}">checked</c:if> >20 - 25 million</label>
                                     <label><input type="checkbox" name="price" value="25-30" <c:if test="${fn:contains(filters, '25-30')}">checked</c:if> >25 - 30 million</label>
                                     <label><input type="checkbox" name="price" value="30-over" <c:if test="${fn:contains(filters, '30-over')}">checked</c:if> >Over 30 million</label>
@@ -133,21 +148,19 @@
 
                                 <c:forEach items="${products}" var="p" varStatus="status">
                                     <c:if test="${status.index >= (i * 4 - 4) && status.index < (i * 4)}">
-                                        <div class="frame-represent">
+                                        <a class="frame-represent" href="Laptop/id=${p.getProductId()}">
                                             <img src="assets/imgs/Products/${p.getImage()}" width="150px" height="150px" alt="alt"/>
                                             <div class="star-rating">
-                                                <!-- Các ngôi sao -->
                                                 <span class="star">★</span>
                                                 <span class="star">★</span>
                                                 <span class="star">★</span>
                                                 <span class="star">★</span>
                                                 <span class="star">☆</span>
-                                                <!-- Số lượng đánh giá -->
                                                 <span class="count">Reviews(4)</span>
                                             </div>
                                             <h6>${p.getFullName()}</h6>
                                             <p>${p.getPriceFormatted()}</p>
-                                        </div>
+                                        </a>
                                     </c:if>
                                 </c:forEach>
 
