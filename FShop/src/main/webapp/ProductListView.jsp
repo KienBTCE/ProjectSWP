@@ -80,7 +80,7 @@
                         <c:if test="${count < 5 and p.getCategoryId() == 1}">
                             <c:set var="count" value="${count + 1}" scope="page"></c:set>
                                 <div class="frame-represent">
-                                    <img src="assets/imgs/Laptop/${p.getImage()}" width="150px" height="150px" alt="alt"/>
+                                    <img src="assets/imgs/Products/${p.getImage()}" width="150px" height="150px" alt="alt"/>
                                 <div class="star-rating">
                                     <!-- Các ngôi sao -->
                                     <span class="star">★</span>
@@ -108,7 +108,7 @@
                         <c:if test="${count < 5 and p.getCategoryId() == 2}">
                             <c:set var="count" value="${count + 1}" scope="page"></c:set>
                                 <div class="frame-represent">
-                                    <img src="assets/imgs/SmartPhone/${p.getImage()}" width="150px" height="150px" alt="alt"/>
+                                    <img src="assets/imgs/Products/${p.getImage()}" width="150px" height="150px" alt="alt"/>
                                 <div class="star-rating">
                                     <!-- Các ngôi sao -->
                                     <span class="star">★</span>
