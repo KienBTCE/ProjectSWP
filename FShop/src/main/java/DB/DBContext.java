@@ -22,14 +22,27 @@ public class DBContext {
             String dbURL = "jdbc:sqlserver://localhost:1433;"
 
  
+<<<<<<< HEAD
                     + "databaseName=FSHOP;"
                     + "user=sa;" // Enter your user SQL Server
                     + "password=240204;" // Enter your password SQL Server
+=======
+//<<<<<<< HEAD
+                    + "databaseName=FShop;"
+                    + "user=sa;" // Enter your user SQL Server
+                    + "password=123;" // Enter your password SQL Server
+
+//=======
+//                    + "databaseName=FSHOP;"
+//                    + "user=;" // Enter your user SQL Server
+//                    + "password=;" // Enter your password SQL Server
+//>>>>>>> e29642a491e61163dac269a3d9e0bc78f00dd8ef
+>>>>>>> 1fdd7418bf77a941dee2e826ee37d377c2335941
                     + "encrypt=true;trustServerCertificate=true";
 
             connector = DriverManager.getConnection(dbURL); // connect to database server follow the dbURL string
 
-            if (connector == null) {
+            if (connector != null) {
                 DatabaseMetaData dm = (DatabaseMetaData) connector.getMetaData();
                 System.out.println("Driver name: " + dm.getDriverName());
                 System.out.println("Driver version: " + dm.getDriverVersion());

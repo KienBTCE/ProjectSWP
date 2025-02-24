@@ -127,6 +127,5 @@ WHERE Laptops.pd_ID IN (
       AND brandID IN (8) 
       AND (price BETWEEN 25000000 AND 30000000 OR price BETWEEN 30000000 AND 35000000)
 );select * from Products where CategoryID = 1
-SELECT * FROM ImportOrders I JOIN Suppliers S ON I.SupplierID = S.SupplierID WHERE IOID = 2
-SELECt I.*, D.*, P.*, D.Quantity AS ImportQuantity FROM ImportOrders I JOIN ImportOrderDetails D ON I.IOID = D.IOID JOIN Products P ON P.ProductID = D.ProductID WHERE I.IOID = 2
-select * from Products
+SELECT * FROM Employees
+DELETE FROM Employees WHERE EmployeeID = 2
