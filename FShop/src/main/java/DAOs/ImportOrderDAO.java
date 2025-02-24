@@ -124,14 +124,14 @@ public class ImportOrderDAO {
 
             ArrayList<ImportOrderDetail> l = new ArrayList<>();
 
-            while (rs.next()) {
-                l.add(new ImportOrderDetail(
-                        rs.getInt("IOID"),
-                        new Product(1, "1", "1", 1, "1", 1),
-                        rs.getInt("ImportQuantity"),
-                        rs.getLong("ImportPrice")
-                ));
-            }
+//            while (rs.next()) {
+//                l.add(new ImportOrderDetail(
+//                        rs.getInt("IOID"),
+//                        new Product(1, "1", "1", 1, "1", 1),
+//                        rs.getInt("ImportQuantity"),
+//                        rs.getLong("ImportPrice")
+//                ));
+//            }
 
             io.setImportOrderDetails(l);
             return io;
