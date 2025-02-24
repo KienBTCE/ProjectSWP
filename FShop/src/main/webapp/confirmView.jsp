@@ -147,7 +147,7 @@
                     <p>Your order is waiting for acceptance by the shop.</p>
                     <div style="display: flex; justify-content: center;">
                         <button><a style="text-decoration: none; color: white;" href="viewOrderHistory">OK</a></button>
-                        <button><a style="text-decoration: none; color: white;" href="HomeServlet">Back to home</a></button>
+                        <button><a style="text-decoration: none; color: white;" href="ProductListView">Back to home</a></button>
                     </div>
                 </div>
             </div>

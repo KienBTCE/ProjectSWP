@@ -96,7 +96,7 @@ public class ChangeCustomerPasswordServlet extends HttpServlet {
         }
 
         request.setAttribute("profilePage", "changeCustomerPassword.jsp");
-        request.getRequestDispatcher("myInfor.jsp").forward(request, response);
+        request.getRequestDispatcher("ProfileManagementView.jsp").forward(request, response);
     }
 
     /**

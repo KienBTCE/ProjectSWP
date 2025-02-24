@@ -149,11 +149,11 @@
                         </c:if>
                         <br>
                         <div class="btnControl">
-                            <div>
+<!--                            <div>
                                 <input type="submit" name="" id="" value="Continue Shopping"
                                        style="height:35px;width: 200px; border-radius: 20px; color: gray; background-color: white;">
                                 <button>Clear Shopping Cart</button>
-                            </div>
+                            </div>-->
                         </div>
                     </div>
                     <div class="col-md-4 right">

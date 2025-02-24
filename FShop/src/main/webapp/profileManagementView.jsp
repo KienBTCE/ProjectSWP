@@ -149,21 +149,21 @@
                                 <a href="#" class="menu-item">🔔 Notification</a>
 
                                 <div class="droppeddown">
-                                    <a href="#" class="menu-item droppeddown-toggle" data-url="customerProfileView.jsp">👤 My Information</a>
+                                    <a href="#" class="menu-item droppeddown-toggle" data-url="CustomerProfileView.jsp">👤 My Information</a>
                                     <div class="droppeddown-menu">
-                                        <a href="#" class="menu-item load-content" data-url="customerProfileView.jsp">My profile</a>
-                                        <a href="#" class="menu-item load-content" data-url="addressView.jsp">Address</a>
-                                        <a href="#" class="menu-item load-content" data-url="changeCustomerPasswordView.jsp">Change password</a>
+                                        <a href="#" class="menu-item load-content" data-url="CustomerProfileView.jsp">My profile</a>
+                                        <a href="#" class="menu-item load-content" data-url="AddressView.jsp">Address</a>
+                                        <a href="#" class="menu-item load-content" data-url="ChangeCustomerPasswordView.jsp">Change password</a>
                                         <a href="#" class="menu-item text-danger" data-bs-toggle="modal" data-bs-target="#confirmDeleteAccount">Request To Delete Account</a>
 
                                     </div>
                                 </div>
-                                <a href="viewOrderHistory?profilePage=ordersHistoryView.jsp" class="menu-item">📦 Orders</a>
+                                <a href="viewOrderHistory?profilePage=OrdersHistoryView.jsp" class="menu-item">📦 Orders</a>
                             </ul>
                         </div>
                     </div>
                     <div class="col-md-9 content" id="content" style="padding: 15px; border-radius: 5px; ">
-                        <jsp:include page="addressView.jsp"></jsp:include>
+                        <jsp:include page="AddressView.jsp"></jsp:include>
                         </div>
                     </div>
                 </div>
@@ -207,7 +207,7 @@
             </div>
         </div>
         <%
-            session.setAttribute("message", null);
+                session.setAttribute("message", null);
             }
         %>
         <script>

@@ -108,14 +108,14 @@ public class BuyProductsServlet extends HttpServlet {
             session.setAttribute("totalAmount", totalAmount);
             session.setAttribute("shipAddress", address);
             session.setAttribute("numOfItems", count);
-            request.getRequestDispatcher("checkout.jsp").forward(request, response);
+            request.getRequestDispatcher("CheckoutView.jsp").forward(request, response);
         } else if (action.equals("confirm")) {
             String fullname = request.getParameter("fullname");
             String phone = request.getParameter("phone");
             String address = request.getParameter("address");
             System.out.println(fullname + " " + address);
             session.setAttribute("order", new Order(fullname, phone, address));
-            request.getRequestDispatcher("confirmView.jsp").forward(request, response);
+            request.getRequestDispatcher("ConfirmView.jsp").forward(request, response);
         } else if (action.equals("placeOrder")) {
             long totalAmount = Long.parseLong(request.getParameter("totalAmount"));
             Order o = (Order) session.getAttribute("order");
@@ -132,7 +132,7 @@ public class BuyProductsServlet extends HttpServlet {
                 ca.deleteProductOnCart(c.getProductID(), cus.getId());
             }
             session.setAttribute("orderStatus", "success");
-            request.getRequestDispatcher("confirmView.jsp").forward(request, response);
+            request.getRequestDispatcher("ConfirmView.jsp").forward(request, response);
         }
 
     }

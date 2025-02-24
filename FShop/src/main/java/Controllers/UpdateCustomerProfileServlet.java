@@ -119,8 +119,8 @@ public class UpdateCustomerProfileServlet extends HttpServlet {
             }
         }
 
-        request.setAttribute("profilePage", "customerProfileView.jsp");
-        request.getRequestDispatcher("profileManagementView.jsp").forward(request, response);
+        request.setAttribute("profilePage", "CustomerProfileView.jsp");
+        request.getRequestDispatcher("ProfileManagementView.jsp").forward(request, response);
     }
 
     /**
