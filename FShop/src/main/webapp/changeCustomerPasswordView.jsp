@@ -1,8 +1,9 @@
 <%-- 
-    Document   : changeCustomerPassword
+    Document   : ChangeCustomerPassword
     Created on : Feb 16, 2025, 2:15:21 PM
     Author     : TuongMPCE180644
 --%>
+
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>

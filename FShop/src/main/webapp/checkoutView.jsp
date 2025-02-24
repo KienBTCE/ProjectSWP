@@ -1,8 +1,9 @@
 <%-- 
-    Document   : checkout
+    Document   : Checkout
     Created on : Dec 11, 2024, 10:45:50 PM
     Author     : nhutb
 --%>
+
 
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@page import="Models.Cart"%>

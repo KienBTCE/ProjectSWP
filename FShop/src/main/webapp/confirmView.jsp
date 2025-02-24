@@ -1,8 +1,9 @@
 <%-- 
-    Document   : payment
+    Document   : Payment
     Created on : Dec 14, 2024, 7:47:35 PM
     Author     : nhutb
 --%>
+
 
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@page import="Models.Cart" %>
