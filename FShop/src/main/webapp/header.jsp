@@ -188,7 +188,7 @@
                         <div style="display: flex; align-items: center; font-size: 12px">
                             <c:if test="${sessionScope.customer != null}">
                                 <c:if test="${sessionScope.customer.getAvatar() != ''}">
-                                    <a href="viewCustomerProfile"><img style="border-radius: 50%; border: 1px solid gray;" width="30px" height="30px" src="./assets/imgs/CustomerAvatar/${sessionScope.customer.getAvatar()}" alt="alt"/></a>
+                                    <a href="viewCustomerProfile"><i class="ti-user" style="font-size: 150%; color: black; margin-left: 20px;"></i></a>
                                     </c:if>
                                     <c:if test="${sessionScope.customer.getAvatar() == ''}">
                                     <a href="viewCustomerProfile"><img style="border-radius: 50%; border: 1px solid gray;" width="30px" height="30px" src="./assets/imgs/icon/person.jpg" alt="alt"/></a>

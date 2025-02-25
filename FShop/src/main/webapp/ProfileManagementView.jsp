@@ -142,12 +142,13 @@
                     <div class="row">
                         <div class="sidebar col-md-3" style=" height: auto; padding: 20px;">
                             <div class="text-center">
-                            <c:if test="${sessionScope.customer.getAvatar() != ''}">
-                                <img id="avatarPreview" class="avatar-preview mb-3" src="assets/imgs/CustomerAvatar/${sessionScope.customer.getAvatar()}" alt="Avatar">
+                            <c:if test="${sessionScope.customer.getAvatar().equals('')}">
+                                <img id="avatarPreview" class="avatar-preview mb-3" src="assets/imgs/icon/person.jpg" alt="Avatar2">
+                            </c:if>   
+                            <c:if test="${!sessionScope.customer.getAvatar().equals('')}">
+                                <img id="avatarPreview" class="avatar-preview mb-3" src="assets/imgs/CustomerAvatar/${sessionScope.customer.getAvatar()}" alt="Avatar1">
                             </c:if>
-                            <c:if test="${sessionScope.customer.getAvatar() == ''}">
-                                <img id="avatarPreview" class="avatar-preview mb-3" src="assets/imgs/icon/person.jpg" alt="Avatar">
-                            </c:if>                    
+
                             <h4>${sessionScope.customer.getFullName()}</h4>
                             <a class="text-center" href="Logout">Logout</a>
                         </div>
