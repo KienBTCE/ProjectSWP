@@ -32,6 +32,9 @@ public class Product {
 
     private HashMap<String, String> attributes;
 
+    public Product() {
+    }
+
     public Product(int productId, int brandId, int categoryId, String model, String fullName, String description, int isDeleted, long price, String image, int quantity, int stock) {
         this.productId = productId;
         this.brandId = brandId;
