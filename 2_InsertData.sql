@@ -95,7 +95,8 @@ INSERT INTO OrderDetails VALUES (1, 1, 3, 50000000);
 SET IDENTITY_INSERT Employees ON;
 INSERT INTO Employees (EmployeeID, FullName, Birthday, [Password], PhoneNumber, Email, Gender, CreatedDate, Avatar, RoleID) VALUES
 (1, 'Nguyen Van A', '1990-01-01', 'encrypted_password_here', '0123456789', 'nguyen.vana@example.com', 'Male', GETDATE(), 'avatar_image.jpg', 1),
-(2, 'Nguyen Van B', '1990-01-01', 'encrypted_password_here', '0123456788', 'nguyen.vanb@example.com', 'Male', GETDATE(), 'avatar_image.jpg', 4);
+(2, 'Nguyen Van B', '1990-01-01', 'encrypted_password_here', '0123456788', 'nguyen.vanb@example.com', 'Male', GETDATE(), 'avatar_image.jpg', 4),
+(3, 'Kieu Thy', '2004-06-02', 'encrypted_password_here', '0123456790', 'kieuthy@gmail.com', 'Female', GETDATE(), 'avatar_image.jpg', 4);
 SET IDENTITY_INSERT Employees OFF;
 
 -- Insert Carts
