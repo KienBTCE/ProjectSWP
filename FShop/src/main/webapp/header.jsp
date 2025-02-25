@@ -40,6 +40,9 @@
                 align-items: center;
                 justify-content: center;
             }
+            .text-header{
+               color: white;
+            }
             .infor-content p{
                 margin: 0;
             }
@@ -136,13 +139,13 @@
             <div class="header-container container">
                 <div class="header-infor row">
                     <div class="infor-content time-head col-md-4">
-                        <p class="text-dark">Mon-Thu 9:00AM - 5:30PM</p>
+                        <p class="text-header">Mon-Thu 9:00AM - 5:30PM</p>
                     </div>
                     <div class="infor-content address-head col-md-4">
-                        <p class="text-dark">Nguyen Van Cu, Ninh Kieu, Can Tho</p>
+                        <p class="text-header">Nguyen Van Cu, Ninh Kieu, Can Tho</p>
                     </div>
                     <div class="infor-content phone-head col-md-4">
-                        <p class="text-dark">Call Us: (+84) 12 345 6789</p>
+                        <p class="text-header">Call Us: (+84) 12 345 6789</p>
                         <a href="#"><img src="assets/imgs/HeaderImgs/Vector-Header-FB.svg" alt="Facebook" style="width: 23px; height: 23px;"></a>
                         <a href="#"><img src="assets/imgs/HeaderImgs/Vector-Header-IG.svg" alt="Instagram" style="width: 23px; height: 23px;"></a>
                     </div>
