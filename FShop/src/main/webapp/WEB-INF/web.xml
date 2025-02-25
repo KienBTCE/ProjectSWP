@@ -48,6 +48,10 @@
         <servlet-class>Controllers.CustomerListServlet</servlet-class>
     </servlet>
     <servlet>
+        <servlet-name>ProductListServlet</servlet-name>
+        <servlet-class>Controllers.ProductListServlet</servlet-class>
+    </servlet>
+    <servlet>
         <servlet-name>ProductListView</servlet-name>
         <servlet-class>Controllers.ViewProductServlet</servlet-class>
     </servlet>
@@ -78,6 +82,10 @@
     <servlet-mapping>
         <servlet-name>CustomerListServlet</servlet-name>
         <url-pattern>/CustomerListServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ProductListServlet</servlet-name>
+        <url-pattern>/ProductListServlet</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>ViewSupplierServlet</servlet-name>
