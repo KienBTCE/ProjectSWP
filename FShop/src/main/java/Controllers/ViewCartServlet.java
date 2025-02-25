@@ -67,9 +67,9 @@ public class ViewCartServlet extends HttpServlet {
         ProductDAO p = new ProductDAO();
         HttpSession session = request.getSession();
         if (session.getAttribute("customer") != null) {
-
             Customer cus = (Customer) session.getAttribute("customer");
             CartDAO c = new CartDAO();
+            session.setAttribute("numOfProCartOfCus", c.getNumberOfProduct(cus.getId()));
             List<Cart> cartList = c.getCartOfAccountID(cus.getId());
             System.out.println(cus.getId());
             // List<Product> pList = p.GetAllProducts();
@@ -84,10 +84,10 @@ public class ViewCartServlet extends HttpServlet {
             session.setAttribute(
                     "cartList", cartList);
             request.getRequestDispatcher(
-                    "cartView.jsp").forward(request, response);
+                    "CartView.jsp").forward(request, response);
         } else {
             // your code about Cart guest
-            response.sendRedirect("cartView.jsp");
+            response.sendRedirect("CustomerLoginView.jsp");
         }
     }
 

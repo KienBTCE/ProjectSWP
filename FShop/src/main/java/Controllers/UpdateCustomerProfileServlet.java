@@ -97,9 +97,8 @@ public class UpdateCustomerProfileServlet extends HttpServlet {
         cus.setPhoneNumber(phoneNumber);
         cus.setGender(gender);
         cus.setBirthday(year + "-" + month + "-" + day);
-        cus.setAvatar(cus.getId() + ".jpg");
         int rs = cusDAO.updateCustomerProfile(cus);
-        if (rs == 0) {   
+        if (rs == 0) {
             session.setAttribute("message", "Update customer fail!");
         } else {
             session.setAttribute("customer", cus);
@@ -109,8 +108,9 @@ public class UpdateCustomerProfileServlet extends HttpServlet {
         //String filename = img.getSubmittedFileName();
         //cusDAO.updateAvatar(cus.getId() + ".jpg", cus.getId());
         if (img != null && img.getSize() > 0) {
+            cus.setAvatar(cus.getId() + ".jpg");
             for (Part part : request.getParts()) {
-                part.write("D:\\HocDeKi05\\SWP391\\ProjectSWP\\FShop\\src\\main\\webapp\\assets\\imgs\\CustomerAvatar\\" + cus.getId() + ".jpg");
+                part.write("E:\\HocTap\\Ky5\\SWP\\Main\\ProjectSWP\\FShop\\src\\main\\webapp\\assets\\imgs\\CustomerAvatar\\" + cus.getId() + ".jpg");
             }
             try {
                 Thread.sleep(2500); // 15 giây = 15000 mili giây
@@ -119,8 +119,8 @@ public class UpdateCustomerProfileServlet extends HttpServlet {
             }
         }
 
-        request.setAttribute("profilePage", "customerProfileView.jsp");
-        request.getRequestDispatcher("profileManagementView.jsp").forward(request, response);
+        request.setAttribute("profilePage", "CustomerProfileView.jsp");
+        request.getRequestDispatcher("ProfileManagementView.jsp").forward(request, response);
     }
 
     /**

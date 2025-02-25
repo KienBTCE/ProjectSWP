@@ -60,7 +60,7 @@ public class CustomerLoginServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        request.getRequestDispatcher("customerLoginView.jsp").forward(request, response);
+        request.getRequestDispatcher("CustomerLoginView.jsp").forward(request, response);
     }
 
     /**
@@ -83,7 +83,7 @@ public class CustomerLoginServlet extends HttpServlet {
         if (ctmDAO.checkEmailExisted(email) != 1) {
             session.setAttribute("message", "Account does not exist!");
             System.out.println("Email does not exist");
-            request.getRequestDispatcher("customerLoginView.jsp").forward(request, response);
+            request.getRequestDispatcher("CustomerLoginView.jsp").forward(request, response);
             return;
         }
 
@@ -92,7 +92,7 @@ public class CustomerLoginServlet extends HttpServlet {
             if (customer == null) {
                 session.setAttribute("message", "Incorrect email or password!");
                 System.out.println("Wrong credentials");
-                request.getRequestDispatcher("customerLoginView.jsp").forward(request, response);
+                request.getRequestDispatcher("CustomerLoginView.jsp").forward(request, response);
                 return;
             }
 
@@ -105,14 +105,14 @@ public class CustomerLoginServlet extends HttpServlet {
             } else {
                 session.setAttribute("customer", customer);
                 System.out.println("Login success");
-                request.getRequestDispatcher("HomeServlet").forward(request, response);
+                request.getRequestDispatcher("ProductListView").forward(request, response);
                 return;
             }
         } else {
             session.setAttribute("message", "Account does not exist!");
         }
 
-        request.getRequestDispatcher("customerLoginView.jsp").forward(request, response);
+        request.getRequestDispatcher("CustomerLoginView.jsp").forward(request, response);
 
     }
 

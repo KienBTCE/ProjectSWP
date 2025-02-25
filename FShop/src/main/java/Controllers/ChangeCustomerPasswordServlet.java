@@ -95,8 +95,8 @@ public class ChangeCustomerPasswordServlet extends HttpServlet {
             session.setAttribute("message", "Your Current Password Is Not Correct!");
         }
 
-        request.setAttribute("profilePage", "changeCustomerPassword.jsp");
-        request.getRequestDispatcher("myInfor.jsp").forward(request, response);
+        request.setAttribute("profilePage", "ChangeCustomerPasswordView.jsp");
+        request.getRequestDispatcher("ProfileManagementView.jsp").forward(request, response);
     }
 
     /**

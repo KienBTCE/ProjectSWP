@@ -39,4 +39,9 @@ public class DBContext {
         }
         return connector;
     }
+    public static void main(String[] args) {
+        
+       DBContext db = new DBContext();
+       db.getConnection();
+    }
 }

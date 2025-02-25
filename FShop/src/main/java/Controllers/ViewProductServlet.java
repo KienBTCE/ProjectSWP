@@ -4,7 +4,9 @@
  */
 package Controllers;
 
+import DAOs.CartDAO;
 import DAOs.ProductDAO;
+import Models.Customer;
 import Models.Product;
 import jakarta.servlet.ServletContext;
 import java.io.IOException;
@@ -12,6 +14,7 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 import java.util.ArrayList;
 
 /**
@@ -31,6 +34,14 @@ public class ViewProductServlet extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        /* Don't delete this LOC */
+        CartDAO c = new CartDAO();
+        HttpSession session = request.getSession();
+        Customer cus = (Customer) session.getAttribute("customer");
+        if (cus != null) {
+            session.setAttribute("numOfProCartOfCus", c.getNumberOfProduct(cus.getId()));
+        }
+        /* Don't delete this LOC */
 
         ProductDAO pd = new ProductDAO();
         ArrayList<Product> products = null;
