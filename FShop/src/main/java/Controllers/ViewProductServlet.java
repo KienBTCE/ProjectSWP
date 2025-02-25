@@ -4,7 +4,9 @@
  */
 package Controllers;
 
+import DAOs.CartDAO;
 import DAOs.ProductDAO;
+import Models.Customer;
 import Models.Product;
 import jakarta.servlet.ServletContext;
 import java.io.IOException;
@@ -12,6 +14,7 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 import java.util.ArrayList;
 
 /**
@@ -31,6 +34,14 @@ public class ViewProductServlet extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        /* Don't delete this LOC */
+        CartDAO c = new CartDAO();
+        HttpSession session = request.getSession();
+        Customer cus = (Customer) session.getAttribute("customer");
+        if (cus != null) {
+            session.setAttribute("numOfProCartOfCus", c.getNumberOfProduct(cus.getId()));
+        }
+        /* Don't delete this LOC */
 
         ProductDAO pd = new ProductDAO();
         ArrayList<Product> products = null;
@@ -64,6 +75,7 @@ public class ViewProductServlet extends HttpServlet {
 
             if (price != null) {
                 ArrayList<String> priceFilters = new ArrayList<>();
+
                 for (String string : price.split(",")) {
                     switch (string.trim()) {
                         case "20-25":
@@ -86,7 +98,7 @@ public class ViewProductServlet extends HttpServlet {
                     if (priceFilters.size() == 1) {
                         filtersInput.add(" AND price " + priceFilters.get(i).trim());
                     } else if (i == 0) {
-                        filtersInput.add("( AND price " + priceFilters.get(i).trim());
+                        filtersInput.add(" AND (price " + priceFilters.get(i).trim());
                     } else if (i == priceFilters.size() - 1) {
                         filtersInput.add(" OR price " + priceFilters.get(i).trim() + ")");
                     } else {

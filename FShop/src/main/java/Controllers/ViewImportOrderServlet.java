@@ -49,10 +49,11 @@ public class ViewImportOrderServlet extends HttpServlet {
         ArrayList<ImportOrder> importOrders;
 
         String detailID = request.getParameter("id");
-        
+
         if (detailID != null) {
             int id = Integer.parseInt(detailID);
             ImportOrder importOrder = importD.getImportOrderDetailsByID(id);
+
             try {
                 request.setAttribute("importOrder", importOrder);
                 request.getRequestDispatcher("ImportOrderDetailsView.jsp").forward(request, response);
@@ -60,7 +61,7 @@ public class ViewImportOrderServlet extends HttpServlet {
                 System.out.println(e);
             }
         }
-        
+
         importOrders = importD.getAllImportOrders();
         try {
             request.setAttribute("importOrders", importOrders);

@@ -79,8 +79,8 @@ public class ViewOrderHistoryServlet extends HttpServlet {
         }
         session.setAttribute("orderList", list);
         session.setAttribute("orderDetailList", listOD);
-        request.setAttribute("profilePage", "ordersHistoryView.jsp");
-        request.getRequestDispatcher("profileManagementView.jsp").forward(request, response);
+        request.setAttribute("profilePage", "OrdersHistoryView.jsp");
+        request.getRequestDispatcher("ProfileManagementView.jsp").forward(request, response);
     }
 
     /**

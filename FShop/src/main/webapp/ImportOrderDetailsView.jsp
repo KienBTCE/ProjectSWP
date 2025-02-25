@@ -4,6 +4,8 @@
     Author     : KienBTCE180180
 --%>
 
+<%@page import="Models.ImportOrder"%>
+<%@page import="Models.ImportOrderDetail"%>
 <%@page import="java.util.List"%>
 <%@page import="DAOs.SupplierDAO"%>
 <%@page import="Models.Supplier"%>
@@ -156,10 +158,10 @@
                     <tbody id="supplierTable">
                         <c:forEach items="${importOrder.getImportOrderDetails()}" var="d">
                             <tr>
+                                <td>${d.getProduct().getProductId()}</td>
+                                <td>${d.getProduct().getModel()}</td>
                                 <td>${d.getProduct().getFullName()}</td>
-                                <td>${d.getProduct().getFullName()}</td>
-                                <td>${d.getProduct().getFullName()}</td>
-                                <td>${d.getProduct().getFullName()}</td>
+                                <td>${d.getQuantity()}</td>
                                 <td>
                                     <a href="ImportOrder?id=${i.getIoid()}" class="btn btn-detail" style="background-color: #BDF3BD">Detail</a>
                                 </td>

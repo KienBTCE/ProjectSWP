@@ -32,6 +32,9 @@ public class Product {
 
     private HashMap<String, String> attributes;
 
+    public Product() {
+    }
+
     public Product(int productId, int brandId, int categoryId, String model, String fullName, String description, int isDeleted, long price, String image, int quantity, int stock) {
         this.productId = productId;
         this.brandId = brandId;
@@ -46,10 +49,16 @@ public class Product {
         this.stock = stock;
     }
 
-<<<<<<< HEAD
-    public Product(int aInt, String string, String string0, long aLong, String string1, int aInt0) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-=======
+    public Product(int productId, String categoryName, String brandName, String fullName, long price, int quantity, int isDeleted) {
+        this.productId = productId;
+        this.categoryName = categoryName;
+        this.brandName = brandName;
+        this.fullName = fullName;
+        this.isDeleted = isDeleted;
+        this.price = price;
+        this.quantity = quantity;
+    }
+
     public String getCategoryName() {
         return categoryName;
     }
@@ -64,17 +73,6 @@ public class Product {
 
     public void setBrandName(String brandName) {
         this.brandName = brandName;
-    }
-
-    public Product(int productId, String categoryName, String brandName, String fullName, long price, int quantity, int isDeleted) {
-        this.productId = productId;
-        this.categoryName = categoryName;
-        this.brandName = brandName;
-        this.fullName = fullName;
-        this.isDeleted = isDeleted;
-        this.price = price;
-        this.quantity = quantity;
->>>>>>> kthy
     }
 
     public int getProductId() {

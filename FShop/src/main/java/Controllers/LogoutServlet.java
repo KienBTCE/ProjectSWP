@@ -60,7 +60,7 @@ public class LogoutServlet extends HttpServlet {
             throws ServletException, IOException {
         HttpSession session = request.getSession();
         session.removeAttribute("customer");
-        request.getRequestDispatcher("HomeServlet").forward(request, response);
+        request.getRequestDispatcher("ProductListView").forward(request, response);
     }
 
     /**

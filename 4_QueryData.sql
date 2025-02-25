@@ -129,3 +129,16 @@ WHERE Laptops.pd_ID IN (
 );select * from Products where CategoryID = 1
 SELECT * FROM Employees
 DELETE FROM Employees WHERE EmployeeID = 2
+
+
+SELECT DISTINCT B.[Name] FROM Brands B JOIN Products P ON B.BrandID = P.BrandID WHERE P.CategoryID IN (SELECT CategoryID FROM Categories WHERE [Name] = 'Laptop')
+
+SELECT * FROM Products P JOIN Brands B ON P.BrandID = B.BrandID WHERE B.Name IN (SELECT Name FROM Brands WHERE Name IN ('Apple')) AND WHERE P.CategoryID IN (SELECT CategoryID FROM Categories WHERE [Name] = 'Laptop')
+
+SELECT * FROM Products P JOIN Brands B ON P.BrandID = B.BrandID WHERE B.Name IN (SELECT Name FROM Brands WHERE  AND price > 30000000) AND P.CategoryID IN (SELECT CategoryID FROM Categories WHERE [Name] = 'Laptop')
+
+SELECT * FROM Products P JOIN Brands B ON P.BrandID = B.BrandID WHERE B.Name IN (SELECT Name FROM Brands WHERE Name IN ('Apple', 'Asus', 'Dell', 'Lenovo', 'MSI')) AND P.CategoryID IN (SELECT CategoryID FROM Categories WHERE [Name] = 'Laptop')
+
+SELECT * FROM Products P JOIN Brands B ON P.BrandID = B.BrandID WHERE B.Name IN (SELECT Name FROM Brands WHERE Name IN ('Apple', 'Asus', 'Dell', 'Lenovo', 'MSI') AND price BETWEEN 20000000 AND 25000000) AND P.CategoryID IN (SELECT CategoryID FROM Categories WHERE [Name] = 'Laptop')
+
+SELECT * FROM Products P JOIN Brands B ON P.BrandID = B.BrandID WHERE B.Name IN (SELECT Name FROM Brands WHERE Name IN ('Apple', 'Asus', 'Dell', 'Lenovo', 'MSI') AND (price BETWEEN 20000000 AND 25000000 OR price BETWEEN 25000000 AND 30000000)) AND P.CategoryID IN (SELECT CategoryID FROM Categories WHERE [Name] = 'Laptop')

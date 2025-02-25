@@ -67,7 +67,7 @@ public class BuyProductsServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-
+        
     }
 
     /**
@@ -83,11 +83,14 @@ public class BuyProductsServlet extends HttpServlet {
             throws ServletException, IOException {
         HttpSession session = request.getSession();
         String action = request.getParameter("buyProductAction");
+        OrderDAO od = new OrderDAO();
+        CartDAO ca = new CartDAO();
+        Customer cus = (Customer) session.getAttribute("customer");
+        
         if (action.equals("checkout")) {
             List<Cart> cart = (List<Cart>) session.getAttribute("cartList");
             String selectedProductIds[] = request.getParameterValues("cartSelected");
             List<Cart> cartSelected = new ArrayList<>();
-            Customer cus = (Customer) session.getAttribute("customer");
             AddressDAO cdao = new AddressDAO();
             Address add = cdao.getDefaultAddress(cus.getId());
             String address = add.getAddressDetails();
@@ -103,25 +106,22 @@ public class BuyProductsServlet extends HttpServlet {
                     }
                 }
             }
-
+            
             session.setAttribute("cartSelected", cartSelected);
             session.setAttribute("totalAmount", totalAmount);
             session.setAttribute("shipAddress", address);
             session.setAttribute("numOfItems", count);
-            request.getRequestDispatcher("checkout.jsp").forward(request, response);
+            request.getRequestDispatcher("CheckoutView.jsp").forward(request, response);
         } else if (action.equals("confirm")) {
             String fullname = request.getParameter("fullname");
             String phone = request.getParameter("phone");
             String address = request.getParameter("address");
             System.out.println(fullname + " " + address);
             session.setAttribute("order", new Order(fullname, phone, address));
-            request.getRequestDispatcher("confirmView.jsp").forward(request, response);
+            request.getRequestDispatcher("ConfirmView.jsp").forward(request, response);
         } else if (action.equals("placeOrder")) {
             long totalAmount = Long.parseLong(request.getParameter("totalAmount"));
             Order o = (Order) session.getAttribute("order");
-            OrderDAO od = new OrderDAO();
-            CartDAO ca = new CartDAO();
-            Customer cus = (Customer) session.getAttribute("customer");
             o.setAccountID(cus.getId());
             o.setTotalAmount(totalAmount);
             od.createNewOrder(o);
@@ -132,9 +132,10 @@ public class BuyProductsServlet extends HttpServlet {
                 ca.deleteProductOnCart(c.getProductID(), cus.getId());
             }
             session.setAttribute("orderStatus", "success");
-            request.getRequestDispatcher("confirmView.jsp").forward(request, response);
+            session.setAttribute("numOfProCartOfCus", ca.getNumberOfProduct(cus.getId()));
+            request.getRequestDispatcher("ConfirmView.jsp").forward(request, response);
         }
-
+        
     }
 
     /**

@@ -69,8 +69,8 @@ public class ViewCustomerProfileServlet extends HttpServlet {
             Customer ctm = ctmDAO.getCustomerById(customer.getId());
             session.setAttribute("customer", ctm);
 
-            request.setAttribute("profilePage", "customerProfileView.jsp");
-            request.getRequestDispatcher("profileManagementView.jsp").forward(request, response);
+            request.setAttribute("profilePage", "CustomerProfileView.jsp");
+            request.getRequestDispatcher("ProfileManagementView.jsp").forward(request, response);
         }
     }
 

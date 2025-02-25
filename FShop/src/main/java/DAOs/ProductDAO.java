@@ -97,7 +97,7 @@ public class ProductDAO {
             query += filter;
         }
 
-        query += ")";
+        query += ") AND P.CategoryID IN (SELECT CategoryID FROM Categories WHERE [Name] = 'Laptop')";
 
         System.out.println("QUERY " + query);
 
@@ -132,7 +132,7 @@ public class ProductDAO {
     public ArrayList<String> getAllBrandLaptop() {
         ArrayList<String> list = null;
 
-        String query = "SELECT Name FROM Brands";
+        String query = "SELECT DISTINCT B.[Name] FROM Brands B JOIN Products P ON B.BrandID = P.BrandID WHERE P.CategoryID IN (SELECT CategoryID FROM Categories WHERE [Name] = 'Laptop')";
 
         try ( PreparedStatement ps = connector.prepareStatement(query)) {
             try ( ResultSet rs = ps.executeQuery()) {

@@ -85,13 +85,13 @@ public class RequestToDeleteAccountServlet extends HttpServlet {
                 response.sendRedirect("/Logout");
             } else {
                 session.setAttribute("message", "Delete is not suscess!");
-                request.setAttribute("profilePage", "customerProfile.jsp");
-                request.getRequestDispatcher("myInfor.jsp").forward(request, response);
+                request.setAttribute("profilePage", "CustomerProfile.jsp");
+                request.getRequestDispatcher("ProfileManagementView.jsp").forward(request, response);
             }
         } else {
             session.setAttribute("message", "Your cofirm password is not correct!");
-            request.setAttribute("profilePage", "customerProfile.jsp");
-            request.getRequestDispatcher("myInfor.jsp").forward(request, response);
+            request.setAttribute("profilePage", "CustomerProfile.jsp");
+            request.getRequestDispatcher("ProfileManagementView.jsp").forward(request, response);
         }
 
     }
