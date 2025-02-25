@@ -3,12 +3,14 @@
     <welcome-file-list>
         <welcome-file>ProductListView</welcome-file>
     </welcome-file-list>
-
+    <servlet>
+        <servlet-name>SearchProductServlet</servlet-name>
+        <servlet-class>Controllers.SearchProductServlet</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>default</servlet-name>
         <url-pattern>/assets/*</url-pattern>
     </servlet-mapping>
-
     <servlet>
         <servlet-name>ViewImportOrderServlet</servlet-name>
         <servlet-class>Controllers.ViewImportOrderServlet</servlet-class>
@@ -45,7 +47,6 @@
         <servlet-name>CommentServlet</servlet-name>
         <servlet-class>Controllers.CommentServlet</servlet-class>
     </servlet>
-
     <servlet-mapping>
         <servlet-name>ProductListView</servlet-name>
         <url-pattern>/</url-pattern>
@@ -82,7 +83,10 @@
         <servlet-name>ViewImportOrderServlet</servlet-name>
         <url-pattern>/ImportOrder</url-pattern>
     </servlet-mapping>
-
+    <servlet-mapping>
+        <servlet-name>SearchProductServlet</servlet-name>
+        <url-pattern>/SearchProductServlet</url-pattern>
+    </servlet-mapping>
     <session-config>
         <session-timeout>
             30

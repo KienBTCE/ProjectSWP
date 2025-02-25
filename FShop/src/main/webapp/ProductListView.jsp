@@ -32,19 +32,34 @@
             .section-content{
                 display: flex;
                 align-items: center;
-                justify-content: space-around;
+                /*justify-content: space-around;*/
             }
             .frame-represent{
                 width: 234px;
                 height: 346px;
                 text-align: center;
+                margin: 15px;
+                background: white;
+                border: 1px solid #F5F5F9;
+                border-radius: 10px;
+
+                text-decoration: none;
+                color: inherit;
+                transition: 0.3s;
+            }
+
+            .frame-represent:hover {
+                opacity: 0.8;
+                text-decoration: none;
+                color: inherit;
+                transition: 0.3s;
             }
 
             .star-rating {
                 display: flex;
                 align-items: center;
                 font-size: 24px;
-                color: #ffcc00; /* Màu vàng */
+                color: #ffcc00;
             }
             .star-rating .star {
                 margin-right: 5px;
@@ -71,29 +86,27 @@
         <jsp:include page="header.jsp"></jsp:include>
             <div class="container">
 
-            <div class="row">
-                <h4 class="title-content"><a href="Laptop">Laptop</a></h4>
-                <div class="gap-section section-content">
+                <div class="row">
+                    <h4 class="title-content"><a href="Laptop">Laptop</a></h4>
+                    <div class="gap-section section-content">
 
                     <c:set var="count" value="0" scope="page"></c:set>
                     <c:forEach items="${products}" var="p" varStatus="status">
                         <c:if test="${count < 5 and p.getCategoryId() == 1}">
                             <c:set var="count" value="${count + 1}" scope="page"></c:set>
-                                <div class="frame-represent">
+                                <a class="frame-represent" href="Laptop/id=${p.getProductId()}">
                                     <img src="assets/imgs/Products/${p.getImage()}" width="150px" height="150px" alt="alt"/>
                                 <div class="star-rating">
-                                    <!-- Các ngôi sao -->
                                     <span class="star">★</span>
                                     <span class="star">★</span>
                                     <span class="star">★</span>
                                     <span class="star">★</span>
                                     <span class="star">☆</span>
-                                    <!-- Số lượng đánh giá -->
                                     <span class="count">Reviews(4)</span>
                                 </div>
                                 <h6>${p.getFullName()}</h6>
                                 <p>${p.getPriceFormatted()}</p>
-                            </div>
+                            </a>
                         </c:if>
                     </c:forEach>
                 </div>
@@ -107,26 +120,24 @@
                     <c:forEach items="${products}" var="p" varStatus="status">
                         <c:if test="${count < 5 and p.getCategoryId() == 2}">
                             <c:set var="count" value="${count + 1}" scope="page"></c:set>
-                                <div class="frame-represent">
+                                <a class="frame-represent" href="Phone/id=${p.getProductId()}">
                                     <img src="assets/imgs/Products/${p.getImage()}" width="150px" height="150px" alt="alt"/>
                                 <div class="star-rating">
-                                    <!-- Các ngôi sao -->
                                     <span class="star">★</span>
                                     <span class="star">★</span>
                                     <span class="star">★</span>
                                     <span class="star">★</span>
                                     <span class="star">☆</span>
-                                    <!-- Số lượng đánh giá -->
                                     <span class="count">Reviews(4)</span>
                                 </div>
                                 <h6>${p.getFullName()}</h6>
                                 <p>${p.getPriceFormatted()}</p>
-                            </div>
+                            </a>
                         </c:if>
                     </c:forEach>
                 </div>
             </div>
-                    
+
         </div>
         <jsp:include page="footer.jsp"></jsp:include>
 
