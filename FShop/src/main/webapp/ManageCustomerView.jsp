@@ -175,7 +175,7 @@
                     function confirmToggle(customerID, currentStatus) {
                         let action = currentStatus === 0 ? "Activate" : "Block";
                         if (confirm("Are you sure you want to " + action + " this customer?")) {
-                            window.location.href = "CustomerList?action=toggleStatus&id=" + customerID;
+                            window.location.href = "CustomerListView?action=toggleStatus&id=" + customerID;
                         }
                     }
                 </script>

@@ -58,42 +58,42 @@ public class CustomerListServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        String action = request.getParameter("action");
-
-        if ("toggleStatus".equals(action)) {
-            try {
-                int customerID = Integer.parseInt(request.getParameter("id"));
-                CustomerDAO dao = new CustomerDAO();
-                dao.toggleStatus(customerID);
-                response.sendRedirect("CustomerListView.jsp");
-                return;
-            } catch (IOException | NumberFormatException e) {
-                response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Invalid Request");
-                return;
-            }
-        }
-
-        // Xử lý request lấy thông tin khách hàng theo ID (AJAX)
-        String customerIDParam = request.getParameter("id");
-        if (customerIDParam != null) {
-            try {
-                int customerID = Integer.parseInt(customerIDParam);
-                CustomerDAO dao = new CustomerDAO();
-                Customer customer = dao.getCustomerById2(customerID);
-
-                if (customer != null) {
-                    response.setContentType("application/json");
-                    response.setCharacterEncoding("UTF-8");
-                    response.getWriter().write(new Gson().toJson(customer));
-                } else {
-                    response.sendError(HttpServletResponse.SC_NOT_FOUND, "Customer not found");
-                }
-            } catch (NumberFormatException e) {
-                response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Invalid ID");
-            }
-            return; // Dừng lại nếu là request AJAX
-        }
-        processRequest(request, response);
+        
+        request.getRequestDispatcher("CustomerListView.jsp").forward(request, response);
+//        String action = request.getParameter("action");
+//        if ("toggleStatus".equals(action)) {
+//            try {
+//                int customerID = Integer.parseInt(request.getParameter("id"));
+//                CustomerDAO dao = new CustomerDAO();
+//                dao.toggleStatus(customerID);
+//                response.sendRedirect("CustomerListView.jsp");
+//                return;
+//            } catch (IOException | NumberFormatException e) {
+//                response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Invalid Request");
+//                return;
+//            }
+//        }
+//
+//        // Xử lý request lấy thông tin khách hàng theo ID (AJAX)
+//        String customerIDParam = request.getParameter("id");
+//        if (customerIDParam != null) {
+//            try {
+//                int customerID = Integer.parseInt(customerIDParam);
+//                CustomerDAO dao = new CustomerDAO();
+//                Customer customer = dao.getCustomerById2(customerID);
+//
+//                if (customer != null) {
+//                    response.setContentType("application/json");
+//                    response.setCharacterEncoding("UTF-8");
+//                    response.getWriter().write(new Gson().toJson(customer));
+//                } else {
+//                    response.sendError(HttpServletResponse.SC_NOT_FOUND, "Customer not found");
+//                }
+//            } catch (NumberFormatException e) {
+//                response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Invalid ID");
+//            }
+//            // Dừng lại nếu là request AJAX
+//        }
     }
 
     /**
