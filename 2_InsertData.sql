@@ -36,7 +36,6 @@ VALUES
 ('Camera'), ('Battery'), ('Screen Size');
 
 -- Insert Products
-SET IDENTITY_INSERT Products ON;
 
 INSERT INTO Products (ProductID, BrandID, CategoryID, Model, FullName, [Description], [Image], Price)
 VALUES 
@@ -65,33 +64,6 @@ VALUES (9, 11, 1, 'MSI-Katana-A15', 'MSI Katana Gaming A15', 'Gaming laptop powe
 INSERT INTO Products(ProductID, BrandID, CategoryID, Model, FullName, [Description], [Image], price) 
 VALUES (11, 6, 1, 'Dell-G5511', 'Dell Gaming G5511', 'Gaming laptop with strong design and high performance', '45606_dell_gaming_5511_dark_grey_ha3.jpg', 35909000);
 
-SET IDENTITY_INSERT Products OFF;
-
-INSERT INTO Products(ProductID, brand, pd_ID, fullName, quantity, [status], [productType], price) VALUES (1, 'Asus', '14XHMY', 'Zenbook 14XHMY', 10, 'Available', 'Laptop', 28909000)
-INSERT INTO Laptops(ProductID, [image]) VALUES (1, '250-8562-line-laptop.png')
-
-INSERT INTO Products(ProductID, brand, pd_ID, fullName, quantity, [status], [productType], price) VALUES (2, 'Apple', '12XHMY', 'iPhone 15 Pro Max 256GB', 10, 'Available', 'SmartPhone', 32529000)
-INSERT INTO Phones(ProductID, [image]) VALUES (2, 'iphone-16-pro-max-black-thumb-600x600.jpg')
-
-INSERT INTO Products(ProductID, brand, pd_ID, fullName, quantity, [status], [productType], price) VALUES (3, 'Samsung', '7XGLX', 'Galaxy S23 512GB', 10, 'Available', 'SmartPhone', 25899000)
-INSERT INTO Phones(ProductID, [image]) VALUES (3, 'samsung-galaxy-s23-xanh-600x600-1.jpg')
-
-INSERT INTO Products(ProductID, brand, pd_ID, fullName, quantity, [status], [productType], price) VALUES (4, 'Lenovo', '15LGXHYM', 'Legion Pro 15GXH', 10, 'Available', 'Laptop', 38909000)
-INSERT INTO Laptops(ProductID, [image]) VALUES (4, '0yp3jx9d-1090-lenovo-legion-pro-5-y9000p-2023-core-i9-13900hx-16gb-1tb-rtx-4050-6gb-16-wqxga-240hz-new.jpg')
-
-INSERT INTO Products(ProductID, brand, pd_ID, fullName, quantity, [status], [productType], price) VALUES (5, 'Asus', 'A17FA706', 'Asus Tuf Gamming 17FA', 10, 'Available', 'Laptop', 31909000)
-INSERT INTO Laptops(ProductID, [image]) VALUES (5, 'ASUS-TUF-Gaming-A17-FA706-600x600.jpg')
-
-INSERT INTO Products(ProductID, brand, pd_ID, fullName, quantity, [status], [productType], price) VALUES (6, 'MSI', 'b8vf406ca', 'MSI Katana Gamming B8VF', 10, 'Available', 'Laptop', 33909000)
-INSERT INTO Laptops(ProductID, [image]) VALUES (6, '5e0dkkrb-1411-msi-katana-gaming-a15-ai-b8vf-406ca-amd-ryzen-r9-8945hs-32gb-1tb-rtx-4060-8gb-15-6-144hz-fhd-new.jpg')
-
-INSERT INTO Products(ProductID, brand, pd_ID, fullName, quantity, [status], [productType], price) VALUES (7, 'Apple', 'MCBP2021', 'Macbook Pro 2021', 10, 'Available', 'Laptop', 45909000)
-INSERT INTO Laptops(ProductID, [image]) VALUES (7, '250-7038-macbook-pro-2021-apple-m1-1.jpg')
-
-INSERT INTO Products(ProductID, brand, pd_ID, fullName, quantity, [status], [productType], price) VALUES (8, 'Dell', 'D9C72G1', 'Dell Gamming G15 551', 10, 'Available', 'Laptop', 35909000)
-INSERT INTO Laptops(ProductID, [image]) VALUES (8, '45606_dell_gaming_5511_dark_grey_ha3.jpg')
-
-SET IDENTITY_INSERT Products OFF;
 
 -- Insert AttributeDetails
 INSERT INTO AttributeDetails (AttributeID, ProductID, AttributeInfor)
@@ -106,7 +78,7 @@ VALUES
 -- Insert Customers
 INSERT INTO Customers (FullName, Birthday, [Password], PhoneNumber, Email, Gender, CreatedDate, IsBlock, IsDeleted, Avatar)
 VALUES 
-('Nguyen Van A', '1995-05-15', '6ad14ba9986e3615423dfca256d04e3f', '0901234567', 'nguyenvana@example.com', 'Male', GETDATE(), 0, 0, 'avatar1.jpg');
+('Nguyen Van A', '1995-05-15', '6ad14ba9986e3615423dfca256d04e3f', '0901234567', 'nguyenvana@example.com', 'Male', GETDATE(), 0, 0, '');
 
 
 -- Insert Orders
@@ -118,17 +90,17 @@ INSERT INTO OrderDetails VALUES (1, 1, 3, 50000000);
 
 
 -- Insert Employees
-SET IDENTITY_INSERT Employees ON;
-INSERT INTO Employees (EmployeeID, FullName, Birthday, [Password], PhoneNumber, Email, Gender, CreatedDate, Avatar, RoleID) VALUES
-(1, 'Nguyen Van A', '1990-01-01', 'encrypted_password_here', '0123456789', 'nguyen.vana@example.com', 'Male', GETDATE(), 'avatar_image.jpg', 1),
-(2, 'Nguyen Van B', '1990-01-01', 'encrypted_password_here', '0123456788', 'nguyen.vanb@example.com', 'Male', GETDATE(), 'avatar_image.jpg', 4);
-SET IDENTITY_INSERT Employees OFF;
+INSERT INTO Employees ( FullName, Birthday, [Password], PhoneNumber, Email, Gender, CreatedDate, Avatar, RoleID) VALUES
+('Nguyen Van A', '1990-01-01', 'encrypted_password_here', '0123456789', 'nguyen.vana@example.com', 'Male', GETDATE(), 'avatar_image.jpg', 1),
+('Nguyen Van B', '1990-01-01', 'encrypted_password_here', '0123456788', 'nguyen.vanb@example.com', 'Male', GETDATE(), 'avatar_image.jpg', 4);
 
 -- Insert Carts
 INSERT INTO Carts (CustomerID, ProductID, Quantity)
 VALUES 
-(1, 1, 1),
-(1, 2, 5);
+(1, 3, 1),
+(1, 4, 5),
+(1, 2, 1),
+(1, 6, 1);
 
 -- Insert OrderStatus
 INSERT INTO OrderStatus (ID, [Status])
