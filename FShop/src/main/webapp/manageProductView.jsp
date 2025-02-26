@@ -157,7 +157,6 @@
                         </div>-->
             <div class="table-navigate">
                 <input type="text" id="searchInput" class="form-control search-box" placeholder="Find by name ..." onkeyup="filterTable()">
-                <button class="btn btn-detail" style="background-color: #BDF3BD; height: 100%">Create</button>
             </div>
 
             <div class="table-container">
