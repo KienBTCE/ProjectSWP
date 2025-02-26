@@ -182,16 +182,6 @@ public class ProductDAO {
         return list;
     }
 
-    //Doi trang thai button - shop manager
-    public void toggleStatus(int customerID) {
-        try (
-                 PreparedStatement ps = connector.prepareStatement("UPDATE Products SET isDeleted = 1 - isDeleted WHERE ProductID = ?")) {
-            ps.setInt(1, customerID);
-            ps.executeUpdate();
-        } catch (Exception e) {
-        }
-    }
-
     //Thong tin chi tiet cua san pham - shop manager
     public Product getProductByID(int productId) {
         Product s = null;

@@ -131,7 +131,7 @@
                 padding: 5px 10px;
             }
             .btn-edit {
-                background-color: green;
+                background-color: #007bff;
                 color: white;
                 border: none;
                 display: inline-block;
@@ -157,7 +157,6 @@
                         </div>-->
             <div class="table-navigate">
                 <input type="text" id="searchInput" class="form-control search-box" placeholder="Find by name ..." onkeyup="filterTable()">
-                <button class="btn btn-detail" style="background-color: #BDF3BD; height: 100%">Create</button>
             </div>
 
             <div class="table-container">
@@ -189,7 +188,7 @@
                                     </span>
                                 </td>
                                 <td>
-                                    <button class="btn btn-add" onclick="">Update</button>
+                                    <a href="ProductListServlet?id=${s.getProductId()}" class="btn btn-edit" style="">Update</a>
                                     <a href="ProductListServlet?${s.isIsDeleted() ? 'restore' : 'delete'}=${s.getProductId()}" 
                                        class="btn ${s.isIsDeleted() ? 'btn-success' : 'btn-danger'}" 
                                        onclick="return confirm('Are you sure?');">
