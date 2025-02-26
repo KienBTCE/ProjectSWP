@@ -36,7 +36,6 @@ VALUES
 ('Camera'), ('Battery'), ('Screen Size');
 
 -- Insert Products
-SET IDENTITY_INSERT Products ON;
 
 INSERT INTO Products (ProductID, BrandID, CategoryID, Model, FullName, [Description], [Image], Price)
 VALUES 
@@ -65,7 +64,9 @@ VALUES (9, 11, 1, 'MSI-Katana-A15', 'MSI Katana Gaming A15', 'Gaming laptop powe
 INSERT INTO Products(ProductID, BrandID, CategoryID, Model, FullName, [Description], [Image], price) 
 VALUES (11, 6, 1, 'Dell-G5511', 'Dell Gaming G5511', 'Gaming laptop with strong design and high performance', '45606_dell_gaming_5511_dark_grey_ha3.jpg', 35909000);
 
+
 SET IDENTITY_INSERT Products OFF;
+
 
 -- Insert AttributeDetails
 INSERT INTO AttributeDetails (AttributeID, ProductID, AttributeInfor)
@@ -80,7 +81,7 @@ VALUES
 -- Insert Customers
 INSERT INTO Customers (FullName, Birthday, [Password], PhoneNumber, Email, Gender, CreatedDate, IsBlock, IsDeleted, Avatar)
 VALUES 
-('Nguyen Van A', '1995-05-15', '6ad14ba9986e3615423dfca256d04e3f', '0901234567', 'nguyenvana@example.com', 'Male', GETDATE(), 0, 0, 'avatar1.jpg');
+('Nguyen Van A', '1995-05-15', '6ad14ba9986e3615423dfca256d04e3f', '0901234567', 'nguyenvana@example.com', 'Male', GETDATE(), 0, 0, '');
 
 
 -- Insert Orders
@@ -102,8 +103,10 @@ SET IDENTITY_INSERT Employees OFF;
 -- Insert Carts
 INSERT INTO Carts (CustomerID, ProductID, Quantity)
 VALUES 
-(1, 1, 1),
-(1, 2, 5);
+(1, 3, 1),
+(1, 4, 5),
+(1, 2, 1),
+(1, 6, 1);
 
 -- Insert OrderStatus
 INSERT INTO OrderStatus (ID, [Status])
