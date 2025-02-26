@@ -99,48 +99,60 @@
                 <h3>Product Detail</h3>
                 <table class="table table-bordered">
                     <c:choose>
-                        <c:when test="${product != null}">
+                        <c:when test="${customer != null}">
                             <tr>
-                                <th>Product ID</th>
-                                <td>${product.getProductId()}</td>
+                                <th>Customer ID</th>
+                                <td>${customer.getId()}</td>
                             </tr>
                             <tr>
-                                <th>Category</th>
-                                <td>${product.getCategoryName()}</td>
+                                <th>Name</th>
+                                <td>${customer.getFullName()}</td>
                             </tr>
                             <tr>
-                                <th>Brand</th>
-                                <td>${product.getBrandName()}</td>
+                                <th>Birthday</th>
+                                <td>${customer.getBirthday()}</td>
                             </tr>
                             <tr>
-                                <th>Product Name</th>
-                                <td>${product.getFullName()}</td>
+                                <th>Gender</th>
+                                <td>${customer.getGender()}</td>
                             </tr>
                             <tr>
-                                <th>Price</th>
-                                <td>${product.getPrice()}</td>
+                                <th>Phone</th>
+                                <td>${customer.getPhoneNumber()}</td>
                             </tr>
                             <tr>
-                                <th>Quantity</th>
-                                <td>${product.getQuantity()}</td>
+                                <th>Email</th>
+                                <td>${customer.getEmail()}</td>
+                            </tr>
+                            <tr>
+                                <th>Created Date</th>
+                                <td>${customer.getCreateAt()}</td>
+                            </tr>
+                            <tr>
+                                <th>Avatar</th>
+                                <td>${customer.getAvatar()}</td>
+                            </tr>
+                            <tr>
+                                <th>Email</th>
+                                <td>${customer.getEmail()}</td>
                             </tr>
                             <tr>
                                 <th>Status</th>
                                 <td>
-                                    <span class="badge ${product.isIsDeleted() ? 'bg-success' : 'bg-danger'}">
-                                        ${product.isIsDeleted() ? 'Deleted' : 'Activate'}
+                                    <span class="badge ${customer.getIsBlock() == 0 ? 'bg-success' : 'bg-danger'}">
+                                        ${customer.getIsBlock() == 1 ? 'Deleted' : 'Activate'}
                                     </span>
                                 </td>
                             </tr>
                         </c:when>
                         <c:otherwise>
                             <tr>
-                                <td colspan="2" class="text-danger text-center">Product not found!</td>
+                                <td colspan="2" class="text-danger text-center">Customer not found!</td>
                             </tr>
                         </c:otherwise>
                     </c:choose>
                 </table>
-                <a href="ProductListServlet" class="btn-back">Back to List</a>
+                <a href="CustomerListServlet" class="btn-back">Back to List</a>
             </div>
         </div>
     </body>

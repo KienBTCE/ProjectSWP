@@ -179,12 +179,11 @@
                                 <td>${s.getEmail()}</td>
                                 <td>${s.getPhoneNumber()}</td>
                                 <td>
-                                    <span class="badge ${s.getIsBlock() ==0 ? 'bg-danger' : 'bg-success'}">
+                                    <span class="badge ${s.getIsBlock() ==0 ? 'bg-success' : 'bg-danger' }">
                                         ${s.getStatus()}
                                     </span>
                                 </td>
                                 <td>
-                                    <a href="CustomerListServlet?id=${s.getId()}" class="btn btn-edit" style="">Update</a>
                                     <a href="CustomerListServlet?${s.getIsBlock() == 1 ? 'Activate' : 'Blocked'}=${s.getId()}" 
                                        class="btn ${s.getIsBlock() == 1 ? 'btn-success' : 'btn-danger'}" 
                                        onclick="return confirm('Are you sure?');">
