@@ -4,49 +4,118 @@
     Author     : kiuth
 --%>
 
-<%@page import="DAOs.ProductDAO"%>
-<%@page import="java.sql.ResultSet"%>
+<%@page import="java.util.List"%>
+<%@page import="DAOs.SupplierDAO"%>
+<%@page import="Models.Supplier"%>
+<%@page import="java.util.ArrayList"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@ taglib prefix = "c" uri = "http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html>
     <head>
-        <meta charset="UTF-8">
-        <title>Product List</title>
-        <!-- Bootstrap CSS CDN -->
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <title>F Shop</title>
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
         <style>
-            /* Custom CSS for the navbar */
-            .navbar {
-                background-color: black;
-                padding: 10px;
+            body {
                 display: flex;
-                justify-content: flex-start;
-                align-items: center;
             }
 
-            /* Ensuring the items are next to each other in the navbar */
-            .navbar-brand {
+            .sidebar {
+                width: 250px;
+                height: 97vh;
+                background: #FFFFFF;
+                color: black;
+                padding-top: 20px;
+                box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.3);
+                transform: translateZ(0);
+                position: relative;
+                z-index: 10;
+                border-radius: 10px;
+                margin-top: 10px;
+            }
+
+            .sidebar a {
+                color: #7A7D90;
+                text-decoration: none;
+                padding: 10px;
+                display: block;
+            }
+
+            .sidebar a:hover {
+                background: #7D69FF;
                 color: white;
-                font-size: 1.2rem;
-                margin-right: 15px; /* Adding space between PRJ301 and Products */
+                width: 90%;
+                font-weight: bold;
+
+                border-top-right-radius: 10px;
+                border-bottom-right-radius: 10px;
+                border-top-left-radius: 0;
+                border-bottom-left-radius: 0;
+
             }
 
-            /* Custom CSS for table and title */
-            h2 {
-                font-size: 2.5rem;
-                margin-bottom: 20px;
+            .content {
+                flex-grow: 1;
+                padding: 12px;
             }
 
-            .logout-section {
-                text-align: left;
-                margin-bottom: 20px;
-            }
-            .logout-section h4 {
-                display: inline;
-                margin-right: 15px;
+            .header {
+                display: flex;
+                justify-content: right;
+                align-items: center;
+                padding: 10px;
+                background: #FFFFFF;
+                box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.3);
+                border-radius: 10px;
+                height: 85px;
             }
 
+            .icon {
+                width: 40px;
+                height: 40px;
+                border-radius: 50%;
+                object-fit: cover;
+            }
+
+            .logo-side-bar {
+                margin-left: 5%;
+                margin-bottom: 3%;
+            }
+            /* ========================================================= */
+
+            .table-container {
+                background: white;
+                padding: 20px;
+                border-radius: 10px;
+                box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.1);
+            }
+
+            table {
+                border-radius: 10px;
+                overflow: hidden;
+            }
+
+            thead {
+                background: #7D69FF;
+                color: white;
+            }
+
+            tbody tr:hover {
+                background: #f2f2f2;
+                transition: 0.3s;
+            }
+
+            .search-box {
+                max-width: 300px;
+                margin-bottom: 10px;
+            }
+
+            .table-navigate{
+                display: flex;
+                justify-content: space-between;
+            }
             .btn-add {
                 background-color: #003375;
                 color: white;
@@ -54,176 +123,104 @@
                 display: inline-block;
                 padding: 5px 10px;
             }
-
-            /* Reset table alignment */
-            .table th {
-                vertical-align: middle;
-                text-align: center;
-            }
-
-            .table td {
-                vertical-align: middle;
-                text-align: left;
-            }
-
-            /* Custom buttons for edit and delete */
-            .btn-edit {
-                background-color: #28a745;
-                color: white;
-                border: none;
-                padding: 5px 10px;
-                margin-right: 5px;
-            }
-
             .btn-delete {
-                background-color: #dc3545;
+                background-color: red;
                 color: white;
                 border: none;
+                display: inline-block;
                 padding: 5px 10px;
             }
-
-            .btn-edit:hover, .btn-delete:hover {
-                opacity: 0.8;
+            .btn-edit {
+                background-color: green;
+                color: white;
+                border: none;
+                display: inline-block;
+                padding: 5px 10px;
             }
-
-            .btn-rounded {
-                border-radius: 5px;
-            }
-
-            .container {
-                margin-left: 270px; /* Dịch sang phải để tránh sidebar */
-                max-width: 80%; /* Giới hạn chiều rộng */
-            }
-
-            .table-container {
-                margin: 20px auto;
-                width: 100%;
-            }
-
-
-
         </style>
     </head>
-
     <body>
-        <jsp:include page="leftshopmanager.jsp" />
-        <jsp:include page="managerHeader.jsp" />
-        <!-- Main container -->
-        <div class="container mt-4">
-
-            <!-- Product Table -->
-            <table class="table table-bordered table-hover align-middle">
-                <thead class="table-dark">
-                    <tr>
-                        <th>ID</th>
-                        <th>Category</th>
-                        <th>Brand</th>
-                        <th>Name</th>
-                        <th>Price</th>
-                        <th>Quantity</th>
-                        <th>Status</th>
-                        <th>Actions</th>
-                        <th></th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <%
-                        // Step 1: Initialize DAO to interact with the database
-                        ProductDAO dao = new ProductDAO();
-
-                        // Step 2: Call method to get the list of products
-                        ResultSet rs = dao.getProductList();
-
-                        // Step 3: Loop through the list of products
-                        while (rs.next()) {
-                    %>
-                    <tr>
-                        <td><%= rs.getInt("ProductID")%></td>
-                        <td><%= rs.getString("CategoryName")%></td>
-                        <td><%= rs.getString("BrandName")%></td>
-                        <td><%= rs.getString("FullName")%></td>
-                        <td><%= rs.getLong("Price")%></td>
-                        <td><%= rs.getInt("Quantity")%></td>
-                        <td><%= rs.getInt("isDeleted")%></td>
-                        <td>
-                            <button class="btn btn-sm <%= rs.getInt("isDeleted") == 0 ? "btn-success" : "btn-danger"%>"
-                                    onclick="confirmToggle(<%= rs.getInt("ProductID")%>, <%= rs.getInt("isDeleted")%>);">
-                                <%= rs.getInt("isDeleted") == 0 ? "Activate" : "Block"%>
-                            </button>
-                        </td>
-                <script>
-                    function confirmToggle(productID, currentStatus) {
-                        let action = currentStatus === 0 ? "Activate" : "Block";
-                        if (confirm("Are you sure you want to " + action + " this product?")) {
-                            window.location.href = "ProductListServlet?action=toggleStatus&id=" + productID;
-                        }
-                    }
-                </script>
-                <td>
-                    <button class="btn btn-add" onclick="">Update</button>
-                    <button class="btn btn-delete" onclick="">Delete</button>
-                    <button class="btn btn-edit" onclick="showProductDetail(<%= rs.getInt("ProductID")%>)">Detail</button>
-                </td>
-
-                </tr>
-                <%
-                    }
-                %>
-                </tbody>
-            </table>
+        <div class="sidebar">
+            <img src="assets/imgs/Dashboard/Group 1521.svg" class="logo-side-bar">
+            <h6><a href="#">Shop Management</a></h6>
+            <a href="CustomerListServlet">Customer Management</a>
+            <a href="ProductListServlet">Product Management</a>
+            <a href="#">Product Statistic</a>
         </div>
-        <div class="modal fade" id="productDetailModal" tabindex="-1" aria-hidden="true">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title">Product Details</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-                    </div>
-                    <div class="modal-body">
-                        <p><strong>ID:</strong> <span id="ProductID"></span></p>
-                        <p><strong>Category:</strong> <span id="CategoryName"></span></p>
-                        <p><strong>Brand:</strong> <span id="BrandName"></span></p>
-                        <p><strong>Name:</strong> <span id="FullName"></span></p>
-                        <p><strong>Price:</strong> <span id="Price"></span></p>
-                        <p><strong>Quantity:</strong> <span id="Quantity"></span></p>
-                        <p><strong>Status:</strong> <span id="isDeleted"></span></p>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                    </div>
-                </div>
+        <div class="content">
+            <!--            <div class="header">
+                            <div style="margin-right: 30px">
+                                <img style="float: left; margin-right: 15px;"
+                                     src="assets/imgs/Dashboard/FF8D5F6D-1708-4455-81D8-5F4456F83F52_LE_auto_x2-min.png" alt="User Icon" class="icon">
+                                <p style="display: flex; margin: 12px 0 0 0;">Hi, Kien</p>
+                            </div>
+                        </div>-->
+            <div class="table-navigate">
+                <input type="text" id="searchInput" class="form-control search-box" placeholder="Find by name ..." onkeyup="filterTable()">
+                <button class="btn btn-detail" style="background-color: #BDF3BD; height: 100%">Create</button>
+            </div>
+
+            <div class="table-container">
+                <table class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th>Product ID</th>
+                            <th>Category</th>
+                            <th>Brand</th>
+                            <th>Product Name</th>
+                            <th>Price</th>
+                            <th>Quantity</th>
+                            <th>Status</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody id="productTable">
+                        <c:forEach items="${products}" var="s">
+                            <tr>
+                                <td>${s.getProductId()}</td>
+                                <td>${s.getCategoryName()}</td>
+                                <td>${s.getBrandName()}</td>
+                                <td>${s.getFullName()}</td>
+                                <td>${s.getPrice()}</td>
+                                <td>${s.getQuantity()}</td>
+                                <td>
+                                    <span class="badge ${s.isIsDeleted() ?  'bg-danger':'bg-success'}">
+                                        ${s.getStatus()}
+                                    </span>
+                                </td>
+                                <td>
+                                    <button class="btn btn-add" onclick="">Update</button>
+                                    <a href="ProductListServlet?${s.isIsDeleted() ? 'restore' : 'delete'}=${s.getProductId()}" 
+                                       class="btn ${s.isIsDeleted() ? 'btn-success' : 'btn-danger'}" 
+                                       onclick="return confirm('Are you sure?');">
+                                        ${s.isIsDeleted() ? 'Activate' : 'Delete'}
+                                    </a>
+                                    <a href="ProductListServlet?id=${s.getProductId()}" class="btn btn-detail" style="background-color: #BDF3BD">Detail</a>
+                                </td>
+                            </tr>
+                        </c:forEach>
+                    </tbody>
+                </table>
             </div>
         </div>
+
         <script>
-            function showProductDetail(productID) {
-                fetch("ProductListServlet?id=" + productID)
-                        .then(response => response.json())
-                        .then(data => {
-                            console.log(data); // Kiểm tra dữ liệu
+            function filterTable() {
+                let input = document.getElementById("searchInput");
+                let filter = input.value.toLowerCase();
+                let table = document.getElementById("productTable");
+                let rows = table.getElementsByTagName("tr");
 
-                            if (data.error) {
-                                alert(data.error);
-                                return;
-                            }
-
-                            document.getElementById("ProductID").textContent = data.productID;
-                            document.getElementById("CategoryName").textContent = data.categoryName;
-                            document.getElementById("BrandName").textContent = data.brandName;
-                            document.getElementById("FullName").textContent = data.fullName;
-                            document.getElementById("Price").textContent = data.price;
-                            document.getElementById("Quantity").textContent = data.quantity;
-                            document.getElementById("isDeleted").textContent = data.isDeleted == 0 ? "Active" : "Blocked";
-
-                            var productModal = new bootstrap.Modal(document.getElementById("productDetailModal"));
-                            productModal.show();
-                        })
-                        .catch(error => console.error('Error:', error));
-            }
-
+                for (let i = 0; i < rows.length; i++) {
+                    let nameCell = rows[i].getElementsByTagName("td")[1];
+                    if (nameCell) {
+                        let nameText = nameCell.textContent || nameCell.innerText;
+                        rows[i].style.display = nameText.toLowerCase().includes(filter) ? "" : "none";
+                    }
+                }
             }
         </script>
 
-        <!-- Bootstrap JS CDN -->
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    </body>
+    </div>
+</body>
 </html>

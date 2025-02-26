@@ -65,6 +65,9 @@ INSERT INTO Products(ProductID, BrandID, CategoryID, Model, FullName, [Descripti
 VALUES (11, 6, 1, 'Dell-G5511', 'Dell Gaming G5511', 'Gaming laptop with strong design and high performance', '45606_dell_gaming_5511_dark_grey_ha3.jpg', 35909000);
 
 
+SET IDENTITY_INSERT Products OFF;
+
+
 -- Insert AttributeDetails
 INSERT INTO AttributeDetails (AttributeID, ProductID, AttributeInfor)
 VALUES
@@ -90,9 +93,12 @@ INSERT INTO OrderDetails VALUES (1, 1, 3, 50000000);
 
 
 -- Insert Employees
-INSERT INTO Employees ( FullName, Birthday, [Password], PhoneNumber, Email, Gender, CreatedDate, Avatar, RoleID) VALUES
-('Nguyen Van A', '1990-01-01', 'encrypted_password_here', '0123456789', 'nguyen.vana@example.com', 'Male', GETDATE(), 'avatar_image.jpg', 1),
-('Nguyen Van B', '1990-01-01', 'encrypted_password_here', '0123456788', 'nguyen.vanb@example.com', 'Male', GETDATE(), 'avatar_image.jpg', 4);
+SET IDENTITY_INSERT Employees ON;
+INSERT INTO Employees (EmployeeID, FullName, Birthday, [Password], PhoneNumber, Email, Gender, CreatedDate, Avatar, RoleID) VALUES
+(1, 'Nguyen Van A', '1990-01-01', 'encrypted_password_here', '0123456789', 'nguyen.vana@example.com', 'Male', GETDATE(), 'avatar_image.jpg', 1),
+(2, 'Nguyen Van B', '1990-01-01', 'encrypted_password_here', '0123456788', 'nguyen.vanb@example.com', 'Male', GETDATE(), 'avatar_image.jpg', 4),
+(3, 'Kieu Thy', '2004-06-02', 'encrypted_password_here', '0123456790', 'kieuthy@gmail.com', 'Female', GETDATE(), 'avatar_image.jpg', 4);
+SET IDENTITY_INSERT Employees OFF;
 
 -- Insert Carts
 INSERT INTO Carts (CustomerID, ProductID, Quantity)

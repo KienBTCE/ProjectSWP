@@ -58,8 +58,16 @@ public class CustomerListServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        String action = request.getParameter("action");
 
+//        if (request.getParameter("CustomerID") != null && !request.getParameter("CustomerID").equals("")) {
+//            int CustomerID = Integer.parseInt(request.getParameter("CustomerID"));
+//            CustomerDAO dao = new CustomerDAO();
+////            dao.Delete(id);
+//            response.sendRedirect("CustomerListServlet");
+//        } else {
+        request.getRequestDispatcher("ManageCustomerView.jsp").forward(request, response);
+//        }
+        String action = request.getParameter("action");
         if ("toggleStatus".equals(action)) {
             try {
                 int customerID = Integer.parseInt(request.getParameter("id"));
@@ -91,9 +99,8 @@ public class CustomerListServlet extends HttpServlet {
             } catch (NumberFormatException e) {
                 response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Invalid ID");
             }
-            return; // Dừng lại nếu là request AJAX
+            // Dừng lại nếu là request AJAX
         }
-        processRequest(request, response);
     }
 
     /**

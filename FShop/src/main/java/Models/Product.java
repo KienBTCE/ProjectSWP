@@ -24,7 +24,7 @@ public class Product {
     private String model;
     private String fullName;
     private String description;
-    private int isDeleted;
+    private boolean isDeleted;
     private long price;
     private String image;
     private int quantity;
@@ -32,7 +32,10 @@ public class Product {
 
     private HashMap<String, String> attributes;
 
-    public Product(int productId, int brandId, int categoryId, String model, String fullName, String description, int isDeleted, long price, String image, int quantity, int stock) {
+    public Product() {
+    }
+
+    public Product(int productId, int brandId, int categoryId, String model, String fullName, String description, boolean isDeleted, long price, String image, int quantity, int stock) {
         this.productId = productId;
         this.brandId = brandId;
         this.categoryId = categoryId;
@@ -46,7 +49,7 @@ public class Product {
         this.stock = stock;
     }
 
-    public Product(int productId, String categoryName, String brandName, String fullName, long price, int quantity, int isDeleted) {
+    public Product(int productId, String categoryName, String brandName, String fullName, long price, int quantity, boolean isDeleted) {
         this.productId = productId;
         this.categoryName = categoryName;
         this.brandName = brandName;
@@ -120,11 +123,11 @@ public class Product {
         this.description = description;
     }
 
-    public int isIsDeleted() {
+    public boolean isIsDeleted() {
         return isDeleted;
     }
 
-    public void setIsDeleted(int isDeleted) {
+    public void setIsDeleted(boolean isDeleted) {
         this.isDeleted = isDeleted;
     }
 
@@ -166,6 +169,13 @@ public class Product {
 
     public void setAttributes(HashMap<String, String> attributes) {
         this.attributes = attributes;
+    }
+
+    public String getStatus() {
+        if (isDeleted) {
+            return "Deleted";
+        }
+        return "Activate";
     }
 
     public String getPriceFormatted() {
