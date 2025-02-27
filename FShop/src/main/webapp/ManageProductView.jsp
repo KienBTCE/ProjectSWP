@@ -158,7 +158,7 @@
             <div class="table-navigate">
                 <input type="text" id="searchInput" class="form-control search-box" placeholder="Find by name ..." onkeyup="filterTable()">
             </div>
-
+            <a href="CreateProductServlet?id=${s.getProductId()}" class="btn btn-detail" style="background-color: #BDF3BD">Create</a>
             <div class="table-container">
                 <table class="table table-hover">
                     <thead>

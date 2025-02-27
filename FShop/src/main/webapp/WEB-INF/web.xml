@@ -31,6 +31,10 @@
         <servlet-name>CreateProductServlet</servlet-name>
         <servlet-class>Controllers.CreateProductServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>SearchCustomerServlet</servlet-name>
+        <servlet-class>Controllers.SearchCustomerServlet</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>default</servlet-name>
         <url-pattern>/assets/*</url-pattern>
@@ -142,6 +146,10 @@
     <servlet-mapping>
         <servlet-name>CreateProductServlet</servlet-name>
         <url-pattern>/CreateProductServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>SearchCustomerServlet</servlet-name>
+        <url-pattern>/SearchCustomerServlet</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

@@ -28,7 +28,7 @@ public class ProductDAO {
     public ArrayList<Product> getAllProducts() {
         ArrayList<Product> list = new ArrayList<>();
 
-        String query = "SELECT * FROM Products";
+        String query = "SELECT * FROM Products WHERE isDeleted = 0";
 
         try {
             PreparedStatement ps = connector.prepareStatement(query);
@@ -217,8 +217,8 @@ public class ProductDAO {
 
         return s;
     }
-    // Xóa mềm sản phẩm - Shop Manager
 
+    // Xóa mềm sản phẩm - Shop Manager
     public int deleteProduct(int productId) {
         int count = 0;
         try {
@@ -231,7 +231,8 @@ public class ProductDAO {
         }
         return count;
     }
-    
+
+    //restore product - shop manager
     public int restoreProduct(int productId) {
         int count = 0;
         try {
@@ -243,6 +244,29 @@ public class ProductDAO {
             Logger.getLogger(ProductDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
         return count;
+    }
+
+    //create product - shop manager
+    public boolean createProduct(int categoryId, int brandId, String fullName, String model, String description, String image, long price, int quantity) {
+        String query = "INSERT INTO Products (CategoryID, BrandID, Model, FullName, Description, Price, Image, Quantity) "
+                + "VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+        try {
+            PreparedStatement ps = connector.prepareStatement(query);
+            ps.setInt(1, categoryId);
+            ps.setInt(2, brandId);
+            ps.setString(3, model);
+            ps.setString(4, fullName);
+            ps.setString(5, description);
+            ps.setLong(6, price);
+            ps.setString(7, image);
+            ps.setInt(8, quantity);
+
+            int rowsAffected = ps.executeUpdate();
+            return rowsAffected > 0;
+        } catch (SQLException e) {
+            System.out.println(e);
+            return false;
+        }
     }
 
 }
