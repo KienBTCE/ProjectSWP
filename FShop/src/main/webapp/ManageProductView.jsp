@@ -183,16 +183,16 @@
                                 <td>${s.getPrice()}</td>
                                 <td>${s.getQuantity()}</td>
                                 <td>
-                                    <span class="badge ${s.isIsDeleted() ?  'bg-danger':'bg-success'}">
+                                    <span class="badge ${s.getDeleted() == 1 ?  'bg-danger':'bg-success'}">
                                         ${s.getStatus()}
                                     </span>
                                 </td>
                                 <td>
                                     <a href="ProductListServlet?id=${s.getProductId()}" class="btn btn-edit" style="">Update</a>
-                                    <a href="ProductListServlet?${s.isIsDeleted() ? 'restore' : 'delete'}=${s.getProductId()}" 
-                                       class="btn ${s.isIsDeleted() ? 'btn-success' : 'btn-danger'}" 
+                                    <a href="ProductListServlet?${s.getDeleted() == 1 ? 'restore' : 'delete'}=${s.getProductId()}" 
+                                       class="btn ${s.getDeleted() ? 'btn-success' : 'btn-danger'}" 
                                        onclick="return confirm('Are you sure?');">
-                                        ${s.isIsDeleted() ? 'Activate' : 'Delete'}
+                                        ${s.getDeleted() ? 'Activate' : 'Delete'}
                                     </a>
                                     <a href="ProductListServlet?id=${s.getProductId()}" class="btn btn-detail" style="background-color: #BDF3BD">Detail</a>
                                 </td>
