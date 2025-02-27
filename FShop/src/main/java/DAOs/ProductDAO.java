@@ -27,7 +27,7 @@ public class ProductDAO {
     public ArrayList<Product> getAllProducts() {
         ArrayList<Product> list = new ArrayList<>();
 
-        String query = "SELECT * FROM Products";
+        String query = "SELECT * FROM Products WHERE IsDeleted = 0";
 
         try {
             PreparedStatement ps = connector.prepareStatement(query);
@@ -56,13 +56,15 @@ public class ProductDAO {
         return list;
     }
 
-    public ArrayList<Product> getAllLaptops() {
+    public ArrayList<Product> getAllProductsByCategory(String category) {
         ArrayList<Product> list = new ArrayList<>();
 
-        String query = "SELECT * FROM Products P JOIN Categories C ON P.CategoryID = C.CategoryID WHERE C.Name = 'Laptop'";
+        String query = "SELECT * FROM Products P JOIN Categories C ON P.CategoryID = C.CategoryID WHERE C.Name = ?";
 
         try {
             PreparedStatement ps = connector.prepareStatement(query);
+            ps.setString(1, category);
+            System.out.println(query);
             ResultSet rs = ps.executeQuery();
 
             while (rs.next()) {
@@ -88,7 +90,7 @@ public class ProductDAO {
         return list;
     }
 
-    public ArrayList<Product> findProductsByFilter(ArrayList<String> filters) {
+    public ArrayList<Product> findProductsByFilter(ArrayList<String> filters, String category) {
         ArrayList<Product> list = null;
 
         String query = "SELECT * FROM Products P JOIN Brands B ON P.BrandID = B.BrandID WHERE B.Name IN (SELECT Name FROM Brands WHERE ";
@@ -97,53 +99,52 @@ public class ProductDAO {
             query += filter;
         }
 
-        query += ") AND P.CategoryID IN (SELECT CategoryID FROM Categories WHERE [Name] = 'Laptop')";
+        query += ") AND P.CategoryID IN (SELECT CategoryID FROM Categories WHERE [Name] = ?)";
 
-        System.out.println("QUERY " + query);
-
-        try ( PreparedStatement ps = connector.prepareStatement(query)) {
-            try ( ResultSet rs = ps.executeQuery()) {
-                list = new ArrayList<>();
-                while (rs.next()) {
-                    list.add(new Product(
-                            rs.getInt("ProductID"),
-                            rs.getInt("BrandID"),
-                            rs.getInt("CategoryID"),
-                            rs.getString("Model"),
-                            rs.getString("FullName"),
-                            rs.getString("Description"),
-                            rs.getInt("IsDeleted"),
-                            rs.getLong("Price"),
-                            rs.getString("Image"),
-                            rs.getInt("Quantity"),
-                            rs.getInt("Stock")
-                    ));
-                }
-                return list;
-            } catch (Exception e) {
+//        System.out.println("QUERY " + query);
+        try {
+            PreparedStatement ps = connector.prepareStatement(query);
+            ps.setString(1, category);
+            ResultSet rs = ps.executeQuery();
+            list = new ArrayList<>();
+            while (rs.next()) {
+                list.add(new Product(
+                        rs.getInt("ProductID"),
+                        rs.getInt("BrandID"),
+                        rs.getInt("CategoryID"),
+                        rs.getString("Model"),
+                        rs.getString("FullName"),
+                        rs.getString("Description"),
+                        rs.getInt("IsDeleted"),
+                        rs.getLong("Price"),
+                        rs.getString("Image"),
+                        rs.getInt("Quantity"),
+                        rs.getInt("Stock")
+                ));
             }
-        } catch (Exception e) {
+            return list;
+        } catch (SQLException e) {
             System.out.println(e);
         }
 
         return list;
     }
 
-    public ArrayList<String> getAllBrandLaptop() {
+    public ArrayList<String> getAllBrandByCategory(String category) {
         ArrayList<String> list = null;
 
-        String query = "SELECT DISTINCT B.[Name] FROM Brands B JOIN Products P ON B.BrandID = P.BrandID WHERE P.CategoryID IN (SELECT CategoryID FROM Categories WHERE [Name] = 'Laptop')";
+        String query = "SELECT DISTINCT B.[Name] FROM Brands B JOIN Products P ON B.BrandID = P.BrandID WHERE P.CategoryID IN (SELECT CategoryID FROM Categories WHERE [Name] = ?)";
 
-        try ( PreparedStatement ps = connector.prepareStatement(query)) {
-            try ( ResultSet rs = ps.executeQuery()) {
-                list = new ArrayList<>();
-                while (rs.next()) {
-                    list.add(rs.getString("Name"));
-                }
-                return list;
-            } catch (Exception e) {
+        try {
+            PreparedStatement ps = connector.prepareStatement(query);
+            ps.setString(1, category);
+            ResultSet rs = ps.executeQuery();
+            list = new ArrayList<>();
+            while (rs.next()) {
+                list.add(rs.getString("Name"));
             }
-        } catch (Exception e) {
+            return list;
+        } catch (SQLException e) {
             System.out.println(e);
         }
 
