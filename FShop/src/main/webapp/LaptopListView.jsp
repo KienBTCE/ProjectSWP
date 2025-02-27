@@ -148,7 +148,7 @@
 
                                 <c:forEach items="${products}" var="p" varStatus="status">
                                     <c:if test="${status.index >= (i * 4 - 4) && status.index < (i * 4)}">
-                                        <a class="frame-represent" href="Laptop/id=${p.getProductId()}">
+                                        <a class="frame-represent" href="Products/id=${p.getProductId()}">
                                             <img src="assets/imgs/Products/${p.getImage()}" width="150px" height="150px" alt="alt"/>
                                             <div class="star-rating">
                                                 <span class="star">★</span>

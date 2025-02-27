@@ -161,19 +161,13 @@
                     <div class="nav-infor-content list-cat col-md-4">
                         <ul class="list-categories">
                             <li>
-                                <a href="#">Asus</a>
+                                <a href="#">Laptop</a>
                             </li>
                             <li>
-                                <a href="#">Apple</a>
+                                <a href="#">Smartphone</a>
                             </li>
                             <li>
-                                <a href="#">Lenovo</a>
-                            </li>
-                            <li>
-                                <a href="#">Intel</a>
-                            </li>
-                            <li>
-                                <a href="#">Nvidia</a>
+                                <a href="#">Accessories</a>
                             </li>
                         </ul>
                     </div>
