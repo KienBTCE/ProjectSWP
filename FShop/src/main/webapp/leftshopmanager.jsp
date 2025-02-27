@@ -62,15 +62,15 @@
         <i class="fas fa-tachometer-alt"></i> DashBoard
     </a>
 
-    <a href="manageProductView.jsp" class="sidebar-item <%= currentPage.endsWith("manageProductView.jsp") ? "active" : ""%>">
+    <a href="ProductListServlet" class="sidebar-item <%= currentPage.endsWith("ProductListServlet") ? "active" : ""%>">
         <i class="fas fa-boxes"></i> Product Management
     </a>
 
-    <a href="productStatistics" class="sidebar-item <%= currentPage.contains("productStatistics") ? "active" : ""%>">
+    <a href="PoroductStatisticView" class="sidebar-item <%= currentPage.contains("PoroductStatisticView") ? "active" : ""%>">
         <i class="fas fa-chart-bar"></i> Product Statistics
     </a>
 
-    <a href="CustomerListView.jsp" class="sidebar-item <%= currentPage.endsWith("CustomerListView.jsp") ? "active" : ""%>">
+    <a href="CustomerListServlet" class="sidebar-item <%= currentPage.endsWith("CustomerListServlet") ? "active" : ""%>">
         <i class="fas fa-user"></i> Customer Management
     </a>
 </nav>

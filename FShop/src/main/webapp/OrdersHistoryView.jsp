@@ -106,10 +106,11 @@
                 </div>
             </c:forEach>
         </div>
-
+        <% boolean hasWaiting = false;%>
         <div id="waiting" class="order-list">
             <c:forEach items="${sessionScope.orderList}" var="o">
                 <c:if test="${o.getStatus() == 1}">
+                    <% hasWaiting = true; %>
                     <div style="background-color: white; width: 100%; border-radius: 10px;">
                         <div style="text-align: right; padding: 15px; border-bottom: 0.5px solid rgb(226, 214, 214); color:rgb(238,84,61); width: 95%; margin: 0 auto">
                             <c:choose>
@@ -152,6 +153,13 @@
                     </div>
                 </c:if>
             </c:forEach>
+            <%
+                if (!hasWaiting) {
+            %>
+            <h1>No Waiting Order</h1>
+            <%
+                }
+            %>
         </div>
         <div id="transport" class="order-list">
             <c:forEach items="${sessionScope.orderList}" var="o">
@@ -291,6 +299,9 @@
                 </c:if>
             </c:forEach>
         </div>
+        <%
+            boolean hasCancelOrder = false;
+        %>
         <div id="canceled" class="order-list">
             <c:forEach items="${sessionScope.orderList}" var="o">
                 <c:if test="${o.getStatus() == 5}">
@@ -334,8 +345,16 @@
                     <div style="width: 100%; background: rgba(231, 220, 220, 0);">
                         <br>
                     </div>
+                    <% hasCancelOrder = true;%>
                 </c:if>
             </c:forEach>
+            <%
+                if (!hasCancelOrder) {
+            %>
+            <h1>No Cancel Order</h1>
+            <%
+                }
+            %>
         </div>
         <div style="width: 100%; background: rgba(231, 220, 220, 0);">
             <br>
