@@ -88,7 +88,6 @@ public class SupplierDAO {
     public boolean createSupplier(Supplier s) {
 
         String query = "INSERT INTO Suppliers (TaxID, [Name], Email, PhoneNumber, Address, CreatedDate, LastModify, IsDeleted, IsActivate) VALUES (?, ?, ?, ?, ?, GETDATE(), GETDATE(), ?, ?)";
-        System.out.println("helo1");
         try {
             PreparedStatement ps = connector.prepareStatement(query);
             ps.setString(1, s.getTaxId());

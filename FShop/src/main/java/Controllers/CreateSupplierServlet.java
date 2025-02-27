@@ -82,7 +82,8 @@ public class CreateSupplierServlet extends HttpServlet {
         String address = request.getParameter("address");
 
         Supplier s = new Supplier(0, taxId, companyName, email, phoneNumber, address, LocalDateTime.now(), LocalDateTime.now(), 0, 1);
-
+        sd.createSupplier(s);
+        
         response.sendRedirect("Supplier");
     }
 
