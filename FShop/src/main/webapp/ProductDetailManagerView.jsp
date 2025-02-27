@@ -126,8 +126,8 @@
                             <tr>
                                 <th>Status</th>
                                 <td>
-                                    <span class="badge ${product.isIsDeleted() ? 'bg-success' : 'bg-danger'}">
-                                        ${product.isIsDeleted() ? 'Deleted' : 'Activate'}
+                                    <span class="badge ${product.getDeleted() == 1 ? 'bg-success' : 'bg-danger'}">
+                                        ${product.getDeleted() == 1 ? 'Deleted' : 'Activate'}
                                     </span>
                                 </td>
                             </tr>

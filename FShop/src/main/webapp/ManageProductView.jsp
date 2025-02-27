@@ -190,9 +190,9 @@
                                 <td>
                                     <a href="ProductListServlet?id=${s.getProductId()}" class="btn btn-edit" style="">Update</a>
                                     <a href="ProductListServlet?${s.getDeleted() == 1 ? 'restore' : 'delete'}=${s.getProductId()}" 
-                                       class="btn ${s.getDeleted() ? 'btn-success' : 'btn-danger'}" 
+                                       class="btn ${s.getDeleted() == 1 ? 'btn-success' : 'btn-danger'}" 
                                        onclick="return confirm('Are you sure?');">
-                                        ${s.getDeleted() ? 'Activate' : 'Delete'}
+                                        ${s.getDeleted() == 1 ? 'Activate' : 'Delete'}
                                     </a>
                                     <a href="ProductListServlet?id=${s.getProductId()}" class="btn btn-detail" style="background-color: #BDF3BD">Detail</a>
                                 </td>

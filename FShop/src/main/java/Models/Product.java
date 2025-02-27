@@ -170,6 +170,13 @@ public class Product {
     public void setAttributes(HashMap<String, String> attributes) {
         this.attributes = attributes;
     }
+    
+    public String getStatus() {
+        if (deleted == 1) {
+            return "Deleted";
+        }
+        return "Activate";
+    }
 
     public String getPriceFormatted() {
         Locale vietnam = new Locale("vi", "VN");
