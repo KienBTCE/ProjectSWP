@@ -59,7 +59,7 @@ public class ProductDAO {
     public ArrayList<Product> getAllProductsByCategory(String category) {
         ArrayList<Product> list = new ArrayList<>();
 
-        String query = "SELECT * FROM Products P JOIN Categories C ON P.CategoryID = C.CategoryID WHERE C.Name = ?";
+        String query = "SELECT * FROM Products P JOIN Categories C ON P.CategoryID = C.CategoryID WHERE C.Name = ? AND P.IsDeleted = 0";
 
         try {
             PreparedStatement ps = connector.prepareStatement(query);
@@ -99,7 +99,7 @@ public class ProductDAO {
             query += filter;
         }
 
-        query += ") AND P.CategoryID IN (SELECT CategoryID FROM Categories WHERE [Name] = ?)";
+        query += ") AND P.CategoryID IN (SELECT CategoryID FROM Categories WHERE [Name] = ?) AND P.IsDeleted = 0";
 
 //        System.out.println("QUERY " + query);
         try {
@@ -133,7 +133,7 @@ public class ProductDAO {
     public ArrayList<String> getAllBrandByCategory(String category) {
         ArrayList<String> list = null;
 
-        String query = "SELECT DISTINCT B.[Name] FROM Brands B JOIN Products P ON B.BrandID = P.BrandID WHERE P.CategoryID IN (SELECT CategoryID FROM Categories WHERE [Name] = ?)";
+        String query = "SELECT DISTINCT B.[Name] FROM Brands B JOIN Products P ON B.BrandID = P.BrandID WHERE P.CategoryID IN (SELECT CategoryID FROM Categories WHERE [Name] = ?)  AND P.IsDeleted = 0";
 
         try {
             PreparedStatement ps = connector.prepareStatement(query);
