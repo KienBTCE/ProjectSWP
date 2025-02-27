@@ -111,7 +111,7 @@
                 max-width: 300px;
                 margin-bottom: 10px;
             }
-            
+
             .table-navigate{
                 display: flex;
                 justify-content: space-between;
@@ -136,9 +136,45 @@
             </div>
             <div class="table-navigate">
                 <input type="text" id="searchInput" class="form-control search-box" placeholder="Find by name ..." onkeyup="filterTable()">
-                <button class="btn btn-detail" style="background-color: #BDF3BD; height: 100%">Create</button>
+                <button class="btn btn-detail" data-bs-toggle="modal" data-bs-target="#importOrderModal" style="background-color: #BDF3BD; height: 100%">Create</button>
             </div>
-
+            <!--          Start Modal Create Supplier            -->
+            <div class="modal fade" id="importOrderModal" tabindex="-1" aria-labelledby="importOrderModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="importOrderModalLabel">New Supplier</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <form id="importSupplierForm" method="POST" action="CreateSupplier">
+                                <div class="mb-3">
+                                    <label for="taxId" class="form-label">Tax ID</label>
+                                    <input name="id" type="number" class="form-control" id="taxId" required>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="companyName" class="form-label">Company Name</label>
+                                    <input name="name" type="text" class="form-control" id="companyName" required>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="email" class="form-label">Email</label>
+                                    <input name="email" type="email" class="form-control" id="email" required>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="phoneNumber" class="form-label">Phone Number</label>
+                                    <input name="phone" type="number" class="form-control" id="phoneNumber" required>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="address" class="form-label">Address</label>
+                                    <input name="address" type="text" class="form-control" id="address" required>
+                                </div>
+                                <button type="submit" class="btn btn-success">Save</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!--          End Modal Create Supplier            -->
             <div class="table-container">
                 <div>
                     <h3>Suppliers</h3>
@@ -164,9 +200,7 @@
                                 <td>${s.getEmail()}</td>
                                 <td>${s.getShortedAddress()}</td>
                                 <td>
-                                    <span class="badge ${s.isIsActivate() ? 'bg-success' : 'bg-danger'}">
-                                        ${s.getStatus()}
-                                    </span>
+                                    <span class="badge ${s.isActivate() == 1 ? 'bg-success' : 'bg-danger'}">${s.getStatus()}</span>
                                 </td>
                                 <td>
                                     <a href="Supplier?id=${s.getSupplierId()}" class="btn btn-detail" style="background-color: #BDF3BD">Detail</a>
@@ -175,7 +209,7 @@
                         </c:forEach>
                     </tbody>
                 </table>
-            </div>
+            </div> 
         </div>
 
         <script>
@@ -185,7 +219,7 @@
                 let table = document.getElementById("supplierTable");
                 let rows = table.getElementsByTagName("tr");
 
-                for (let i = 0; i < rows.length; i++) {
+                for (let i = 1; i < rows.length; i++) {
                     let nameCell = rows[i].getElementsByTagName("td")[1];
                     if (nameCell) {
                         let nameText = nameCell.textContent || nameCell.innerText;
@@ -194,7 +228,5 @@
                 }
             }
         </script>
-
-    </div>
-</body>
+    </body>
 </html>
