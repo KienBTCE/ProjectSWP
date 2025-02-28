@@ -208,5 +208,36 @@ public class ProductDAO {
         }
         return product;
     }
+    
+    
+    
+    
+    // Xóa mềm sản phẩm - Shop Manager
+
+    public int deleteProduct(int productId) {
+        int count = 0;
+        try {
+            String sql = "UPDATE Products SET isDeleted = 1 WHERE ProductID = ?";
+            PreparedStatement pst = connector.prepareStatement(sql);
+            pst.setInt(1, productId);
+            count = pst.executeUpdate();
+        } catch (SQLException ex) {
+            Logger.getLogger(ProductDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return count;
+    }
+    
+    public int restoreProduct(int productId) {
+        int count = 0;
+        try {
+            String sql = "UPDATE Products SET isDeleted = 0 WHERE ProductID = ?";
+            PreparedStatement pst = connector.prepareStatement(sql);
+            pst.setInt(1, productId);
+            count = pst.executeUpdate();
+        } catch (SQLException ex) {
+            Logger.getLogger(ProductDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return count;
+    }
 
 }
