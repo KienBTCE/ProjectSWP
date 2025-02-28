@@ -133,7 +133,7 @@
                                         </div>
                                         <div class="col-md-8">
                                             <div>
-                                                <a href="orderDetails.jsp" style="text-decoration: none; color: black;">${od.getProductName()}</a>
+                                                <a href="OrderDetailsForCustomerView.jsp" style="text-decoration: none; color: black;">${od.getProductName()}</a>
                                             </div>
                                             <div>
                                                 Quantity: ${od.getQuantity()}
