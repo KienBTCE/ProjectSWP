@@ -140,6 +140,7 @@ public class OrderDAO {
     
 
 
+
     public void addQuantityAfterCancel(int productID, int quantity) {
         try {
             PreparedStatement pr = connector.prepareStatement("Update Products set Quantity = quantity + ? where ProductID=?");
@@ -151,6 +152,7 @@ public class OrderDAO {
     }
 
     public void updateOrder(int orderID, int status) {
+
 
         String query = "Update Orders SET Orders.Status= ? WHERE Orders.OrderID=?";
         try {

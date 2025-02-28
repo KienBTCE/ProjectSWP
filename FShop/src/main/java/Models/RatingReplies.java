@@ -9,34 +9,15 @@ package Models;
  * @author HP
  */
 public class RatingReplies {
-<<<<<<< HEAD
-    private  int replyID;
-    private  int employeeID;
-    private  int rateID;
-    private  String Answer;
-    private  boolean  isRead;
-=======
     private int replyID;
     private int employeeID;
     private int rateID;
     private String answer;
     private boolean isRead;
->>>>>>> 3d93b6c (fig bug on crud order create view feedback.)
 
     public RatingReplies() {
     }
 
-<<<<<<< HEAD
-    public RatingReplies(int replyID, int employeeID, int rateID, String Answer, boolean isRead) {
-        this.replyID = replyID;
-        this.employeeID = employeeID;
-        this.rateID = rateID;
-        this.Answer = Answer;
-        this.isRead = isRead;
-    }
-
-    
-=======
     public RatingReplies(int replyID, int employeeID, int rateID, String answer, boolean isRead) {
         this.replyID = replyID;
         this.employeeID = employeeID;
@@ -45,7 +26,6 @@ public class RatingReplies {
         this.isRead = isRead;
     }
 
->>>>>>> 3d93b6c (fig bug on crud order create view feedback.)
     public int getReplyID() {
         return replyID;
     }
@@ -71,19 +51,11 @@ public class RatingReplies {
     }
 
     public String getAnswer() {
-<<<<<<< HEAD
-        return Answer;
-    }
-
-    public void setAnswer(String Answer) {
-        this.Answer = Answer;
-=======
         return answer;
     }
 
     public void setAnswer(String answer) {
         this.answer = answer;
->>>>>>> 3d93b6c (fig bug on crud order create view feedback.)
     }
 
     public boolean isIsRead() {
@@ -94,9 +66,4 @@ public class RatingReplies {
         this.isRead = isRead;
     }
     
-<<<<<<< HEAD
-    
-    
-=======
->>>>>>> 3d93b6c (fig bug on crud order create view feedback.)
 }
