@@ -4,22 +4,21 @@
  */
 package Controllers;
 
-import DAOs.OrderDAO;
-import DAOs.OrderDetailDAO;
-import Models.OrderDetail;
+import DAOs.SupplierDAO;
+import Models.Supplier;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import java.util.List;
+import java.time.LocalDateTime;
 
 /**
  *
- * @author HP
+ * @author KienBTCE180180
  */
-public class DeleteOrderServlet extends HttpServlet {
+public class UpdateSupplierServlet extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -32,19 +31,19 @@ public class DeleteOrderServlet extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        response.setContentType("text/html;charset=UTF-8");
-        try ( PrintWriter out = response.getWriter()) {
-            /* TODO output your page here. You may use following sample code. */
-            out.println("<!DOCTYPE html>");
-            out.println("<html>");
-            out.println("<head>");
-            out.println("<title>Servlet DeleteOrderServlet</title>");
-            out.println("</head>");
-            out.println("<body>");
-            out.println("<h1>Servlet DeleteOrderServlet at " + request.getContextPath() + "</h1>");
-            out.println("</body>");
-            out.println("</html>");
-        }
+//        response.setContentType("text/html;charset=UTF-8");
+//        try (PrintWriter out = response.getWriter()) {
+//            /* TODO output your page here. You may use following sample code. */
+//            out.println("<!DOCTYPE html>");
+//            out.println("<html>");
+//            out.println("<head>");
+//            out.println("<title>Servlet UpdateSupplierServlet</title>");  
+//            out.println("</head>");
+//            out.println("<body>");
+//            out.println("<h1>Servlet UpdateSupplierServlet at " + request.getContextPath () + "</h1>");
+//            out.println("</body>");
+//            out.println("</html>");
+//        }
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
@@ -72,19 +71,32 @@ public class DeleteOrderServlet extends HttpServlet {
      */
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
-    throws ServletException, IOException {
-         String orderID = request.getParameter("orderID");
-          OrderDAO oDAO = new OrderDAO();
-         if(orderID!= null){
-             oDAO.DeleteOrder(orderID);
-                  OrderDetailDAO odDAO = new OrderDetailDAO();
-                      List<OrderDetail> list = odDAO.getOrderDetail(orderID);
-                      for(OrderDetail o : list){
-                      oDAO.plusQuantityAfterCancel(o.getProductID(), o.getQuantity());
-                      }
-              System.out.println("Received Order ID: " + orderID);
-             response.sendRedirect(request.getContextPath() + "/ViewOrderListServlet");
-         }
+            throws ServletException, IOException {
+        SupplierDAO sd = new SupplierDAO();
+
+        String taxId = request.getParameter("taxNumber");
+        String companyName = request.getParameter("name");
+        String email = request.getParameter("email");
+        String phoneNumber = request.getParameter("phone");
+        String address = request.getParameter("address");
+        int status = Integer.parseInt(request.getParameter("status"));
+
+        int id = Integer.parseInt(request.getParameter("id"));
+
+        Supplier s = new Supplier(id, taxId, companyName, email, phoneNumber, address, LocalDateTime.now(), LocalDateTime.now(), 0, status);
+
+        if (id != 0) {
+            int check = sd.updateSupplier(s);
+            if (check != 0) {
+                response.sendRedirect("Supplier?id=" + s.getSupplierId());
+            } else {
+                request.getSession().setAttribute("error", "There is the same Tax ID.");
+                response.sendRedirect("Supplier?id=" + s.getSupplierId());
+            }
+        } else {
+            request.getSession().setAttribute("error", "There is the same supplier.");
+            response.sendRedirect("Supplier");
+        }
     }
 
     /**

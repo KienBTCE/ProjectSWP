@@ -39,31 +39,31 @@ public class OrderDetailDAO {
         }
         return od;
     }
-
-    public List<OrderDetail> getOrderDetail(String orderid) {
-        List<OrderDetail> list = new ArrayList<>();
-        String query = "SELECT * FROM OrderDetails as od\n"
-                + "join Products as p on p.ProductID = od.ProductID\n"
-                + "WHERE OrderID = ?";
+       public List<OrderDetail> getOrderDetail(String orderid){
+   
+    List <OrderDetail> list = new ArrayList<>();
+    String query = "SELECT * FROM OrderDetails as od\n" +
+"join Products as p on p.ProductID = od.ProductID\n" +
+"WHERE OrderID = ?";
         try {
             PreparedStatement pre = connector.prepareStatement(query);
-            pre.setString(1, orderid);
+            pre.setString(1,orderid);
             ResultSet rs = pre.executeQuery();
-            while (rs.next()) {
-                OrderDetail od = new OrderDetail(
-                        rs.getInt("OrderID"),
-                        rs.getInt("ProductID"),
-                        rs.getInt("Quantity"),
-                        rs.getLong("Price"),
-                        rs.getString("CategoryID"),
-                        rs.getString("FullName"),
-                        rs.getString("Image"));
-                list.add(od);
+            while(rs.next()){
+             OrderDetail od = new OrderDetail(
+            rs.getInt("OrderID"),
+            rs.getInt("ProductID"),
+        rs.getInt("Price"),
+            rs.getInt("Quantity"),
+             rs.getString("CategoryID"),
+             rs.getString("FullName"),
+             rs.getString("Image"));
+            list.add(od);
             };
         } catch (Exception e) {
             System.out.println(e);
         }
-        return list;
+    return list;
     }
 
     public static void main(String[] args) {

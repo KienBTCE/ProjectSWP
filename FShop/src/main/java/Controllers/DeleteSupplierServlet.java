@@ -4,22 +4,19 @@
  */
 package Controllers;
 
-import DAOs.OrderDAO;
-import DAOs.OrderDetailDAO;
-import Models.OrderDetail;
+import DAOs.SupplierDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import java.util.List;
 
 /**
  *
- * @author HP
+ * @author KienBTCE180180
  */
-public class DeleteOrderServlet extends HttpServlet {
+public class DeleteSupplierServlet extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -32,18 +29,14 @@ public class DeleteOrderServlet extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        response.setContentType("text/html;charset=UTF-8");
-        try ( PrintWriter out = response.getWriter()) {
-            /* TODO output your page here. You may use following sample code. */
-            out.println("<!DOCTYPE html>");
-            out.println("<html>");
-            out.println("<head>");
-            out.println("<title>Servlet DeleteOrderServlet</title>");
-            out.println("</head>");
-            out.println("<body>");
-            out.println("<h1>Servlet DeleteOrderServlet at " + request.getContextPath() + "</h1>");
-            out.println("</body>");
-            out.println("</html>");
+        SupplierDAO sd = new SupplierDAO();
+        int id = Integer.parseInt(request.getParameter("id"));
+
+        if (id != 0) {
+            int check = sd.deleteSupplier(id);
+            if (check != 0) {
+                response.sendRedirect("Supplier");
+            }
         }
     }
 
@@ -72,19 +65,8 @@ public class DeleteOrderServlet extends HttpServlet {
      */
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
-    throws ServletException, IOException {
-         String orderID = request.getParameter("orderID");
-          OrderDAO oDAO = new OrderDAO();
-         if(orderID!= null){
-             oDAO.DeleteOrder(orderID);
-                  OrderDetailDAO odDAO = new OrderDetailDAO();
-                      List<OrderDetail> list = odDAO.getOrderDetail(orderID);
-                      for(OrderDetail o : list){
-                      oDAO.plusQuantityAfterCancel(o.getProductID(), o.getQuantity());
-                      }
-              System.out.println("Received Order ID: " + orderID);
-             response.sendRedirect(request.getContextPath() + "/ViewOrderListServlet");
-         }
+            throws ServletException, IOException {
+        processRequest(request, response);
     }
 
     /**

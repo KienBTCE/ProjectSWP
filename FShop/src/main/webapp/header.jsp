@@ -161,10 +161,10 @@
                     <div class="nav-infor-content list-cat col-md-4">
                         <ul class="list-categories">
                             <li>
-                                <a href="#">Laptop</a>
+                                <a href="Laptop">Laptop</a>
                             </li>
                             <li>
-                                <a href="#">Smartphone</a>
+                                <a href="Smartphone">Smartphone</a>
                             </li>
                             <li>
                                 <a href="#">Accessories</a>

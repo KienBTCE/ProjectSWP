@@ -4,22 +4,20 @@
  */
 package Controllers;
 
-import DAOs.OrderDAO;
-import DAOs.OrderDetailDAO;
-import Models.OrderDetail;
+import DAOs.ProductDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import java.util.List;
+import java.util.ArrayList;
 
 /**
  *
- * @author HP
+ * @author kiuth
  */
-public class DeleteOrderServlet extends HttpServlet {
+public class ProductDetailServlet extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -38,10 +36,10 @@ public class DeleteOrderServlet extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet DeleteOrderServlet</title>");
+            out.println("<title>Servlet ProductDetailServlet</title>");
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet DeleteOrderServlet at " + request.getContextPath() + "</h1>");
+            out.println("<h1>Servlet ProductDetailServlet at " + request.getContextPath() + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }
@@ -59,7 +57,29 @@ public class DeleteOrderServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+
+        ProductDAO pr = new ProductDAO();
+        ArrayList<Models.Product> products;
+
+        String detailID = request.getParameter("id");
+
+        if (detailID != null) {
+            int id = Integer.parseInt(detailID);
+            Models.Product product = pr.getProductByID(id);
+            try {
+                request.setAttribute("product", product);
+                request.getRequestDispatcher("ProductDetailView.jsp").forward(request, response);
+            } catch (NullPointerException e) {
+                System.out.println(e);
+            }
+        }
+        products = pr.getProductList();
+        try {
+            request.setAttribute("products", products);
+            request.getRequestDispatcher("ProductListView.jsp").forward(request, response);
+        } catch (NullPointerException e) {
+            System.out.println(e);
+        }
     }
 
     /**
@@ -72,19 +92,8 @@ public class DeleteOrderServlet extends HttpServlet {
      */
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
-    throws ServletException, IOException {
-         String orderID = request.getParameter("orderID");
-          OrderDAO oDAO = new OrderDAO();
-         if(orderID!= null){
-             oDAO.DeleteOrder(orderID);
-                  OrderDetailDAO odDAO = new OrderDetailDAO();
-                      List<OrderDetail> list = odDAO.getOrderDetail(orderID);
-                      for(OrderDetail o : list){
-                      oDAO.plusQuantityAfterCancel(o.getProductID(), o.getQuantity());
-                      }
-              System.out.println("Received Order ID: " + orderID);
-             response.sendRedirect(request.getContextPath() + "/ViewOrderListServlet");
-         }
+            throws ServletException, IOException {
+        processRequest(request, response);
     }
 
     /**

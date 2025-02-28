@@ -16,10 +16,6 @@
         <servlet-class>Controllers.DeleteProductServlet</servlet-class>
     </servlet>
     <servlet>
-        <servlet-name>ProductDetailServlet</servlet-name>
-        <servlet-class>Controllers.ProductDetailServlet</servlet-class>
-    </servlet>
-    <servlet>
         <servlet-name>CustomerDetailServlet</servlet-name>
         <servlet-class>Controllers.CustomerDetailServlet</servlet-class>
     </servlet>
@@ -34,6 +30,30 @@
     <servlet>
         <servlet-name>CreateSupplierServlet</servlet-name>
         <servlet-class>Controllers.CreateSupplierServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>UpdateSupplierServlet</servlet-name>
+        <servlet-class>Controllers.UpdateSupplierServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>DeleteSupplierServlet</servlet-name>
+        <servlet-class>Controllers.DeleteSupplierServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>ImportStockServlet</servlet-name>
+        <servlet-class>Controllers.ImportStockServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>CategoryBrandServlet</servlet-name>
+        <servlet-class>Controllers.CategoryBrandServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>BrandServlet</servlet-name>
+        <servlet-class>Controllers.BrandServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>ProductDetailServlet</servlet-name>
+        <servlet-class>Controllers.ProductDetailServlet</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>default</servlet-name>
@@ -132,10 +152,6 @@
         <url-pattern>/DeleteProductServlet</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
-        <servlet-name>ProductDetailServlet</servlet-name>
-        <url-pattern>/ProductDetailServlet</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
         <servlet-name>CustomerDetailServlet</servlet-name>
         <url-pattern>/CustomerDetailServlet</url-pattern>
     </servlet-mapping>
@@ -150,6 +166,30 @@
     <servlet-mapping>
         <servlet-name>CreateSupplierServlet</servlet-name>
         <url-pattern>/CreateSupplier</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>UpdateSupplierServlet</servlet-name>
+        <url-pattern>/UpdateSupplier</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>DeleteSupplierServlet</servlet-name>
+        <url-pattern>/DeleteSupplier</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ImportStockServlet</servlet-name>
+        <url-pattern>/ImportStock</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>CategoryBrandServlet</servlet-name>
+        <url-pattern>/CategoryBrandServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>BrandServlet</servlet-name>
+        <url-pattern>/BrandServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ProductDetailServlet</servlet-name>
+        <url-pattern>/ProductDetailServlet</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

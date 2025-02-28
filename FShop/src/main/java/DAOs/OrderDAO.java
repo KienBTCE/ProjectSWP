@@ -126,6 +126,18 @@ public class OrderDAO {
         } catch (Exception e) {
         }
     }
+    
+    
+    public void plusQuantityAfterCancel(int productID, int quantity) {
+        try {
+            PreparedStatement pr = connector.prepareStatement("Update Products set Quantity = quantity + ? where ProductID=?");
+            pr.setInt(1, quantity);
+            pr.setInt(2, productID);
+            pr.executeUpdate();
+        } catch (Exception e) {
+        }
+    }
+    
 
     public void addQuantityAfterCancel(int productID, int quantity) {
         try {

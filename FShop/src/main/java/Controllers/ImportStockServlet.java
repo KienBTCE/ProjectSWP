@@ -4,22 +4,24 @@
  */
 package Controllers;
 
-import DAOs.OrderDAO;
-import DAOs.OrderDetailDAO;
-import Models.OrderDetail;
+import DAOs.ProductDAO;
+import DAOs.SupplierDAO;
+import Models.ImportOrder;
+import Models.ImportOrderDetail;
+import Models.Supplier;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import java.util.List;
+import java.time.LocalDateTime;
 
 /**
  *
- * @author HP
+ * @author KienBTCE180180
  */
-public class DeleteOrderServlet extends HttpServlet {
+public class ImportStockServlet extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -32,19 +34,19 @@ public class DeleteOrderServlet extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        response.setContentType("text/html;charset=UTF-8");
-        try ( PrintWriter out = response.getWriter()) {
-            /* TODO output your page here. You may use following sample code. */
-            out.println("<!DOCTYPE html>");
-            out.println("<html>");
-            out.println("<head>");
-            out.println("<title>Servlet DeleteOrderServlet</title>");
-            out.println("</head>");
-            out.println("<body>");
-            out.println("<h1>Servlet DeleteOrderServlet at " + request.getContextPath() + "</h1>");
-            out.println("</body>");
-            out.println("</html>");
-        }
+//        response.setContentType("text/html;charset=UTF-8");
+//        try (PrintWriter out = response.getWriter()) {
+//            /* TODO output your page here. You may use following sample code. */
+//            out.println("<!DOCTYPE html>");
+//            out.println("<html>");
+//            out.println("<head>");
+//            out.println("<title>Servlet ImportStockServlet</title>");  
+//            out.println("</head>");
+//            out.println("<body>");
+//            out.println("<h1>Servlet ImportStockServlet at " + request.getContextPath () + "</h1>");
+//            out.println("</body>");
+//            out.println("</html>");
+//        }
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
@@ -59,7 +61,19 @@ public class DeleteOrderServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+//        processRequest(request, response);
+
+        SupplierDAO sd = new SupplierDAO();
+        ProductDAO pd = new ProductDAO();
+
+        try {
+            request.setAttribute("suppliers", sd.getAllSuppliers());
+            request.setAttribute("products", pd.getAllProducts());
+            request.getRequestDispatcher("ImportStockView.jsp").forward(request, response);
+        } catch (NullPointerException e) {
+            System.out.println(e);
+        }
+
     }
 
     /**
@@ -72,19 +86,13 @@ public class DeleteOrderServlet extends HttpServlet {
      */
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
-    throws ServletException, IOException {
-         String orderID = request.getParameter("orderID");
-          OrderDAO oDAO = new OrderDAO();
-         if(orderID!= null){
-             oDAO.DeleteOrder(orderID);
-                  OrderDetailDAO odDAO = new OrderDetailDAO();
-                      List<OrderDetail> list = odDAO.getOrderDetail(orderID);
-                      for(OrderDetail o : list){
-                      oDAO.plusQuantityAfterCancel(o.getProductID(), o.getQuantity());
-                      }
-              System.out.println("Received Order ID: " + orderID);
-             response.sendRedirect(request.getContextPath() + "/ViewOrderListServlet");
-         }
+            throws ServletException, IOException {
+//        processRequest(request, response);
+
+//        ImportOrder i = new ImportOrder(0, 0, 0, importDate, 0, lastModify);
+//        Supplier s = new Supplier(0, taxId, name, email, phoneNumber, address, LocalDateTime.MAX, LocalDateTime.MIN, 0, 0);
+//        Product p = new Models.Product(0, categoryName, brandName, fullName, 0, 0, 0);
+//        ImportOrderDetail = d = new ImportOrderDetail(0, p, 0, 0);
     }
 
     /**

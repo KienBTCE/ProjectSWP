@@ -4,6 +4,9 @@
  */
 package Models;
 
+import java.text.NumberFormat;
+import java.util.Locale;
+
 /**
  *
  * @author KienBTCE180180
@@ -52,5 +55,11 @@ public class ImportOrderDetail {
 
     public void setImportPrice(long importPrice) {
         this.importPrice = importPrice;
+    }
+    
+    public String getPriceFormatted() {
+        Locale vietnam = new Locale("vi", "VN");
+        NumberFormat currencyFormatter = NumberFormat.getCurrencyInstance(vietnam);
+        return currencyFormatter.format(importPrice);
     }
 }

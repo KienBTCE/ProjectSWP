@@ -4,13 +4,17 @@
  */
 package Controllers;
 
+import DAOs.CategoryDAO;
 import DAOs.ProductDAO;
+import Models.Category;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  *
@@ -56,7 +60,9 @@ public class CreateProductServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        request.getRequestDispatcher("CreateProductView.jsp").forward(request, response);
+
+        response.sendRedirect("CreateProductView.jsp");
+
     }
 
     /**
@@ -70,27 +76,7 @@ public class CreateProductServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-
-        // Lấy dữ liệu từ form
-        int categoryId = Integer.parseInt(request.getParameter("categoryId"));
-        int brandId = Integer.parseInt(request.getParameter("brandId"));
-        String fullName = request.getParameter("fullName");
-        String model = request.getParameter("model");
-        String description = request.getParameter("description");
-        String image = request.getParameter("image");
-        long price = Long.parseLong(request.getParameter("price"));
-        int quantity = Integer.parseInt(request.getParameter("quantity"));
-
-//        // Gọi DAO để tạo sản phẩm
-//        ProductDAO productDAO = new ProductDAO();
-//        boolean success = productDAO.createProduct(categoryId, brandId, fullName, model, description, image, price, quantity);
-//
-//        // Điều hướng kết quả
-//        if (success) {
-//            response.sendRedirect("ManageProductView.jsp?success=true");
-//        } else {
-//            response.sendRedirect("ManageProductView.jsp?success=false");
-//        }
+     
     }
 
     /**

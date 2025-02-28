@@ -4,22 +4,20 @@
  */
 package Controllers;
 
-import DAOs.OrderDAO;
-import DAOs.OrderDetailDAO;
-import Models.OrderDetail;
+import DAOs.BrandDAO;
+import Models.Brand;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import java.util.List;
 
 /**
  *
- * @author HP
+ * @author kiuth
  */
-public class DeleteOrderServlet extends HttpServlet {
+public class BrandServlet extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -38,10 +36,10 @@ public class DeleteOrderServlet extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet DeleteOrderServlet</title>");
+            out.println("<title>Servlet BrandServlet</title>");
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet DeleteOrderServlet at " + request.getContextPath() + "</h1>");
+            out.println("<h1>Servlet BrandServlet at " + request.getContextPath() + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }
@@ -72,19 +70,16 @@ public class DeleteOrderServlet extends HttpServlet {
      */
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
-    throws ServletException, IOException {
-         String orderID = request.getParameter("orderID");
-          OrderDAO oDAO = new OrderDAO();
-         if(orderID!= null){
-             oDAO.DeleteOrder(orderID);
-                  OrderDetailDAO odDAO = new OrderDetailDAO();
-                      List<OrderDetail> list = odDAO.getOrderDetail(orderID);
-                      for(OrderDetail o : list){
-                      oDAO.plusQuantityAfterCancel(o.getProductID(), o.getQuantity());
-                      }
-              System.out.println("Received Order ID: " + orderID);
-             response.sendRedirect(request.getContextPath() + "/ViewOrderListServlet");
-         }
+            throws ServletException, IOException {
+        String brandName = request.getParameter("brandName");
+        BrandDAO brandDAO = new BrandDAO();
+
+        if (brandName != null && !brandName.trim().isEmpty()) {
+            Brand newBrand = new Brand(0, brandName);
+            brandDAO.createBrand(newBrand);
+        }
+
+        response.sendRedirect("CategoryAndBrand.jsp");
     }
 
     /**

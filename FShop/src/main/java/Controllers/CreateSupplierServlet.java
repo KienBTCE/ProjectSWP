@@ -75,16 +75,21 @@ public class CreateSupplierServlet extends HttpServlet {
             throws ServletException, IOException {
         SupplierDAO sd = new SupplierDAO();
 
-        String taxId = request.getParameter("id");
+        String taxId = request.getParameter("taxNumber");
         String companyName = request.getParameter("name");
         String email = request.getParameter("email");
         String phoneNumber = request.getParameter("phone");
         String address = request.getParameter("address");
 
         Supplier s = new Supplier(0, taxId, companyName, email, phoneNumber, address, LocalDateTime.now(), LocalDateTime.now(), 0, 1);
-        sd.createSupplier(s);
+
+        if (sd.createSupplier(s) != 0) {
+            response.sendRedirect("Supplier");
+        } else {
+            request.getSession().setAttribute("error", "There is the same supplier.");
+            response.sendRedirect("Supplier");
+        }
         
-        response.sendRedirect("Supplier");
     }
 
     /**

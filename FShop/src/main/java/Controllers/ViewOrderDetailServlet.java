@@ -6,7 +6,6 @@ package Controllers;
 
 import DAOs.OrderDAO;
 import DAOs.OrderDetailDAO;
-import DAOs.OrderDetailDAO;
 import Models.Order;
 import Models.OrderDetail;
 import java.io.IOException;
