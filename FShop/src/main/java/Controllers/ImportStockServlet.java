@@ -4,7 +4,10 @@
  */
 package Controllers;
 
+import DAOs.ProductDAO;
 import DAOs.SupplierDAO;
+import Models.ImportOrder;
+import Models.ImportOrderDetail;
 import Models.Supplier;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -12,13 +15,13 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import java.util.ArrayList;
+import java.time.LocalDateTime;
 
 /**
  *
  * @author KienBTCE180180
  */
-public class ViewSupplierServlet extends HttpServlet {
+public class ImportStockServlet extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -32,44 +35,18 @@ public class ViewSupplierServlet extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 //        response.setContentType("text/html;charset=UTF-8");
-//        try ( PrintWriter out = response.getWriter()) {
+//        try (PrintWriter out = response.getWriter()) {
 //            /* TODO output your page here. You may use following sample code. */
 //            out.println("<!DOCTYPE html>");
 //            out.println("<html>");
 //            out.println("<head>");
-//            out.println("<title>Servlet ViewSupplierServlet</title>");
+//            out.println("<title>Servlet ImportStockServlet</title>");  
 //            out.println("</head>");
 //            out.println("<body>");
-//            out.println("<h1>Servlet ViewSupplierServlet at " + request.getContextPath() + "</h1>");
+//            out.println("<h1>Servlet ImportStockServlet at " + request.getContextPath () + "</h1>");
 //            out.println("</body>");
 //            out.println("</html>");
 //        }
-        
-        SupplierDAO sd = new SupplierDAO();
-        ArrayList<Supplier> suppliers;
-
-        String detailID = request.getParameter("id");
-
-        if (detailID != null) {
-            int id = Integer.parseInt(detailID);
-            Supplier supplier = sd.getSupplierByID(id);
-            try {
-                request.setAttribute("supplier", supplier);
-                request.getRequestDispatcher("SupplierDetailView.jsp").forward(request, response);
-            } catch (NullPointerException e) {
-                System.out.println(e);
-            }
-        }
-        suppliers = sd.getAllSuppliers();
-        System.out.println(suppliers.size());
-        System.out.println(suppliers.get(2).getAddress());
-        try {
-            request.setAttribute("suppliers", suppliers);
-            request.getRequestDispatcher("SupplierListView.jsp").forward(request, response);
-        } catch (NullPointerException e) {
-            System.out.println(e);
-        }
-
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
@@ -84,7 +61,19 @@ public class ViewSupplierServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+//        processRequest(request, response);
+
+        SupplierDAO sd = new SupplierDAO();
+        ProductDAO pd = new ProductDAO();
+
+        try {
+            request.setAttribute("suppliers", sd.getAllSuppliers());
+            request.setAttribute("products", pd.getAllProducts());
+            request.getRequestDispatcher("ImportStockView.jsp").forward(request, response);
+        } catch (NullPointerException e) {
+            System.out.println(e);
+        }
+
     }
 
     /**
@@ -98,7 +87,12 @@ public class ViewSupplierServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+//        processRequest(request, response);
+
+//        ImportOrder i = new ImportOrder(0, 0, 0, importDate, 0, lastModify);
+//        Supplier s = new Supplier(0, taxId, name, email, phoneNumber, address, LocalDateTime.MAX, LocalDateTime.MIN, 0, 0);
+//        Product p = new Models.Product(0, categoryName, brandName, fullName, 0, 0, 0);
+//        ImportOrderDetail = d = new ImportOrderDetail(0, p, 0, 0);
     }
 
     /**

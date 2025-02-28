@@ -10,6 +10,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 
 /**
@@ -24,7 +25,7 @@ public class SupplierDAO {
     public ArrayList<Supplier> getAllSuppliers() {
         ArrayList<Supplier> list = new ArrayList<>();
 
-        String query = "SELECT * FROM Suppliers";
+        String query = "SELECT * FROM Suppliers WHERE IsDeleted = 0 ORDER BY IsActivate DESC";
 
         try {
             PreparedStatement ps = connector.prepareStatement(query);
@@ -40,8 +41,8 @@ public class SupplierDAO {
                         rs.getString("Address"),
                         rs.getTimestamp("CreatedDate").toLocalDateTime(),
                         rs.getTimestamp("LastModify").toLocalDateTime(),
-                        rs.getBoolean("IsDeleted"),
-                        rs.getBoolean("IsActivate")
+                        rs.getInt("IsDeleted"),
+                        rs.getInt("IsActivate")
                 ));
             }
             return list;
@@ -51,18 +52,18 @@ public class SupplierDAO {
 
         return list;
     }
-    
+
     public Supplier getSupplierByID(int supplierId) {
         Supplier s = null;
 
         String query = "SELECT * FROM Suppliers WHERE SupplierId = ?";
-        
+
         try {
             PreparedStatement ps = connector.prepareStatement(query);
-            ps.setInt(supplierId, 1);
+            ps.setInt(1, supplierId);
             ResultSet rs = ps.executeQuery();
 
-            while (rs.next()) {
+            if (rs.next()) {
                 s = new Supplier(
                         rs.getInt("SupplierID"),
                         rs.getString("TaxID"),
@@ -72,8 +73,8 @@ public class SupplierDAO {
                         rs.getString("Address"),
                         rs.getTimestamp("CreatedDate").toLocalDateTime(),
                         rs.getTimestamp("LastModify").toLocalDateTime(),
-                        rs.getBoolean("IsDeleted"),
-                        rs.getBoolean("IsActivate")
+                        rs.getInt("IsDeleted"),
+                        rs.getInt("IsActivate")
                 );
             }
             return s;
@@ -82,5 +83,63 @@ public class SupplierDAO {
         }
 
         return s;
+    }
+
+    public int createSupplier(Supplier s) {
+
+        String query = "INSERT INTO Suppliers (TaxID, [Name], Email, PhoneNumber, Address, CreatedDate, LastModify, IsDeleted, IsActivate) VALUES (?, ?, ?, ?, ?, GETDATE(), GETDATE(), ?, ?)";
+        try {
+            PreparedStatement ps = connector.prepareStatement(query);
+            ps.setString(1, s.getTaxId());
+            ps.setString(2, s.getName());
+            ps.setString(3, s.getEmail());
+            ps.setString(4, s.getPhoneNumber());
+            ps.setString(5, s.getAddress());
+            ps.setInt(6, 0);
+            ps.setInt(7, 1);
+
+            return ps.executeUpdate();
+        } catch (SQLException e) {
+            System.out.println(e);
+        }
+
+        return 0;
+    }
+
+    public int updateSupplier(Supplier s) {
+
+        String query = "UPDATE Suppliers SET TaxID = ?, [Name] = ?, Email = ?, PhoneNumber = ?, Address = ?, LastModify = GETDATE(), IsDeleted = ?, IsActivate = ? WHERE SupplierID = ?";
+        try {
+            PreparedStatement ps = connector.prepareStatement(query);
+            ps.setString(1, s.getTaxId());
+            ps.setString(2, s.getName());
+            ps.setString(3, s.getEmail());
+            ps.setString(4, s.getPhoneNumber());
+            ps.setString(5, s.getAddress());
+            ps.setInt(6, 0);
+            ps.setInt(7, s.getActivate());
+            ps.setInt(8, s.getSupplierId());
+
+            return ps.executeUpdate();
+        } catch (SQLException e) {
+            System.out.println(e);
+        }
+
+        return 0;
+    }
+
+    public int deleteSupplier(int supplierId) {
+
+        String query = "UPDATE Suppliers SET IsDeleted = 1 WHERE SupplierID = ?";
+        try {
+            PreparedStatement ps = connector.prepareStatement(query);
+            ps.setInt(1, supplierId);
+
+            return ps.executeUpdate();
+        } catch (SQLException e) {
+            System.out.println(e);
+        }
+
+        return 0;
     }
 }

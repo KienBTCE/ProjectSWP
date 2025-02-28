@@ -12,13 +12,13 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import java.util.ArrayList;
+import java.time.LocalDateTime;
 
 /**
  *
  * @author KienBTCE180180
  */
-public class ViewSupplierServlet extends HttpServlet {
+public class UpdateSupplierServlet extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -32,44 +32,18 @@ public class ViewSupplierServlet extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 //        response.setContentType("text/html;charset=UTF-8");
-//        try ( PrintWriter out = response.getWriter()) {
+//        try (PrintWriter out = response.getWriter()) {
 //            /* TODO output your page here. You may use following sample code. */
 //            out.println("<!DOCTYPE html>");
 //            out.println("<html>");
 //            out.println("<head>");
-//            out.println("<title>Servlet ViewSupplierServlet</title>");
+//            out.println("<title>Servlet UpdateSupplierServlet</title>");  
 //            out.println("</head>");
 //            out.println("<body>");
-//            out.println("<h1>Servlet ViewSupplierServlet at " + request.getContextPath() + "</h1>");
+//            out.println("<h1>Servlet UpdateSupplierServlet at " + request.getContextPath () + "</h1>");
 //            out.println("</body>");
 //            out.println("</html>");
 //        }
-        
-        SupplierDAO sd = new SupplierDAO();
-        ArrayList<Supplier> suppliers;
-
-        String detailID = request.getParameter("id");
-
-        if (detailID != null) {
-            int id = Integer.parseInt(detailID);
-            Supplier supplier = sd.getSupplierByID(id);
-            try {
-                request.setAttribute("supplier", supplier);
-                request.getRequestDispatcher("SupplierDetailView.jsp").forward(request, response);
-            } catch (NullPointerException e) {
-                System.out.println(e);
-            }
-        }
-        suppliers = sd.getAllSuppliers();
-        System.out.println(suppliers.size());
-        System.out.println(suppliers.get(2).getAddress());
-        try {
-            request.setAttribute("suppliers", suppliers);
-            request.getRequestDispatcher("SupplierListView.jsp").forward(request, response);
-        } catch (NullPointerException e) {
-            System.out.println(e);
-        }
-
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
@@ -98,7 +72,31 @@ public class ViewSupplierServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        SupplierDAO sd = new SupplierDAO();
+
+        String taxId = request.getParameter("taxNumber");
+        String companyName = request.getParameter("name");
+        String email = request.getParameter("email");
+        String phoneNumber = request.getParameter("phone");
+        String address = request.getParameter("address");
+        int status = Integer.parseInt(request.getParameter("status"));
+
+        int id = Integer.parseInt(request.getParameter("id"));
+
+        Supplier s = new Supplier(id, taxId, companyName, email, phoneNumber, address, LocalDateTime.now(), LocalDateTime.now(), 0, status);
+
+        if (id != 0) {
+            int check = sd.updateSupplier(s);
+            if (check != 0) {
+                response.sendRedirect("Supplier?id=" + s.getSupplierId());
+            } else {
+                request.getSession().setAttribute("error", "There is the same Tax ID.");
+                response.sendRedirect("Supplier?id=" + s.getSupplierId());
+            }
+        } else {
+            request.getSession().setAttribute("error", "There is the same supplier.");
+            response.sendRedirect("Supplier");
+        }
     }
 
     /**

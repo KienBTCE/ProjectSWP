@@ -5,7 +5,6 @@
 package DAOs;
 
 import DB.DBContext;
-import Models.Address;
 import Models.Customer;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -13,7 +12,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
+import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -48,8 +47,8 @@ public class CustomerDAO {
             throw new RuntimeException("MD5 algorithm not found!", e);
         }
     }
-    
-    public int requestToDeleteAccount(int id){
+
+    public int requestToDeleteAccount(int id) {
         try {
             PreparedStatement pr = connector.prepareStatement(
                     "Update Customers SET IsDeleted = 1 Where CustomerID = ?"
@@ -218,51 +217,57 @@ public class CustomerDAO {
         return 0;
     }
 
-    //Lay danh sach khach hang - shop manager
-    public ResultSet getCustomerList() {
-        ResultSet rs = null;
-        try {
-            Statement st = connector.createStatement();
-            String sql = "SELECT CustomerID, FullName, Email, PhoneNumber, isBlock FROM Customers";
-            rs = st.executeQuery(sql);
-        } catch (SQLException ex) {
-            Logger.getLogger(ProductDAO.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        return rs;
-    }
+    //Lay danh sach san pham - shop manager
+    public ArrayList<Customer> getCustomerList() {
+        ArrayList<Customer> list = new ArrayList<>();
 
-    //Doi trang thai button - shop manager
-    public void toggleStatus(int customerID) {
-        try (
-            PreparedStatement ps = connector.prepareStatement("UPDATE Customers SET isBlock = 1 - isBlock WHERE CustomerID = ?")) {
-            ps.setInt(1, customerID);
-            ps.executeUpdate();
-        } catch (Exception e) {
-        }
-    }
+        String query = "SELECT CustomerID, FullName, Email, PhoneNumber, IsBlock FROM Customers;";
 
-    //Thong tin chi tiet cua khach hang - shop manager
-    public Customer getCustomerById2(int id) {
-        Customer customer = null;
         try {
-            String query = "SELECT * FROM Customers WHERE CustomerID = ?";
             PreparedStatement ps = connector.prepareStatement(query);
-            ps.setInt(1, id);
             ResultSet rs = ps.executeQuery();
 
-            if (rs.next()) {
-                customer = new Customer(
+            while (rs.next()) {
+                list.add(new Customer(
                         rs.getInt("CustomerID"),
                         rs.getString("FullName"),
                         rs.getString("Email"),
                         rs.getString("PhoneNumber"),
-                        rs.getInt("isBlock")
-                );
+                        rs.getInt("IsBlock")
+                ));
             }
-        } catch (Exception e) {
-            e.printStackTrace();
+        } catch (SQLException e) {
+            System.out.println(e);
         }
-        return customer;
+        return list;
+    }
+
+    // block customer - Shop Manager
+    public int blockCustomer(int Id) {
+        int count = 0;
+        try {
+            String sql = "UPDATE Customers SET IsBlock = 1 WHERE CustomerID = ?";
+            PreparedStatement pst = connector.prepareStatement(sql);
+            pst.setInt(1, Id);
+            count = pst.executeUpdate();
+        } catch (SQLException ex) {
+            Logger.getLogger(CustomerDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return count;
+    }
+
+    //restore customer - shop manager
+    public int restoreCustomer(int Id) {
+        int count = 0;
+        try {
+            String sql = "UPDATE Customers SET IsBlock = 0 WHERE CustomerID = ?";
+            PreparedStatement pst = connector.prepareStatement(sql);
+            pst.setInt(1, Id);
+            count = pst.executeUpdate();
+        } catch (SQLException ex) {
+            Logger.getLogger(CustomerDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return count;
     }
 
     public static void main(String[] args) {

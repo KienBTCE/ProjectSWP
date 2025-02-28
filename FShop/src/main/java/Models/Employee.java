@@ -22,6 +22,10 @@ public class Employee {
     private String avatar;
     private int roleId;
 
+    public Employee() {
+    }
+
+    
     public Employee(int employeeId, String fullname, LocalDateTime birthday, String password, String phoneNumber, String email, String gender, LocalDateTime createdDate, String Status, String avatar, int roleId) {
         this.employeeId = employeeId;
         this.fullname = fullname;

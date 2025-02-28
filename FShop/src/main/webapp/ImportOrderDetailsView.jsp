@@ -4,6 +4,8 @@
     Author     : KienBTCE180180
 --%>
 
+<%@page import="Models.ImportOrder"%>
+<%@page import="Models.ImportOrderDetail"%>
 <%@page import="java.util.List"%>
 <%@page import="DAOs.SupplierDAO"%>
 <%@page import="Models.Supplier"%>
@@ -59,6 +61,7 @@
             .content {
                 flex-grow: 1;
                 padding: 12px;
+                margin-left: 250px;
             }
 
             .header {
@@ -119,50 +122,65 @@
         </style>
     </head>
     <body>
-        <div class="sidebar">
-            <img src="assets/imgs/Dashboard/Group 1521.svg" class="logo-side-bar">
-            <h6><a href="#">Warehouse Management</a></h6>
-            <a href="ImportOrder">Import Order</a>
-            <a href="Supplier">Supplier</a>
-            <a href="#">Product Management</a>
-        </div>
-        <div class="content">
-            <div class="header">
-                <div style="margin-right: 30px">
-                    <img style="float: left; margin-right: 15px;"
-                         src="assets/imgs/Dashboard/FF8D5F6D-1708-4455-81D8-5F4456F83F52_LE_auto_x2-min.png" alt="User Icon" class="icon">
-                    <p style="display: flex; margin: 12px 0 0 0;">Hi, Kien</p>
-                </div>
-            </div>
-            <div class="table-navigate">
+        <jsp:include page="SidebarDashboard.jsp"></jsp:include>
+            <div class="content">
+            <jsp:include page="HeaderDashboard.jsp"></jsp:include>
                 <div class="table-navigate">
+                    <div class="table-navigate">
+                    </div>
                 </div>
+                
+                <div class="table-container">
+                    <div>
+                        <h3></h3>
+                    </div>
+                    <table class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th>Import ID</th>
+                                <th>Employee ID</th>
+                                <th>Employee Name</th>
+                                <th>Date & Time</th>
+                                <th>Supplier</th>
+                                <th>Amount</th>
+                            </tr>
+                        </thead>
+                        <tbody id="supplierTable">
+                        <c:set var="i" value="${importOrder}"/>
+                            <tr>
+                                <td>${i.getIoid()}</td>
+                                <td>(later)</td>
+                                <td>(later)</td>
+                                <td>${i.getImportDate()}</td>
+                                <td>${i.getSupplier().getName()}</td>
+                                <td>${i.getPriceFormatted()}</td>
+                            </tr>
+                    </tbody>
+                </table>
             </div>
 
-            <div class="table-container">
-                <div>
-                    <h3>Details</h3>
-                </div>
-                <table class="table table-hover">
-                    <thead>
-                        <tr>
-                            <th>Product ID</th>
-                            <th>Product Model</th>
-                            <th>Product Name</th>
-                            <th>Quantity</th>
-                            <th>Import Price</th>
-                        </tr>
-                    </thead>
-                    <tbody id="supplierTable">
+                <div class="table-container">
+                    <div>
+                        <h3>Details</h3>
+                    </div>
+                    <table class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th>Product ID</th>
+                                <th>Product Model</th>
+                                <th>Product Name</th>
+                                <th>Quantity</th>
+                                <th>Import Price</th>
+                            </tr>
+                        </thead>
+                        <tbody id="supplierTable">
                         <c:forEach items="${importOrder.getImportOrderDetails()}" var="d">
                             <tr>
+                                <td>${d.getProduct().getProductId()}</td>
+                                <td>${d.getProduct().getModel()}</td>
                                 <td>${d.getProduct().getFullName()}</td>
-                                <td>${d.getProduct().getFullName()}</td>
-                                <td>${d.getProduct().getFullName()}</td>
-                                <td>${d.getProduct().getFullName()}</td>
-                                <td>
-                                    <a href="ImportOrder?id=${i.getIoid()}" class="btn btn-detail" style="background-color: #BDF3BD">Detail</a>
-                                </td>
+                                <td>${d.getQuantity()}</td>
+                                <td>${d.getPriceFormatted()}</td>
                             </tr>
                         </c:forEach>
                     </tbody>

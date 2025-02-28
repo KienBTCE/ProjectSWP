@@ -59,6 +59,7 @@
             .content {
                 flex-grow: 1;
                 padding: 12px;
+                margin-left: 250px;
             }
 
             .header {
@@ -119,48 +120,40 @@
         </style>
     </head>
     <body>
-        <div class="sidebar">
-            <img src="assets/imgs/Dashboard/Group 1521.svg" class="logo-side-bar">
-            <h6><a href="ImportOrder">Warehouse Management</a></h6>
-            <a href="#">Import Order</a>
-            <a href="Supplier">Supplier</a>
-            <a href="#">Product Management</a>
-        </div>
-        <div class="content">
-            <div class="header">
-                <div style="margin-right: 30px">
-                    <img style="float: left; margin-right: 15px;"
-                         src="assets/imgs/Dashboard/FF8D5F6D-1708-4455-81D8-5F4456F83F52_LE_auto_x2-min.png" alt="User Icon" class="icon">
-                    <p style="display: flex; margin: 12px 0 0 0;">Hi, Kien</p>
-                </div>
-            </div>
-            <div class="table-navigate">
+        <jsp:include page="SidebarDashboard.jsp"></jsp:include>
+            <div class="content">
+            <jsp:include page="HeaderDashboard.jsp"></jsp:include>
                 <div class="table-navigate">
-                    <label for="startDate" class="me-2">From:</label>
-                    <input type="date" id="startDate" class="form-control me-3">
+                    <div class="table-navigate">
+                        <label for="startDate" class="me-2">From:</label>
+                        <input type="date" id="startDate" class="form-control me-3">
 
-                    <label for="endDate" class="me-2">To:</label>
-                    <input type="date" id="endDate" class="form-control me-3">
+                        <label for="endDate" class="me-2">To:</label>
+                        <input type="date" id="endDate" class="form-control me-3">
 
-                    <button onclick="filterByDate()" class="btn btn-primary">Filter</button>
+                        <button onclick="filterByDate()" class="btn btn-primary">Filter</button>
+                    </div>
+
+                    <div class="table-navigate">
+                        <button class="btn btn-detail" data-bs-toggle="modal" data-bs-target="#importOrderModal" style="background-color: #BDF3BD; height: 100%" onclick="window.location.href = 'ImportStock'">Create</button>
+                    </div>
                 </div>
-            </div>
 
-            <div class="table-container">
-                <div>
-                    <h3>Import Order History</h3>
-                </div>
-                <table class="table table-hover">
-                    <thead>
-                        <tr>
-                            <th>Import ID</th>
-                            <th>Date & Time</th>
-                            <th>Amount</th>
-                            <th>Supplier</th>
-                            <th>Action</th>
-                        </tr>
-                    </thead>
-                    <tbody id="supplierTable">
+                <div class="table-container">
+                    <div>
+                        <h3>Import Order History</h3>
+                    </div>
+                    <table class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th>Import ID</th>
+                                <th>Date & Time</th>
+                                <th>Amount</th>
+                                <th>Supplier</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody id="supplierTable">
                         <c:forEach items="${importOrders}" var="i">
                             <tr>
                                 <td>${i.getIoid()}</td>

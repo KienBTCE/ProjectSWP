@@ -21,6 +21,7 @@ VALUES
 ('MSI'), ('Microsoft'), ('Google'), ('LG'), ('Razer');
 
 -- Insert Suppliers
+SET IDENTITY_INSERT Suppliers ON;
 INSERT INTO Suppliers (SupplierID, TaxID, [Name], Email, PhoneNumber, Address, CreatedDate, LastModify, IsDeleted, IsActivate) 
 VALUES 
 (1, '0100101234', 'TechGear Solutions', 'contact@techgear.com', '0901234567', '123 Tech Street, District 1, Ho Chi Minh City', GETDATE(), GETDATE(), 0, 1),
@@ -28,7 +29,7 @@ VALUES
 (3, '0300101236', 'DigitalZone', 'support@digitalzone.vn', '0923456789', '789 Digital Avenue, District 5, Ho Chi Minh City', GETDATE(), GETDATE(), 0, 1),
 (4, '0400101237', 'SmartTech Supplies', 'sales@smarttech.vn', '0934567890', '101 Future Drive, District 7, Ho Chi Minh City', GETDATE(), GETDATE(), 0, 0),
 (5, '0500101238', 'NextGen Electronics', 'hello@nextgen.vn', '0945678901', '202 Silicon Valley, District 2, Ho Chi Minh City', GETDATE(), GETDATE(), 0, 0);
-
+SET IDENTITY_INSERT Suppliers OFF;
 -- Insert Attributes
 INSERT INTO Attributes ([Name])
 VALUES
@@ -38,58 +39,18 @@ VALUES
 -- Insert Products
 SET IDENTITY_INSERT Products ON;
 
-INSERT INTO Products (ProductID, BrandID, CategoryID, Model, FullName, [Description], [Image], Price)
-VALUES 
-(1, 1, 1, 'Macbook Pro 14', 'Apple Macbook Pro 14 inch M1 Pro chip', 'New model from Apple', '250-7038-macbook-pro-2021-apple-m1-1.jpg', 50000000),
-(2, 2, 2, 'Galaxy S23 Ultra', 'Samsung Galaxy S23 Ultra 5G 256GB', 'Latest flagship from Samsung', 'samsung-galaxy-s23-xanh-600x600-1.jpg', 30000000),
-(3, 3, 1, 'Sony Vaio Z900', 'Sony Vaio Z900 Core i7 16GB RAM', 'High-performance laptop', 'vaio-z900.jpg', 20000000);
+INSERT INTO Products (ProductID, BrandID, CategoryID, Model, FullName, [Description], [Image], Price, IsDeleted) VALUES 
+(1, 1, 1, 'Macbook Pro 14', 'Apple Macbook Pro 14 inch M1 Pro chip', 'New model from Apple', '250-7038-macbook-pro-2021-apple-m1-1.jpg', 50000000, 0),
+(2, 2, 2, 'Galaxy S23 Ultra', 'Samsung Galaxy S23 Ultra 5G 256GB', 'Latest flagship from Samsung', 'samsung-galaxy-s23-xanh-600x600-1.jpg', 30000000, 1),
+(3, 3, 1, 'Sony Vaio Z900', 'Sony Vaio Z900 Core i7 16GB RAM', 'High-performance laptop', 'vaio-z900.jpg', 20000000, 0),
+(4, 8, 1, 'ASUS-FA706', 'ASUS TUF Gaming A17', 'Durable gaming laptop with high performance', '250-8562-line-laptop.png', 28909000, 1),
+(5, 1, 2, 'iPhone-16-Pro-Max', 'iPhone 16 Pro Max', 'Premium smartphone with advanced camera and powerful performance', 'iphone-16-pro-max-black-thumb-600x600.jpg', 32529000, 0),
+(6, 2, 2, 'Galaxy-S23', 'Samsung Galaxy S23', 'Samsung flagship phone with stunning design and excellent camera', 'samsung-galaxy-s23-xanh-600x600-1.jpg', 25899000, 1),
+(7, 9, 1, 'Legion-Pro-5', 'Lenovo Legion Pro 5', 'High-end gaming laptop with powerful specs and 240Hz display', '0yp3jx9d-1090-lenovo-legion-pro-5-y9000p-2023-core-i9-13900hx-16gb-1tb-rtx-4050-6gb-16-wqxga-240hz-new.jpg', 38909000, 0),
+(8, 8, 1, 'ASUS-TUF-A17', 'ASUS TUF Gaming A17', 'Durable gaming laptop with strong performance and modern design', 'ASUS-TUF-Gaming-A17-FA706-600x600.jpg', 31909000, 1),
+(9, 11, 1, 'MSI-Katana-A15', 'MSI Katana Gaming A15', 'Gaming laptop powered by AMD Ryzen 9 and RTX 4060 GPU', '5e0dkkrb-1411-msi-katana-gaming-a15-ai-b8vf-406ca-amd-ryzen-r9-8945hs-32gb-1tb-rtx-4060-8gb-15-6-144hz-fhd-new.jpg', 33909000, 1),
+(10, 6, 1, 'Dell-G5511', 'Dell Gaming G5511', 'Gaming laptop with strong design and high performance', '45606_dell_gaming_5511_dark_grey_ha3.jpg', 35909000, 0);
 
-INSERT INTO Products(ProductID, BrandID, CategoryID, Model, FullName, [Description], [Image], price) 
-VALUES (4, 8, 1, 'ASUS-FA706', 'ASUS TUF Gaming A17', 'Durable gaming laptop with high performance', '250-8562-line-laptop.png', 28909000);
-
-INSERT INTO Products(ProductID, BrandID, CategoryID, Model, FullName, [Description], [Image], price) 
-VALUES (5, 1, 2, 'iPhone-16-Pro-Max', 'iPhone 16 Pro Max', 'Premium smartphone with advanced camera and powerful performance', 'iphone-16-pro-max-black-thumb-600x600.jpg', 32529000);
-
-INSERT INTO Products(ProductID, BrandID, CategoryID, Model, FullName, [Description], [Image], price) 
-VALUES (6, 2, 2, 'Galaxy-S23', 'Samsung Galaxy S23', 'Samsung flagship phone with stunning design and excellent camera', 'samsung-galaxy-s23-xanh-600x600-1.jpg', 25899000);
-
-INSERT INTO Products(ProductID, BrandID, CategoryID, Model, FullName, [Description], [Image], price) 
-VALUES (7, 9, 1, 'Legion-Pro-5', 'Lenovo Legion Pro 5', 'High-end gaming laptop with powerful specs and 240Hz display', '0yp3jx9d-1090-lenovo-legion-pro-5-y9000p-2023-core-i9-13900hx-16gb-1tb-rtx-4050-6gb-16-wqxga-240hz-new.jpg', 38909000);
-
-INSERT INTO Products(ProductID, BrandID, CategoryID, Model, FullName, [Description], [Image], price) 
-VALUES (8, 8, 1, 'ASUS-TUF-A17', 'ASUS TUF Gaming A17', 'Durable gaming laptop with strong performance and modern design', 'ASUS-TUF-Gaming-A17-FA706-600x600.jpg', 31909000);
-
-INSERT INTO Products(ProductID, BrandID, CategoryID, Model, FullName, [Description], [Image], price) 
-VALUES (9, 11, 1, 'MSI-Katana-A15', 'MSI Katana Gaming A15', 'Gaming laptop powered by AMD Ryzen 9 and RTX 4060 GPU', '5e0dkkrb-1411-msi-katana-gaming-a15-ai-b8vf-406ca-amd-ryzen-r9-8945hs-32gb-1tb-rtx-4060-8gb-15-6-144hz-fhd-new.jpg', 33909000);
-
-INSERT INTO Products(ProductID, BrandID, CategoryID, Model, FullName, [Description], [Image], price) 
-VALUES (11, 6, 1, 'Dell-G5511', 'Dell Gaming G5511', 'Gaming laptop with strong design and high performance', '45606_dell_gaming_5511_dark_grey_ha3.jpg', 35909000);
-
-SET IDENTITY_INSERT Products OFF;
-
-INSERT INTO Products(ProductID, brand, pd_ID, fullName, quantity, [status], [productType], price) VALUES (1, 'Asus', '14XHMY', 'Zenbook 14XHMY', 10, 'Available', 'Laptop', 28909000)
-INSERT INTO Laptops(ProductID, [image]) VALUES (1, '250-8562-line-laptop.png')
-
-INSERT INTO Products(ProductID, brand, pd_ID, fullName, quantity, [status], [productType], price) VALUES (2, 'Apple', '12XHMY', 'iPhone 15 Pro Max 256GB', 10, 'Available', 'SmartPhone', 32529000)
-INSERT INTO Phones(ProductID, [image]) VALUES (2, 'iphone-16-pro-max-black-thumb-600x600.jpg')
-
-INSERT INTO Products(ProductID, brand, pd_ID, fullName, quantity, [status], [productType], price) VALUES (3, 'Samsung', '7XGLX', 'Galaxy S23 512GB', 10, 'Available', 'SmartPhone', 25899000)
-INSERT INTO Phones(ProductID, [image]) VALUES (3, 'samsung-galaxy-s23-xanh-600x600-1.jpg')
-
-INSERT INTO Products(ProductID, brand, pd_ID, fullName, quantity, [status], [productType], price) VALUES (4, 'Lenovo', '15LGXHYM', 'Legion Pro 15GXH', 10, 'Available', 'Laptop', 38909000)
-INSERT INTO Laptops(ProductID, [image]) VALUES (4, '0yp3jx9d-1090-lenovo-legion-pro-5-y9000p-2023-core-i9-13900hx-16gb-1tb-rtx-4050-6gb-16-wqxga-240hz-new.jpg')
-
-INSERT INTO Products(ProductID, brand, pd_ID, fullName, quantity, [status], [productType], price) VALUES (5, 'Asus', 'A17FA706', 'Asus Tuf Gamming 17FA', 10, 'Available', 'Laptop', 31909000)
-INSERT INTO Laptops(ProductID, [image]) VALUES (5, 'ASUS-TUF-Gaming-A17-FA706-600x600.jpg')
-
-INSERT INTO Products(ProductID, brand, pd_ID, fullName, quantity, [status], [productType], price) VALUES (6, 'MSI', 'b8vf406ca', 'MSI Katana Gamming B8VF', 10, 'Available', 'Laptop', 33909000)
-INSERT INTO Laptops(ProductID, [image]) VALUES (6, '5e0dkkrb-1411-msi-katana-gaming-a15-ai-b8vf-406ca-amd-ryzen-r9-8945hs-32gb-1tb-rtx-4060-8gb-15-6-144hz-fhd-new.jpg')
-
-INSERT INTO Products(ProductID, brand, pd_ID, fullName, quantity, [status], [productType], price) VALUES (7, 'Apple', 'MCBP2021', 'Macbook Pro 2021', 10, 'Available', 'Laptop', 45909000)
-INSERT INTO Laptops(ProductID, [image]) VALUES (7, '250-7038-macbook-pro-2021-apple-m1-1.jpg')
-
-INSERT INTO Products(ProductID, brand, pd_ID, fullName, quantity, [status], [productType], price) VALUES (8, 'Dell', 'D9C72G1', 'Dell Gamming G15 551', 10, 'Available', 'Laptop', 35909000)
-INSERT INTO Laptops(ProductID, [image]) VALUES (8, '45606_dell_gaming_5511_dark_grey_ha3.jpg')
 
 SET IDENTITY_INSERT Products OFF;
 

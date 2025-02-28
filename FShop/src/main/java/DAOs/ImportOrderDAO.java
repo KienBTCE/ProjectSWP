@@ -43,8 +43,8 @@ public class ImportOrderDAO {
                         rs.getString("Address"),
                         rs.getTimestamp("CreatedDate").toLocalDateTime(),
                         rs.getTimestamp("LastModify").toLocalDateTime(),
-                        rs.getBoolean("IsDeleted"),
-                        rs.getBoolean("IsActivate")
+                        rs.getInt("IsDeleted"),
+                        rs.getInt("IsActivate")
                 );
 
                 ImportOrder io = new ImportOrder(
@@ -75,19 +75,10 @@ public class ImportOrderDAO {
 
         try {
             PreparedStatement ps = connector.prepareStatement(query);
-            ps.setInt(id, 1);
+            ps.setInt(1, id);
             ResultSet rs = ps.executeQuery();
 
             if (rs.next()) {
-                io = new ImportOrder(
-                        rs.getInt("IOID"),
-                        rs.getInt("EmployeeID"),
-                        rs.getInt("SupplierID"),
-                        rs.getDate("ImportDate"),
-                        rs.getLong("TotalCost"),
-                        rs.getDate("LastModify")
-                );
-
                 Supplier s = new Supplier(
                         rs.getInt("SupplierID"),
                         rs.getString("TaxID"),
@@ -97,8 +88,17 @@ public class ImportOrderDAO {
                         rs.getString("Address"),
                         rs.getTimestamp("CreatedDate").toLocalDateTime(),
                         rs.getTimestamp("LastModify").toLocalDateTime(),
-                        rs.getBoolean("IsDeleted"),
-                        rs.getBoolean("IsActivate")
+                        rs.getInt("IsDeleted"),
+                        rs.getInt("IsActivate")
+                );
+
+                io = new ImportOrder(
+                        rs.getInt("IOID"),
+                        rs.getInt("EmployeeID"),
+                        rs.getInt("SupplierID"),
+                        rs.getDate("ImportDate"),
+                        rs.getLong("TotalCost"),
+                        rs.getDate("LastModify")
                 );
 
                 io.setSupplier(s);
@@ -115,23 +115,26 @@ public class ImportOrderDAO {
     public ImportOrder getImportOrderDetailsByID(int id) {
         ImportOrder io = getImportOrderByID(id);
 
-        String query = "";
+        String query = "SELECT P.Model, P.FullName, D.IOID, D.Quantity, D.ImportPrice, P.ProductID FROM ImportOrderDetails D JOIN Products P ON D.ProductID = P.ProductID WHERE D.IOID = ?";
 
         try {
             PreparedStatement ps = connector.prepareStatement(query);
-            ps.setInt(id, 1);
+            ps.setInt(1, id);
             ResultSet rs = ps.executeQuery();
-
             ArrayList<ImportOrderDetail> l = new ArrayList<>();
-
-//            while (rs.next()) {
-//                l.add(new ImportOrderDetail(
-//                        rs.getInt("IOID"),
-//                        new Product(1, "1", "1", 1, "1", 1),
-//                        rs.getInt("ImportQuantity"),
-//                        rs.getLong("ImportPrice")
-//                ));
-//            }
+            Product p;
+            while (rs.next()) {
+                p = new Product();
+                p.setProductId(rs.getInt("ProductID"));
+                p.setModel(rs.getString("Model"));
+                p.setFullName(rs.getString("FullName"));
+                l.add(new ImportOrderDetail(
+                        rs.getInt("IOID"),
+                        p,
+                        rs.getInt("Quantity"),
+                        rs.getLong("ImportPrice")
+                ));
+            }
 
             io.setImportOrderDetails(l);
             return io;

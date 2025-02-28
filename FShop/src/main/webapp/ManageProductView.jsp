@@ -1,7 +1,7 @@
 <%-- 
-    Document   : CustomerListView
-    Created on : 22-Feb-2025, 15:25:44
-    Author     : kiuthi
+    Document   : manageProduct
+    Created on : 23-Feb-2025, 22:36:47
+    Author     : kiuth
 --%>
 
 <%@page import="java.util.List"%>
@@ -158,38 +158,43 @@
             <div class="table-navigate">
                 <input type="text" id="searchInput" class="form-control search-box" placeholder="Find by name ..." onkeyup="filterTable()">
             </div>
-
+            <a href="CreateProductServlet?id=${s.getProductId()}" class="btn btn-detail" style="background-color: #BDF3BD">Create</a>
             <div class="table-container">
                 <table class="table table-hover">
                     <thead>
                         <tr>
-                            <th>Customer ID</th>
-                            <th>Name</th>
-                            <th>Email</th>
-                            <th>Phone</th>
+                            <th>Product ID</th>
+                            <th>Category</th>
+                            <th>Brand</th>
+                            <th>Product Name</th>
+                            <th>Price</th>
+                            <th>Quantity</th>
                             <th>Status</th>
                             <th>Action</th>
                         </tr>
                     </thead>
-                    <tbody id="customerTable">
-                        <c:forEach items="${customers}" var="s">
+                    <tbody id="productTable">
+                        <c:forEach items="${products}" var="s">
                             <tr>
-                                <td>${s.getId()}</td>
+                                <td>${s.getProductId()}</td>
+                                <td>${s.getCategoryName()}</td>
+                                <td>${s.getBrandName()}</td>
                                 <td>${s.getFullName()}</td>
-                                <td>${s.getEmail()}</td>
-                                <td>${s.getPhoneNumber()}</td>
+                                <td>${s.getPrice()}</td>
+                                <td>${s.getQuantity()}</td>
                                 <td>
-                                    <span class="badge ${s.getIsBlock() ==0 ? 'bg-success' : 'bg-danger' }">
+                                    <span class="badge ${s.getDeleted() == 1 ?  'bg-danger':'bg-success'}">
                                         ${s.getStatus()}
                                     </span>
                                 </td>
                                 <td>
-                                    <a href="CustomerListServlet?${s.getIsBlock() == 1 ? 'Activate' : 'Blocked'}=${s.getId()}" 
-                                       class="btn ${s.getIsBlock() == 1 ? 'btn-success' : 'btn-danger'}" 
+                                    <a href="ProductListServlet?id=${s.getProductId()}" class="btn btn-edit" style="">Update</a>
+                                    <a href="ProductListServlet?${s.getDeleted() == 1 ? 'restore' : 'delete'}=${s.getProductId()}" 
+                                       class="btn ${s.getDeleted() == 1 ? 'btn-success' : 'btn-danger'}" 
                                        onclick="return confirm('Are you sure?');">
-                                        ${s.getIsBlock() == 0 ? 'Blocked' : 'Activate'}
+                                        ${s.getDeleted() == 1 ? 'Activate' : 'Delete'}
                                     </a>
-                                    <a href="CustomerListServlet?id=${s.getId()}" class="btn btn-detail" style="background-color: #BDF3BD">Detail</a>
+                                    <a href="ProductListServlet?id=${s.getProductId()}" class="btn btn-detail" style="background-color: #BDF3BD">Detail</a>
                                 </td>
                             </tr>
                         </c:forEach>
@@ -202,7 +207,7 @@
             function filterTable() {
                 let input = document.getElementById("searchInput");
                 let filter = input.value.toLowerCase();
-                let table = document.getElementById("customerTable");
+                let table = document.getElementById("productTable");
                 let rows = table.getElementsByTagName("tr");
 
                 for (let i = 0; i < rows.length; i++) {

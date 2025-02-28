@@ -20,10 +20,10 @@ public class Supplier {
     private String address;
     private LocalDateTime createdDate;
     private LocalDateTime lastModify;
-    private boolean isDeleted;
-    private boolean isActivate;
+    private int deleted;
+    private int activate;
 
-    public Supplier(int supplierId, String taxId, String name, String email, String phoneNumber, String address, LocalDateTime createdDate, LocalDateTime lastModify, boolean isDeleted, boolean isActivate) {
+    public Supplier(int supplierId, String taxId, String name, String email, String phoneNumber, String address, LocalDateTime createdDate, LocalDateTime lastModify, int deleted, int activate) {
         this.supplierId = supplierId;
         this.taxId = taxId;
         this.name = name;
@@ -32,8 +32,8 @@ public class Supplier {
         this.address = address;
         this.createdDate = createdDate;
         this.lastModify = lastModify;
-        this.isDeleted = isDeleted;
-        this.isActivate = isActivate;
+        this.deleted = deleted;
+        this.activate = activate;
     }
 
     public int getSupplierId() {
@@ -100,32 +100,32 @@ public class Supplier {
         this.lastModify = lastModify;
     }
 
-    public boolean isIsDeleted() {
-        return isDeleted;
+    public int getDeleted() {
+        return deleted;
     }
 
-    public void setIsDeleted(boolean isDeleted) {
-        this.isDeleted = isDeleted;
+    public void setDeleted(int deleted) {
+        this.deleted = deleted;
     }
 
-    public boolean isIsActivate() {
-        return isActivate;
+    public int getActivate() {
+        return activate;
     }
 
-    public void setIsActivate(boolean isActivate) {
-        this.isActivate = isActivate;
+    public void setActivate(int activate) {
+        this.activate = activate;
     }
-    
+
     public String getStatus() {
-        if(isActivate) {
+        if (activate == 1) {
             return "Activate";
         }
         return "Inactivate";
     }
-    
+
     public String getShortedAddress() {
         String[] fullAddress = address.split(",");
-        String shortedAddress = fullAddress[fullAddress.length - 2].trim() + "," + fullAddress[fullAddress.length - 1];
+        String shortedAddress = fullAddress[fullAddress.length - 1];
         return shortedAddress;
     }
 

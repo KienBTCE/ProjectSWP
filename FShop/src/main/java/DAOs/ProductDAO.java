@@ -27,7 +27,7 @@ public class ProductDAO {
     public ArrayList<Product> getAllProducts() {
         ArrayList<Product> list = new ArrayList<>();
 
-        String query = "SELECT * FROM Products";
+        String query = "SELECT * FROM Products WHERE IsDeleted = 0";
 
         try {
             PreparedStatement ps = connector.prepareStatement(query);
@@ -56,13 +56,15 @@ public class ProductDAO {
         return list;
     }
 
-    public ArrayList<Product> getAllLaptops() {
+    public ArrayList<Product> getAllProductsByCategory(String category) {
         ArrayList<Product> list = new ArrayList<>();
 
-        String query = "SELECT * FROM Products P JOIN Categories C ON P.CategoryID = C.CategoryID WHERE C.Name = 'Laptop'";
+        String query = "SELECT * FROM Products P JOIN Categories C ON P.CategoryID = C.CategoryID WHERE C.Name = ? AND P.IsDeleted = 0";
 
         try {
             PreparedStatement ps = connector.prepareStatement(query);
+            ps.setString(1, category);
+            System.out.println(query);
             ResultSet rs = ps.executeQuery();
 
             while (rs.next()) {
@@ -88,7 +90,7 @@ public class ProductDAO {
         return list;
     }
 
-    public ArrayList<Product> findProductsByFilter(ArrayList<String> filters) {
+    public ArrayList<Product> findProductsByFilter(ArrayList<String> filters, String category) {
         ArrayList<Product> list = null;
 
         String query = "SELECT * FROM Products P JOIN Brands B ON P.BrandID = B.BrandID WHERE B.Name IN (SELECT Name FROM Brands WHERE ";
@@ -97,53 +99,52 @@ public class ProductDAO {
             query += filter;
         }
 
-        query += ") AND P.CategoryID IN (SELECT CategoryID FROM Categories WHERE [Name] = 'Laptop')";
+        query += ") AND P.CategoryID IN (SELECT CategoryID FROM Categories WHERE [Name] = ?) AND P.IsDeleted = 0";
 
-        System.out.println("QUERY " + query);
-
-        try ( PreparedStatement ps = connector.prepareStatement(query)) {
-            try ( ResultSet rs = ps.executeQuery()) {
-                list = new ArrayList<>();
-                while (rs.next()) {
-                    list.add(new Product(
-                            rs.getInt("ProductID"),
-                            rs.getInt("BrandID"),
-                            rs.getInt("CategoryID"),
-                            rs.getString("Model"),
-                            rs.getString("FullName"),
-                            rs.getString("Description"),
-                            rs.getInt("IsDeleted"),
-                            rs.getLong("Price"),
-                            rs.getString("Image"),
-                            rs.getInt("Quantity"),
-                            rs.getInt("Stock")
-                    ));
-                }
-                return list;
-            } catch (Exception e) {
+//        System.out.println("QUERY " + query);
+        try {
+            PreparedStatement ps = connector.prepareStatement(query);
+            ps.setString(1, category);
+            ResultSet rs = ps.executeQuery();
+            list = new ArrayList<>();
+            while (rs.next()) {
+                list.add(new Product(
+                        rs.getInt("ProductID"),
+                        rs.getInt("BrandID"),
+                        rs.getInt("CategoryID"),
+                        rs.getString("Model"),
+                        rs.getString("FullName"),
+                        rs.getString("Description"),
+                        rs.getInt("IsDeleted"),
+                        rs.getLong("Price"),
+                        rs.getString("Image"),
+                        rs.getInt("Quantity"),
+                        rs.getInt("Stock")
+                ));
             }
-        } catch (Exception e) {
+            return list;
+        } catch (SQLException e) {
             System.out.println(e);
         }
 
         return list;
     }
 
-    public ArrayList<String> getAllBrandLaptop() {
+    public ArrayList<String> getAllBrandByCategory(String category) {
         ArrayList<String> list = null;
 
-        String query = "SELECT DISTINCT B.[Name] FROM Brands B JOIN Products P ON B.BrandID = P.BrandID WHERE P.CategoryID IN (SELECT CategoryID FROM Categories WHERE [Name] = 'Laptop')";
+        String query = "SELECT DISTINCT B.[Name] FROM Brands B JOIN Products P ON B.BrandID = P.BrandID WHERE P.CategoryID IN (SELECT CategoryID FROM Categories WHERE [Name] = ?)  AND P.IsDeleted = 0";
 
-        try ( PreparedStatement ps = connector.prepareStatement(query)) {
-            try ( ResultSet rs = ps.executeQuery()) {
-                list = new ArrayList<>();
-                while (rs.next()) {
-                    list.add(rs.getString("Name"));
-                }
-                return list;
-            } catch (Exception e) {
+        try {
+            PreparedStatement ps = connector.prepareStatement(query);
+            ps.setString(1, category);
+            ResultSet rs = ps.executeQuery();
+            list = new ArrayList<>();
+            while (rs.next()) {
+                list.add(rs.getString("Name"));
             }
-        } catch (Exception e) {
+            return list;
+        } catch (SQLException e) {
             System.out.println(e);
         }
 
@@ -151,23 +152,34 @@ public class ProductDAO {
     }
 
     //Lay danh sach san pham - shop manager
-    public ResultSet getProductList() {
-        ResultSet rs = null;
-        try {
-            Statement st = connector.createStatement();
-            String sql = "SELECT p.ProductID, c.Name AS CategoryName, b.Name AS BrandName, "
-                    + "p.FullName, p.Price, p.Quantity, p.isDeleted "
-                    + "FROM Products p "
-                    + "JOIN Categories c ON p.CategoryID = c.CategoryID "
-                    + "JOIN Brands b ON p.BrandID = b.BrandID";
-            rs = st.executeQuery(sql);
-        } catch (SQLException ex) {
-            Logger.getLogger(ProductDAO.class.getName()).log(Level.SEVERE, null, ex);
+    public ArrayList<Product> getProductList() {
+        ArrayList<Product> list = new ArrayList<>();
+        String query = "SELECT sp.ProductID, c.Name AS CategoryName, b.Name AS BrandName, "
+                + "sp.FullName, sp.Price, sp.Quantity, sp.isDeleted "
+                + "FROM Products sp "
+                + "JOIN Categories c ON sp.CategoryID = c.CategoryID "
+                + "JOIN Brands b ON sp.BrandID = b.BrandID";
+
+        try ( PreparedStatement ps = connector.prepareStatement(query);  ResultSet rs = ps.executeQuery()) {
+
+            while (rs.next()) {
+                list.add(new Product(
+                        rs.getInt("ProductID"),
+                        rs.getString("CategoryName"),
+                        rs.getString("BrandName"),
+                        rs.getString("FullName"),
+                        rs.getLong("Price"),
+                        rs.getInt("Quantity"),
+                        rs.getInt("isDeleted") // Tránh lỗi nếu DB lưu isDeleted dưới dạng INT
+                ));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace(); // In lỗi rõ ràng để debug
         }
-        return rs;
+        return list;
     }
 
-    //Doi trang thai button - shop manager
+//Doi trang thai button - shop manager
     public void toggleStatus(int customerID) {
         try (
                  PreparedStatement ps = connector.prepareStatement("UPDATE Products SET isDeleted = 1 - isDeleted WHERE ProductID = ?")) {
@@ -178,21 +190,24 @@ public class ProductDAO {
     }
 
     //Thong tin chi tiet cua san pham - shop manager
-    public Product getProductById2(int id) {
-        Product product = null;
+    public Product getProductByID(int productId) {
+        Product s = null;
+
+        String query = "SELECT sp.ProductID, c.Name AS CategoryName, b.Name AS BrandName, "
+                + "sp.FullName, sp.Price, sp.Quantity, sp.isDeleted "
+                + "FROM Products sp "
+                + "JOIN Categories c ON sp.CategoryID = c.CategoryID "
+                + "JOIN Brands b ON sp.BrandID = b.BrandID "
+                + "WHERE sp.ProductID = ?";
+
         try {
-            String query = "SELECT p.ProductID, c.Name AS CategoryName, b.Name AS BrandName, "
-                    + "p.FullName, p.Price, p.Quantity, p.isDeleted "
-                    + "FROM Products p "
-                    + "JOIN Categories c ON p.CategoryID = c.CategoryID "
-                    + "JOIN Brands b ON p.BrandID = b.BrandID "
-                    + "WHERE p.ProductID = ?";
             PreparedStatement ps = connector.prepareStatement(query);
-            ps.setInt(1, id);
+            ps.setInt(1, productId);
+
             ResultSet rs = ps.executeQuery();
 
-            if (rs.next()) {
-                product = new Product(
+            while (rs.next()) {
+                s = new Product(
                         rs.getInt("ProductID"),
                         rs.getString("CategoryName"),
                         rs.getString("BrandName"),
@@ -202,10 +217,42 @@ public class ProductDAO {
                         rs.getInt("isDeleted")
                 );
             }
-        } catch (Exception e) {
-            e.printStackTrace();
+            return s;
+        } catch (SQLException e) {
+            System.out.println(e);
         }
-        return product;
+
+        return s;
+    }
+
+    public int deleteProduct(int productId) {
+        int count = 0;
+        try {
+            String sql = "UPDATE Products SET isDeleted = 1 WHERE ProductID = ?";
+            PreparedStatement pst = connector.prepareStatement(sql);
+            pst.setInt(1, productId);
+            count = pst.executeUpdate();
+
+        } catch (SQLException ex) {
+            Logger.getLogger(ProductDAO.class
+                    .getName()).log(Level.SEVERE, null, ex);
+        }
+        return count;
+    }
+
+    public int restoreProduct(int productId) {
+        int count = 0;
+        try {
+            String sql = "UPDATE Products SET isDeleted = 0 WHERE ProductID = ?";
+            PreparedStatement pst = connector.prepareStatement(sql);
+            pst.setInt(1, productId);
+            count = pst.executeUpdate();
+
+        } catch (SQLException ex) {
+            Logger.getLogger(ProductDAO.class
+                    .getName()).log(Level.SEVERE, null, ex);
+        }
+        return count;
     }
 
 }
