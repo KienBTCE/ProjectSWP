@@ -127,7 +127,11 @@ public class Product {
         return deleted;
     }
 
+<<<<<<< HEAD
+    public void setDeleted(int deleted) {
+=======
     public void sgetDeleted(int deleted) {
+>>>>>>> Kien
         this.deleted = deleted;
     }
 
@@ -170,9 +174,9 @@ public class Product {
     public void setAttributes(HashMap<String, String> attributes) {
         this.attributes = attributes;
     }
-
+    
     public String getStatus() {
-        if (isDeleted) {
+        if (deleted == 1) {
             return "Deleted";
         }
         return "Activate";
