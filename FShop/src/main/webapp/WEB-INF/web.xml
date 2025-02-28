@@ -35,6 +35,18 @@
         <servlet-name>CreateSupplierServlet</servlet-name>
         <servlet-class>Controllers.CreateSupplierServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>UpdateSupplierServlet</servlet-name>
+        <servlet-class>Controllers.UpdateSupplierServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>DeleteSupplierServlet</servlet-name>
+        <servlet-class>Controllers.DeleteSupplierServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>ImportStockServlet</servlet-name>
+        <servlet-class>Controllers.ImportStockServlet</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>default</servlet-name>
         <url-pattern>/assets/*</url-pattern>
@@ -150,6 +162,18 @@
     <servlet-mapping>
         <servlet-name>CreateSupplierServlet</servlet-name>
         <url-pattern>/CreateSupplier</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>UpdateSupplierServlet</servlet-name>
+        <url-pattern>/UpdateSupplier</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>DeleteSupplierServlet</servlet-name>
+        <url-pattern>/DeleteSupplier</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ImportStockServlet</servlet-name>
+        <url-pattern>/ImportStock</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

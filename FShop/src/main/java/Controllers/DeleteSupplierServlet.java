@@ -5,21 +5,18 @@
 package Controllers;
 
 import DAOs.SupplierDAO;
-import Models.Supplier;
-import jakarta.servlet.RequestDispatcher;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import java.time.LocalDateTime;
 
 /**
  *
  * @author KienBTCE180180
  */
-public class CreateSupplierServlet extends HttpServlet {
+public class DeleteSupplierServlet extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -32,19 +29,15 @@ public class CreateSupplierServlet extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-//        response.setContentType("text/html;charset=UTF-8");
-//        try (PrintWriter out = response.getWriter()) {
-//            /* TODO output your page here. You may use following sample code. */
-//            out.println("<!DOCTYPE html>");
-//            out.println("<html>");
-//            out.println("<head>");
-//            out.println("<title>Servlet CreateSupplierServlet</title>");  
-//            out.println("</head>");
-//            out.println("<body>");
-//            out.println("<h1>Servlet CreateSupplierServlet at " + request.getContextPath () + "</h1>");
-//            out.println("</body>");
-//            out.println("</html>");
-//        }
+        SupplierDAO sd = new SupplierDAO();
+        int id = Integer.parseInt(request.getParameter("id"));
+
+        if (id != 0) {
+            int check = sd.deleteSupplier(id);
+            if (check != 0) {
+                response.sendRedirect("Supplier");
+            }
+        }
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
@@ -73,23 +66,7 @@ public class CreateSupplierServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        SupplierDAO sd = new SupplierDAO();
-
-        String taxId = request.getParameter("taxNumber");
-        String companyName = request.getParameter("name");
-        String email = request.getParameter("email");
-        String phoneNumber = request.getParameter("phone");
-        String address = request.getParameter("address");
-
-        Supplier s = new Supplier(0, taxId, companyName, email, phoneNumber, address, LocalDateTime.now(), LocalDateTime.now(), 0, 1);
-
-        if (sd.createSupplier(s) != 0) {
-            response.sendRedirect("Supplier");
-        } else {
-            request.getSession().setAttribute("error", "There is the same supplier.");
-            response.sendRedirect("Supplier");
-        }
-        
+        processRequest(request, response);
     }
 
     /**

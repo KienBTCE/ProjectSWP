@@ -100,7 +100,7 @@ public class Supplier {
         this.lastModify = lastModify;
     }
 
-    public int isDeleted() {
+    public int getDeleted() {
         return deleted;
     }
 
@@ -108,7 +108,7 @@ public class Supplier {
         this.deleted = deleted;
     }
 
-    public int isActivate() {
+    public int getActivate() {
         return activate;
     }
 

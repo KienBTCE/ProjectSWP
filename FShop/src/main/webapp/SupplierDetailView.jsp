@@ -38,10 +38,11 @@
             }
             .content {
                 flex-grow: 1;
-                padding: 20px;
+                padding: 12px;
                 display: flex;
                 flex-direction: column;
                 gap: 20px;
+                margin-left: 250px;
             }
             .header {
                 display: flex;
@@ -72,8 +73,7 @@
                 width: 20%;
                 text-align: left;
             }
-            .btn-back {
-                background-color: #7D69FF;
+            .btn-action {
                 color: white;
                 border: none;
                 padding: 10px 20px;
@@ -81,31 +81,19 @@
                 text-decoration: none;
                 margin-top: 20px;
             }
-            .btn-back:hover {
+            .btn-action:hover {
                 background-color: #5a4edc;
             }
         </style>
     </head>
     <body>
-        <div class="sidebar">
-            <img src="assets/imgs/Dashboard/Group 1521.svg" class="logo-side-bar">
-            <h6><a href="ImportOrder">Warehouse Management</a></h6>
-            <a href="ImportOrder">Import Order</a>
-            <a href="Supplier">Supplier</a>
-            <a href="#">Product Management</a>
-        </div>
-        <div class="content">
-            <div class="header">
-                <div style="margin-right: 30px">
-                    <img style="float: left; margin-right: 15px;"
-                         src="assets/imgs/Dashboard/FF8D5F6D-1708-4455-81D8-5F4456F83F52_LE_auto_x2-min.png" alt="User Icon" class="icon">
-                    <p style="display: flex; margin: 12px 0 0 0;">Hi, Kien</p>
-                </div>
-            </div>
+        <jsp:include page="SidebarDashboard.jsp"></jsp:include>
+            <div class="content">
+            <jsp:include page="HeaderDashboard.jsp"></jsp:include>
 
-            <div class="table-container">
-                <h3>Supplier Detail</h3>
-                <table class="table table-bordered">
+                <div class="table-container">
+                    <h3>Supplier Detail</h3>
+                    <table class="table table-bordered">
                     <c:choose>
                         <c:when test="${supplier != null}">
                             <tr>
@@ -131,7 +119,7 @@
                             <tr>
                                 <th>Status</th>
                                 <td>
-                                    <span class="badge ${supplier.isActivate() == 1 ? 'bg-success' : 'bg-danger'}">
+                                    <span class="badge ${supplier.getActivate() == 1 ? 'bg-success' : 'bg-danger'}">
                                         ${supplier.getStatus()}
                                     </span>
                                 </td>
@@ -144,8 +132,98 @@
                         </c:otherwise>
                     </c:choose>
                 </table>
-                <a href="Supplier" class="btn-back">Back to List</a>
+                <button class="btn btn-primary btn-action" data-bs-toggle="modal" data-bs-target="#updateSupplierModal" style=" height: auto">Update</button>
+                <button class="btn btn-danger btn-action" id="deleteBtn" data-bs-toggle="modal" data-bs-target="#deleteSupplierModal" style="height: auto">Delete</button>
+
+                <!-- Start Error Modal -->
+                <div class="modal fade" id="errorModal" tabindex="-1" aria-labelledby="errorModalLabel" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="errorModalLabel">Error</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <p id="errorMessage"></p>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- End Error Modal -->
+
+                <!--          Start Modal Update Supplier            -->
+                <c:set var="s" value="${supplier}"/>
+                <div class="modal fade" id="updateSupplierModal" tabindex="-1" aria-labelledby="updateSupplierModalLabel" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="updateSupplierModalLabel">Edit Supplier</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <form id="updateSupplierForm" method="POST" action="UpdateSupplier?id=${s.getSupplierId()}">
+                                    <div class="mb-3">
+                                        <label for="taxId" class="form-label">Tax ID</label>
+                                        <input value="${s.getTaxId()}" name="taxNumber" type="number" class="form-control" id="taxId" required>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="companyName" class="form-label">Company Name</label>
+                                        <input value="${s.getName()}" name="name" type="text" class="form-control" id="companyName" required>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="email" class="form-label">Email</label>
+                                        <input value="${s.getEmail()}" name="email" type="email" class="form-control" id="email" required>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="phoneNumber" class="form-label">Phone Number</label>
+                                        <input value="${s.getPhoneNumber()}" name="phone" type="number" class="form-control" id="phoneNumber" required>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="address" class="form-label">Address</label>
+                                        <input value="${s.getAddress()}" name="address" type="text" class="form-control" id="address" required>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="status" class="form-label">Status</label>
+                                        <select name="status" id="status" class="form-select">
+                                            <option value="1" ${s.getActivate() == 1 ? 'selected' : ''}>Active</option>
+                                            <option value="0" ${s.getActivate() == 0 ? 'selected' : ''}>Inactive</option>
+                                        </select>
+                                    </div>
+                                    <button type="submit" class="btn btn-success">Save</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!--          End Modal Update Supplier            -->
             </div>
         </div>
+        <%
+            String errorMessage = (String) session.getAttribute("error");
+            if (errorMessage != null) {
+        %>
+        <script>
+            document.getElementById("errorMessage").innerText = "<%= errorMessage%>";
+            var errorModal = new bootstrap.Modal(document.getElementById('errorModal'));
+            errorModal.show();
+        </script>
+        <%
+                session.removeAttribute("error");
+            }
+        %>
+        <script>
+            document.getElementById("deleteBtn").addEventListener("click", function (event) {
+                var confirmDelete = confirm("Are you sure you want to deleted this supplier ?");
+                if (!confirmDelete) {
+                    event.preventDefault();
+                } else {
+                    window.location.href = "DeleteSupplier?id=${s.getSupplierId()}";
+                }
+            });
+        </script>
+        });
     </body>
 </html>
