@@ -81,24 +81,25 @@ public class EmployeeLoginServlet extends HttpServlet {
         
         Employee em = emDAO.employeeLogin(email, password);//Emloyee có all thông tin tru di password là ko có
         if(em != null){
-            if(em.getStatus().equals("Active")){
+            //response.sendRedirect("/ViewEmployeeProfile");
+            if(em.getStatus() == 1){
                 session.setAttribute("employee", em);
                 if(em.getRoleId() == 1){
-                    //session.setAttribute("message", "Admin");
+                    session.setAttribute("message", "Admin");
                     response.sendRedirect("/EmployeeLogin");//Link qua Admin
                 } else if(em.getRoleId() == 2){
-                    //session.setAttribute("message", "Shop Managers");
+                    session.setAttribute("message", "Shop Managers");
                     response.sendRedirect("/EmployeeLogin");//Link qua Shop Manager
                 } else if(em.getRoleId() == 3){
-                    //session.setAttribute("message", "Order Manager");
+                    session.setAttribute("message", "Order Manager");
                     response.sendRedirect("/EmployeeLogin");//Link qua Order Manager
                 } else if(em.getRoleId() == 4){
-                    //session.setAttribute("message", "Warehouse Manager");
+                    session.setAttribute("message", "Warehouse Manager");
                     response.sendRedirect("/EmployeeLogin");//Link qua Warehouse Manager
                 } else{
                     processRequest(request, response);//ko có roleId thì error
                 }
-            } else if(em.getStatus().equals("Deactive")){
+            } else if(em.getStatus() == 0){
                 session.setAttribute("message", "Your account is deactive!");//deactive thì không login dc
                 response.sendRedirect("/EmployeeLogin");
             } else{

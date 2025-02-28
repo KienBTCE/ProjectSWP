@@ -68,6 +68,9 @@ public class OrderDetailDAO {
 
     public static void main(String[] args) {
         OrderDetailDAO od = new OrderDetailDAO();
-        System.out.println(od.getOrderDetailOfEachOrder(2));
+        //System.out.println(od.getOrderDetailOfEachOrder(2));
+        for (OrderDetail order : od.getOrderDetail("3")) {
+            System.out.println(order.getPrice());
+        }
     }
 }
