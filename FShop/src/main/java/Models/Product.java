@@ -171,6 +171,13 @@ public class Product {
         this.attributes = attributes;
     }
 
+    public String getStatus() {
+        if (isDeleted) {
+            return "Deleted";
+        }
+        return "Activate";
+    }
+
     public String getPriceFormatted() {
         Locale vietnam = new Locale("vi", "VN");
         NumberFormat currencyFormatter = NumberFormat.getCurrencyInstance(vietnam);

@@ -137,7 +137,7 @@
 
                 <div class="form-box">
                     <p>If you have an account, sign in with your email address.</p>
-                    <form action="employeeLogin" method="post">
+                    <form action="EmployeeLogin" method="post">
                         <label for="email">Email</label>
                         <input type="email" id="email" name="email" placeholder="Your Email" required>
 
@@ -172,7 +172,7 @@
             // Show popup if login fails (you can trigger this with backend error)
             // For example, if you're using a session attribute or response error:
             <%
-                if (session.getAttribute("message") != null) {
+                if (session.getAttribute("message") != null || session.getAttribute("message") == "") {
                     out.print("showPopup();");
                 }
                 session.removeAttribute("message");
