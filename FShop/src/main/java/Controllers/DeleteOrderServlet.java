@@ -6,12 +6,15 @@
 package Controllers;
 
 import DAOs.OrderDAO;
+import DAOs.OrderDetailDAO;
+import Models.OrderDetail;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import java.util.List;
 
 /**
  *
@@ -71,6 +74,11 @@ public class DeleteOrderServlet extends HttpServlet {
           OrderDAO oDAO = new OrderDAO();
          if(orderID!= null){
              oDAO.DeleteOrder(orderID);
+                  OrderDetailDAO odDAO = new OrderDetailDAO();
+                      List<OrderDetail> list = odDAO.getOrderDetail(orderID);
+                      for(OrderDetail o : list){
+                      oDAO.plusQuantityAfterCancel(o.getProductID(), o.getQuantity());
+                      }
               System.out.println("Received Order ID: " + orderID);
              response.sendRedirect(request.getContextPath() + "/ViewOrderListServlet");
          }
