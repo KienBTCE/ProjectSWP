@@ -16,65 +16,30 @@
         <style>
             body {
                 display: flex;
-            }
-            .sidebar {
-                width: 250px;
-                height: 97vh;
-                background: #FFFFFF;
-                color: black;
-                padding-top: 20px;
-                box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.3);
-                border-radius: 10px;
-                margin-top: 10px;
-            }
-            .sidebar a {
-                color: #7A7D90;
-                text-decoration: none;
-                padding: 10px;
-                display: block;
-            }
-            .sidebar a:hover {
-                background: #7D69FF;
-                color: white;
-                width: 90%;
-                font-weight: bold;
-                border-radius: 10px;
-            }
-            .content {
-                flex-grow: 1;
-                padding: 20px;
-                display: flex;
-                flex-direction: column;
-                gap: 20px;
-            }
-            .header {
-                display: flex;
-                justify-content: right;
+                justify-content: center;
                 align-items: center;
-                padding: 10px;
-                background: #FFFFFF;
-                box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.3);
-                border-radius: 10px;
-                height: 85px;
+                height: 100vh;
+                background-color: #f8f9fa;
             }
-            .icon {
-                width: 40px;
-                height: 40px;
-                border-radius: 50%;
-                object-fit: cover;
-            }
-            .table-container {
+            .container {
+                max-width: 900px;
                 background: white;
                 padding: 20px;
                 border-radius: 10px;
                 box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.1);
-                width: 100%; /* Kéo dài bảng ra hết chiều ngang trống */
             }
             .table th {
                 background: #7D69FF;
                 color: white;
-                width: 20%;
+                width: 30%;
                 text-align: left;
+            }
+            .image-container {
+                text-align: right;
+            }
+            .product-image {
+                max-width: 370px;
+                height: auto;
             }
             .btn-back {
                 background-color: #7D69FF;
@@ -83,19 +48,25 @@
                 padding: 10px 20px;
                 border-radius: 5px;
                 text-decoration: none;
+                display: block;
+                text-align: center;
                 margin-top: 20px;
             }
             .btn-back:hover {
                 background-color: #5a4edc;
             }
+            .product-details {
+                display: flex;
+                align-items: center;
+                gap: 20px;
+            }
         </style>
     </head>
     <body>
+        <div class="container">
+            <h3 class="mb-4 text-center">Product Detail</h3>
+            <div class="product-details">
 
-        <div class="content">
-
-            <div class="table-container">
-                <h3>Product Detail</h3>
                 <table class="table table-bordered">
                     <c:choose>
                         <c:when test="${product != null}">
@@ -112,22 +83,30 @@
                                 <td>${product.getBrandName()}</td>
                             </tr>
                             <tr>
+                                <th>Model</th>
+                                <td>${product.getModel()}</td>
+                            </tr>
+                            <tr>
                                 <th>Product Name</th>
                                 <td>${product.getFullName()}</td>
+                            </tr>
+                            <tr>
+                                <th>Stock</th>
+                                <td>${product.getStock()}</td>
                             </tr>
                             <tr>
                                 <th>Price</th>
                                 <td>${product.getPrice()}</td>
                             </tr>
                             <tr>
-                                <th>Quantity</th>
-                                <td>${product.getQuantity()}</td>
+                                <th>Description</th>
+                                <td>${product.getDescription()}</td>
                             </tr>
                             <tr>
                                 <th>Status</th>
                                 <td>
-                                    <span class="badge ${product.getDeleted() == 1 ? 'bg-success' : 'bg-danger'}">
-                                        ${product.getDeleted() == 1 ? 'Deleted' : 'Activate'}
+                                    <span class="badge ${product.getDeleted() == 1 ? 'bg-danger' : 'bg-success'}">
+                                        ${product.getDeleted() == 1 ? 'Deleted' : 'Active'}
                                     </span>
                                 </td>
                             </tr>
@@ -139,8 +118,11 @@
                         </c:otherwise>
                     </c:choose>
                 </table>
-                <a href="ProductListServlet" class="btn-back">Back to List</a>
+                <div class="image-container">
+                    <img src="assets/imgs/Products/${product.getImage()}" class="product-image" alt="${product.getFullName()}"/>
+                </div>
             </div>
+            <a href="ProductListServlet" class="btn-back">Back to List</a>
         </div>
     </body>
 </html>

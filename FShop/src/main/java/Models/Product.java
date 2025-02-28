@@ -94,6 +94,15 @@ public class Product {
         return categoryName;
     }
 
+    public Product(int productId, String fullName, String description, int deleted, long price, String image) {
+        this.productId = productId;
+        this.fullName = fullName;
+        this.description = description;
+        this.deleted = deleted;
+        this.price = price;
+        this.image = image;
+    }
+
     public void setCategoryName(String categoryName) {
         this.categoryName = categoryName;
     }
@@ -156,6 +165,17 @@ public class Product {
 
     public int getDeleted() {
         return deleted;
+    }
+
+    public Product(int productId, String model, String fullName, String description, int deleted, long price, String image, int stock) {
+        this.productId = productId;
+        this.model = model;
+        this.fullName = fullName;
+        this.description = description;
+        this.deleted = deleted;
+        this.price = price;
+        this.image = image;
+        this.stock = stock;
     }
 
 
