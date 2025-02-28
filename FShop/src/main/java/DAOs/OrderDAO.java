@@ -127,13 +127,23 @@ public class OrderDAO {
         }
     }
 
-    public void UpdateOrder(String orderID, String status) {
+    public void addQuantityAfterCancel(int productID, int quantity) {
+        try {
+            PreparedStatement pr = connector.prepareStatement("Update Products set Quantity = quantity + ? where ProductID=?");
+            pr.setInt(1, quantity);
+            pr.setInt(2, productID);
+            pr.executeUpdate();
+        } catch (Exception e) {
+        }
+    }
+
+    public void updateOrder(int orderID, int status) {
 
         String query = "Update Orders SET Orders.Status= ? WHERE Orders.OrderID=?";
         try {
             PreparedStatement pre = connector.prepareStatement(query);
-            pre.setString(1, status);
-            pre.setString(2, orderID);
+            pre.setInt(1, status);
+            pre.setInt(2, orderID);
             pre.executeUpdate();
         } catch (Exception e) {
             Logger.getLogger(OrderDAO.class.getName()).log(Level.SEVERE, null, e);
@@ -146,13 +156,13 @@ public class OrderDAO {
 //<<<<<<< HEAD
     }
 
-    public void DeleteOrder(String orderID) {
+    public void deleteOrder(int orderID) {
 
         String query = "Update Orders SET Orders.Status= 6 WHERE Orders.OrderID=?";
         try {
             PreparedStatement pre = connector.prepareStatement(query);
 
-            pre.setString(1, orderID);
+            pre.setInt(1, orderID);
             pre.executeUpdate();
         } catch (Exception e) {
             Logger.getLogger(OrderDAO.class.getName()).log(Level.SEVERE, null, e);
@@ -194,10 +204,10 @@ public class OrderDAO {
     public static void main(String[] args) {
         OrderDAO o = new OrderDAO();
 //        o.addOrderDetail(1, 1, 3, 34000000);
-        List<Order> list = o.getAllOrderOfCustomer(1);
-        for (Order order : list) {
-            System.out.println(order.getAddress());
-        }
-
+//        List<Order> list = o.getAllOrderOfCustomer(1);
+//        for (Order order : list) {
+//            System.out.println(order.getAddress());
+//        }
+        o.updateOrder(2, 2);
     }
 }

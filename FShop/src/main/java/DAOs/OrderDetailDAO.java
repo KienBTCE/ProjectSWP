@@ -41,7 +41,6 @@ public class OrderDetailDAO {
     }
 
     public List<OrderDetail> getOrderDetail(String orderid) {
-
         List<OrderDetail> list = new ArrayList<>();
         String query = "SELECT * FROM OrderDetails as od\n"
                 + "join Products as p on p.ProductID = od.ProductID\n"
@@ -54,8 +53,8 @@ public class OrderDetailDAO {
                 OrderDetail od = new OrderDetail(
                         rs.getInt("OrderID"),
                         rs.getInt("ProductID"),
-                        rs.getInt("Price"),
                         rs.getInt("Quantity"),
+                        rs.getLong("Price"),
                         rs.getString("CategoryID"),
                         rs.getString("FullName"),
                         rs.getString("Image"));
@@ -69,6 +68,9 @@ public class OrderDetailDAO {
 
     public static void main(String[] args) {
         OrderDetailDAO od = new OrderDetailDAO();
-        System.out.println(od.getOrderDetailOfEachOrder(2));
+        //System.out.println(od.getOrderDetailOfEachOrder(2));
+        for (OrderDetail order : od.getOrderDetail("3")) {
+            System.out.println(order.getPrice());
+        }
     }
 }

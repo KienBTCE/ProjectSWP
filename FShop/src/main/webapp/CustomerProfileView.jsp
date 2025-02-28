@@ -77,9 +77,9 @@
 
         </style>
     </head>
-    <body>
+    <body >
         <form action="updateCustomerProfile" method="post" enctype="multipart/form-data">
-            <div class="profile">
+            <div class="profile" style="box-shadow: 2px 2px 2px 2px lightgray; border-radius: 10px ; ">
                 <div class="info">
                     <h3>My Profile</h3>
                     <p class="text-muted">Manage your profile information to secure your account</p>
@@ -114,6 +114,7 @@
 
                     <div class="mb-3">
                         <label class="form-label">Date of Birth:</label>
+
                         <div class="row">
                             <div class="col">
                                 <select class="form-select" name="day">
@@ -150,13 +151,20 @@
                 <div class="mb-3 avatar">
                     <label class="form-label">Avatar:</label>
                     <div class="d-block align-items-center">
-                        <c:if test="${sessionScope.customer.getAvatar() != ''}">
-                            <img id="avatarPreview" class="avatar-preview mb-3" src="assets/imgs/CustomerAvatar/${sessionScope.customer.getAvatar()}" alt="Avatar">
+                        <c:if test="${sessionScope.customer.getAvatar().equals('') == true}">
+                            <c:if test="${sessionScope.customer.getAvatar().equals('') == true}">
+                                <img id="avatarPreview" class="avatar-preview mb-3" src="assets/imgs/icon/user (3).png" alt="default">
+                            </c:if>   
+                            <c:if test="${sessionScope.customer.getAvatar().equals('') == false}">
+                                <img id="avatarPreview" class="avatar-preview mb-3"  src="assets/imgs/CustomerAvatar/${sessionScope.customer.getAvatar()}" alt="default">
+                            </c:if>
+                        </c:if>   
+                        <c:if test="${sessionScope.customer.getAvatar().equals('') == false}">
+                            <img id="avatarPreview" class="avatar-preview mb-3" src="assets/imgs/CustomerAvatar/${sessionScope.customer.getAvatar()}" alt="default">
                         </c:if>
-                        <c:if test="${sessionScope.customer.getAvatar() == ''}">
-                            <img id="avatarPreview" class="avatar-preview mb-3" src="assets/imgs/icon/person.jpg" alt="Avatar">
-                        </c:if>
-                        <input type="file" class="form-control" name="avatar" onchange="previewImage(event)" >
+
+                        <br>
+                        <input type="file" accept="image/*" class="form-control" name="avatar" onchange="previewImage(event)" >
                     </div>
                 </div>
                 <button type="submit" class="btn btn-danger">Save</button>

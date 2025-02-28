@@ -51,7 +51,7 @@
             /* Dropdown */
             .droppeddown-menu {
                 display: none;
-                padding-left: 15px;
+                padding-left: 30px;
             }
 
             .droppeddown-menu a {
@@ -142,12 +142,13 @@
                     <div class="row">
                         <div class="sidebar col-md-3" style=" height: auto; padding: 20px;">
                             <div class="text-center">
-                            <c:if test="${sessionScope.customer.getAvatar().equals('')}">
-                                <img id="avatar" src="assets/imgs/icon/person.jpg" alt="Avatar2">
+                            <c:if test="${sessionScope.customer.getAvatar().equals('') == true}">
+                                <img id="avatar" src="assets/imgs/icon/user (3).png" alt="default">
                             </c:if>   
-                            <c:if test="${!sessionScope.customer.getAvatar().equals('')}">
-                                <img id="avatar" src="assets/imgs/CustomerAvatar/${sessionScope.customer.getAvatar()}" alt="Avatar1">
+                            <c:if test="${sessionScope.customer.getAvatar().equals('') == false}">
+                                <img id="avatar" src="assets/imgs/CustomerAvatar/${sessionScope.customer.getAvatar()}" alt="default">
                             </c:if>
+
 
                             <h4>${sessionScope.customer.getFullName()}</h4>
                             <a class="text-center" href="Logout">Logout</a>

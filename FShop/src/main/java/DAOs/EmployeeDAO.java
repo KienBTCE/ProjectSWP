@@ -12,7 +12,9 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.time.LocalDateTime;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 
 /**
@@ -24,64 +26,7 @@ public class EmployeeDAO {
     DBContext db = new DBContext();
     Connection connector = db.getConnection();
 
-    public ArrayList<Employee> getAllEmployees() {
-        ArrayList<Employee> listEmployee = new ArrayList<>();
-        String sql = "SELECT * FROM Employees";
-        try {
-            PreparedStatement pr = connector.prepareStatement(sql);
-            ResultSet rs = pr.executeQuery();
-            while (rs.next()) {
-                listEmployee.add(new Employee(rs.getInt("EmployeeID"),
-                        rs.getString("FullName"),
-                        rs.getTimestamp("Birthday").toLocalDateTime(),
-                        rs.getString("Password"),
-                        rs.getString("PhoneNumber"),
-                        rs.getString("Email"),
-                        rs.getString("Gender"),
-                        rs.getTimestamp("CreatedDate").toLocalDateTime(),
-                        rs.getString("Status"),
-                        rs.getString("Avatar"),
-                        rs.getInt("RoleID")
-                ));
-            }
-            return listEmployee;
-        } catch (SQLException e) {
-            System.out.println(e);
-        }
-        return listEmployee;
-    }
-
-    public Employee getEmployeeById(String id) {
-        int empId = Integer.parseInt(id);
-        Employee emp = null;
-        String sql = "SELECT * FROM Employees WHERE EmployeeID = ?";
-
-        try {
-            PreparedStatement pr = connector.prepareStatement(sql);
-            pr.setInt(empId, 1);
-            ResultSet rs = pr.executeQuery();
-            while (rs.next()) {
-                emp = new Employee(rs.getInt("EmployeeID"),
-                        rs.getString("FullName"),
-                        rs.getTimestamp("Birthday").toLocalDateTime(),
-                        rs.getString("Password"),
-                        rs.getString("PhoneNumber"),
-                        rs.getString("Email"),
-                        rs.getString("Gender"),
-                        rs.getTimestamp("CreatedDate").toLocalDateTime(),
-                        rs.getString("Status"),
-                        rs.getString("Avatar"),
-                        rs.getInt("RoleID")
-                );
-            }
-            return emp;
-        } catch (SQLException e) {
-            System.out.println(e);
-        }
-        return emp;
-    }
-
-    private String getMD5(String input) {
+    public String getMD5(String input) {
         try {
             // Tạo instance của MessageDigest với thuật toán MD5
             MessageDigest md = MessageDigest.getInstance("MD5");
@@ -103,7 +48,107 @@ public class EmployeeDAO {
             throw new RuntimeException("MD5 algorithm not found!", e);
         }
     }
-
+    
+    public ArrayList<Employee> getAllEmployees() {
+        ArrayList<Employee> listEmployee = new ArrayList<>();
+        String sql = "SELECT * FROM Employees";
+        try {
+            PreparedStatement pr = connector.prepareStatement(sql);
+            ResultSet rs = pr.executeQuery();
+            while (rs.next()) {
+                listEmployee.add(new Employee(rs.getInt("EmployeeID"),
+                        rs.getString("FullName"),
+                        rs.getDate("Birthday"),
+                        "",
+                        rs.getString("PhoneNumber"),
+                        rs.getString("Email"),
+                        rs.getString("Gender"),
+                        rs.getDate("CreatedDate"),
+                        rs.getInt("Status"),
+                        rs.getString("Avatar"),
+                        rs.getInt("RoleID")
+                ));
+            }
+            return listEmployee;
+        } catch (SQLException e) {
+            System.out.println(e);
+        }   
+        return listEmployee;
+    }
+    
+    public Employee getEmployeeById(String id){
+        int empId = Integer.parseInt(id);
+        Employee emp = null;
+        String sql = "SELECT * FROM Employees WHERE EmployeeID = ?";
+        
+        try {
+            PreparedStatement pr = connector.prepareStatement(sql);
+            pr.setInt(1, empId);
+            ResultSet rs = pr.executeQuery();
+            while(rs.next()){
+                emp = new Employee(rs.getInt("EmployeeID"),
+                        rs.getString("FullName"),
+                        rs.getDate("Birthday"),
+                        "",
+                        rs.getString("PhoneNumber"),
+                        rs.getString("Email"),
+                        rs.getString("Gender"),
+                        rs.getDate("CreatedDate"),
+                        rs.getInt("Status"),
+                        rs.getString("Avatar"),
+                        rs.getInt("RoleID")
+                );
+            }
+            return emp;
+        } catch (SQLException e) {
+            System.out.println(e);
+        }
+        return emp;
+    }
+    
+    public void UpdateEmployee(Employee employee){
+        String sql = "Update Employees SET FullName = ?, Birthday = ?, Password = ?, PhoneNumber = ?, Email = ?, Gender = ?, CreatedDate = ?, Status = ?, Avatar = ?, RoleID = ? WHERE EmployeeID = ?";
+        try {
+            PreparedStatement pr = connector.prepareStatement(sql);
+            pr.setString(1, employee.getFullname());
+            pr.setDate(2, employee.getBirthday());
+            pr.setString(3, employee.getPassword());
+            pr.setString(4, employee.getPhoneNumber());
+            pr.setString(5, employee.getEmail());
+            pr.setString(6, employee.getGender());
+            pr.setDate(7, employee.getCreatedDate());
+            pr.setInt(8, employee.getStatus());
+            pr.setString(9, employee.getAvatar());
+            pr.setInt(10, employee.getRoleId());
+            pr.setInt(11, employee.getEmployeeId());
+            pr.executeUpdate();          
+        } catch (SQLException e) {
+            System.out.println(e);
+        }
+    }
+    
+    public void AddEmployee(Employee employee){
+        String sql = "INSERT INTO Employees (FullName, Birthday, [Password], PhoneNumber, Email, Gender, CreatedDate, Status, Avatar, RoleID) VALUES "
+                + "(?,?,?,?,?,?,?,?,?,?)";
+        try {
+            PreparedStatement pr = connector.prepareStatement(sql);
+            pr.setString(1, employee.getFullname());
+            pr.setDate(2, employee.getBirthday());
+            pr.setString(3, getMD5(employee.getPassword()));
+            pr.setString(4, employee.getPhoneNumber());
+            pr.setString(5, employee.getEmail());
+            pr.setString(6, employee.getGender());
+            pr.setDate(7, employee.getCreatedDate());
+            pr.setInt(8, employee.getStatus());
+            pr.setString(9, employee.getAvatar());
+            pr.setInt(10, employee.getRoleId());
+            pr.executeUpdate();
+        } catch (SQLException e) {
+            System.out.println(e);
+        }
+    }
+    
+    
     public Employee employeeLogin(String email, String password) {
         Employee emp = null;
         try {
@@ -116,13 +161,13 @@ public class EmployeeDAO {
             while (rs.next()) {
                 emp = new Employee(rs.getInt("EmployeeID"),
                         rs.getString("FullName"),
-                        rs.getTimestamp("Birthday").toLocalDateTime(),
+                        rs.getDate("Birthday"),
                         "",
                         rs.getString("PhoneNumber"),
                         rs.getString("Email"),
                         rs.getString("Gender"),
-                        rs.getTimestamp("CreatedDate").toLocalDateTime(),
-                        rs.getString("Status"),
+                        rs.getDate("CreatedDate"),
+                        rs.getInt("Status"),
                         rs.getString("Avatar"),
                         rs.getInt("RoleID")
                 );
@@ -134,16 +179,23 @@ public class EmployeeDAO {
         return emp;
     }
     
-//    public static void main(String[] args) {
-//        EmployeeDAO emDAO = new EmployeeDAO();
-//        Employee em = new Employee();
-//        
-//        
-//        em = emDAO.employeeLogin("nguyen.vana@example.com", "User123@");
-//        
-//        System.out.println(em.getFullname());
-//        System.out.println(emDAO.getMD5("User123@"));
-//    }
-    
+    public int updateEmployeeProfile(Employee employee){
+        int effectRow = 0;
+        String sql = "Update Employees SET FullName = ?, Birthday = ?, PhoneNumber = ?, Gender = ?, Avatar = ? WHERE EmployeeID = ?";
+        try {
+            PreparedStatement pr = connector.prepareStatement(sql);
+            pr.setString(1, employee.getFullname());
+            pr.setDate(2, employee.getBirthday());
+            pr.setString(3, employee.getPhoneNumber());
+            pr.setString(4, employee.getGender());
+            pr.setString(5, employee.getAvatar());
+            pr.setInt(6, employee.getEmployeeId());
+            effectRow = pr.executeUpdate();          
+        } catch (SQLException e) {
+            System.out.println(e);
+            return 0;
+        }
+        return effectRow;
+    }
     
 }
