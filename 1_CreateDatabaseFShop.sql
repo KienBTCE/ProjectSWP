@@ -178,7 +178,7 @@ CREATE TABLE ImportOrderDetails (
 );
 
 CREATE TABLE ProductRatings (
-    RateID INT Id PRIMARY KEY,
+    RateID INT PRIMARY KEY,
     CustomerID INT,
     ProductID INT,
 	OrderID INT,

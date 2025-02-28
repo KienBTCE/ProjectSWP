@@ -74,9 +74,9 @@ public class DeleteOrderServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
          String orderID = request.getParameter("orderID");
-          OrderDAO oDAO = new OrderDAO();
+         OrderDAO oDAO = new OrderDAO();
          if(orderID!= null){
-             oDAO.DeleteOrder(orderID);
+             //oDAO.deleteOrder(orderID);
                   OrderDetailDAO odDAO = new OrderDetailDAO();
                       List<OrderDetail> list = odDAO.getOrderDetail(orderID);
                       for(OrderDetail o : list){
