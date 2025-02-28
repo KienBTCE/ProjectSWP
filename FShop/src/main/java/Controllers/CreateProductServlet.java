@@ -7,7 +7,6 @@ package Controllers;
 import DAOs.CategoryDAO;
 import DAOs.ProductDAO;
 import Models.Category;
-import Models.Product;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -77,23 +76,7 @@ public class CreateProductServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        ProductDAO pd = new ProductDAO();
-        // Lấy dữ liệu từ form
-        String model = request.getParameter("model");
-        String fullName = request.getParameter("fullName");
-        String description = request.getParameter("description");
-        String image = request.getParameter("image");
-        long price = Long.parseLong(request.getParameter("price"));
-        int stock = Integer.parseInt(request.getParameter("stock"));
-
-        Product s = new Product(model, fullName, description, price, image, stock);
-
-        if (pd.createProduct(s) != 0) {
-            response.sendRedirect("CreateProductView.jsp");
-        } else {
-            request.getSession().setAttribute("error", "There is the same product.");
-            response.sendRedirect("CreateProductView.jsp");
-        }
+     
     }
 
     /**
