@@ -179,22 +179,12 @@ public class ProductDAO {
         return list;
     }
 
-//Doi trang thai button - shop manager
-    public void toggleStatus(int customerID) {
-        try (
-                 PreparedStatement ps = connector.prepareStatement("UPDATE Products SET isDeleted = 1 - isDeleted WHERE ProductID = ?")) {
-            ps.setInt(1, customerID);
-            ps.executeUpdate();
-        } catch (Exception e) {
-        }
-    }
-
     //Thong tin chi tiet cua san pham - shop manager
     public Product getProductByID(int productId) {
         Product s = null;
 
         String query = "SELECT sp.ProductID, c.Name AS CategoryName, b.Name AS BrandName, "
-                + "sp.FullName, sp.Price, sp.Quantity, sp.isDeleted "
+                + "sp.FullName, sp.Price, sp.Image, sp.Quantity, sp.isDeleted "
                 + "FROM Products sp "
                 + "JOIN Categories c ON sp.CategoryID = c.CategoryID "
                 + "JOIN Brands b ON sp.BrandID = b.BrandID "
@@ -213,6 +203,7 @@ public class ProductDAO {
                         rs.getString("BrandName"),
                         rs.getString("FullName"),
                         rs.getLong("Price"),
+                        rs.getString("Image"),
                         rs.getInt("Quantity"),
                         rs.getInt("isDeleted")
                 );
@@ -253,6 +244,27 @@ public class ProductDAO {
                     .getName()).log(Level.SEVERE, null, ex);
         }
         return count;
+    }
+
+    public int createProduct(Product p) {
+        try {
+            // Chèn sản phẩm vào bảng Products
+            String query = "INSERT INTO Products (Model, FullName, Description, Price, Image, Stock) "
+                    + "VALUES ( ?, ?, ?, ?, ?, ?)";
+
+            PreparedStatement ps = connector.prepareStatement(query);
+            ps.setString(1, p.getModel());
+            ps.setString(2, p.getFullName());
+            ps.setString(3, p.getDescription());
+            ps.setLong(4, p.getPrice());
+            ps.setString(5, p.getImage());
+            ps.setInt(6, p.getStock());
+
+            return ps.executeUpdate();
+        } catch (SQLException e) {
+            System.out.println(e);
+        }
+        return 0;
     }
 
 }
