@@ -4,235 +4,217 @@
     Author     : kiuthi
 --%>
 
-<%@page import="java.sql.ResultSet"%>
-<%@page import="DAOs.CustomerDAO"%>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@page import="java.util.List"%>
+<%@page import="DAOs.SupplierDAO"%>
+<%@page import="Models.Supplier"%>
+<%@page import="java.util.ArrayList"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@ taglib prefix = "c" uri = "http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html>
     <head>
-        <meta charset="UTF-8">
-        <title>Product List</title>
-        <!-- Bootstrap CSS CDN -->
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <title>F Shop</title>
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
         <style>
-            /* Custom CSS for the navbar */
-            .navbar {
-                background-color: black;
-                padding: 10px;
+            body {
                 display: flex;
-                justify-content: flex-start;
-                align-items: center;
             }
 
-            /* Ensuring the items are next to each other in the navbar */
-            .navbar-brand {
+            .sidebar {
+                width: 250px;
+                height: 97vh;
+                background: #FFFFFF;
+                color: black;
+                padding-top: 20px;
+                box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.3);
+                transform: translateZ(0);
+                position: relative;
+                z-index: 10;
+                border-radius: 10px;
+                margin-top: 10px;
+            }
+
+            .sidebar a {
+                color: #7A7D90;
+                text-decoration: none;
+                padding: 10px;
+                display: block;
+            }
+
+            .sidebar a:hover {
+                background: #7D69FF;
                 color: white;
-                font-size: 1.2rem;
-                margin-right: 15px; /* Adding space between PRJ301 and Products */
+                width: 90%;
+                font-weight: bold;
+
+                border-top-right-radius: 10px;
+                border-bottom-right-radius: 10px;
+                border-top-left-radius: 0;
+                border-bottom-left-radius: 0;
+
             }
 
-            /* Custom CSS for table and title */
-            h2 {
-                font-size: 2.5rem;
-                margin-bottom: 20px;
+            .content {
+                flex-grow: 1;
+                padding: 12px;
             }
 
-            .logout-section {
-                text-align: left;
-                margin-bottom: 20px;
-            }
-            .logout-section h4 {
-                display: inline;
-                margin-right: 15px;
+            .header {
+                display: flex;
+                justify-content: right;
+                align-items: center;
+                padding: 10px;
+                background: #FFFFFF;
+                box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.3);
+                border-radius: 10px;
+                height: 85px;
             }
 
+            .icon {
+                width: 40px;
+                height: 40px;
+                border-radius: 50%;
+                object-fit: cover;
+            }
+
+            .logo-side-bar {
+                margin-left: 5%;
+                margin-bottom: 3%;
+            }
+            /* ========================================================= */
+
+            .table-container {
+                background: white;
+                padding: 20px;
+                border-radius: 10px;
+                box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.1);
+            }
+
+            table {
+                border-radius: 10px;
+                overflow: hidden;
+            }
+
+            thead {
+                background: #7D69FF;
+                color: white;
+            }
+
+            tbody tr:hover {
+                background: #f2f2f2;
+                transition: 0.3s;
+            }
+
+            .search-box {
+                max-width: 300px;
+                margin-bottom: 10px;
+            }
+
+            .table-navigate{
+                display: flex;
+                justify-content: space-between;
+            }
             .btn-add {
-                margin-bottom: 20px;
                 background-color: #003375;
                 color: white;
                 border: none;
-                padding: 10px 20px;
                 display: inline-block;
-            }
-
-
-            /* Custom buttons for edit and delete */
-            .btn-edit {
-                background-color: #28a745;
-                color: white;
-                border: none;
                 padding: 5px 10px;
-                margin-right: 5px;
             }
-
             .btn-delete {
-                background-color: #dc3545;
+                background-color: red;
                 color: white;
                 border: none;
+                display: inline-block;
                 padding: 5px 10px;
             }
-
-            .btn-edit:hover, .btn-delete:hover {
-                opacity: 0.8;
-            }
-
-            .btn-rounded {
-                border-radius: 5px;
-            }
-
-            /* Ensuring proper table display */
-            /* Mở rộng bảng cho phù hợp trang */
-            .table-container {
-                width: 100%; /* Chiếm toàn bộ chiều rộng */
-                max-width: 100%; /* Giới hạn tối đa */
-                margin: 0 auto; /* Căn giữa */
-            }
-
-            /* Căn chỉnh bảng để không bị dính vào lề */
-            .table {
-                width: 82%;
-                table-layout: fixed; /* Giúp căn chỉnh tự động */
-            }
-
-            /* Căn chỉnh lại các cột */
-            .table th, .table td {
-                padding: 10px;
-                font-size: 14px;
-                text-align: left;
-
-                word-wrap: break-word; /* Đảm bảo chữ không bị tràn */
-            }
-
-            h1 {
-                font-size: 24px;
-            }
-
-            .table th:nth-child(1), /* ID */
-            .table td:nth-child(1),
-            .table th:nth-child(5), /* Status */
-            .table td:nth-child(5),
-            .table th:nth-child(6), /* Actions */
-            .table td:nth-child(6) {
-                width: 1%; /* Giới hạn kích thước cột */
-                white-space: nowrap; /* Tránh xuống dòng */
-            }
-
-            .table th:nth-child(2), /* ID */
-            .table td:nth-child(2),
-            .table th:nth-child(3), /* Status */
-            .table td:nth-child(3),
-            .table th:nth-child(4), /* Actions */
-            .table td:nth-child(4) {
-                width: 3%; /* Giới hạn kích thước cột */
-                white-space: nowrap; /* Tránh xuống dòng */
+            .btn-edit {
+                background-color: #007bff;
+                color: white;
+                border: none;
+                display: inline-block;
+                padding: 5px 10px;
             }
         </style>
     </head>
-
     <body>
-        <jsp:include page="leftshopmanager.jsp" />
-        <jsp:include page="managerHeader.jsp" />
-        <!-- Main container -->
-        <div class="container mt-4 table-container">
-
-            <!-- Product Table -->
-            <table class="table table-bordered table-hover align-middle">
-                <thead class="table-dark">
-                    <tr>
-                        <th>ID</th>
-                        <th>Customer Name</th>
-                        <th>Email</th>
-                        <th>Phone</th>
-                        <th>Status</th>
-                        <th>Actions</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <%
-                        // Step 1: Initialize DAO to interact with the database
-                        CustomerDAO dao = new CustomerDAO();
-
-                        // Step 2: Call method to get the list of products
-                        ResultSet rs = dao.getCustomerList();
-
-                        // Step 3: Loop through the list of products
-                        while (rs.next()) {
-                    %>
-
-                    <tr>
-                        <td><%= rs.getInt("CustomerID")%></td>
-                        <td><%= rs.getString("FullName")%></td>
-                        <td><%= rs.getString("Email")%></td>
-                        <td><%= rs.getString("PhoneNumber")%></td>
-                        <td>
-                            <button class="btn btn-sm <%= rs.getInt("isBlock") == 0 ? "btn-success" : "btn-danger"%>"
-                                    onclick="confirmToggle(<%= rs.getInt("CustomerID")%>, <%= rs.getInt("isBlock")%>);">
-                                <%= rs.getInt("isBlock") == 0 ? "Activate" : "Block"%>
-                            </button>
-                        </td>
-                <script>
-                    function confirmToggle(customerID, currentStatus) {
-                        let action = currentStatus === 0 ? "Activate" : "Block";
-                        if (confirm("Are you sure you want to " + action + " this customer?")) {
-                            window.location.href = "CustomerListView?action=toggleStatus&id=" + customerID;
-                        }
-                    }
-                </script>
-                <td>
-                    <button class="btn btn-edit" onclick="showCustomerDetail(<%= rs.getInt("CustomerID")%>)">Detail</button>
-                </td>
-
-                </tr>
-                <%
-                    }
-                %>
-                </tbody>
-            </table>
+        <div class="sidebar">
+            <img src="assets/imgs/Dashboard/Group 1521.svg" class="logo-side-bar">
+            <h6><a href="#">Shop Management</a></h6>
+            <a href="CustomerListServlet">Customer Management</a>
+            <a href="ProductListServlet">Product Management</a>
+            <a href="#">Product Statistic</a>
         </div>
-        <!-- Customer Detail Modal -->
-        <div class="modal fade" id="customerDetailModal" tabindex="-1" aria-hidden="true">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title">Customer Details</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-                    </div>
-                    <div class="modal-body">
-                        <p><strong>ID:</strong> <span id="CustomerID"></span></p>
-                        <p><strong>Name:</strong> <span id="FullName"></span></p>
-                        <p><strong>Email:</strong> <span id="Email"></span></p>
-                        <p><strong>Phone:</strong> <span id="PhoneNumber"></span></p>
-                        <p><strong>Status:</strong> <span id="isBlock"></span></p>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                    </div>
-                </div>
+        <div class="content">
+            <!--            <div class="header">
+                            <div style="margin-right: 30px">
+                                <img style="float: left; margin-right: 15px;"
+                                     src="assets/imgs/Dashboard/FF8D5F6D-1708-4455-81D8-5F4456F83F52_LE_auto_x2-min.png" alt="User Icon" class="icon">
+                                <p style="display: flex; margin: 12px 0 0 0;">Hi, Kien</p>
+                            </div>
+                        </div>-->
+            <div class="table-navigate">
+                <input type="text" id="searchInput" class="form-control search-box" placeholder="Find by name ..." onkeyup="filterTable()">
+            </div>
+
+            <div class="table-container">
+                <table class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th>Customer ID</th>
+                            <th>Name</th>
+                            <th>Email</th>
+                            <th>Phone</th>
+                            <th>Status</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody id="customerTable">
+                        <c:forEach items="${customers}" var="s">
+                            <tr>
+                                <td>${s.getId()}</td>
+                                <td>${s.getFullName()}</td>
+                                <td>${s.getEmail()}</td>
+                                <td>${s.getPhoneNumber()}</td>
+                                <td>
+                                    <span class="badge ${s.getIsBlock() ==0 ? 'bg-success' : 'bg-danger' }">
+                                        ${s.getStatus()}
+                                    </span>
+                                </td>
+                                <td>
+                                    <a href="CustomerListServlet?${s.getIsBlock() == 1 ? 'Activate' : 'Blocked'}=${s.getId()}" 
+                                       class="btn ${s.getIsBlock() == 1 ? 'btn-success' : 'btn-danger'}" 
+                                       onclick="return confirm('Are you sure?');">
+                                        ${s.getIsBlock() == 0 ? 'Blocked' : 'Activate'}
+                                    </a>
+                                    <a href="CustomerListServlet?id=${s.getId()}" class="btn btn-detail" style="background-color: #BDF3BD">Detail</a>
+                                </td>
+                            </tr>
+                        </c:forEach>
+                    </tbody>
+                </table>
             </div>
         </div>
+
         <script>
-            function showCustomerDetail(customerID) {
-                fetch("CustomerListServlet?id=" + customerID)
-                        .then(response => response.json())
-                        .then(data => {
-                            document.getElementById("CustomerID").textContent = data.customerID; // Kiểm tra key thực tế
-                            document.getElementById("FullName").textContent = data.fullName;  // Key chữ thường
-                            document.getElementById("Email").textContent = data.email;
-                            document.getElementById("PhoneNumber").textContent = data.phoneNumber;
-                            document.getElementById("isBlock").textContent = data.isBlock == 0 ? "Active" : "Blocked";
+            function filterTable() {
+                let input = document.getElementById("searchInput");
+                let filter = input.value.toLowerCase();
+                let table = document.getElementById("customerTable");
+                let rows = table.getElementsByTagName("tr");
 
-
-                            // Hiển thị popup
-                            var customerModal = new bootstrap.Modal(document.getElementById("customerDetailModal"));
-                            customerModal.show();
-                        })
-                        .catch(error => console.error('Error:', error));
+                for (let i = 0; i < rows.length; i++) {
+                    let nameCell = rows[i].getElementsByTagName("td")[1];
+                    if (nameCell) {
+                        let nameText = nameCell.textContent || nameCell.innerText;
+                        rows[i].style.display = nameText.toLowerCase().includes(filter) ? "" : "none";
+                    }
+                }
             }
         </script>
 
-        <!-- Bootstrap JS CDN -->
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    </body>
+    </div>
+</body>
 </html>

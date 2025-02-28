@@ -61,6 +61,8 @@ public class ViewSupplierServlet extends HttpServlet {
             }
         }
         suppliers = sd.getAllSuppliers();
+        System.out.println(suppliers.size());
+        System.out.println(suppliers.get(2).getAddress());
         try {
             request.setAttribute("suppliers", suppliers);
             request.getRequestDispatcher("SupplierListView.jsp").forward(request, response);

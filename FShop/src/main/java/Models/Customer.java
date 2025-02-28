@@ -4,8 +4,6 @@
  */
 package Models;
 
-import java.sql.Date;
-
 /**
  *
  * @author TuongMPCE180644
@@ -109,6 +107,13 @@ public class Customer {
 
     public String getAvatar() {
         return avatar;
+    }
+
+    public String getStatus() {
+        if (isBlock == 1) {
+            return "Blocked";
+        }
+        return "Activate";
     }
 
     public void setId(int id) {

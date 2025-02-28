@@ -43,8 +43,8 @@ public class ImportOrderDAO {
                         rs.getString("Address"),
                         rs.getTimestamp("CreatedDate").toLocalDateTime(),
                         rs.getTimestamp("LastModify").toLocalDateTime(),
-                        rs.getBoolean("IsDeleted"),
-                        rs.getBoolean("IsActivate")
+                        rs.getInt("IsDeleted"),
+                        rs.getInt("IsActivate")
                 );
 
                 ImportOrder io = new ImportOrder(
@@ -88,8 +88,8 @@ public class ImportOrderDAO {
                         rs.getString("Address"),
                         rs.getTimestamp("CreatedDate").toLocalDateTime(),
                         rs.getTimestamp("LastModify").toLocalDateTime(),
-                        rs.getBoolean("IsDeleted"),
-                        rs.getBoolean("IsActivate")
+                        rs.getInt("IsDeleted"),
+                        rs.getInt("IsActivate")
                 );
 
                 io = new ImportOrder(
