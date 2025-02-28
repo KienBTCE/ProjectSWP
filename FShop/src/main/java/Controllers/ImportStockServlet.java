@@ -4,9 +4,11 @@
  */
 package Controllers;
 
+import DAOs.ProductDAO;
 import DAOs.SupplierDAO;
+import Models.ImportOrder;
+import Models.ImportOrderDetail;
 import Models.Supplier;
-import jakarta.servlet.RequestDispatcher;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -19,7 +21,7 @@ import java.time.LocalDateTime;
  *
  * @author KienBTCE180180
  */
-public class CreateSupplierServlet extends HttpServlet {
+public class ImportStockServlet extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -38,10 +40,10 @@ public class CreateSupplierServlet extends HttpServlet {
 //            out.println("<!DOCTYPE html>");
 //            out.println("<html>");
 //            out.println("<head>");
-//            out.println("<title>Servlet CreateSupplierServlet</title>");  
+//            out.println("<title>Servlet ImportStockServlet</title>");  
 //            out.println("</head>");
 //            out.println("<body>");
-//            out.println("<h1>Servlet CreateSupplierServlet at " + request.getContextPath () + "</h1>");
+//            out.println("<h1>Servlet ImportStockServlet at " + request.getContextPath () + "</h1>");
 //            out.println("</body>");
 //            out.println("</html>");
 //        }
@@ -59,7 +61,19 @@ public class CreateSupplierServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+//        processRequest(request, response);
+
+        SupplierDAO sd = new SupplierDAO();
+        ProductDAO pd = new ProductDAO();
+
+        try {
+            request.setAttribute("suppliers", sd.getAllSuppliers());
+            request.setAttribute("products", pd.getAllProducts());
+            request.getRequestDispatcher("ImportStockView.jsp").forward(request, response);
+        } catch (NullPointerException e) {
+            System.out.println(e);
+        }
+
     }
 
     /**
@@ -73,23 +87,12 @@ public class CreateSupplierServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        SupplierDAO sd = new SupplierDAO();
+//        processRequest(request, response);
 
-        String taxId = request.getParameter("taxNumber");
-        String companyName = request.getParameter("name");
-        String email = request.getParameter("email");
-        String phoneNumber = request.getParameter("phone");
-        String address = request.getParameter("address");
-
-        Supplier s = new Supplier(0, taxId, companyName, email, phoneNumber, address, LocalDateTime.now(), LocalDateTime.now(), 0, 1);
-
-        if (sd.createSupplier(s) != 0) {
-            response.sendRedirect("Supplier");
-        } else {
-            request.getSession().setAttribute("error", "There is the same supplier.");
-            response.sendRedirect("Supplier");
-        }
-        
+//        ImportOrder i = new ImportOrder(0, 0, 0, importDate, 0, lastModify);
+//        Supplier s = new Supplier(0, taxId, name, email, phoneNumber, address, LocalDateTime.MAX, LocalDateTime.MIN, 0, 0);
+//        Product p = new Models.Product(0, categoryName, brandName, fullName, 0, 0, 0);
+//        ImportOrderDetail = d = new ImportOrderDetail(0, p, 0, 0);
     }
 
     /**

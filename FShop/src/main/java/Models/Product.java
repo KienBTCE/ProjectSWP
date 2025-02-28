@@ -24,7 +24,7 @@ public class Product {
     private String model;
     private String fullName;
     private String description;
-    private int isDeleted;
+    private int deleted;
     private long price;
     private String image;
     private int quantity;
@@ -35,26 +35,26 @@ public class Product {
     public Product() {
     }
 
-    public Product(int productId, int brandId, int categoryId, String model, String fullName, String description, int isDeleted, long price, String image, int quantity, int stock) {
+    public Product(int productId, int brandId, int categoryId, String model, String fullName, String description, int deleted, long price, String image, int quantity, int stock) {
         this.productId = productId;
         this.brandId = brandId;
         this.categoryId = categoryId;
         this.model = model;
         this.fullName = fullName;
         this.description = description;
-        this.isDeleted = isDeleted;
+        this.deleted = deleted;
         this.price = price;
         this.image = image;
         this.quantity = quantity;
         this.stock = stock;
     }
 
-    public Product(int productId, String categoryName, String brandName, String fullName, long price, int quantity, int isDeleted) {
+    public Product(int productId, String categoryName, String brandName, String fullName, long price, int quantity, int deleted) {
         this.productId = productId;
         this.categoryName = categoryName;
         this.brandName = brandName;
         this.fullName = fullName;
-        this.isDeleted = isDeleted;
+        this.deleted = deleted;
         this.price = price;
         this.quantity = quantity;
     }
@@ -123,12 +123,12 @@ public class Product {
         this.description = description;
     }
 
-    public int isIsDeleted() {
-        return isDeleted;
+    public int getDeleted() {
+        return deleted;
     }
 
-    public void setIsDeleted(int isDeleted) {
-        this.isDeleted = isDeleted;
+    public void sgetDeleted(int deleted) {
+        this.deleted = deleted;
     }
 
     public long getPrice() {

@@ -6,7 +6,6 @@ package Controllers;
 
 import DAOs.SupplierDAO;
 import Models.Supplier;
-import jakarta.servlet.RequestDispatcher;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -19,7 +18,7 @@ import java.time.LocalDateTime;
  *
  * @author KienBTCE180180
  */
-public class CreateSupplierServlet extends HttpServlet {
+public class UpdateSupplierServlet extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -38,10 +37,10 @@ public class CreateSupplierServlet extends HttpServlet {
 //            out.println("<!DOCTYPE html>");
 //            out.println("<html>");
 //            out.println("<head>");
-//            out.println("<title>Servlet CreateSupplierServlet</title>");  
+//            out.println("<title>Servlet UpdateSupplierServlet</title>");  
 //            out.println("</head>");
 //            out.println("<body>");
-//            out.println("<h1>Servlet CreateSupplierServlet at " + request.getContextPath () + "</h1>");
+//            out.println("<h1>Servlet UpdateSupplierServlet at " + request.getContextPath () + "</h1>");
 //            out.println("</body>");
 //            out.println("</html>");
 //        }
@@ -80,16 +79,24 @@ public class CreateSupplierServlet extends HttpServlet {
         String email = request.getParameter("email");
         String phoneNumber = request.getParameter("phone");
         String address = request.getParameter("address");
+        int status = Integer.parseInt(request.getParameter("status"));
 
-        Supplier s = new Supplier(0, taxId, companyName, email, phoneNumber, address, LocalDateTime.now(), LocalDateTime.now(), 0, 1);
+        int id = Integer.parseInt(request.getParameter("id"));
 
-        if (sd.createSupplier(s) != 0) {
-            response.sendRedirect("Supplier");
+        Supplier s = new Supplier(id, taxId, companyName, email, phoneNumber, address, LocalDateTime.now(), LocalDateTime.now(), 0, status);
+
+        if (id != 0) {
+            int check = sd.updateSupplier(s);
+            if (check != 0) {
+                response.sendRedirect("Supplier?id=" + s.getSupplierId());
+            } else {
+                request.getSession().setAttribute("error", "There is the same Tax ID.");
+                response.sendRedirect("Supplier?id=" + s.getSupplierId());
+            }
         } else {
             request.getSession().setAttribute("error", "There is the same supplier.");
             response.sendRedirect("Supplier");
         }
-        
     }
 
     /**
