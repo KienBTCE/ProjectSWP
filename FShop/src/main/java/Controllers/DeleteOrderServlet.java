@@ -85,6 +85,7 @@ public class DeleteOrderServlet extends HttpServlet {
             System.out.println("Received Order ID: " + orderID);
             response.sendRedirect(request.getContextPath() + "/ViewOrderListServlet");
         }
+
     }
 
     /**
