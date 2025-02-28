@@ -4,10 +4,8 @@
  */
 package Models;
 
-import java.sql.Date;
 import java.text.NumberFormat;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Locale;
 
 /**
@@ -56,6 +54,39 @@ public class Product {
         this.fullName = fullName;
         this.deleted = deleted;
         this.price = price;
+        this.quantity = quantity;
+    }
+
+    public Product(int productId, String categoryName, String brandName, String model, String fullName, String description, int deleted, long price, String image, int stock) {
+        this.productId = productId;
+        this.categoryName = categoryName;
+        this.brandName = brandName;
+        this.model = model;
+        this.fullName = fullName;
+        this.description = description;
+        this.deleted = deleted;
+        this.price = price;
+        this.image = image;
+        this.stock = stock;
+    }
+
+    public Product(String model, String fullName, String description, long price, String image, int stock) {
+        this.model = model;
+        this.fullName = fullName;
+        this.description = description;
+        this.price = price;
+        this.image = image;
+        this.stock = stock;
+    }
+
+    public Product(int productId, String categoryName, String brandName, String fullName, long price, String image, int quantity, int deleted) {
+        this.productId = productId;
+        this.categoryName = categoryName;
+        this.brandName = brandName;
+        this.fullName = fullName;
+        this.deleted = deleted;
+        this.price = price;
+        this.image = image;
         this.quantity = quantity;
     }
 
@@ -127,11 +158,7 @@ public class Product {
         return deleted;
     }
 
-<<<<<<< HEAD
     public void setDeleted(int deleted) {
-=======
-    public void sgetDeleted(int deleted) {
->>>>>>> Kien
         this.deleted = deleted;
     }
 
@@ -174,7 +201,7 @@ public class Product {
     public void setAttributes(HashMap<String, String> attributes) {
         this.attributes = attributes;
     }
-    
+
     public String getStatus() {
         if (deleted == 1) {
             return "Deleted";

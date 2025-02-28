@@ -94,7 +94,7 @@
                     <c:forEach items="${products}" var="p" varStatus="status">
                         <c:if test="${count < 5 and p.getCategoryId() == 1}">
                             <c:set var="count" value="${count + 1}" scope="page"></c:set>
-                            <a class="frame-represent" href="Laptop/id=${p.getProductId()}">
+                            <a class="frame-represent" href="ProductDetailServlet?id=${p.getProductId()}">
                                 <img src="assets/imgs/Products/${p.getImage()}" width="150px" height="150px" alt="alt"/>
                                 <div class="star-rating">
                                     <span class="star">★</span>
@@ -120,7 +120,7 @@
                     <c:forEach items="${products}" var="p" varStatus="status">
                         <c:if test="${count < 5 and p.getCategoryId() == 2}">
                             <c:set var="count" value="${count + 1}" scope="page"></c:set>
-                            <a class="frame-represent" href="Phone/id=${p.getProductId()}">
+                            <a class="frame-represent" href="ProductDetailServlet?id=${p.getProductId()}">
                                 <img src="assets/imgs/Products/${p.getImage()}" width="150px" height="150px" alt="alt"/>
                                 <div class="star-rating">
                                     <span class="star">★</span>
@@ -146,7 +146,7 @@
                     <c:forEach items="${products}" var="p" varStatus="status">
                         <c:if test="${count < 5 and p.getCategoryId() == 9}">
                             <c:set var="count" value="${count + 1}" scope="page"></c:set>
-                            <a class="frame-represent" href="Phone/id=${p.getProductId()}">
+                            <a class="frame-represent" href="ProductDetailServlet?id=${p.getProductId()}">
                                 <img src="assets/imgs/Products/${p.getImage()}" width="150px" height="150px" alt="alt"/>
                                 <div class="star-rating">
                                     <span class="star">★</span>

@@ -4,24 +4,20 @@
  */
 package Controllers;
 
-import DAOs.CategoryDAO;
-import DAOs.ProductDAO;
-import Models.Category;
-import Models.Product;
+import DAOs.BrandDAO;
+import Models.Brand;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  *
  * @author kiuth
  */
-public class CreateProductServlet extends HttpServlet {
+public class BrandServlet extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -40,10 +36,10 @@ public class CreateProductServlet extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet CreateProductServlet</title>");
+            out.println("<title>Servlet BrandServlet</title>");
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet CreateProductServlet at " + request.getContextPath() + "</h1>");
+            out.println("<h1>Servlet BrandServlet at " + request.getContextPath() + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }
@@ -61,9 +57,7 @@ public class CreateProductServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-
-        response.sendRedirect("CreateProductView.jsp");
-
+        processRequest(request, response);
     }
 
     /**
@@ -77,23 +71,15 @@ public class CreateProductServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        ProductDAO pd = new ProductDAO();
-        // Lấy dữ liệu từ form
-        String model = request.getParameter("model");
-        String fullName = request.getParameter("fullName");
-        String description = request.getParameter("description");
-        String image = request.getParameter("image");
-        long price = Long.parseLong(request.getParameter("price"));
-        int stock = Integer.parseInt(request.getParameter("stock"));
+        String brandName = request.getParameter("brandName");
+        BrandDAO brandDAO = new BrandDAO();
 
-        Product s = new Product(model, fullName, description, price, image, stock);
-
-        if (pd.createProduct(s) != 0) {
-            response.sendRedirect("CreateProductView.jsp");
-        } else {
-            request.getSession().setAttribute("error", "There is the same product.");
-            response.sendRedirect("CreateProductView.jsp");
+        if (brandName != null && !brandName.trim().isEmpty()) {
+            Brand newBrand = new Brand(0, brandName);
+            brandDAO.createBrand(newBrand);
         }
+
+        response.sendRedirect("CategoryAndBrand.jsp");
     }
 
     /**

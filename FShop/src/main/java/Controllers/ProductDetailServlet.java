@@ -4,10 +4,7 @@
  */
 package Controllers;
 
-import DAOs.CategoryDAO;
 import DAOs.ProductDAO;
-import Models.Category;
-import Models.Product;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -15,13 +12,12 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.util.ArrayList;
-import java.util.List;
 
 /**
  *
  * @author kiuth
  */
-public class CreateProductServlet extends HttpServlet {
+public class ProductDetailServlet extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -40,10 +36,10 @@ public class CreateProductServlet extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet CreateProductServlet</title>");
+            out.println("<title>Servlet ProductDetailServlet</title>");
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet CreateProductServlet at " + request.getContextPath() + "</h1>");
+            out.println("<h1>Servlet ProductDetailServlet at " + request.getContextPath() + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }
@@ -62,8 +58,28 @@ public class CreateProductServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
-        response.sendRedirect("CreateProductView.jsp");
+        ProductDAO pr = new ProductDAO();
+        ArrayList<Models.Product> products;
 
+        String detailID = request.getParameter("id");
+
+        if (detailID != null) {
+            int id = Integer.parseInt(detailID);
+            Models.Product product = pr.getProductByID(id);
+            try {
+                request.setAttribute("product", product);
+                request.getRequestDispatcher("ProductDetailView.jsp").forward(request, response);
+            } catch (NullPointerException e) {
+                System.out.println(e);
+            }
+        }
+        products = pr.getProductList();
+        try {
+            request.setAttribute("products", products);
+            request.getRequestDispatcher("ProductListView.jsp").forward(request, response);
+        } catch (NullPointerException e) {
+            System.out.println(e);
+        }
     }
 
     /**
@@ -77,23 +93,7 @@ public class CreateProductServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        ProductDAO pd = new ProductDAO();
-        // Lấy dữ liệu từ form
-        String model = request.getParameter("model");
-        String fullName = request.getParameter("fullName");
-        String description = request.getParameter("description");
-        String image = request.getParameter("image");
-        long price = Long.parseLong(request.getParameter("price"));
-        int stock = Integer.parseInt(request.getParameter("stock"));
-
-        Product s = new Product(model, fullName, description, price, image, stock);
-
-        if (pd.createProduct(s) != 0) {
-            response.sendRedirect("CreateProductView.jsp");
-        } else {
-            request.getSession().setAttribute("error", "There is the same product.");
-            response.sendRedirect("CreateProductView.jsp");
-        }
+        processRequest(request, response);
     }
 
     /**
