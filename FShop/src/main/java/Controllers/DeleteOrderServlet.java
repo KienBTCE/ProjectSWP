@@ -72,19 +72,19 @@ public class DeleteOrderServlet extends HttpServlet {
      */
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
-    throws ServletException, IOException {
-         String orderID = request.getParameter("orderID");
-         OrderDAO oDAO = new OrderDAO();
-         if(orderID!= null){
-             //oDAO.deleteOrder(orderID);
-                  OrderDetailDAO odDAO = new OrderDetailDAO();
-                      List<OrderDetail> list = odDAO.getOrderDetail(orderID);
-                      for(OrderDetail o : list){
-                      oDAO.plusQuantityAfterCancel(o.getProductID(), o.getQuantity());
-                      }
-              System.out.println("Received Order ID: " + orderID);
-             response.sendRedirect(request.getContextPath() + "/ViewOrderListServlet");
-         }
+            throws ServletException, IOException {
+        String orderID = request.getParameter("orderID");
+        OrderDAO oDAO = new OrderDAO();
+        if (orderID != null) {
+            oDAO.deleteOrder(Integer.parseInt(orderID));
+            OrderDetailDAO odDAO = new OrderDetailDAO();
+            List<OrderDetail> list = odDAO.getOrderDetail(orderID);
+            for (OrderDetail o : list) {
+                oDAO.plusQuantityAfterCancel(o.getProductID(), o.getQuantity());
+            }
+            System.out.println("Received Order ID: " + orderID);
+            response.sendRedirect(request.getContextPath() + "/ViewOrderListServlet");
+        }
     }
 
     /**
