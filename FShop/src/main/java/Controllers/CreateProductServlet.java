@@ -81,16 +81,16 @@ public class CreateProductServlet extends HttpServlet {
         long price = Long.parseLong(request.getParameter("price"));
         int quantity = Integer.parseInt(request.getParameter("quantity"));
 
-        // Gọi DAO để tạo sản phẩm
-        ProductDAO productDAO = new ProductDAO();
-        boolean success = productDAO.createProduct(categoryId, brandId, fullName, model, description, image, price, quantity);
-
-        // Điều hướng kết quả
-        if (success) {
-            response.sendRedirect("ManageProductView.jsp?success=true");
-        } else {
-            response.sendRedirect("ManageProductView.jsp?success=false");
-        }
+//        // Gọi DAO để tạo sản phẩm
+//        ProductDAO productDAO = new ProductDAO();
+//        boolean success = productDAO.createProduct(categoryId, brandId, fullName, model, description, image, price, quantity);
+//
+//        // Điều hướng kết quả
+//        if (success) {
+//            response.sendRedirect("ManageProductView.jsp?success=true");
+//        } else {
+//            response.sendRedirect("ManageProductView.jsp?success=false");
+//        }
     }
 
     /**
