@@ -124,7 +124,7 @@
             .popup button:hover {
                 background-color: #0056b3;
             }
-            .avatar-preview {
+            #avatar {
                 width: 150px;
                 height: 150px;
                 border-radius: 50%;
@@ -143,10 +143,10 @@
                         <div class="sidebar col-md-3" style=" height: auto; padding: 20px;">
                             <div class="text-center">
                             <c:if test="${sessionScope.customer.getAvatar().equals('')}">
-                                <img id="avatarPreview" class="avatar-preview mb-3" src="assets/imgs/icon/person.jpg" alt="Avatar2">
+                                <img id="avatar" src="assets/imgs/icon/person.jpg" alt="Avatar2">
                             </c:if>   
                             <c:if test="${!sessionScope.customer.getAvatar().equals('')}">
-                                <img id="avatarPreview" class="avatar-preview mb-3" src="assets/imgs/CustomerAvatar/${sessionScope.customer.getAvatar()}" alt="Avatar1">
+                                <img id="avatar" src="assets/imgs/CustomerAvatar/${sessionScope.customer.getAvatar()}" alt="Avatar1">
                             </c:if>
 
                             <h4>${sessionScope.customer.getFullName()}</h4>
