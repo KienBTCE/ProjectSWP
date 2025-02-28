@@ -70,7 +70,7 @@ public class DeleteOrderServlet extends HttpServlet {
          String orderID = request.getParameter("orderID");
           OrderDAO oDAO = new OrderDAO();
          if(orderID!= null){
-             oDAO.DeleteOrder(orderID);
+             oDAO.deleteOrder(Integer.parseInt(orderID));
               System.out.println("Received Order ID: " + orderID);
              response.sendRedirect(request.getContextPath() + "/ViewOrderListServlet");
          }

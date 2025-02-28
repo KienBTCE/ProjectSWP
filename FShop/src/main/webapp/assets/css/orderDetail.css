@@ -1,0 +1,116 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f1f1f1;
+    display: flex;
+}
+
+#sidebarMenu {
+    width: 250px;
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100vh;
+    overflow-y: auto;
+    border-right: 1px solid #ccc;
+    background-color: white;
+    padding-top: 20px;
+}
+
+.container {
+    margin-left: 260px;
+    flex: 1;
+    max-width: 800px;
+    background: #fff;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    margin-top: 20px;
+    display: flex;
+    flex-direction: column;
+}
+
+h2, h3 {
+    color: #343a40;
+    text-align: center;
+}
+
+.flex-container {
+    display: flex;
+    justify-content: space-between;
+}
+
+.order-info, .customer-info {
+    padding: 20px;
+    background: #fafafa;
+    border-radius: 5px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    margin-bottom: 20px;
+    flex: 1; /* Chiếm không gian còn lại */
+}
+
+.actions {
+    background: #fafafa;
+    padding: 20px;
+    border-radius: 5px;
+    width: 300px;
+    height: 350px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    border: 2px solid #000; /* Thêm viền đậm */
+    text-align: center;
+    margin: 20px auto;
+}
+
+.order-details div {
+    display: flex;
+    justify-content: space-between;
+    padding: 10px;
+    background: white;
+    margin-bottom: 10px;
+    border-radius: 5px;
+    border: 1px solid #ddd;
+}
+
+.dropdown select, input[type="submit"] {
+    width: 100%;
+    padding: 12px;
+    border-radius: 5px;
+    border: 1px solid #ddd;
+    font-size: 16px;
+    margin-top: 10px;
+}
+
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.4);
+    justify-content: center;
+    align-items: center;
+}
+
+.modal-content {
+    background-color: white;
+    padding: 20px;
+    border-radius: 5px;
+    text-align: center;
+}
+
+button {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    background-color: #4CAF50;
+    color: white;
+    cursor: pointer;
+    margin-top: 10px;
+}
+
+button:hover {
+    background-color: #45a049;
+}

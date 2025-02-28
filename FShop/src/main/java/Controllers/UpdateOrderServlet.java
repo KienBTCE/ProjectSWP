@@ -75,7 +75,7 @@ public class UpdateOrderServlet extends HttpServlet {
         OrderDAO oDAO = new OrderDAO();
 
         if (status != null && orderID != null) {
-            oDAO.UpdateOrder(orderID, status);
+            oDAO.updateOrder(orderID, Integer.parseInt(status));
             response.sendRedirect(request.getContextPath() + "/ViewOrderListServlet");
         }
     }

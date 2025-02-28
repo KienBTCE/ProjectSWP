@@ -127,12 +127,12 @@ public class OrderDAO {
         }
     }
 
-    public void UpdateOrder(String orderID, String status) {
+    public void updateOrder(String orderID, int status) {
 
         String query = "Update Orders SET Orders.Status= ? WHERE Orders.OrderID=?";
         try {
             PreparedStatement pre = connector.prepareStatement(query);
-            pre.setString(1, status);
+            pre.setInt(1, status);
             pre.setString(2, orderID);
             pre.executeUpdate();
         } catch (Exception e) {
@@ -146,13 +146,13 @@ public class OrderDAO {
 //<<<<<<< HEAD
     }
 
-    public void DeleteOrder(String orderID) {
+    public void deleteOrder(int orderID) {
 
         String query = "Update Orders SET Orders.Status= 6 WHERE Orders.OrderID=?";
         try {
             PreparedStatement pre = connector.prepareStatement(query);
 
-            pre.setString(1, orderID);
+            pre.setInt(1, orderID);
             pre.executeUpdate();
         } catch (Exception e) {
             Logger.getLogger(OrderDAO.class.getName()).log(Level.SEVERE, null, e);

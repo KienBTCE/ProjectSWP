@@ -127,11 +127,8 @@ public class Product {
         return deleted;
     }
 
-<<<<<<< HEAD
     public void setDeleted(int deleted) {
-=======
-    public void sgetDeleted(int deleted) {
->>>>>>> Kien
+
         this.deleted = deleted;
     }
 
