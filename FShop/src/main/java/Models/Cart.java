@@ -20,6 +20,11 @@ public class Cart {
     public Cart() {
     }
 
+    public Cart(int productID, int quantity) {
+        this.productID = productID;
+        this.quantity = quantity;
+    }
+
     public Cart(int productID, int quantity, String image, String fullName, int price, int category) {
         this.productID = productID;
         this.quantity = quantity;
@@ -76,7 +81,5 @@ public class Cart {
     public void setCategory(int category) {
         this.category = category;
     }
-
-   
 
 }

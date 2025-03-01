@@ -44,7 +44,6 @@
         <servlet-class>Controllers.ImportStockServlet</servlet-class>
     </servlet>
     <servlet>
-<<<<<<< HEAD
         <servlet-name>CategoryBrandServlet</servlet-name>
         <servlet-class>Controllers.CategoryBrandServlet</servlet-class>
     </servlet>
@@ -55,10 +54,10 @@
     <servlet>
         <servlet-name>ProductDetailServlet</servlet-name>
         <servlet-class>Controllers.ProductDetailServlet</servlet-class>
-=======
+    </servlet>
+    <servlet>
         <servlet-name>ExportStockToFileServlet</servlet-name>
         <servlet-class>Controllers.ExportStockToFileServlet</servlet-class>
->>>>>>> 3d93b6c (fig bug on crud order create view feedback.)
     </servlet>
     <servlet-mapping>
         <servlet-name>default</servlet-name>
@@ -185,7 +184,6 @@
         <url-pattern>/ImportStock</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
-<<<<<<< HEAD
         <servlet-name>CategoryBrandServlet</servlet-name>
         <url-pattern>/CategoryBrandServlet</url-pattern>
     </servlet-mapping>
@@ -196,10 +194,10 @@
     <servlet-mapping>
         <servlet-name>ProductDetailServlet</servlet-name>
         <url-pattern>/ProductDetailServlet</url-pattern>
-=======
+    </servlet-mapping>
+    <servlet-mapping>
         <servlet-name>ExportStockToFileServlet</servlet-name>
         <url-pattern>/ExportStockToFileServlet</url-pattern>
->>>>>>> 3d93b6c (fig bug on crud order create view feedback.)
     </servlet-mapping>
     <session-config>
         <session-timeout>
