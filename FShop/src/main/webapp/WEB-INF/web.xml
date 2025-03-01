@@ -44,16 +44,24 @@
         <servlet-class>Controllers.ImportStockServlet</servlet-class>
     </servlet>
     <servlet>
-        <servlet-name>CategoryBrandServlet</servlet-name>
-        <servlet-class>Controllers.CategoryBrandServlet</servlet-class>
-    </servlet>
-    <servlet>
         <servlet-name>BrandServlet</servlet-name>
         <servlet-class>Controllers.BrandServlet</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>ProductDetailServlet</servlet-name>
         <servlet-class>Controllers.ProductDetailServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>VerifyOTPServlet</servlet-name>
+        <servlet-class>Controllers.VerifyOTPServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>ResetPasswordServlet</servlet-name>
+        <servlet-class>Controllers.ResetPasswordServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>SendMailServlet</servlet-name>
+        <servlet-class>Controllers.SendMailServlet</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>default</servlet-name>
@@ -180,16 +188,24 @@
         <url-pattern>/ImportStock</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
-        <servlet-name>CategoryBrandServlet</servlet-name>
-        <url-pattern>/CategoryBrandServlet</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
         <servlet-name>BrandServlet</servlet-name>
         <url-pattern>/BrandServlet</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>ProductDetailServlet</servlet-name>
         <url-pattern>/ProductDetailServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>VerifyOTPServlet</servlet-name>
+        <url-pattern>/VerifyOTPServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ResetPasswordServlet</servlet-name>
+        <url-pattern>/ResetPasswordServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>SendMailServlet</servlet-name>
+        <url-pattern>/SendMailServlet</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

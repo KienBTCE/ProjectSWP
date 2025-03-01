@@ -4,23 +4,20 @@
  */
 package Controllers;
 
-import DAOs.BrandDAO;
-import DAOs.CategoryDAO;
-import DAOs.ProductDAO;
-import Models.Product;
+import DAOs.CustomerDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import java.util.List;
+import jakarta.servlet.http.HttpSession;
 
 /**
  *
- * @author kiuth
+ * @author ThyLTKCE181577
  */
-public class CreateProductServlet extends HttpServlet {
+public class ResetPasswordServlet extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -35,14 +32,14 @@ public class CreateProductServlet extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         try ( PrintWriter out = response.getWriter()) {
-            /* TODO output your page here. You may use following sample code. */
+            /* TODO output your page here. You may use the following sample code. */
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet CreateProductServlet</title>");
+            out.println("<title>Servlet ResetPasswordServlet</title>");
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet CreateProductServlet at " + request.getContextPath() + "</h1>");
+            out.println("<h1>Servlet ResetPasswordServlet at " + request.getContextPath() + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }
@@ -60,19 +57,7 @@ public class CreateProductServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        CategoryDAO categoryDAO = new CategoryDAO();
-        BrandDAO brandDAO = new BrandDAO();
-
-        // Lấy danh sách category và brand từ database
-        List<String> categories = categoryDAO.getAllCategoryNames();
-        List<String> brands = brandDAO.getAllBrandNames();
-
-        // Đưa vào request scope
-        request.setAttribute("categories", categories);
-        request.setAttribute("brands", brands);
-
-        // Chuyển hướng đến JSP
-        request.getRequestDispatcher("CreateProductView.jsp").forward(request, response);
+        request.getRequestDispatcher("ResetPassword.jsp").forward(request, response);
     }
 
     /**
@@ -86,26 +71,29 @@ public class CreateProductServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        ProductDAO productDAO = new ProductDAO();
-        // Lấy dữ liệu từ form
-        String categoryName = request.getParameter("categoryName");
-        String brandName = request.getParameter("brandName");
-        String model = request.getParameter("model");
-        String fullName = request.getParameter("fullName");
-        long price = Long.parseLong(request.getParameter("price"));
-        int stock = Integer.parseInt(request.getParameter("stock"));
+        String newPassword = request.getParameter("newPassword");
+        String confirmPassword = request.getParameter("confirmPassword");
+        HttpSession session = request.getSession();
+        String email = (String) session.getAttribute("resetEmail");
 
-        // Tạo đối tượng sản phẩm
-        Product product = new Product(0, categoryName, brandName, model, fullName, price, stock);
-
-        // Thêm sản phẩm vào database
-        if (productDAO.createProduct(product) != 0) {
-            response.sendRedirect("ProductListServlet");
-        } else {
-//            request.getSession().setAttribute("error", "Product already exists.");
-            response.sendRedirect("CreateProductServlet");
+        if (newPassword == null || confirmPassword == null || !newPassword.equals(confirmPassword)) {
+            request.setAttribute("error", "Passwords do not match!");
+            request.getRequestDispatcher("ResetPassword.jsp").forward(request, response);
+            return;
         }
 
+        // Update password in the database
+        CustomerDAO userDAO = new CustomerDAO();
+        boolean success = userDAO.updatePassword(email, newPassword);
+
+        if (success) {
+            session.removeAttribute("otp");
+            session.removeAttribute("resetEmail");
+            response.sendRedirect("CustomerLoginView.jsp");
+        } else {
+            request.setAttribute("error", "An error occurred! Please try again.");
+            request.getRequestDispatcher("ResetPassword.jsp").forward(request, response);
+        }
     }
 
     /**

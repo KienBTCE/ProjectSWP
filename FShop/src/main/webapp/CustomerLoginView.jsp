@@ -193,7 +193,7 @@
                             <input type="password" id="password" name="password" placeholder="Your Password" required>
 
                             <button class="summit" type="submit">Sign In</button>
-                            <a class="forgotpass" href="#">Forgot Your Password?</a>
+                            <a class="forgotpass" href="SendMailServlet">Forgot Your Password?</a>
                         </form>
 
                     </div>

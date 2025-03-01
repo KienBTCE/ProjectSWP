@@ -11,6 +11,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  *
@@ -21,26 +22,18 @@ public class CategoryDAO {
     DBContext db = new DBContext();
     Connection connector = db.getConnection();
 
-    public ArrayList<Category> getCategoryName() {
-        ArrayList<Category> list = new ArrayList<>();
-
-        String query = "SELECT Name FROM Categories; ";
-
+    public List<String> getAllCategoryNames() {
+        List<String> list = new ArrayList<>();
+        String query = "SELECT Name FROM Categories";
         try {
             PreparedStatement ps = connector.prepareStatement(query);
             ResultSet rs = ps.executeQuery();
-
             while (rs.next()) {
-                list.add(new Category(
-                        rs.getInt("CategoryID"),
-                        rs.getString("Name")
-                ));
+                list.add(rs.getString("Name"));
             }
-            return list;
         } catch (SQLException e) {
             System.out.println(e);
         }
-
         return list;
     }
 }

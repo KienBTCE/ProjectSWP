@@ -11,6 +11,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  *
@@ -21,27 +22,20 @@ public class BrandDAO {
     DBContext db = new DBContext();
     Connection connector = db.getConnection();
 
-    public ArrayList<Brand> getBrandName() {
-        ArrayList<Brand> list = new ArrayList<>();
-
-        String query = "SELECT Name FROM Brands ";
-
+    public List<String> getAllBrandNames() {
+        List<String> list = new ArrayList<>();
+        String query = "SELECT Name FROM Brands";
         try {
             PreparedStatement ps = connector.prepareStatement(query);
             ResultSet rs = ps.executeQuery();
-
             while (rs.next()) {
-                list.add(new Brand(
-                        rs.getInt("brandId"),
-                        rs.getString("Name")
-                ));
+                list.add(rs.getString("Name"));
             }
-            return list;
         } catch (SQLException e) {
             System.out.println(e);
         }
-
         return list;
+
     }
 
     public int createBrand(Brand s) {
