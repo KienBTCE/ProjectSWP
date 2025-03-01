@@ -110,7 +110,7 @@
                 padding: 30px;
                 border-radius: 8px;
                 text-align: center;
-                width: 300px;
+                width: 350px;
                 margin: 150px auto;
             }
             .popup button {
@@ -162,7 +162,7 @@
                                     <a href="#" class="menu-item droppeddown-toggle" data-url="CustomerProfileView.jsp">👤 My Information</a>
                                     <div class="droppeddown-menu">
                                         <a href="#" class="menu-item load-content" data-url="CustomerProfileView.jsp">My profile</a>
-                                        <a href="#" class="menu-item load-content" data-url="AddressView.jsp">Address</a>
+                                        <a href="ViewShippingAddress?profilePage=AddressView.jsp" class="menu-item">Address</a>
                                         <a href="#" class="menu-item load-content" data-url="ChangeCustomerPasswordView.jsp">Change password</a>
                                         <a href="#" class="menu-item text-danger" data-bs-toggle="modal" data-bs-target="#confirmDeleteAccount">Request To Delete Account</a>
 

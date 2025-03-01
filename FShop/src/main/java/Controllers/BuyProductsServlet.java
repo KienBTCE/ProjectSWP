@@ -67,7 +67,7 @@ public class BuyProductsServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        
+
     }
 
     /**
@@ -86,7 +86,7 @@ public class BuyProductsServlet extends HttpServlet {
         OrderDAO od = new OrderDAO();
         CartDAO ca = new CartDAO();
         Customer cus = (Customer) session.getAttribute("customer");
-        
+
         if (action.equals("checkout")) {
             List<Cart> cart = (List<Cart>) session.getAttribute("cartList");
             String selectedProductIds[] = request.getParameterValues("cartSelected");
@@ -106,7 +106,7 @@ public class BuyProductsServlet extends HttpServlet {
                     }
                 }
             }
-            
+
             session.setAttribute("cartSelected", cartSelected);
             session.setAttribute("totalAmount", totalAmount);
             session.setAttribute("shipAddress", address);
@@ -135,7 +135,7 @@ public class BuyProductsServlet extends HttpServlet {
             session.setAttribute("numOfProCartOfCus", ca.getNumberOfProduct(cus.getId()));
             request.getRequestDispatcher("ConfirmView.jsp").forward(request, response);
         }
-        
+
     }
 
     /**

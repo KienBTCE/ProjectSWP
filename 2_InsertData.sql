@@ -84,7 +84,7 @@ INSERT INTO Employees (EmployeeID, FullName, Birthday, [Password], PhoneNumber, 
 (1, 'Nguyen Van A', '1990-01-01', '36fdba5968850579c0a89444f4ca4772', '0123456789', 'nguyenvana@example.com', 'Male', 1, GETDATE(), '', 1), -- Password là: User123@
 (2, 'Nguyen Van B', '1990-01-01', '36fdba5968850579c0a89444f4ca4772', '0123456788', 'nguyenvanb@example.com', 'Male', 1, GETDATE(), '', 2), -- Password là: User123@
 (3, 'Nguyen Van C', '1990-01-01', '36fdba5968850579c0a89444f4ca4772', '0123456789', 'nguyenvanc@example.com', 'Male', 1, GETDATE(), '', 3), -- Password là: User123@
-(4, 'Nguyen Van D', '1990-01-01', '36fdba5968850579c0a89444f4ca4772', '0123456789', 'nguyenvana@example.com', 'Male', 1, GETDATE(), '', 4); -- Password là: User123@
+(4, 'Nguyen Van D', '1990-01-01', '36fdba5968850579c0a89444f4ca4772', '0123456789', 'nguyenvand@example.com', 'Male', 1, GETDATE(), '', 4); -- Password là: User123@
 SET IDENTITY_INSERT Employees OFF;
 
 -- Insert Carts
