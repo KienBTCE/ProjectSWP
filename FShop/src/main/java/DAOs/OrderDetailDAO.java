@@ -54,8 +54,8 @@ public class OrderDetailDAO {
                 OrderDetail od = new OrderDetail(
                         rs.getInt("OrderID"),
                         rs.getInt("ProductID"),
-                        rs.getInt("Price"),
                         rs.getInt("Quantity"),
+                        rs.getInt("Price"),
                         rs.getString("CategoryID"),
                         rs.getString("FullName"),
                         rs.getString("Image"));

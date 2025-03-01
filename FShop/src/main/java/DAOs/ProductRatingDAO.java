@@ -19,30 +19,48 @@ import java.util.List;
 public class ProductRatingDAO {
      DBContext db = new DBContext();
     Connection connector = db.getConnection();
-    public List<ProductRating> getAllProductRating(String productID){
-    List<ProductRating> list = new ArrayList<>();
-    String querry = "select * from ProductRatings where ProductID =?";
+    public List<ProductRating> getAllProductRating(int productID) {
+        List<ProductRating> list = new ArrayList<>();
+        String query = "SELECT P.* ,C.FullName FROM ProductRatings AS P\n" +
+"JOIN Customers AS C ON C.CustomerID = P.CustomerID \n" +
+"WHERE ProductID = ? AND P.isDeleted = 0 ORDER BY P.CreatedDate DESC";
         try {
-            PreparedStatement pre = connector.prepareStatement(querry);
-            pre.setString(1, productID);
+            PreparedStatement pre = connector.prepareStatement(query);
+            pre.setInt(1, productID);
             ResultSet rs = pre.executeQuery();
-            while (rs.next()){
-            ProductRating p = new ProductRating(
-                    rs.getInt("RateID"),
-                    rs.getInt("CustomerID"),
-                    rs.getInt("ProductID"),
-                    rs.getInt("OrderID"),
-                    rs.getDate("CreatedDate"),
-                    rs.getInt("Star"),
-                    rs.getString("Comment"),
-                    rs.getBoolean("isDeleted"),
-                    rs.getBoolean("isRead"));
-            list.add(p);
+            while (rs.next()) {
+                ProductRating p = new ProductRating(
+                        rs.getInt("RateID"),
+                        rs.getInt("CustomerID"),
+                        rs.getInt("ProductID"),
+                        rs.getInt("OrderID"),
+                        rs.getDate("CreatedDate"),
+                        rs.getInt("Star"),
+                        rs.getString("Comment"),
+                        rs.getBoolean("isDeleted"),
+                        rs.getBoolean("isRead"),
+                        rs.getString("FullName")
+                );
+                list.add(p);
             }
         } catch (Exception e) {
-            System.out.println(e);
+            e.printStackTrace();
         }
-    return list;
+        return list;
+    }
+
+    public void addProductRating(int customerId, int productId, int star, String comment) {
+        String query = "INSERT INTO ProductRatings (CustomerID, ProductID, CreatedDate, Star, Comment, isDeleted, isRead) VALUES (?, ?, GETDATE(), ?, ?, 0, 0)";
+        try {
+            PreparedStatement pre = connector.prepareStatement(query);
+            pre.setInt(1, customerId);
+            pre.setInt(2, productId);
+            pre.setInt(3, star);
+            pre.setString(4, comment);
+            pre.executeUpdate();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
 }

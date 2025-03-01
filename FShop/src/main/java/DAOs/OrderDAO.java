@@ -191,6 +191,40 @@ public class OrderDAO {
         return list;
     }
 
+    public List<Order> searchOrders(String searchQuery) {
+        List<Order> list = new ArrayList<>();
+        String query = "SELECT * FROM Orders WHERE "
+                + "OrderID LIKE ? OR "
+                + "FullName LIKE ? OR "
+                + "PhoneNumber LIKE ? OR "
+                + "Status LIKE ?";
+        try {
+            PreparedStatement pre = connector.prepareStatement(query);
+            pre.setString(1, "%" + searchQuery + "%");
+            pre.setString(2, "%" + searchQuery + "%");
+            pre.setString(3, "%" + searchQuery + "%");
+            pre.setString(4, "%" + searchQuery + "%");
+
+            ResultSet rs = pre.executeQuery();
+            while (rs.next()) {
+                Order o = new Order(
+                        rs.getInt("OrderID"),
+                        rs.getInt("CustomerID"),
+                        rs.getString("FullName"),
+                        rs.getString("PhoneNumber"),
+                        rs.getString("Address"),
+                        rs.getInt("TotalAmount"),
+                        rs.getString("OrderedDate"),
+                        rs.getInt("Status")
+                );
+                list.add(o);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return list;
+    }
+
     public static void main(String[] args) {
         OrderDAO o = new OrderDAO();
 //        o.addOrderDetail(1, 1, 3, 34000000);

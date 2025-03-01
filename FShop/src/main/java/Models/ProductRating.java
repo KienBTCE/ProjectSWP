@@ -20,11 +20,9 @@ public class ProductRating {
     private String comment;
     private boolean isDeleted;
     private boolean isRead;
+    private String fullName;
 
-    public ProductRating() {
-    }
-
-    public ProductRating(int rateID, int customerID, int productID, int orderID, Date createdDate, int star, String comment, boolean isDeleted, boolean isRead) {
+    public ProductRating(int rateID, int customerID, int productID, int orderID, Date createdDate, int star, String comment, boolean isDeleted, boolean isRead, String fullName) {
         this.rateID = rateID;
         this.customerID = customerID;
         this.productID = productID;
@@ -34,7 +32,23 @@ public class ProductRating {
         this.comment = comment;
         this.isDeleted = isDeleted;
         this.isRead = isRead;
+        this.fullName = fullName;
     }
+   
+
+    
+    public ProductRating() {
+    }
+
+    public String getFullName() {
+        return fullName;
+    }
+
+    public void setFullName(String fullName) {
+        this.fullName = fullName;
+    }
+
+
 
     public int getRateID() {
         return rateID;

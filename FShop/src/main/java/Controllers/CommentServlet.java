@@ -7,8 +7,10 @@ package Controllers;
 
 import DAOs.CustomerDAO;
 import DAOs.ProductRatingDAO;
+import DAOs.RatingRepliesDAO;
 import Models.Customer;
 import Models.ProductRating;
+import Models.RatingReplies;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -59,20 +61,18 @@ public class CommentServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
-        ProductRatingDAO pDAO = new  ProductRatingDAO();
-        List<ProductRating> listPro = pDAO.getAllProductRating("1");
-      CustomerDAO cDAO = new CustomerDAO();
-      List<Customer> listCus = new ArrayList<>();
-      for(ProductRating pr : listPro){
-       listCus.add(cDAO.getCustomerById(pr.getCustomerID()));
-      }
-      if(listPro !=null){
-      request.setAttribute("dataCus",listCus);
-      request.setAttribute("dataRating",listPro);
-      request.getRequestDispatcher("viewFeedback.jsp").forward(request, response);
-      }else{
-         response.sendRedirect(request.getContextPath()+"/HomeServlet");
-     }
+//       int productId = Integer.parseInt(request.getParameter("1")); // Lấy productId từ request
+           int productId = 1;
+        ProductRatingDAO pDAO = new ProductRatingDAO();
+        List<ProductRating> listPro = pDAO.getAllProductRating(productId);
+
+        RatingRepliesDAO rrDAO = new RatingRepliesDAO();
+        List<RatingReplies> listReplies = rrDAO.getAllRatingRepliesByProduct(productId);
+
+        request.setAttribute("dataRating", listPro);
+        request.setAttribute("dataReplies", listReplies);
+
+        request.getRequestDispatcher("viewFeedback.jsp").forward(request, response);
     } 
 
     /** 
@@ -85,7 +85,15 @@ public class CommentServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
-        processRequest(request, response);
+        int customerId = Integer.parseInt(request.getParameter("customerId"));
+        int productId = Integer.parseInt(request.getParameter("productId"));
+        int star = Integer.parseInt(request.getParameter("star"));
+        String comment = request.getParameter("comment");
+
+        ProductRatingDAO pDAO = new ProductRatingDAO();
+        pDAO.addProductRating(customerId, productId, star, comment);
+
+        response.sendRedirect("CommentServlet?productId=" + productId);
     }
 
     /** 

@@ -47,6 +47,10 @@
         <servlet-name>ImportStockServlet</servlet-name>
         <servlet-class>Controllers.ImportStockServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>ExportStockToFileServlet</servlet-name>
+        <servlet-class>Controllers.ExportStockToFileServlet</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>default</servlet-name>
         <url-pattern>/assets/*</url-pattern>
@@ -174,6 +178,10 @@
     <servlet-mapping>
         <servlet-name>ImportStockServlet</servlet-name>
         <url-pattern>/ImportStock</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ExportStockToFileServlet</servlet-name>
+        <url-pattern>/ExportStockToFileServlet</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>
