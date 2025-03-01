@@ -1,167 +1,123 @@
 body {
-    min-height: 100vh;
+    font-family: Arial, sans-serif;
+    background-color: #f8f9fa;
     display: flex;
     flex-direction: column;
     align-items: center;
-    padding: 20px 0;
-    background-color: #f8f9fa; /* Thay đổi màu nền */
+}
+
+.container {
+    width: 60%;
+    background: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+}
+
+.header {
+    text-align: center;
+    margin-bottom: 20px;
 }
 
 .form-css {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    width: 600px; 
-    align-items: flex-start;
-    border: 1px solid #dee2e6; 
+    background: #fff;
+    border: 1px solid #ddd;
+    padding: 15px;
     border-radius: 8px;
-    padding: 20px;
-    box-sizing: border-box;
-    background-color: #ffffff;
-    box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.1);
-    margin-bottom: 15px; 
-    transition: transform 0.2s; /* Hiệu ứng hover */
-}
-
-.form-css:hover {
-    transform: scale(1.02); /* Phóng to nhẹ khi hover */
+    margin-bottom: 20px;
 }
 
 .profile {
     display: flex;
     align-items: center;
-    width: 100%;
     margin-bottom: 10px;
 }
 
-img {
-    width: 50px; 
+.profile img {
+    width: 50px;
     height: 50px;
-    border-radius: 50%; 
+    border-radius: 50%;
     margin-right: 10px;
 }
 
-h4 {
-    margin: 0;
-    font-size: 16px;
-    color: #343a40; /* Màu chữ tối hơn */
+.rating-css {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
 }
 
 .star-icon {
-    display: flex;
-    margin: 10px 0;
-}
-
-.fa-star {
     font-size: 20px;
     color: #ccc;
 }
 
 .checked {
-    color: #ffe400 !important;
+    color: #ffcc00;
 }
 
+/* Reply Section */
+.reply-container {
+    display: flex;
+    align-items: center;
+    margin-left: 30px;
+    padding: 10px;
+    background: #f1f1f1;
+    border-radius: 5px;
+}
+
+.reply-img {
+    width: 20px;
+    height: 20px;
+    margin-right: 10px;
+}
+
+/* Form đánh giá */
 textarea {
     width: 100%;
-    height: 120px;
+    height: 100px;
     padding: 10px;
+    border: 1px solid #ccc;
     border-radius: 5px;
-    border: 1px solid #ced4da; /* Màu sắc nhẹ nhàng hơn */
     margin-top: 10px;
-    resize: none;
-    font-size: 14px;
 }
 
 button {
-    width: 100%;
-    padding: 10px;
-    background-color: #28a745; /* Màu xanh lá cây */
+    background-color: #28a745;
     color: white;
-    border: none; /* Bỏ viền */
+    padding: 10px 15px;
+    border: none;
     border-radius: 5px;
     cursor: pointer;
-    transition: background 0.3s ease;
     margin-top: 10px;
 }
 
 button:hover {
-    background-color: #218838; /* Màu tối hơn khi hover */
+    background-color: #218838;
 }
 
-.reply-container {
+/* Style for star selection in form */
+.star-rating {
     display: flex;
-    flex-direction: column;  
-    align-items: flex-start;
-    gap: 10px;
-    width: 100%;
-    max-width: 500px;
-    margin-top: 10px;
-/*    border-radius: 8px;
-    border: 1px solid #dee2e6;  Màu sắc nhẹ nhàng hơn */
-    padding: 10px; /* Thêm padding */
+    flex-direction: row-reverse;
+    justify-content: center;
+    font-size: 24px;
+    margin-bottom: 10px;
 }
 
-.reply-img {
-    width: 30px;
-    height: 30px;
-    object-fit: cover;
-    align-self: flex-start; 
-}
-
-.formReply-css {
-    width: 100%; 
-    border: 1px solid #dee2e6; /* Màu sắc nhẹ nhàng hơn */
-    border-radius: 8px;
-    padding: 10px;
-    background-color: #ffffff;
-    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
-}
-
-.comment {
-    border: 1px solid #dee2e6; 
-    width: 600px;
-    border-radius: 8px;
-    padding: 10px; /* Thêm padding */
-    background-color: #ffffff; /* Màu nền trắng */
-}
-.rating-css div{
-    margin-left: 25%;
-    color: #ffe400;
-}
-.rating-css input {
+.star-rating input {
     display: none;
 }
-.rating-css input + label {
-    text-shadow: 1px 1px;
+
+.star-rating label {
     cursor: pointer;
-}
-.rating-css input:checked + label ~ label{
-    color: #838383;
-}
-.rating-css label:active{
-    transform: scale(0.7);
-    transition: 0.3s ease;
-}
-.box {
-    width: 550px;
-    height: 50px;
-  
-}
-.box1 {
-    display: inline-flex;
-    margin: 5%;
-    position: relative;
-    top: 10px;
-    left: 10px;
-    z-index: 2;
+    color: #ccc;
 }
 
-.box2 {
-    display: inline-flex;
-    width: 550px;
-    margin: 1%;
-    position: relative;
-    top: 10px;
-   
-    z-index: 1; 
+.star-rating input:checked ~ label {
+    color: #ffcc00;
+}
+
+.star-rating label:hover,
+.star-rating label:hover ~ label {
+    color: #ffcc00;
 }

@@ -20,6 +20,7 @@ public class ProductRating {
     private String comment;
     private boolean isDeleted;
     private boolean isRead;
+<<<<<<< HEAD
     private  String customerName;
     private String avatar;
     private  String reply;
@@ -31,6 +32,11 @@ public class ProductRating {
 
 
     public ProductRating(int rateID, int customerID, int productID, int orderID, Date createdDate, int star, String comment, boolean isDeleted, boolean isRead, String customerName, String avatar) {
+=======
+    private String fullName;
+
+    public ProductRating(int rateID, int customerID, int productID, int orderID, Date createdDate, int star, String comment, boolean isDeleted, boolean isRead, String fullName) {
+>>>>>>> 3d93b6c (fig bug on crud order create view feedback.)
         this.rateID = rateID;
         this.customerID = customerID;
         this.productID = productID;
@@ -40,9 +46,28 @@ public class ProductRating {
         this.comment = comment;
         this.isDeleted = isDeleted;
         this.isRead = isRead;
+<<<<<<< HEAD
         this.customerName = customerName;
         this.avatar = avatar;
+=======
+        this.fullName = fullName;
+>>>>>>> 3d93b6c (fig bug on crud order create view feedback.)
     }
+   
+
+    
+    public ProductRating() {
+    }
+
+    public String getFullName() {
+        return fullName;
+    }
+
+    public void setFullName(String fullName) {
+        this.fullName = fullName;
+    }
+
+
 
     public ProductRating(int rateID, int customerID, int productID, int orderID, Date createdDate, int star, String comment, boolean isDeleted, boolean isRead, String customerName, String avatar, String reply, int employeeID) {
         this.rateID = rateID;
