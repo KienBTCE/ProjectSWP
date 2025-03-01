@@ -146,9 +146,9 @@ public class BuyProductsServlet extends HttpServlet {
     private void sendOrderConfirmationEmail(Customer customer, Order order, List<Cart> cartItems, long totalAmount) {
         try {
             Email email = new Email();
-            email.setFrom("kieuthy2004@gmail.com"); 
-            email.setFromPassword("xkkc ohwn aesf arqm"); 
-            email.setTo(customer.getEmail()); 
+            email.setFrom("kieuthy2004@gmail.com");
+            email.setFromPassword("xkkc ohwn aesf arqm");
+            email.setTo(customer.getEmail());
             email.setSubject("Order Confirmation from Fshop");
 
             StringBuilder sb = new StringBuilder();
@@ -164,14 +164,14 @@ public class BuyProductsServlet extends HttpServlet {
             for (Cart item : cartItems) {
                 sb.append("<tr>")
                         .append("<td>").append(item.getFullName()).append("</td>")
-                        .append("<td>").append(String.format("%.02f", item.getPrice())).append(" VND</td>")
+                        .append("<td>").append(String.format("%d", item.getPrice())).append(" VND</td>")
                         .append("<td>").append(item.getQuantity()).append("</td>")
-                        .append("<td>").append(String.format("%.02f", item.getPrice() * item.getQuantity())).append(" VND</td>")
+                        .append("<td>").append(String.format("%d", item.getPrice() * item.getQuantity())).append(" VND</td>")
                         .append("</tr>");
             }
 
             sb.append("</table><br>");
-            sb.append("<b>Total Amount:</b> ").append(String.format("%.02f", totalAmount)).append(" VND<br>");
+            sb.append("<b>Total Amount:</b> ").append(String.format("%d", totalAmount)).append(" VND<br>");
             sb.append("<br>Thank you for choosing <b>Rakahe Shoes</b>!<br>");
             sb.append("If you have any questions, feel free to contact us.<br><br>");
             sb.append("<b>FShop</b>");
