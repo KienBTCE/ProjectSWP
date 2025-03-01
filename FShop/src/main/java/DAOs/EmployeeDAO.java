@@ -197,5 +197,9 @@ public class EmployeeDAO {
         }
         return effectRow;
     }
-    
+    public static void main(String[] args) {
+        EmployeeDAO e = new EmployeeDAO();
+        System.out.println(e.getMD5("User123@"));
+        System.out.println( e.employeeLogin("nguyen.vana@example.com", "User123@"));
+    }
 }
