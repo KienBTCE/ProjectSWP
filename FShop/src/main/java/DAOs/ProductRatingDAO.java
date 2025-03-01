@@ -19,19 +19,11 @@ import java.util.List;
 public class ProductRatingDAO {
      DBContext db = new DBContext();
     Connection connector = db.getConnection();
-<<<<<<< HEAD
-
-=======
->>>>>>> 3d93b6c (fig bug on crud order create view feedback.)
     public List<ProductRating> getAllProductRating(int productID) {
         List<ProductRating> list = new ArrayList<>();
         String query = "SELECT P.* ,C.FullName FROM ProductRatings AS P\n" +
 "JOIN Customers AS C ON C.CustomerID = P.CustomerID \n" +
 "WHERE ProductID = ? AND P.isDeleted = 0 ORDER BY P.CreatedDate DESC";
-<<<<<<< HEAD
-
-=======
->>>>>>> 3d93b6c (fig bug on crud order create view feedback.)
         try {
             PreparedStatement pre = connector.prepareStatement(query);
             pre.setInt(1, productID);

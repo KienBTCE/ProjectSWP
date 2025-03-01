@@ -55,11 +55,7 @@ public class OrderDetailDAO {
                         rs.getInt("OrderID"),
                         rs.getInt("ProductID"),
                         rs.getInt("Quantity"),
-<<<<<<< HEAD
                         rs.getLong("Price"),
-=======
-                        rs.getInt("Price"),
->>>>>>> 3d93b6c (fig bug on crud order create view feedback.)
                         rs.getString("CategoryID"),
                         rs.getString("FullName"),
                         rs.getString("Image"));

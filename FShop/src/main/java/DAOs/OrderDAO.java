@@ -159,6 +159,7 @@ public class OrderDAO {
             PreparedStatement pre = connector.prepareStatement(query);
             pre.setInt(1, status);
             pre.setInt(2, orderID);
+
             pre.executeUpdate();
         } catch (Exception e) {
             Logger.getLogger(OrderDAO.class.getName()).log(Level.SEVERE, null, e);

@@ -7,10 +7,6 @@ package Controllers;
 
 import DAOs.ProductRatingDAO;
 import DAOs.RatingRepliesDAO;
-<<<<<<< HEAD
-=======
-import Models.Customer;
->>>>>>> 3d93b6c (fig bug on crud order create view feedback.)
 import Models.ProductRating;
 import Models.RatingReplies;
 import java.io.IOException;

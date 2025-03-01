@@ -168,6 +168,7 @@ public class Product {
     }
 
 
+
     public Product(int productId, String model, String fullName, String description, int deleted, long price, String image, int stock) {
         this.productId = productId;
         this.model = model;
