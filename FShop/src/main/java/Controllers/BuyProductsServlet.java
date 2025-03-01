@@ -172,9 +172,8 @@ public class BuyProductsServlet extends HttpServlet {
 
             sb.append("</table><br>");
             sb.append("<b>Total Amount:</b> ").append(String.format("%d", totalAmount)).append(" VND<br>");
-            sb.append("<br>Thank you for choosing <b>Rakahe Shoes</b>!<br>");
+            sb.append("<br>Thank you for choosing <b>FShop</b>!<br>");
             sb.append("If you have any questions, feel free to contact us.<br><br>");
-            sb.append("<b>FShop</b>");
 
             email.setContent(sb.toString());
 
