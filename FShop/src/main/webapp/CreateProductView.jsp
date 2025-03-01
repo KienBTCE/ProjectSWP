@@ -4,94 +4,70 @@
     Author     : kiuth
 --%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+
 <!DOCTYPE html>
 <html>
     <head>
+        <meta charset="UTF-8">
         <title>Create Product</title>
-        <style>
-            body {
-                font-family: Arial, sans-serif;
-                background-color: #f4f4f4;
-                margin: 0;
-                padding: 20px;
-                display: flex;
-                justify-content: center;
-                align-items: center;
-                height: 100vh;
-            }
-            .container {
-                background: white;
-                padding: 20px;
-                border-radius: 8px;
-                box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-                width: 400px;
-            }
-            h2 {
-                text-align: center;
-                color: #333;
-            }
-            form {
-                display: flex;
-                flex-direction: column;
-            }
-            label {
-                font-weight: bold;
-                margin-top: 10px;
-            }
-            input, textarea {
-                padding: 8px;
-                margin-top: 5px;
-                border: 1px solid #ccc;
-                border-radius: 4px;
-            }
-            input[type="submit"] {
-                background: #28a745;
-                color: white;
-                font-size: 16px;
-                cursor: pointer;
-                margin-top: 15px;
-            }
-            input[type="submit"]:hover {
-                background: #218838;
-            }
-            .error {
-                color: red;
-                text-align: center;
-            }
-        </style>
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     </head>
     <body>
-        <div class="container">
-            <h2>Create New Product</h2>
+        <div class="container mt-5">
+            <h3 class="text-center">Create Product</h3>
 
-            <% String error = (String) session.getAttribute("error");
-            if (error != null) {%>
-            <p class="error"><%= error%></p>
-            <% session.removeAttribute("error"); %>
-            <% }%>
+            <!-- Hiển thị thông báo lỗi -->
+            <c:if test="${not empty sessionScope.error}">
+                <div class="alert alert-danger">${sessionScope.error}</div>
+                <% session.removeAttribute("error");%>
+            </c:if>
 
-            <form action="CreateProductServlet" method="post">
+            <c:if test="${param.success == 'true'}">
+                <div class="alert alert-success">Product created successfully!</div>
+            </c:if>
 
-                <label>Full Name:</label>
-                <input type="text" name="fullName" required>
+            <form action="CreateProductServlet" method="POST">
+                <div class="mb-3">
+                    <label class="form-label">Category</label>
+                    <select class="form-control" name="categoryName" required>
+                        <c:forEach var="category" items="${categories}">
+                            <option value="${category}">${category}</option>
+                        </c:forEach>
+                    </select>
+                </div>
 
-                <label>Model:</label>
-                <input type="text" name="model" required>
+                <div class="mb-3">
+                    <label class="form-label">Brand</label>
+                    <select class="form-control" name="brandName" required>
+                        <c:forEach var="brand" items="${brands}">
+                            <option value="${brand}">${brand}</option>
+                        </c:forEach>
+                    </select>
+                </div>
 
-                <label>Description:</label>
-                <textarea name="description" required></textarea>
+                <div class="mb-3">
+                    <label class="form-label">Model</label>
+                    <input type="text" class="form-control" name="model" required>
+                </div>
 
-                <label>Image URL:</label>
-                <input type="text" name="image" required>
+                <div class="mb-3">
+                    <label class="form-label">Product Name</label>
+                    <input type="text" class="form-control" name="fullName" required>
+                </div>
 
-                <label>Price:</label>
-                <input type="number" name="price" required>
+                <div class="mb-3">
+                    <label class="form-label">Price</label>
+                    <input type="number" class="form-control" name="price" required>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Stock Quantity</label>
+                    <input type="number" class="form-control" name="stock" required>
+                </div>
 
-                <label>Stock:</label>
-                <input type="number" name="stock" required>
-
-                <input type="submit" value="Create Product">
+                <button type="submit" class="btn btn-primary w-100">Create Product</button>
             </form>
         </div>
+
     </body>
 </html>

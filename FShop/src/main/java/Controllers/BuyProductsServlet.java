@@ -10,6 +10,8 @@ import DAOs.OrderDAO;
 import Models.Address;
 import Models.Cart;
 import Models.Customer;
+import Models.Email;
+import Models.EmailUtils;
 import Models.Order;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -133,9 +135,56 @@ public class BuyProductsServlet extends HttpServlet {
             }
             session.setAttribute("orderStatus", "success");
             session.setAttribute("numOfProCartOfCus", ca.getNumberOfProduct(cus.getId()));
+            //gui mail xac nhan don hang thanh cong
+            sendOrderConfirmationEmail(cus, o, cartSelected, totalAmount);
             request.getRequestDispatcher("ConfirmView.jsp").forward(request, response);
         }
 
+    }
+
+    //phuong thuc gui mail
+    private void sendOrderConfirmationEmail(Customer customer, Order order, List<Cart> cartItems, long totalAmount) {
+        try {
+            Email email = new Email();
+            email.setFrom("kieuthy2004@gmail.com"); 
+            email.setFromPassword("xkkc ohwn aesf arqm"); 
+            email.setTo(customer.getEmail()); 
+            email.setSubject("Order Confirmation from Fshop");
+
+            StringBuilder sb = new StringBuilder();
+            sb.append("Hello ").append(customer.getFullName()).append(",<br><br>");
+            sb.append("Thank you for shopping with <b>FShop</b>. Here are your order details:<br>");
+            sb.append("<b>Recipient:</b> ").append(order.getFullName()).append("<br>");
+            sb.append("<b>Shipping Address:</b> ").append(order.getAddress()).append("<br>");
+            sb.append("<b>Contact Number:</b> ").append(order.getPhone()).append("<br><br>");
+            sb.append("<b>Order Summary:</b><br>");
+            sb.append("<table border='1' cellspacing='0' cellpadding='5'>");
+            sb.append("<tr><th>Product</th><th>Price</th><th>Quantity</th><th>Total</th></tr>");
+
+            for (Cart item : cartItems) {
+                sb.append("<tr>")
+                        .append("<td>").append(item.getFullName()).append("</td>")
+                        .append("<td>").append(String.format("%.02f", item.getPrice())).append(" VND</td>")
+                        .append("<td>").append(item.getQuantity()).append("</td>")
+                        .append("<td>").append(String.format("%.02f", item.getPrice() * item.getQuantity())).append(" VND</td>")
+                        .append("</tr>");
+            }
+
+            sb.append("</table><br>");
+            sb.append("<b>Total Amount:</b> ").append(String.format("%.02f", totalAmount)).append(" VND<br>");
+            sb.append("<br>Thank you for choosing <b>Rakahe Shoes</b>!<br>");
+            sb.append("If you have any questions, feel free to contact us.<br><br>");
+            sb.append("<b>FShop</b>");
+
+            email.setContent(sb.toString());
+
+            EmailUtils.send(email);
+            System.out.println("📧 Order confirmation email sent to: " + customer.getEmail());
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            System.out.println("❌ Error sending order confirmation email.");
+        }
     }
 
     /**

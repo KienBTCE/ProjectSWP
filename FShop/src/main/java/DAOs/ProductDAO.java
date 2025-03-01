@@ -12,6 +12,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.jar.Attributes.Name;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -218,6 +219,7 @@ public class ProductDAO {
         return s;
     }
 
+    //delete product - shop manager
     public int deleteProduct(int productId) {
         int count = 0;
         try {
@@ -233,6 +235,7 @@ public class ProductDAO {
         return count;
     }
 
+    //restore product - shop manager
     public int restoreProduct(int productId) {
         int count = 0;
         try {
@@ -249,47 +252,64 @@ public class ProductDAO {
     }
 
     public int createProduct(Product p) {
-        try {
-            // Chèn sản phẩm vào bảng Products
-            String query = "INSERT INTO Products (Model, FullName, Description, Price, Image, Stock, IssDeleted) "
-                    + "VALUES ( ?, ?, ?, ?, ?, ?)";
+        int generatedId = 0;
+        String query = "INSERT INTO Products (CategoryID, BrandID, Model, FullName, Description, IsDeleted, Price, Image, Stock) "
+                + "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
-            PreparedStatement ps = connector.prepareStatement(query);
-            ps.setString(1, p.getModel());
-            ps.setString(2, p.getFullName());
-            ps.setString(3, p.getDescription());
-            ps.setLong(4, p.getPrice());
-            ps.setString(5, p.getImage());
-            ps.setInt(6, p.getStock());
-            ps.setInt(7, p.getDeleted());
+        try ( 
+            PreparedStatement ps = connector.prepareStatement(query, PreparedStatement.RETURN_GENERATED_KEYS)) {
 
-            return ps.executeUpdate();
+            int categoryId = p.getCategoryId();
+            int brandId = getOrCreateBrandID(p.getBrandName(), connector); // Tạo hoặc lấy BrandID
+
+            ps.setInt(1, categoryId);
+            ps.setInt(2, brandId);
+            ps.setString(3, p.getModel());
+            ps.setString(4, p.getFullName());
+            ps.setString(5, p.getDescription());
+            ps.setInt(6, p.getDeleted());
+            ps.setLong(7, p.getPrice());
+            ps.setString(8, p.getImage());
+            ps.setInt(9, p.getStock());
+
+            int affectedRows = ps.executeUpdate();
+
+            if (affectedRows > 0) {
+                ResultSet rs = ps.getGeneratedKeys();
+                if (rs.next()) {
+                    generatedId = rs.getInt(1);
+                }
+            }
         } catch (SQLException e) {
-            System.out.println(e);
+            System.err.println("SQL Error: " + e.getMessage());
         }
-        return 0;
+        return generatedId;
     }
 
-//    //update product - shop manager
-//    public int updateProduct(Product p) {
-//        try {
-//            String query = "UPDATE Products SET Model=?, FullName=?, Description=?, Price=?, Image=?, Stock=? IsDeleted=? WHERE ProductID =?";
-//            PreparedStatement ps = connector.prepareStatement(query);
-//            ps.setInt(1, p.getProductId());
-//            ps.setString(2, p.getModel());
-//            ps.setString(3, p.getFullName());
-//            ps.setString(4, p.getDescription());
-//            ps.setLong(5, p.getPrice());
-//            ps.setString(6, p.getImage());
-//            ps.setInt(7, p.getStock());
-//            ps.setInt(8, p.getDeleted());
-//            return ps.executeUpdate();
-//        } catch (SQLException e) {
-//            System.out.println(e);
-//        }
-//
-//        return 0;
-//    }
+    private int getOrCreateBrandID(String brandName, Connection conn) throws SQLException {
+        String query = "SELECT BrandID FROM Brands WHERE BrandName = ?";
+        try ( PreparedStatement ps = connector.prepareStatement(query)) {
+            ps.setString(1, brandName);
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                return rs.getInt("BrandID");
+            }
+        }
+
+        // Nếu Brand không tồn tại, tạo mới BrandName
+        String insertQuery = "INSERT INTO Brands (BrandName) VALUES (?)";
+        try ( PreparedStatement psInsert = connector.prepareStatement(insertQuery, PreparedStatement.RETURN_GENERATED_KEYS)) {
+            psInsert.setString(1, brandName);
+            psInsert.executeUpdate();
+            ResultSet rs = psInsert.getGeneratedKeys();
+            if (rs.next()) {
+                return rs.getInt(1);
+            }
+        }
+        return 0; // Trả về 0 nếu không thể tạo mới
+    }
+
+    //update product - shop manager
     public int updateProduct(Product p) {
         String query = "UPDATE Products SET FullName=?, Description=?, Price=?, Image=?, IsDeleted=? WHERE ProductID=?";
 
