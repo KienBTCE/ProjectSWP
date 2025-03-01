@@ -4,10 +4,6 @@
         <welcome-file>ProductListView</welcome-file>
     </welcome-file-list>
     <servlet>
-        <servlet-name>SearchProductServlet</servlet-name>
-        <servlet-class>Controllers.SearchProductServlet</servlet-class>
-    </servlet>
-    <servlet>
         <servlet-name>UpdateProductServlet</servlet-name>
         <servlet-class>Controllers.UpdateProductServlet</servlet-class>
     </servlet>
@@ -148,10 +144,6 @@
     <servlet-mapping>
         <servlet-name>ViewImportOrderServlet</servlet-name>
         <url-pattern>/ImportOrder</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>SearchProductServlet</servlet-name>
-        <url-pattern>/SearchProductServlet</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>UpdateProductServlet</servlet-name>

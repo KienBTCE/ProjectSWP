@@ -179,11 +179,9 @@ public class BuyProductsServlet extends HttpServlet {
             email.setContent(sb.toString());
 
             EmailUtils.send(email);
-            System.out.println("📧 Order confirmation email sent to: " + customer.getEmail());
 
         } catch (Exception e) {
             e.printStackTrace();
-            System.out.println("❌ Error sending order confirmation email.");
         }
     }
 
