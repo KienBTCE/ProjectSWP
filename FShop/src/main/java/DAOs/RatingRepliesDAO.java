@@ -16,7 +16,10 @@ import java.util.List;
  *
  * @author HP
  */
+<<<<<<< HEAD
 
+=======
+>>>>>>> 3d93b6c (fig bug on crud order create view feedback.)
 public class RatingRepliesDAO {
      DBContext db = new DBContext();
     Connection connector = db.getConnection();
