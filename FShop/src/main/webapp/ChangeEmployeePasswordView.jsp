@@ -1,11 +1,16 @@
+<%-- 
+    Document   : ChangeEmployeePasswordView
+    Created on : Mar 1, 2025, 8:57:13 PM
+    Author     : TuongMPCE180644
+--%>
+
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <!DOCTYPE html>
-<html lang="en">
+<html>
     <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Employee Profile Page</title>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <title>Change Employee Password Page</title>
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
         <style>
@@ -64,9 +69,7 @@
                 border-radius: 50%;
                 object-fit: cover;
             }
-
-
-            .profile-container {
+            .content{
                 max-width: 1600px;
                 height: auto;
                 margin: 20px auto;
@@ -76,35 +79,18 @@
                 box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
                 display: flex;
                 flex-wrap: wrap;
-                justify-content: space-between;
+                justify-content: space-around;
                 align-items: center;
             }
-            .form-container {
+            .change_password_container{
                 width: 60%;
+                min-width: 600px;
             }
-            .avatar-container {
-                text-align: center;
-                width: 35%;
-            }
-            .avatar-preview {
-                width: 180px;
-                height: 180px;
-                border-radius: 50%;
-                object-fit: cover;
-                border: 3px solid #ddd;
-            }
-            .btn-save {
-                background-color: #007bff;
-                color: white;
-            }
-            .btn-change {
-                background-color: #dc3545;
-                color: white;
-            }
-
-            .value{
-                width: 150px;
-
+            .error-message {
+                color: red;
+                font-size: 0.9em;
+                margin-top: 5px;
+                margin-bottom: 10px;
             }
             /* Popup styles */
             .popup {
@@ -185,82 +171,33 @@
                             <a href="/ViewEmployeeProfile" style="display: flex; margin: 12px 0 0 0; text-decoration: none;">Hi, ${sessionScope.employee.getFullname()}</a>
                         </div>
                     </div>
-                    <form action="UpdateEmployeeProfile" method="post" enctype="multipart/form-data" onsubmit="return validateForm()">
+                    <div class="content">
+                        <h2 style="width: 100%;">Change Password</h2>
 
-                        <div class="profile-container">
+                        <div class="change_password_container">
+                            <form action="ChangeEmployeePassword" method="POST" onsubmit="return validatePassword()">
 
-                            <div class="form-container">
-
-                                <div class="mb-3 d-flex">
-                                    <label class="value">Email:</label>
-                                    <p>${sessionScope.employee.getEmail()}</p>
+                                <div class="mb-4">
+                                    <label for="currentPassword" class="form-label">Current Password</label>
+                                    <input type="password" class="form-control" id="currentPassword" name="current" required>
                                 </div>
-
-                                <div class="mb-3 d-flex">
-                                    <label class="value">Role:</label>
-                                    <c:if test="${sessionScope.employee.getRoleId() == 1}">
-                                        <p class="fw-bold">Admin</p>
-                                    </c:if>
-                                    <c:if test="${sessionScope.employee.getRoleId() == 2}">
-                                        <p class="fw-bold">Shop Manager</p>
-                                    </c:if>
-                                    <c:if test="${sessionScope.employee.getRoleId() == 3}">
-                                        <p class="fw-bold">Order Manager</p>
-                                    </c:if>
-                                    <c:if test="${sessionScope.employee.getRoleId() == 4}">
-                                        <p class="fw-bold">Warehouse Manager</p>
-                                    </c:if>
+                                <div class="mb-4">
+                                    <label for="newPassword" class="form-label">New Password</label>
+                                    <input type="password" class="form-control" id="newPassword" name="new" required>
+                                    <div id="passwordError" class="error-message mb-8"></div>
                                 </div>
-
-                                <div class="mb-3 d-flex">
-                                    <label class="form-label value">Full Name</label>
-                                    <input type="text" class="form-control" name="fullName" value="${sessionScope.employee.getFullname()}" required>
+                                <div class="mb-4">
+                                    <label for="confirmPassword" class="form-label">Confirm New Password</label>
+                                    <input type="password" class="form-control" id="confirmPassword" name="confirm" required>
+                                    <div id="confirmError" class="error-message mb-8"></div>
                                 </div>
-
-                                <div class="mb-3 d-flex">
-                                    <label class="form-label value" value>Gender</label>
-                                    <select class="form-select" name="gender" required>
-                                        <option value="Male" ${sessionScope.employee.getGender() == 'Male' ? 'selected' : ''}>Male</option>
-                                        <option value="Female" ${sessionScope.employee.getGender() == 'Female' ? 'selected' : ''}>Female</option>
-                                        <option value="Other" ${sessionScope.employee.getGender() == 'Other' ? 'selected' : ''}>Other</option>
-                                    </select>
+                                <div class="d-grid">
+                                    <button type="submit" class="btn btn-primary">Change Password</button>
                                 </div>
-
-                                <div class="mb-3 d-flex">
-                                    <label class="form-label value">Phone</label>
-                                    <input type="text" class="form-control" name="phone" value="${sessionScope.employee.getPhoneNumber()}" required>
-                                </div>
-
-                                <div class="mb-3 d-flex">
-                                    <label class="form-label value">Date Of Birth</label>
-                                    <input type="date" class="form-control" name="dob" value="${sessionScope.employee.getBirthday().toString()}" required>
-                                </div>
-
-                            </div>
-
-                            <div class="avatar-container">
-                                <label class="form-label">Avatar</label>
-                                <div class="mb-3">
-                                    <c:choose>
-                                        <c:when test="${not empty sessionScope.employee.getAvatar()}">
-                                            <img id="avatarPreview" class="avatar-preview" src="assets/imgs/EmployeeAvatar/${sessionScope.employee.getAvatar()}" alt="Avatar">
-                                        </c:when>
-                                        <c:otherwise>
-                                            <img id="avatarPreview" class="avatar-preview" src="assets/imgs/EmployeeAvatar/defauft_avatar.jpg" alt="Avatar">
-                                        </c:otherwise>
-                                    </c:choose>
-                                </div>
-                                <input type="file" class="form-control" name="avatar" accept="image/*" onchange="previewImage(event)">
-                            </div>
-                            <div class="form-container">
-                                <div class="d-flex gap-3" style="justify-content: space-between;">
-                                    <button type="submit" class="btn btn-save px-4 py-2">Save</button>
-                                    <button type="button" class="btn btn-change px-4 py-2" onclick="changePassword()">Change Password</button>
-                                </div>
-                            </div>
+                            </form>
 
                         </div>
-                    </form>
+                    </div>
                 </div>
             </div>
         </div>
@@ -272,42 +209,39 @@
                     <button onclick="closePopup()">Close</button>
                 </div>
             </div>
-            <c:remove scope="session" var="empromess"/>
-
+            <%
+                session.removeAttribute("empromess");
+            %>
         </c:if>
-
         <script>
             function closePopup() {
                 document.getElementById("Popup").style.display = "none";
             }
 
+            function validatePassword() {
+                const newPassword = document.getElementById("newPassword").value;
+                const confirmPassword = document.getElementById("confirmPassword").value;
+                const passwordError = document.getElementById("passwordError");
+                const confirmError = document.getElementById("confirmError");
 
-            function validateForm() {
-                var phone = document.getElementsByName('phone')[0].value;
-                var phonePattern = /^\d{10}$/;
-                if (!phonePattern.test(phone)) {
-                    alert('Phone number must be exactly 10 digits.');
+                const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+
+                passwordError.textContent = "";
+                confirmError.textContent = "";
+
+                if (!passwordRegex.test(newPassword)) {
+                    passwordError.textContent = "Password must be at least 8 characters, include one uppercase letter, one number, and one special character.";
                     return false;
                 }
+
+                if (newPassword !== confirmPassword) {
+                    confirmError.textContent = "Passwords do not match.";
+                    return false;
+                }
+
                 return true;
             }
-
-            function previewImage(event) {
-                var reader = new FileReader();
-                reader.onload = function () {
-                    var output = document.getElementById('avatarPreview');
-                    output.src = reader.result;
-                };
-                reader.readAsDataURL(event.target.files[0]);
-            }
-
-
-            function changePassword() {
-                window.location.href = '/ChangeEmployeePassword';
-            }
-
         </script>
-
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     </body>
 </html>

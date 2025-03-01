@@ -48,7 +48,7 @@ public class EmployeeDAO {
             throw new RuntimeException("MD5 algorithm not found!", e);
         }
     }
-    
+
     public ArrayList<Employee> getAllEmployees() {
         ArrayList<Employee> listEmployee = new ArrayList<>();
         String sql = "SELECT * FROM Employees";
@@ -72,20 +72,20 @@ public class EmployeeDAO {
             return listEmployee;
         } catch (SQLException e) {
             System.out.println(e);
-        }   
+        }
         return listEmployee;
     }
-    
-    public Employee getEmployeeById(String id){
+
+    public Employee getEmployeeById(String id) {
         int empId = Integer.parseInt(id);
         Employee emp = null;
         String sql = "SELECT * FROM Employees WHERE EmployeeID = ?";
-        
+
         try {
             PreparedStatement pr = connector.prepareStatement(sql);
             pr.setInt(1, empId);
             ResultSet rs = pr.executeQuery();
-            while(rs.next()){
+            while (rs.next()) {
                 emp = new Employee(rs.getInt("EmployeeID"),
                         rs.getString("FullName"),
                         rs.getDate("Birthday"),
@@ -105,8 +105,8 @@ public class EmployeeDAO {
         }
         return emp;
     }
-    
-    public void UpdateEmployee(Employee employee){
+
+    public void UpdateEmployee(Employee employee) {
         String sql = "Update Employees SET FullName = ?, Birthday = ?, Password = ?, PhoneNumber = ?, Email = ?, Gender = ?, CreatedDate = ?, Status = ?, Avatar = ?, RoleID = ? WHERE EmployeeID = ?";
         try {
             PreparedStatement pr = connector.prepareStatement(sql);
@@ -121,13 +121,13 @@ public class EmployeeDAO {
             pr.setString(9, employee.getAvatar());
             pr.setInt(10, employee.getRoleId());
             pr.setInt(11, employee.getEmployeeId());
-            pr.executeUpdate();          
+            pr.executeUpdate();
         } catch (SQLException e) {
             System.out.println(e);
         }
     }
-    
-    public void AddEmployee(Employee employee){
+
+    public void AddEmployee(Employee employee) {
         String sql = "INSERT INTO Employees (FullName, Birthday, [Password], PhoneNumber, Email, Gender, CreatedDate, Status, Avatar, RoleID) VALUES "
                 + "(?,?,?,?,?,?,?,?,?,?)";
         try {
@@ -147,8 +147,7 @@ public class EmployeeDAO {
             System.out.println(e);
         }
     }
-    
-    
+
     public Employee employeeLogin(String email, String password) {
         Employee emp = null;
         try {
@@ -178,8 +177,8 @@ public class EmployeeDAO {
         }
         return emp;
     }
-    
-    public int updateEmployeeProfile(Employee employee){
+
+    public int updateEmployeeProfile(Employee employee) {
         int effectRow = 0;
         String sql = "Update Employees SET FullName = ?, Birthday = ?, PhoneNumber = ?, Gender = ?, Avatar = ? WHERE EmployeeID = ?";
         try {
@@ -190,16 +189,51 @@ public class EmployeeDAO {
             pr.setString(4, employee.getGender());
             pr.setString(5, employee.getAvatar());
             pr.setInt(6, employee.getEmployeeId());
-            effectRow = pr.executeUpdate();          
+            effectRow = pr.executeUpdate();
         } catch (SQLException e) {
             System.out.println(e);
             return 0;
         }
         return effectRow;
     }
+
+    public int checkPassword(int id, String password) {
+        try {
+            PreparedStatement pr = connector.prepareStatement("SELECT * FROM Employees WHERE EmployeeID = ? AND Password = ?");
+
+            pr.setInt(1, id);
+            pr.setString(2, getMD5(password));
+
+            ResultSet rs = pr.executeQuery();
+            while (rs.next()) {
+                return 1;
+            }
+        } catch (SQLException e) {
+            System.out.println(e);
+            return 0;
+        }
+        return 0;
+    }
+    public int changePassword(int id, String password){
+        int effectRow = 0;
+        String sql = "Update Employees SET Password = ? WHERE EmployeeID = ?";
+        try {
+            PreparedStatement pr = connector.prepareStatement(sql);
+            pr.setInt(2, id);
+            pr.setString(1, getMD5(password));
+            effectRow = pr.executeUpdate();
+        } catch (SQLException e) {
+            System.out.println(e);
+            return 0;
+        }
+        return effectRow;
+    }
+
     public static void main(String[] args) {
         EmployeeDAO e = new EmployeeDAO();
-        System.out.println(e.getMD5("User123@"));
-        System.out.println( e.employeeLogin("nguyen.vana@example.com", "User123@"));
+//        System.out.println(e.checkPassword(1, "User123@"));
+//        System.out.println(e.getMD5("User123@"));
+//        System.out.println(e.changePassword(1, "User123@"));
+//        System.out.println(e.employeeLogin("nguyen.vana@example.com", "User123@"));
     }
 }

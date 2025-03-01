@@ -1,6 +1,7 @@
 <%@page contentType="text/html" pageEncoding="UTF-8" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
+<%@page import="Models.Address" %>
 <!DOCTYPE html>
 <html lang="vi">
 
@@ -11,6 +12,7 @@
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
         <title>Shipping Address</title>
         <style>
+
             .add {
                 display: none;
                 position: fixed;
@@ -51,52 +53,87 @@
             <h4 style="padding: 15px 0 0 0">Address</h4>
 
             <div id="addressList">
-                <br>
-                <div class="address"
-                     style="border-bottom: 1px solid #ddd; display: flex; justify-content: space-between; align-items: center;  padding-bottom: 10px">
-                    <div>
-                        <p>Nguyen Van Truong street, Long Tuyen ward, Binh Thuy district, Can Tho province</p>
-                        <span class="default" style="color: red; font-weight: bold;">Default</span>
-                    </div>
-                    <div class="actions" style="display: flex; flex-direction: column;">
-                        <div class="btn1" style="display: flex; flex-direction: row;">
-                            <button class="btn btn-update"
-                                    style="color: blue; padding: 5px 5px; cursor: pointer; border: none; margin-left: 5px;"
-                                    data-bs-toggle="modal" data-bs-target="#updateModal"
-                                    onclick="openPopup(true)">Update</button>
-                            <button class="btn btn-delete"
-                                    style="color: red; background: none; padding: 5px 5px; cursor: pointer; border: none; margin-left: 5px;">Delete</button>
-                        </div>
-                        <button class="btn btn-default"
-                                style="background: #f5f5f5; padding: 5px 5px; cursor: pointer; border: none; margin-left: 5px;"
-                                onclick="setDefault(this)">Set as default</button>
-                    </div>
-                </div>
+                <c:if test="${sessionScope.addressList.isEmpty()}">
+                    <br>
+                    <h5>There is no shipping address</h5>
+                </c:if>
+                <c:if test="${!sessionScope.addressList.isEmpty()}">
+                    <c:forEach items="${sessionScope.addressList}" var="ad">
+                        <c:set var="isDefault" value="0" ></c:set>
+                            <br>
+                            <div class="address"
+                                 style="border-bottom: 1px solid #ddd; display: flex; justify-content: space-between; align-items: center; padding-bottom: 10px">
+                                <div>
+                                    <p>${ad.getAddressDetails()}</p>
+                                <c:if test="${ad.getIsDefault() == 1}">
+                                    <c:set var="isDefault" value="1" ></c:set>
+                                        <span class="default" style="color: red; font-weight: bold;">Default</span>
+                                </c:if>
+                            </div>
+                            <div class="actions" style="display: flex; flex-direction: column;">        
+                                <c:set var="arr" value="${fn: split(ad.getAddressDetails(), ',')}" ></c:set>
+                                <%
 
-            </div>
+                                    Object arrObj = pageContext.getAttribute("arr");
 
-            <div id="addressList">
-                <br>
-                <div class="address"
-                     style="border-bottom: 1px solid #ddd; display: flex; justify-content: space-between; align-items: center; padding-bottom: 10px">
-                    <div>
-                        <p>Nguyen Van Linh street, Long Tuyen ward, Binh Thuy district, Can Tho province</p>
-                    </div>
-                    <div class="actions" style="display: flex; flex-direction: column;">
-                        <div class="btn1" style="display: flex; flex-direction: row;">
-                            <button class="btn btn-update"
-                                    style="color: blue; padding: 5px 5px; cursor: pointer; border: none; margin-left: 5px;"
-                                    data-bs-toggle="modal" data-bs-target="#updateModal"
-                                    onclick="openPopup(true, {province: 'Soc Trang Province', district: 'My Tu District', commune: 'My Tu Commune', address: '123 Street'});">Update</button>
-                            <button class="btn btn-delete"
-                                    style="color: red; background: none; padding: 5px 5px; cursor: pointer; border: none; margin-left: 5px;">Delete</button>
+                                    // Kiểm tra nếu không null và chuyển thành mảng String[]
+                                    if (arrObj instanceof String[]) {
+                                        String[] arr = (String[]) arrObj;
+
+                                        // Xử lý mảng theo thuật toán của bạn
+                                        String province = arr[arr.length - 1];
+                                        String district = arr[arr.length - 2];
+                                        String commune = arr[arr.length - 3];
+
+                                        // Ghép các phần còn lại thành address
+                                        String address = "";
+                                        for (int i = 0; i < arr.length - 3; i++) {
+
+                                            address += arr[i] + ",";
+
+                                        }
+                                        address = address.substring(0, address.length() - 1);
+
+                                        // Trả kết quả lại JSTL
+                                        request.setAttribute("province", province);
+                                        request.setAttribute("district", district);
+                                        request.setAttribute("commune", commune);
+                                        request.setAttribute("address", address);
+                                    }
+                                %>
+
+
+                                <div class="btn1" style="display: flex; flex-direction: row;">
+                                    <button class="btn btn-update"
+                                            style="color: blue; padding: 5px 5px; cursor: pointer; border: none; margin-left: 5px;"
+                                            data-bs-toggle="modal"
+                                            data-bs-target="#updateModal"
+                                            data-isDefault = "${isDefault}"
+                                            data-id = "${ad.getAddressID()}"
+                                            data-province="${province}"
+                                            data-district="${district}"
+                                            data-commune="${commune}"
+                                            data-address="${address}"
+                                            onclick="openPopupFromButton(this)">Update</button>
+                                    <c:if test="${ad.getIsDefault() != 1}">
+                                        <a href="DeleteAddress?id=${ad.getAddressID()}" class="btn btn-delete"
+                                           style="color: red; background: none; padding: 5px 5px; cursor: pointer; border: none; margin-left: 5px;">Delete</a>
+                                    </c:if>
+
+                                </div>
+                                <c:if test="${ad.getIsDefault() != 1}">
+                                    <form style="padding: 3px" method="POST" action="UpdateAddress?action=setAsDefault&id=${ad.getAddressID()}">
+                                        <button class="btn btn-default" type="submit"
+                                                style="background: #f5f5f5; padding: 5px 5px; cursor: pointer; border: none; margin-left: 5px;"
+                                                >Set as default</button>
+                                    </form>
+                                </c:if>
+                            </div>
                         </div>
-                        <button class="btn btn-default"
-                                style="background: #f5f5f5; padding: 5px 5px; cursor: pointer; border: none; margin-left: 5px;"
-                                onclick="setDefault(this)">Set as default</button>
-                    </div>
-                </div>
-                <br>
+                        <br>
+                    </c:forEach>
+                </c:if>
+
             </div>
 
             <div class="addoverlay" id="addoverlay" onclick=""></div>
@@ -105,34 +142,44 @@
                 <div class="" style="display: flex; ">
                     <h4 class="title" id="popupLabel">Add Address</h4>
                 </div>
-                <form method="POST" action="addAddress">
+                <form method="POST" action="AddAddress" id="formAddress">
                     <div class="mb-3">
                         <label for="city" class="form-label">Province</label>
-                        <select class="form-select form-select-sm mb-3" id="city" aria-label=".form-select-sm">
+                        <select class="form-select form-select-sm mb-3" name="province" id="city" aria-label=".form-select-sm" required>
                             <option value="" selected>Select Province</option>           
                         </select>
                     </div>
                     <div class="mb-3">
                         <label for="district" class="form-label">District</label>
-                        <select class="form-select form-select-sm mb-3" id="district" aria-label=".form-select-sm">
+                        <select class="form-select form-select-sm mb-3"  name="district" id="district" aria-label=".form-select-sm" required>
                             <option value="" selected>Select District</option>
                         </select>
                     </div>
                     <div class="mb-3">
                         <label for="ward" class="form-label">Ward</label>
-                        <select class="form-select form-select-sm" id="ward" aria-label=".form-select-sm">
+                        <select class="form-select form-select-sm" name="ward" id="ward" aria-label=".form-select-sm" required>
                             <option value="" selected>Select Ward</option>
                         </select>
                     </div>
                     <div class="mb-3">
                         <label for="address" class="form-label">Detailed Address:</label>
                         <input type="text" id="addressInput" name="address" class="form-control" required
-                               value="Nguyễn Văn Trường">
+                               value="">
                     </div>
-                    <div class="mb-3 form-check form-switch">
-                        <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault">
-                        <label class="form-check-label" for="flexSwitchCheckDefault">Set as default</label>
-                    </div>
+                    <% boolean first = false; %>
+                    <c:if test="${sessionScope.addressList.isEmpty()}">
+                        <%  first = true; %>
+                        <div class="mb-3 form-check form-switch">
+                            <input checked hidden class="form-check-input" name="isDefault" type="checkbox" role="switch" id="flexSwitchCheckDefault">
+                            <label hidden class="form-check-label" for="flexSwitchCheckDefault" id="defaultSwitch">Set as default</label>
+                        </div>
+                    </c:if>
+                    <c:if test="${!sessionScope.addressList.isEmpty()}">
+                        <div class="mb-3 form-check form-switch">
+                            <input class="form-check-input" name="isDefault" type="checkbox" role="switch" id="flexSwitchCheckDefault">
+                            <label class="form-check-label" for="flexSwitchCheckDefault" id="defaultSwitch">Set as default</label>
+                        </div>
+                    </c:if>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" onclick="closeAddPopup()"
                                 data-bs-dismiss="modal">Close</button>
@@ -154,14 +201,18 @@
             };
 
 // Đợi API tải xong rồi mới render
-            axios(Parameter).then(function (result) {
-                allData = result.data;
-                if (allData.length > 0) {
-                    renderCity(allData);
-                }
-            }).catch(function (error) {
-                console.error("Lỗi tải dữ liệu: ", error);
-            });
+            axios(Parameter)
+                    .then(function (result) {
+                        console.log("Dữ liệu API:", result.data); // Debug dữ liệu
+                        allData = result.data;
+                        if (allData.length > 0) {
+                            renderCity(allData);
+                        }
+                    })
+                    .catch(function (error) {
+                        console.error("Lỗi tải dữ liệu: ", error);
+                    });
+
 
             citis.onchange = function () {
                 if (allData.length > 0) {
@@ -176,35 +227,39 @@
             };
 
             function renderCity(data) {
+                console.log("Render City Data: ", data); // Kiểm tra dữ liệu có vào không
                 for (const x of data) {
                     let translatedName = translateLocation(x.Name);
-                    citis.options[citis.options.length] = new Option(translatedName, x.Id);
+                    console.log("Thêm tỉnh/thành phố:", translatedName); // Kiểm tra dữ liệu sau khi dịch
+                    citis.options[citis.options.length] = new Option(translatedName, translatedName);
                 }
             }
 
-            function loadDistricts(cityId) {
+
+            function loadDistricts(cityName) {
                 districts.length = 1;
                 wards.length = 1;
-                if (cityId !== "") {
-                    let result = allData.find(n => n.Id === cityId);
+                if (cityName !== "") {
+                    let result = allData.find(n => translateLocation(n.Name) === cityName);
                     for (const k of result.Districts) {
                         let translatedName = translateLocation(k.Name);
-                        districts.options[districts.options.length] = new Option(translatedName, k.Id);
+                        districts.options[districts.options.length] = new Option(translatedName, translatedName);
                     }
                 }
             }
 
-            function loadWards(districtId) {
+            function loadWards(districtName) {
                 wards.length = 1;
-                let cityData = allData.find(n => n.Id === citis.value);
-                if (cityData && districtId !== "") {
-                    let districtData = cityData.Districts.find(n => n.Id === districtId);
+                let cityData = allData.find(n => translateLocation(n.Name) === citis.value);
+                if (cityData && districtName !== "") {
+                    let districtData = cityData.Districts.find(n => translateLocation(n.Name) === districtName);
                     for (const w of districtData.Wards) {
                         let translatedName = translateLocation(w.Name);
-                        wards.options[wards.options.length] = new Option(translatedName, w.Id);
+                        wards.options[wards.options.length] = new Option(translatedName, translatedName);
                     }
                 }
             }
+
             function translateLocation(name) {
                 let temp = name;
 
@@ -231,6 +286,17 @@
             function removeDiacritics(str) {
                 return str.normalize("NFD").replace(/[\u0300-\u036f]/g, ""); // Loại bỏ dấu tiếng Việt
             }
+            function openPopupFromButton(button) {
+                const isDefault = button.getAttribute("data-isDefault").trim();
+                const id = button.getAttribute("data-id").trim();
+                const province = button.getAttribute("data-province").trim();
+                const district = button.getAttribute("data-district").trim();
+                const commune = button.getAttribute("data-commune").trim();
+                const address = button.getAttribute("data-address").trim();
+
+                openPopup(true, {isDefault, id, province, district, commune, address});
+            }
+
             function openPopup(isUpdate, data = null) {
                 document.getElementById("add").style.display = "block";
                 document.getElementById("addoverlay").style.display = "block";
@@ -238,6 +304,22 @@
                 if (isUpdate && data) {
                     document.getElementById("popupLabel").innerHTML = "Update Address";
                     document.getElementById("addressInput").value = data.address || "";
+                    const form = document.getElementById("formAddress");
+                    if (data.isDefault === "1") {
+                        document.getElementById("flexSwitchCheckDefault").checked = true;
+                        document.getElementById("flexSwitchCheckDefault").disabled = true;
+                    } else {
+                        document.getElementById("flexSwitchCheckDefault").checked = false;
+                        document.getElementById("flexSwitchCheckDefault").disabled = false;
+
+                    }
+
+                    if (form && data.id) {
+                        form.action = "UpdateAddress?id=" + data.id.trim();
+                    } else {
+                        console.error("Error: formAddress not found or data.id is invalid");
+                    }
+
 
                     // Chọn tỉnh/thành phố trước, rồi kích hoạt sự kiện change
                     setSelectValue("city", data.province, function () {
@@ -293,7 +375,20 @@
                 selects.forEach(select => {
                     select.selectedIndex = 0;
                 });
+            <% if (!first) {
+            %>
+                document.getElementById("flexSwitchCheckDefault").disabled = false;
+                document.getElementById("flexSwitchCheckDefault").checked = false;
+            <%
+                }%>
+
+
+
             }
+
+            console.log(document.getElementById("city"));
+            console.log(document.getElementById("district"));
+            console.log(document.getElementById("ward"));
 
         </script>
 

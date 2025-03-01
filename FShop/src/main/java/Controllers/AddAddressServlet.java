@@ -4,6 +4,9 @@
  */
 package Controllers;
 
+import DAOs.AddressDAO;
+import Models.Address;
+import Models.Customer;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -17,8 +20,8 @@ import jakarta.servlet.http.HttpSession;
  *
  * @author nhutb
  */
-@WebServlet(name = "LogoutServlet", urlPatterns = {"/Logout"})
-public class LogoutServlet extends HttpServlet {
+@WebServlet(name = "AddAddressServlet", urlPatterns = {"/AddAddress"})
+public class AddAddressServlet extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -37,10 +40,10 @@ public class LogoutServlet extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet Logout</title>");
+            out.println("<title>Servlet AddAddressServlet</title>");
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet Logout at " + request.getContextPath() + "</h1>");
+            out.println("<h1>Servlet AddAddressServlet at " + request.getContextPath() + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }
@@ -58,14 +61,7 @@ public class LogoutServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        HttpSession session = request.getSession();
-        if(session.getAttribute("employee") != null){
-            session.invalidate();
-            response.sendRedirect("/EmployeeLogin");
-        } else {
-            session.invalidate();
-            response.sendRedirect("/");
-        } 
+        processRequest(request, response);
     }
 
     /**
@@ -79,7 +75,26 @@ public class LogoutServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        HttpSession session = request.getSession();
+        Customer cus = (Customer) session.getAttribute("customer");
+        if (cus != null) {
+            AddressDAO add = new AddressDAO();
+            String province = request.getParameter("province");
+            String district = request.getParameter("district");
+            String ward = request.getParameter("ward");
+            String address = request.getParameter("address");
+            String addressDetails = address + ", " + ward + ", " + district + ", " + province;
+            if (request.getParameter("isDefault") != null) {
+                int id = add.addAddress(new Address(cus.getId(), 1, addressDetails));
+                add.disableDefaultAddress(id, cus.getId());
+                session.setAttribute("message", "Add Address Success");
+                response.sendRedirect("ViewShippingAddress");
+            } else {
+                add.addAddress(new Address(cus.getId(), 0, addressDetails));
+                session.setAttribute("message", "Add Address Success");
+                response.sendRedirect("ViewShippingAddress");
+            }
+        }
     }
 
     /**

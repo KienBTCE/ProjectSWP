@@ -4,6 +4,7 @@
  */
 package Controllers;
 
+import DAOs.AddressDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -17,8 +18,8 @@ import jakarta.servlet.http.HttpSession;
  *
  * @author nhutb
  */
-@WebServlet(name = "LogoutServlet", urlPatterns = {"/Logout"})
-public class LogoutServlet extends HttpServlet {
+@WebServlet(name = "DeleteAddressServlet", urlPatterns = {"/DeleteAddress"})
+public class DeleteAddressServlet extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -37,10 +38,10 @@ public class LogoutServlet extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet Logout</title>");
+            out.println("<title>Servlet DeleteAddressServlet</title>");
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet Logout at " + request.getContextPath() + "</h1>");
+            out.println("<h1>Servlet DeleteAddressServlet at " + request.getContextPath() + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }
@@ -59,13 +60,11 @@ public class LogoutServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         HttpSession session = request.getSession();
-        if(session.getAttribute("employee") != null){
-            session.invalidate();
-            response.sendRedirect("/EmployeeLogin");
-        } else {
-            session.invalidate();
-            response.sendRedirect("/");
-        } 
+        AddressDAO add = new AddressDAO();
+        int id = Integer.parseInt(request.getParameter("id"));
+        add.deleteAddress(id);
+        session.setAttribute("message", "Delete Success");
+        response.sendRedirect("ViewShippingAddress");
     }
 
     /**

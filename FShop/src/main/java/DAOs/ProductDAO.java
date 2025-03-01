@@ -206,10 +206,10 @@ public class ProductDAO {
                         rs.getString("Model"),
                         rs.getString("FullName"),
                         rs.getString("Description"),
-                        rs.getInt("Stock"),
+                        rs.getInt("isDeleted"),
                         rs.getLong("Price"),
                         rs.getString("Image"),
-                        rs.getInt("isDeleted")
+                        rs.getInt("Stock")
                 );
             }
             return s;
@@ -360,6 +360,5 @@ public class ProductDAO {
         }
 
         return list;
-
     }
 }
