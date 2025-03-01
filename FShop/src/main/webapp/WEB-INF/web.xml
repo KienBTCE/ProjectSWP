@@ -44,6 +44,15 @@
         <servlet-class>Controllers.ImportStockServlet</servlet-class>
     </servlet>
 
+    <servlet>
+        <servlet-name>CategoryBrandServlet</servlet-name>
+        <servlet-class>Controllers.CategoryBrandServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>BrandServlet</servlet-name>
+        <servlet-class>Controllers.BrandServlet</servlet-class>
+    </servlet>
+
 
     <servlet>
         <servlet-name>ProductDetailServlet</servlet-name>
@@ -189,7 +198,14 @@
         <servlet-name>ImportStockServlet</servlet-name>
         <url-pattern>/ImportStock</url-pattern>
     </servlet-mapping>
-
+    <servlet-mapping>
+        <servlet-name>CategoryBrandServlet</servlet-name>
+        <url-pattern>/CategoryBrandServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>BrandServlet</servlet-name>
+        <url-pattern>/BrandServlet</url-pattern>
+    </servlet-mapping>
     <servlet-mapping>
         <servlet-name>ProductDetailServlet</servlet-name>
         <url-pattern>/ProductDetailServlet</url-pattern>

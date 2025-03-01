@@ -56,6 +56,34 @@ public class CartDAO {
         return num;
     }
 
+    public void addToCart(int customerID, Cart c) {
+        try {
+            PreparedStatement pre = connector.prepareStatement("INSERT INTO Carts VALUES (?, ?, ?)");
+            pre.setInt(1, customerID);
+            pre.setInt(2, c.getProductID());
+            pre.setInt(3, c.getQuantity());
+            pre.executeUpdate();
+        } catch (SQLException e) {
+
+        }
+    }
+
+    public Cart getProductOfCart(int customerID, int productID) {
+        Cart c = null;
+        try {
+            PreparedStatement pre = connector.prepareStatement("Select ProductID, Quantity from Carts where CustomerID = ? AND ProductID = ?");
+            pre.setInt(1, customerID);
+            pre.setInt(2, productID);
+            ResultSet rs = pre.executeQuery();
+            if (rs.next()) {
+                c = new Cart(rs.getInt(1), rs.getInt(2));
+            }
+        } catch (SQLException e) {
+
+        }
+        return c;
+    }
+
     public void updateProductQuantity(int productID, int quantity, int id) {
         String sql = "UPDATE Carts SET Quantity = ? WHERE ProductID = ? AND CustomerID = ?";
         try {
@@ -83,10 +111,6 @@ public class CartDAO {
 
     public static void main(String[] args) {
         CartDAO c = new CartDAO();
-        List<Cart> ca = c.getCartOfAccountID(1);
-        for (Cart cart : ca) {
-            System.out.println(cart.getFullName() + " " + cart.getImage());
-        }
-        System.out.println(c.getNumberOfProduct(1));
+        System.out.println(c.getProductOfCart(1, 2).getQuantity());
     }
 }
