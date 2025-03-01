@@ -1,8 +1,3 @@
-<%-- 
-    Document   : forgotPassword
-    Created on : 22-Feb-2025, 19:23:20
-    Author     : kiuth
---%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <!DOCTYPE html>
 <html>
@@ -28,7 +23,7 @@
                 border-radius: 10px;
                 box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
                 text-align: left;
-                width: 480px;
+                width: 400px;
                 position: relative;
             }
             .back-btn {
@@ -87,32 +82,27 @@
                 text-align: center;
                 margin-top: 10px;
             }
-            .message {
-                color: green;
-                font-size: 14px;
-                text-align: center;
-                margin-top: 10px;
-            }
         </style>
     </head>
     <body>
         <div class="container">
-            <a href="CustomerLoginServlet" class="back-btn">&#8592;</a>
+            <a href="VerifyOTPServlet" class="back-btn">&#8592;</a>
             <h2>Reset Password</h2>
-            <p>Enter your registration email to reset your forgotten password</p>
-            <form action="SendMailServlet" method="post">
+            <p>Enter your new password below</p>
+            <form action="ResetPasswordServlet" method="post">
                 <div class="input-group">
-                    <label>Email</label>
-                    <input type="email" name="email" required>
+                    <label>New Password</label>
+                    <input type="password" name="newPassword" required>
                 </div>
-                <button type="submit">NEXT</button>
+                <div class="input-group">
+                    <label>Confirm Password</label>
+                    <input type="password" name="confirmPassword" required>
+                </div>
+                <button type="submit">Update Password</button>
             </form>
-            <% if (request.getAttribute("error") != null) { %>
-                <p class="error"><%= request.getAttribute("error") %></p>
-            <% } %>
-            <% if (request.getAttribute("message") != null) { %>
-                <p class="message"><%= request.getAttribute("message") %></p>
-            <% } %>
+            <% if (request.getAttribute("error") != null) {%>
+            <p class="error"><%= request.getAttribute("error")%></p>
+            <% }%>
         </div>
     </body>
 </html>

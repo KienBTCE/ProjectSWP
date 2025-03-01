@@ -1,13 +1,13 @@
 <%-- 
-    Document   : forgotPassword
-    Created on : 22-Feb-2025, 19:23:20
-    Author     : kiuth
+    Document   : VerifyOTP
+    Created on : 01-Mar-2025, 01:44:48
+    Author     : ThyLTKCE181577
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <!DOCTYPE html>
 <html>
     <head>
-        <title>Reset Password</title>
+        <title>Verify OTP</title>
         <style>
             * {
                 box-sizing: border-box;
@@ -28,7 +28,7 @@
                 border-radius: 10px;
                 box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
                 text-align: left;
-                width: 480px;
+                width: 400px;
                 position: relative;
             }
             .back-btn {
@@ -65,6 +65,8 @@
                 border-radius: 5px;
                 border: 1px solid #ccc;
                 font-size: 16px;
+                text-align: center;
+                letter-spacing: 2px;
             }
             button {
                 width: 100%;
@@ -87,31 +89,22 @@
                 text-align: center;
                 margin-top: 10px;
             }
-            .message {
-                color: green;
-                font-size: 14px;
-                text-align: center;
-                margin-top: 10px;
-            }
         </style>
     </head>
     <body>
         <div class="container">
-            <a href="CustomerLoginServlet" class="back-btn">&#8592;</a>
-            <h2>Reset Password</h2>
-            <p>Enter your registration email to reset your forgotten password</p>
-            <form action="SendMailServlet" method="post">
+            <a href="SendMailSServlet" class="back-btn">&#8592;</a>
+            <h2>Verify OTP</h2>
+            <p>Enter the OTP sent to your email</p>
+            <form action="VerifyOTPServlet" method="post">
                 <div class="input-group">
-                    <label>Email</label>
-                    <input type="email" name="email" required>
+                    <label>OTP Code</label>
+                    <input type="text" name="otp" required>
                 </div>
-                <button type="submit">NEXT</button>
+                <button type="submit">VERIFY</button>
             </form>
             <% if (request.getAttribute("error") != null) { %>
                 <p class="error"><%= request.getAttribute("error") %></p>
-            <% } %>
-            <% if (request.getAttribute("message") != null) { %>
-                <p class="message"><%= request.getAttribute("message") %></p>
             <% } %>
         </div>
     </body>

@@ -270,6 +270,34 @@ public class CustomerDAO {
         return count;
     }
 
+    // check emal - reset pass
+    public boolean isEmailExists(String email) {
+        String sql = "SELECT * FROM Customers WHERE Email = ?";
+        try (
+                 PreparedStatement ps = connector.prepareStatement(sql)) {
+            ps.setString(1, email);
+            ResultSet rs = ps.executeQuery();
+            return rs.next(); 
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    // update pass - reset pass
+    public boolean updatePassword(String email, String newPassword) {
+        String sql = "UPDATE Customers SET Password = ? WHERE Email = ?";
+        try (
+                 PreparedStatement ps = connector.prepareStatement(sql)) {
+            ps.setString(1, getMD5(newPassword));
+            ps.setString(2, email);
+            return ps.executeUpdate() > 0; 
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
     public static void main(String[] args) {
         CustomerDAO c = new CustomerDAO();
         System.out.println(c.getCustomerLogin("nguyenvana@example.com", "user123"));
