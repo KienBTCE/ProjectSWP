@@ -57,7 +57,7 @@ public class ResetPasswordServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        request.getRequestDispatcher("ResetPassword.jsp").forward(request, response);
+        request.getRequestDispatcher("ResetPasswordView.jsp").forward(request, response);
     }
 
     /**
@@ -78,7 +78,7 @@ public class ResetPasswordServlet extends HttpServlet {
 
         if (newPassword == null || confirmPassword == null || !newPassword.equals(confirmPassword)) {
             request.setAttribute("error", "Passwords do not match!");
-            request.getRequestDispatcher("ResetPassword.jsp").forward(request, response);
+            request.getRequestDispatcher("ResetPasswordView.jsp").forward(request, response);
             return;
         }
 
@@ -92,7 +92,7 @@ public class ResetPasswordServlet extends HttpServlet {
             response.sendRedirect("CustomerLoginView.jsp");
         } else {
             request.setAttribute("error", "An error occurred! Please try again.");
-            request.getRequestDispatcher("ResetPassword.jsp").forward(request, response);
+            request.getRequestDispatcher("ResetPasswordView.jsp").forward(request, response);
         }
     }
 

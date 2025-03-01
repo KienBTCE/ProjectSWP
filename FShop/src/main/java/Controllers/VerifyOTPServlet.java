@@ -56,7 +56,7 @@ public class VerifyOTPServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        request.getRequestDispatcher("VerifyOTP.jsp").forward(request, response);
+        request.getRequestDispatcher("VerifyOTPView.jsp").forward(request, response);
     }
 
     /**
@@ -76,11 +76,11 @@ public class VerifyOTPServlet extends HttpServlet {
 
         if (otpStored != null && otpStored.equals(otpEntered)) {
             // Correct OTP -> Redirect to password reset page
-            request.getRequestDispatcher("ResetPassword.jsp").forward(request, response);
+            request.getRequestDispatcher("ResetPasswordView.jsp").forward(request, response);
         } else {
             // Incorrect OTP -> Return to OTP verification page
             request.setAttribute("error", "Incorrect OTP code!");
-            request.getRequestDispatcher("VerifyOTP.jsp").forward(request, response);
+            request.getRequestDispatcher("VerifyOTPView.jsp").forward(request, response);
         }
     }
 

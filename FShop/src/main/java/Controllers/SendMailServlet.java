@@ -60,7 +60,7 @@ public class SendMailServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        request.getRequestDispatcher("forgotPassword.jsp").forward(request, response);
+        request.getRequestDispatcher("ForgotPasswordView.jsp").forward(request, response);
     }
 
     /**
@@ -79,7 +79,7 @@ public class SendMailServlet extends HttpServlet {
 
             if (emailAddress == null || emailAddress.isEmpty()) {
                 request.setAttribute("error", "Please enter a valid email!");
-                request.getRequestDispatcher("forgotPassword.jsp").forward(request, response);
+                request.getRequestDispatcher("ForgotPasswordView.jsp").forward(request, response);
                 return;
             }
 
@@ -87,7 +87,7 @@ public class SendMailServlet extends HttpServlet {
             CustomerDAO userDAO = new CustomerDAO();
             if (!userDAO.isEmailExists(emailAddress)) {
                 request.setAttribute("error", "Email does not exist in the system!");
-                request.getRequestDispatcher("forgotPassword.jsp").forward(request, response);
+                request.getRequestDispatcher("ForgotPasswordView.jsp").forward(request, response);
                 return;
             }
 
@@ -118,18 +118,18 @@ public class SendMailServlet extends HttpServlet {
             } catch (Exception e) {
                 e.printStackTrace();
                 request.setAttribute("error", "Failed to send email! Please try again.");
-                request.getRequestDispatcher("forgotPassword.jsp").forward(request, response);
+                request.getRequestDispatcher("ForgotPasswordView.jsp").forward(request, response);
                 return;
             }
 
             // Redirect to OTP input page
             request.setAttribute("message", "OTP has been sent to your email.");
-            request.getRequestDispatcher("VerifyOTP.jsp").forward(request, response);
+            request.getRequestDispatcher("VerifyOTPView.jsp").forward(request, response);
 
         } catch (Exception e) {
             e.printStackTrace();
             request.setAttribute("error", "An error occurred, please try again!");
-            request.getRequestDispatcher("forgotPassword.jsp").forward(request, response);
+            request.getRequestDispatcher("ForgotPasswordView.jsp").forward(request, response);
         }
     }
 
