@@ -158,7 +158,7 @@
             <div class="table-navigate">
                 <input type="text" id="searchInput" class="form-control search-box" placeholder="Find by name ..." onkeyup="filterTable()">
             </div>
-
+            <a href="CreateProductServlet?id=${s.getProductId()}" class="btn btn-detail" style="background-color: #BDF3BD">Create</a>
             <div class="table-container">
                 <table class="table table-hover">
                     <thead>
@@ -183,16 +183,16 @@
                                 <td>${s.getPrice()}</td>
                                 <td>${s.getQuantity()}</td>
                                 <td>
-                                    <span class="badge ${s.isIsDeleted() ?  'bg-danger':'bg-success'}">
+                                    <span class="badge ${s.getDeleted() == 1 ?  'bg-danger':'bg-success'}">
                                         ${s.getStatus()}
                                     </span>
                                 </td>
                                 <td>
                                     <a href="ProductListServlet?id=${s.getProductId()}" class="btn btn-edit" style="">Update</a>
-                                    <a href="ProductListServlet?${s.isIsDeleted() ? 'restore' : 'delete'}=${s.getProductId()}" 
-                                       class="btn ${s.isIsDeleted() ? 'btn-success' : 'btn-danger'}" 
+                                    <a href="ProductListServlet?${s.getDeleted() == 1 ? 'restore' : 'delete'}=${s.getProductId()}" 
+                                       class="btn ${s.getDeleted() == 1 ? 'btn-success' : 'btn-danger'}" 
                                        onclick="return confirm('Are you sure?');">
-                                        ${s.isIsDeleted() ? 'Activate' : 'Delete'}
+                                        ${s.getDeleted() == 1 ? 'Activate' : 'Delete'}
                                     </a>
                                     <a href="ProductListServlet?id=${s.getProductId()}" class="btn btn-detail" style="background-color: #BDF3BD">Detail</a>
                                 </td>
