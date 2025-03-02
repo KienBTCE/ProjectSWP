@@ -12,6 +12,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.jar.Attributes.Name;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -256,8 +257,8 @@ public class ProductDAO {
         String query = "INSERT INTO Products (CategoryID, BrandID, Model, FullName, Description, IsDeleted, Price, Image, Stock) "
                 + "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
-        try ( 
-            PreparedStatement ps = connector.prepareStatement(query, PreparedStatement.RETURN_GENERATED_KEYS)) {
+        try (
+                 PreparedStatement ps = connector.prepareStatement(query, PreparedStatement.RETURN_GENERATED_KEYS)) {
 
             int categoryId = p.getCategoryId();
             int brandId = getOrCreateBrandID(p.getBrandName(), connector); // Tạo hoặc lấy BrandID
@@ -327,8 +328,37 @@ public class ProductDAO {
         }
         return 0;
     }
-    public static void main(String[] args) {
-        ProductDAO p = new ProductDAO();
-        System.out.println(p.getProductByID(1).getStock());
+
+    public List<Product> searchProductByName(String keyword) {
+        List<Product> list = new ArrayList<>();
+        String query = "SELECT sp.ProductID, c.Name AS CategoryName, b.Name AS BrandName, "
+                + "sp.FullName, sp.Price, sp.Image, sp.Stock, sp.isDeleted, sp.Description, sp.Model "
+                + "FROM Products sp "
+                + "JOIN Categories c ON sp.CategoryID = c.CategoryID "
+                + "JOIN Brands b ON sp.BrandID = b.BrandID "
+                + "WHERE sp.FullName LIKE ?";
+
+        try ( PreparedStatement ps = connector.prepareStatement(query)) {
+            ps.setString(1, "%" + keyword + "%");
+
+            try ( ResultSet rs = ps.executeQuery()) {
+                while (rs.next()) {
+                    list.add(new Product(
+                            rs.getInt("ProductID"),
+                            rs.getString("CategoryName"),
+                            rs.getString("BrandName"),
+                            rs.getString("FullName"),
+                            rs.getLong("Price"),
+                            rs.getInt("Stock"),
+                            rs.getInt("isDeleted")
+                    ));
+                }
+
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return list;
     }
 }

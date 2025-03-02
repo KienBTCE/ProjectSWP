@@ -5,7 +5,7 @@
 package Controllers;
 
 import DAOs.StockDAO;
-import Model.Stock;
+import Models.Stock;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;

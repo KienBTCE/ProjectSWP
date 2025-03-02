@@ -7,7 +7,7 @@ package DAOs;
 ;
 import DB.DBContext;
 import java.sql.Connection;
-import Model.Stock;
+import Models.Stock;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;

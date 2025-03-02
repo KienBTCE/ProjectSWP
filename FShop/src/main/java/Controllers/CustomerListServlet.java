@@ -61,7 +61,7 @@ public class CustomerListServlet extends HttpServlet {
         String detailID = request.getParameter("id");
         String deleteID = request.getParameter("Blocked");
         String restoreID = request.getParameter("Activate");
-
+        String keyword = request.getParameter("txt");
         if (deleteID != null) {
             int id = Integer.parseInt(deleteID);
             pr.blockCustomer(id);
@@ -84,7 +84,12 @@ public class CustomerListServlet extends HttpServlet {
                 System.out.println(e);
             }
         }
-        customers = pr.getCustomerList();
+        if (keyword != null && !keyword.trim().isEmpty()) {
+            customers = (ArrayList<Customer>) pr.searchCustomerByName(keyword);
+        } else {
+            customers = pr.getCustomerList();
+        }
+        
         try {
             request.setAttribute("customers", customers);
             request.getRequestDispatcher("ManageCustomerView.jsp").forward(request, response);

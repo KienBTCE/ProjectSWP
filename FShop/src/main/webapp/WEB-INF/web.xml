@@ -4,10 +4,6 @@
         <welcome-file>ProductListView</welcome-file>
     </welcome-file-list>
     <servlet>
-        <servlet-name>SearchProductServlet</servlet-name>
-        <servlet-class>Controllers.SearchProductServlet</servlet-class>
-    </servlet>
-    <servlet>
         <servlet-name>UpdateProductServlet</servlet-name>
         <servlet-class>Controllers.UpdateProductServlet</servlet-class>
     </servlet>
@@ -43,16 +39,6 @@
         <servlet-name>ImportStockServlet</servlet-name>
         <servlet-class>Controllers.ImportStockServlet</servlet-class>
     </servlet>
-
-    <servlet>
-        <servlet-name>CategoryBrandServlet</servlet-name>
-        <servlet-class>Controllers.CategoryBrandServlet</servlet-class>
-    </servlet>
-    <servlet>
-        <servlet-name>BrandServlet</servlet-name>
-        <servlet-class>Controllers.BrandServlet</servlet-class>
-    </servlet>
-
 
     <servlet>
         <servlet-name>ProductDetailServlet</servlet-name>
@@ -159,10 +145,6 @@
         <url-pattern>/ImportOrder</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
-        <servlet-name>SearchProductServlet</servlet-name>
-        <url-pattern>/SearchProductServlet</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
         <servlet-name>UpdateProductServlet</servlet-name>
         <url-pattern>/UpdateProductServlet</url-pattern>
     </servlet-mapping>
@@ -198,14 +180,7 @@
         <servlet-name>ImportStockServlet</servlet-name>
         <url-pattern>/ImportStock</url-pattern>
     </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>CategoryBrandServlet</servlet-name>
-        <url-pattern>/CategoryBrandServlet</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>BrandServlet</servlet-name>
-        <url-pattern>/BrandServlet</url-pattern>
-    </servlet-mapping>
+
     <servlet-mapping>
         <servlet-name>ProductDetailServlet</servlet-name>
         <url-pattern>/ProductDetailServlet</url-pattern>

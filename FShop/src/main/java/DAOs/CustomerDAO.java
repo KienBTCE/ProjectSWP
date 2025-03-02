@@ -13,6 +13,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -277,7 +278,7 @@ public class CustomerDAO {
                  PreparedStatement ps = connector.prepareStatement(sql)) {
             ps.setString(1, email);
             ResultSet rs = ps.executeQuery();
-            return rs.next(); 
+            return rs.next();
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -291,11 +292,38 @@ public class CustomerDAO {
                  PreparedStatement ps = connector.prepareStatement(sql)) {
             ps.setString(1, getMD5(newPassword));
             ps.setString(2, email);
-            return ps.executeUpdate() > 0; 
+            return ps.executeUpdate() > 0;
         } catch (SQLException e) {
             e.printStackTrace();
         }
         return false;
+    }
+
+    public List<Customer> searchCustomerByName(String keyword) {
+        List<Customer> list = new ArrayList<>();
+        String query = "SELECT CustomerID, FullName, Email, PhoneNumber, IsBlock FROM Customers WHERE FullName LIKE ?;";
+
+        try ( PreparedStatement ps = connector.prepareStatement(query)) {
+            ps.setString(1, "%" + keyword + "%");
+
+            try ( ResultSet rs = ps.executeQuery()) {
+                while (rs.next()) {
+                    list.add(new Customer(
+                            rs.getInt("CustomerID"),
+                            rs.getString("FullName"),
+                            rs.getString("Email"),
+                            rs.getString("PhoneNumber"),
+                            rs.getInt("IsBlock")
+                    ));
+                }
+
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return list;
+
     }
 
     public static void main(String[] args) {
