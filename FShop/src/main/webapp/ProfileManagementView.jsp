@@ -132,6 +132,8 @@
             }
         </style>
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+
     </head>
 
     <body>
@@ -151,7 +153,7 @@
 
 
                             <h4>${sessionScope.customer.getFullName()}</h4>
-                            <a class="text-center" href="Logout">Logout</a>
+                            <a class="text-center text-danger" href="" onclick="confirmLogout()"><i class="bi bi-box-arrow-right"></i> Logout</a>
                         </div>
 
                         <div class="sidebar">
@@ -221,6 +223,13 @@
             }
         %>
         <script>
+            function confirmLogout() {
+                if (confirm("Are you sure you want to log out?")) {
+                    // Chuyển hướng tới trang logout hoặc gọi API logout
+                    window.location.href = "/Logout";
+                }
+            }
+
             function closePopup() {
                 document.getElementById("Popup").style.display = "none";
             }

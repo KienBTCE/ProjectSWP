@@ -168,7 +168,7 @@
                             <a href="#">... Management</a>
                             <a href="#">... Management</a>
                         </c:if>
-                        <a style="margin-top: auto; color: red;" href="/Logout"><i class="bi bi-box-arrow-right"></i> Logout</a>
+                        <a style="margin-top: auto; color: red;" href="" onclick="confirmLogout()"><i class="bi bi-box-arrow-right"></i> Logout</a>
                     </div>
                 </div>
                 <div class="col-md-10">
@@ -277,6 +277,12 @@
         </c:if>
 
         <script>
+            function confirmLogout() {
+                if (confirm("Are you sure you want to log out?")) {
+                    // Chuyển hướng tới trang logout hoặc gọi API logout
+                    window.location.href = "/Logout";
+                }
+            }
             function closePopup() {
                 document.getElementById("Popup").style.display = "none";
             }
