@@ -4,6 +4,8 @@
  */
 package Controllers;
 
+import DAOs.AddressDAO;
+import Models.Customer;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -17,8 +19,8 @@ import jakarta.servlet.http.HttpSession;
  *
  * @author nhutb
  */
-@WebServlet(name = "LogoutServlet", urlPatterns = {"/Logout"})
-public class LogoutServlet extends HttpServlet {
+@WebServlet(name = "ViewShippingAddressServlet", urlPatterns = {"/ViewShippingAddress"})
+public class ViewAddressListServlet extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -37,10 +39,10 @@ public class LogoutServlet extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet Logout</title>");
+            out.println("<title>Servlet ViewShippingAddressServlet</title>");
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet Logout at " + request.getContextPath() + "</h1>");
+            out.println("<h1>Servlet ViewShippingAddressServlet at " + request.getContextPath() + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }
@@ -59,13 +61,15 @@ public class LogoutServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         HttpSession session = request.getSession();
-        if(session.getAttribute("employee") != null){
-            session.invalidate();
-            response.sendRedirect("/EmployeeLogin");
+        Customer cus = (Customer) session.getAttribute("customer");
+        if (cus == null) {
+            response.sendRedirect("customerLogin");
         } else {
-            session.invalidate();
-            response.sendRedirect("/");
-        } 
+            AddressDAO a = new AddressDAO();
+            session.setAttribute("addressList", a.getAddress(cus.getId()));
+            request.setAttribute("profilePage", "AddressView.jsp");
+            request.getRequestDispatcher("ProfileManagementView.jsp").forward(request, response);
+        }
     }
 
     /**

@@ -70,11 +70,16 @@
                         <div class="product-info">
                             <h3>${product.getFullName()}</h3>
                             <p><strong>Price:</strong> $${product.getPrice()}</p>
-                            <p><strong>Quantity:</strong> ${product.getQuantity()}</p>
-                            <form action="UpdateCartServlet" method="post" class="d-inline">
-                                <input type="hidden" name="productId" value="${product.getProductId()}">
-                                <button type="submit" class="btn-add-cart">Add to Cart</button>
+                            <p><strong>Quantity:</strong> ${product.getStock()}</p>
+                            <form action="addToCart?productID=${product.getProductId()}" method="POST" class="d-inline">
+                                <div class="quantity-controls">
+                                    <button style="border: 1px solid white;" type="button" onclick="decreaseQuantity()">-</button>
+                                    <input type="number" name="quantity" id="quantity" value="1" min="1" max="${product.getStock()}">
+                                    <button style="border: 1px solid white;" type="button" onclick="increaseQuantity()">+</button>
+                                </div>
+                                <input type="submit" value="Add to cart" class="btn-add-cart">
                             </form>
+
                             <a href="ViewProductServlet" class="btn-back">Back to List</a>
                         </div>
                     </div>
@@ -84,6 +89,21 @@
                 </c:otherwise>
             </c:choose>
         </div>
+        <script>
+            function increaseQuantity() {
+                const quantityInput = document.getElementById('quantity');
+                const maxQuantity = parseInt(quantityInput.max);
+                if (!quantityInput.hasAttribute('readonly') && quantityInput.value < maxQuantity) {
+                    quantityInput.value = parseInt(quantityInput.value) + 1;
+                }
+            }
 
+            function decreaseQuantity() {
+                const quantityInput = document.getElementById('quantity');
+                if (quantityInput.value > 1) {
+                    quantityInput.value = parseInt(quantityInput.value) - 1;
+                }
+            }
+        </script>
     </body>
 </html>

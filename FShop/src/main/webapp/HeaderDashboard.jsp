@@ -36,11 +36,15 @@
     </head>
     <body>
         <div class="header">
-            <div style="margin-right: 30px">
-                <img style="float: left; margin-right: 15px;"
-                     src="assets/imgs/Dashboard/FF8D5F6D-1708-4455-81D8-5F4456F83F52_LE_auto_x2-min.png" alt="User Icon" class="icon">
-                <p style="display: flex; margin: 12px 0 0 0;">Hi, Kien</p>
-            </div>
+            <a href="ViewEmployeeProfile">
+                <div style="display: flex;">
+
+                    <img
+                        src="assets/imgs/EmployeeAvatar/defauft_avatar.jpg" alt="User Icon" class="icon">
+                    <p style="">Hi, ${sessionScope.employee.getFullname()}</p>
+
+                </div>
+            </a>
         </div>
         <div class="table-navigate">
         </div>

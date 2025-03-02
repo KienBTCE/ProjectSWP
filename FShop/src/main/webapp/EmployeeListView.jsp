@@ -109,7 +109,7 @@
                 max-width: 300px;
                 margin-bottom: 10px;
             }
-            
+
             .table-navigate{
                 display: flex;
                 justify-content: space-between;
@@ -124,37 +124,36 @@
             <a href="#">Statistic Management</a>
         </div>
         <div class="content">
-            <div class="header">
-                <div style="margin-right: 30px">
-                    <img style="float: left; margin-right: 15px;"
-                         src="#" alt="User Icon" class="icon">
-                    <p style="display: flex; margin: 12px 0 0 0;">Hi, ThNguyen</p>
+            <jsp:include page="HeaderDashboard.jsp"></jsp:include>
+                <!--                <div style="margin-right: 30px">
+                                    <img style="float: left; margin-right: 15px;"
+                                         src="#" alt="User Icon" class="icon">
+                                    <p style="display: flex; margin: 12px 0 0 0;">Hi, ThNguyen</p>
+                                </div>-->
+                <div class="table-navigate">
+                    <input type="text" id="searchInput" class="form-control search-box" placeholder="Tìm kiếm theo tên..." onkeyup="filterTable()">
+                    <button class="btn btn-detail" style="background-color: #BDF3BD; height: 100%">Create</button>
                 </div>
-            </div>
-            <div class="table-navigate">
-                <input type="text" id="searchInput" class="form-control search-box" placeholder="Tìm kiếm theo tên..." onkeyup="filterTable()">
-                <button class="btn btn-detail" style="background-color: #BDF3BD; height: 100%">Create</button>
-            </div>
 
-            <div class="table-container">
-                <div>
-                    <h3>Employees</h3>
-                </div>
-                <table class="table table-hover">
-                    <thead>
-                        <tr>
-                            <th>Employee ID</th>
-                            <th>Role ID</th>
-                            <th>Full Name</th>
-                            <th>Birthday</th>
-                            <th>Gender</th>
-                            <th>Email</th>
-                            <th>Created Date</th>
-                            <th>Status</th>
-                            <th>Action</th> <!-- Cột mới -->
-                        </tr>
-                    </thead>
-                    <tbody id="employeeTable">
+                <div class="table-container">
+                    <div>
+                        <h3>Employees</h3>
+                    </div>
+                    <table class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th>Employee ID</th>
+                                <th>Role ID</th>
+                                <th>Full Name</th>
+                                <th>Birthday</th>
+                                <th>Gender</th>
+                                <th>Email</th>
+                                <th>Created Date</th>
+                                <th>Status</th>
+                                <th>Action</th> <!-- Cột mới -->
+                            </tr>
+                        </thead>
+                        <tbody id="employeeTable">
                         <c:forEach items="${listEmp}" var="e">
                             <tr>
                                 <td>${e.getEmployeeId()}</td>

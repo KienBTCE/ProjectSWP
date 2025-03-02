@@ -137,6 +137,41 @@
                 display: inline-block;
                 padding: 5px 10px;
             }
+            .search-container {
+                display: flex;
+                align-items: center;
+                width: 100%;
+                max-width: 300px; /* Giảm kích thước tối đa */
+                background: white;
+                border-radius: 13px; /* Bo góc mềm hơn */
+                overflow: hidden;
+                border: 2px solid #7D69FF;
+                margin-bottom: 15px;
+            }
+
+            .search-input {
+                flex: 1;
+                border: none;
+                outline: none;
+                padding: 8px 12px; /* Giảm padding để nhỏ hơn */
+                font-size: 14px; /* Giảm kích thước chữ */
+                color: #555;
+            }
+
+            .search-button {
+                border: none;
+                padding: 8px 12px; /* Giảm padding của nút */
+                cursor: pointer;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                color: white;
+                font-size: 14px;
+            }
+
+            .search-button:hover {
+                background: #6454cc;
+            }
         </style>
     </head>
     <body>
@@ -148,16 +183,13 @@
             <a href="#">Product Statistic</a>
         </div>
         <div class="content">
-            <!--            <div class="header">
-                            <div style="margin-right: 30px">
-                                <img style="float: left; margin-right: 15px;"
-                                     src="assets/imgs/Dashboard/FF8D5F6D-1708-4455-81D8-5F4456F83F52_LE_auto_x2-min.png" alt="User Icon" class="icon">
-                                <p style="display: flex; margin: 12px 0 0 0;">Hi, Kien</p>
-                            </div>
-                        </div>-->
-            <div class="table-navigate">
-                <input type="text" id="searchInput" class="form-control search-box" placeholder="Find by name ..." onkeyup="filterTable()">
-            </div>
+            <jsp:include page="HeaderDashboard.jsp"></jsp:include>
+                <form action="CustomerListServlet" method="get" class="search-container">
+                    <input type="text" name="txt" value="${param.txt}" placeholder="Search by name..." class="search-input">
+                <button type="submit" class="search-button">
+                    🔍
+                </button>
+            </form>
 
             <div class="table-container">
                 <table class="table table-hover">

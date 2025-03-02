@@ -48,8 +48,6 @@ public class ProductRating {
         this.fullName = fullName;
     }
 
-
-
     public int getRateID() {
         return rateID;
     }

@@ -4,20 +4,19 @@
  */
 package Controllers;
 
-import DAOs.ProductDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import java.util.ArrayList;
+import jakarta.servlet.http.HttpSession;
 
 /**
  *
- * @author KienBTCE180180
+ * @author ThyLTKCE181577
  */
-public class SearchProductServlet extends HttpServlet {
+public class VerifyOTPServlet extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -30,19 +29,19 @@ public class SearchProductServlet extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-//        response.setContentType("text/html;charset=UTF-8");
-//        try (PrintWriter out = response.getWriter()) {
-//            /* TODO output your page here. You may use following sample code. */
-//            out.println("<!DOCTYPE html>");
-//            out.println("<html>");
-//            out.println("<head>");
-//            out.println("<title>Servlet SearchProductServlet</title>");  
-//            out.println("</head>");
-//            out.println("<body>");
-//            out.println("<h1>Servlet SearchProductServlet at " + request.getContextPath () + "</h1>");
-//            out.println("</body>");
-//            out.println("</html>");
-//        }
+        response.setContentType("text/html;charset=UTF-8");
+        try ( PrintWriter out = response.getWriter()) {
+            /* TODO output your page here. You may use the following sample code. */
+            out.println("<!DOCTYPE html>");
+            out.println("<html>");
+            out.println("<head>");
+            out.println("<title>Servlet VerifyOTPServlet</title>");
+            out.println("</head>");
+            out.println("<body>");
+            out.println("<h1>Servlet VerifyOTPServlet at " + request.getContextPath() + "</h1>");
+            out.println("</body>");
+            out.println("</html>");
+        }
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
@@ -57,7 +56,7 @@ public class SearchProductServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        request.getRequestDispatcher("VerifyOTPView.jsp").forward(request, response);
     }
 
     /**
@@ -71,7 +70,18 @@ public class SearchProductServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        HttpSession session = request.getSession();
+        String otpEntered = request.getParameter("otp");
+        String otpStored = (String) session.getAttribute("otp");
+
+        if (otpStored != null && otpStored.equals(otpEntered)) {
+            // Correct OTP -> Redirect to password reset page
+            request.getRequestDispatcher("ResetPasswordView.jsp").forward(request, response);
+        } else {
+            // Incorrect OTP -> Return to OTP verification page
+            request.setAttribute("error", "Incorrect OTP code!");
+            request.getRequestDispatcher("VerifyOTPView.jsp").forward(request, response);
+        }
     }
 
     /**
