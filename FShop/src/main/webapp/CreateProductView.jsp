@@ -17,45 +17,19 @@
         <div class="container mt-5">
             <h3 class="text-center">Create Product</h3>
 
-            <!-- Hiển thị thông báo lỗi -->
-            <c:if test="${not empty sessionScope.error}">
-                <div class="alert alert-danger">${sessionScope.error}</div>
-                <% session.removeAttribute("error");%>
-            </c:if>
-
             <c:if test="${param.success == 'true'}">
                 <div class="alert alert-success">Product created successfully!</div>
             </c:if>
 
             <form action="CreateProductServlet" method="POST">
                 <div class="mb-3">
-                    <label class="form-label">Category</label>
-                    <select class="form-control" name="categoryName" required>
-                        <c:forEach var="category" items="${categories}">
-                            <option value="${category}">${category}</option>
-                        </c:forEach>
-                    </select>
+                    <label class="form-label">Product Name</label>
+                    <input type="text" class="form-control" name="fullName" required>
                 </div>
-
-                <div class="mb-3">
-                    <label class="form-label">Brand</label>
-                    <select class="form-control" name="brandName" required>
-                        <c:forEach var="brand" items="${brands}">
-                            <option value="${brand}">${brand}</option>
-                        </c:forEach>
-                    </select>
-                </div>
-
                 <div class="mb-3">
                     <label class="form-label">Model</label>
                     <input type="text" class="form-control" name="model" required>
                 </div>
-
-                <div class="mb-3">
-                    <label class="form-label">Product Name</label>
-                    <input type="text" class="form-control" name="fullName" required>
-                </div>
-
                 <div class="mb-3">
                     <label class="form-label">Price</label>
                     <input type="number" class="form-control" name="price" required>

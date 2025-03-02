@@ -120,6 +120,15 @@ public class Product {
         this.image = image;
     }
 
+    public Product(int productId, String model, String fullName, int deleted, long price, int stock) {
+        this.productId = productId;
+        this.model = model;
+        this.fullName = fullName;
+        this.deleted = deleted;
+        this.price = price;
+        this.stock = stock;
+    }
+
     public void setCategoryName(String categoryName) {
         this.categoryName = categoryName;
     }

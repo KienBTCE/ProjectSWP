@@ -175,8 +175,8 @@ public class ProductDAO {
                         rs.getInt("isDeleted") // Tránh lỗi nếu DB lưu isDeleted dưới dạng INT
                 ));
             }
-        } catch (SQLException e) {
-            e.printStackTrace(); // In lỗi rõ ràng để debug
+        } catch (SQLException ex) {
+            Logger.getLogger(ProductDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
         return list;
     }
@@ -213,8 +213,8 @@ public class ProductDAO {
                 );
             }
             return s;
-        } catch (SQLException e) {
-            System.out.println(e);
+        } catch (SQLException ex) {
+            Logger.getLogger(ProductDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
 
         return s;
@@ -253,61 +253,25 @@ public class ProductDAO {
     }
 
     public int createProduct(Product p) {
-        int generatedId = 0;
-        String query = "INSERT INTO Products (CategoryID, BrandID, Model, FullName, Description, IsDeleted, Price, Image, Stock) "
-                + "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        int count = 0;
+        String query = "INSERT INTO Products (Model, FullName, IsDeleted, Price, Stock) "
+                + "VALUES (?, ?, ?, ?, ?)";
 
-        try (
-                 PreparedStatement ps = connector.prepareStatement(query, PreparedStatement.RETURN_GENERATED_KEYS)) {
+        try {
+            PreparedStatement ps = connector.prepareStatement(query);
 
-            int categoryId = p.getCategoryId();
-            int brandId = getOrCreateBrandID(p.getBrandName(), connector); // Tạo hoặc lấy BrandID
+            ps.setString(1, p.getModel());
+            ps.setString(2, p.getFullName());
+            ps.setInt(3, p.getDeleted());
+            ps.setLong(4, p.getPrice());
+            ps.setInt(5, p.getStock());
 
-            ps.setInt(1, categoryId);
-            ps.setInt(2, brandId);
-            ps.setString(3, p.getModel());
-            ps.setString(4, p.getFullName());
-            ps.setString(5, p.getDescription());
-            ps.setInt(6, p.getDeleted());
-            ps.setLong(7, p.getPrice());
-            ps.setString(8, p.getImage());
-            ps.setInt(9, p.getStock());
-
-            int affectedRows = ps.executeUpdate();
-
-            if (affectedRows > 0) {
-                ResultSet rs = ps.getGeneratedKeys();
-                if (rs.next()) {
-                    generatedId = rs.getInt(1);
-                }
-            }
-        } catch (SQLException e) {
-            System.err.println("SQL Error: " + e.getMessage());
+            count = ps.executeUpdate();
+        } catch (SQLException ex) {
+            ex.printStackTrace(); // In lỗi ra console
+            Logger.getLogger(ProductDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
-        return generatedId;
-    }
-
-    private int getOrCreateBrandID(String brandName, Connection conn) throws SQLException {
-        String query = "SELECT BrandID FROM Brands WHERE BrandName = ?";
-        try ( PreparedStatement ps = connector.prepareStatement(query)) {
-            ps.setString(1, brandName);
-            ResultSet rs = ps.executeQuery();
-            if (rs.next()) {
-                return rs.getInt("BrandID");
-            }
-        }
-
-        // Nếu Brand không tồn tại, tạo mới BrandName
-        String insertQuery = "INSERT INTO Brands (BrandName) VALUES (?)";
-        try ( PreparedStatement psInsert = connector.prepareStatement(insertQuery, PreparedStatement.RETURN_GENERATED_KEYS)) {
-            psInsert.setString(1, brandName);
-            psInsert.executeUpdate();
-            ResultSet rs = psInsert.getGeneratedKeys();
-            if (rs.next()) {
-                return rs.getInt(1);
-            }
-        }
-        return 0; // Trả về 0 nếu không thể tạo mới
+        return count;
     }
 
     //update product - shop manager
@@ -323,8 +287,8 @@ public class ProductDAO {
             ps.setInt(6, p.getProductId());
 
             return ps.executeUpdate(); // Trả về số dòng bị ảnh hưởng
-        } catch (SQLException e) {
-            e.printStackTrace();
+        } catch (SQLException ex) {
+            Logger.getLogger(ProductDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
         return 0;
     }
@@ -355,8 +319,8 @@ public class ProductDAO {
                 }
 
             }
-        } catch (SQLException e) {
-            e.printStackTrace();
+        } catch (SQLException ex) {
+            Logger.getLogger(ProductDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
 
         return list;

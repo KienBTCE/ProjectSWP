@@ -14,6 +14,10 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.Part;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.List;
 
 /**
@@ -88,24 +92,22 @@ public class CreateProductServlet extends HttpServlet {
             throws ServletException, IOException {
         ProductDAO productDAO = new ProductDAO();
         // Lấy dữ liệu từ form
-        String categoryName = request.getParameter("categoryName");
-        String brandName = request.getParameter("brandName");
         String model = request.getParameter("model");
         String fullName = request.getParameter("fullName");
         long price = Long.parseLong(request.getParameter("price"));
         int stock = Integer.parseInt(request.getParameter("stock"));
 
         // Tạo đối tượng sản phẩm
-        Product product = new Product(0, categoryName, brandName, model, fullName, price, stock);
+        Product product = new Product(0, model, fullName, 1, price, stock);
 
         // Thêm sản phẩm vào database
         if (productDAO.createProduct(product) != 0) {
             response.sendRedirect("ProductListServlet");
         } else {
-//            request.getSession().setAttribute("error", "Product already exists.");
+//         request.getSession().setAttribute("error", "Product already exists.");
             response.sendRedirect("CreateProductServlet");
         }
-
+        System.out.println("txtID: " + request.getParameter("productId"));
     }
 
     /**
