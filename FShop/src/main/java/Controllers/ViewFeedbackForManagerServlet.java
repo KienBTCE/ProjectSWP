@@ -2,14 +2,14 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
  */
+
 package Controllers;
 
-import DAOs.OrderDetailDAO;
+import DAOs.ProductDAO;
 import DAOs.ProductRatingDAO;
 import DAOs.RatingRepliesDAO;
-import Models.Customer;
-import Models.Employee;
 import Models.ProductRating;
+import Models.Product;
 import Models.RatingReplies;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -17,45 +17,41 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import jakarta.servlet.http.HttpSession;
 import java.util.List;
-import javax.mail.Session;
 
 /**
  *
  * @author HP
  */
-public class CommentServlet extends HttpServlet {
-
-    /**
-     * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
-     * methods.
-     *
+public class ViewFeedbackForManagerServlet extends HttpServlet {
+   
+    /** 
+     * Processes requests for both HTTP <code>GET</code> and <code>POST</code> methods.
      * @param request servlet request
      * @param response servlet response
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
+    throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        try ( PrintWriter out = response.getWriter()) {
+        try (PrintWriter out = response.getWriter()) {
             /* TODO output your page here. You may use following sample code. */
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet CommentServlet</title>");
+            out.println("<title>Servlet ViewFeedbackForManager</title>");  
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet CommentServlet at " + request.getContextPath() + "</h1>");
+            out.println("<h1>Servlet ViewFeedbackForManager at " + request.getContextPath () + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }
-    }
+    } 
 
-    /**
+    // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
+    /** 
      * Handles the HTTP <code>GET</code> method.
-     *
      * @param request servlet request
      * @param response servlet response
      * @throws ServletException if a servlet-specific error occurs
@@ -63,40 +59,33 @@ public class CommentServlet extends HttpServlet {
      */
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-
-//        String productIdParam = request.getParameter("productId");
-//        int productId = (productIdParam != null) ? Integer.parseInt(productIdParam) : 1;
-//        using when merge code
-        int productId = 1;
-        boolean isOk = false; //Kiem tra xem da mua chua
+    throws ServletException, IOException {
+          int rateID =Integer.parseInt(request.getParameter("rateID"));
+          
+           
         ProductRatingDAO pDAO = new ProductRatingDAO();
-        List<ProductRating> listPro = pDAO.getAllProductRating(productId);
-
+        ProductRating productRating = pDAO.getProductRating(rateID);
+        
+        int productID = productRating.getProductID();
+        
+        List<ProductRating> listPro = pDAO.getAllProductRating(productID);
+        
         RatingRepliesDAO rrDAO = new RatingRepliesDAO();
-        List<RatingReplies> listReplies = rrDAO.getAllRatingRepliesByProduct(productId);
-        HttpSession session = request.getSession();
-        Customer cus = (Customer) session.getAttribute("customer");
-
-        OrderDetailDAO odDAO = new OrderDetailDAO();
-        List<Integer> list = odDAO.getCustomerByProductID(productId);
-
-        if (cus != null) {
-            isOk = list.contains(cus.getId());
-        }
-
-    
-
-        request.setAttribute("isOk", isOk);
+        List<RatingReplies> listReplies = rrDAO.getAllRatingRepliesByProduct(productID);
+        
+        ProductDAO pdDAO = new ProductDAO();
+        Product  pro = pdDAO.getProductByID(productID);
+                
+                
+       request.setAttribute("Product", pro);
         request.setAttribute("dataRating", listPro);
         request.setAttribute("dataReplies", listReplies);
 
-        request.getRequestDispatcher("viewFeedback.jsp").forward(request, response);
-    }
+        request.getRequestDispatcher("ViewNewFeedback.jsp").forward(request, response);
+    } 
 
-    /**
+    /** 
      * Handles the HTTP <code>POST</code> method.
-     *
      * @param request servlet request
      * @param response servlet response
      * @throws ServletException if a servlet-specific error occurs
@@ -104,21 +93,12 @@ public class CommentServlet extends HttpServlet {
      */
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        int customerId = Integer.parseInt(request.getParameter("customerId"));
-        int productId = Integer.parseInt(request.getParameter("productId"));
-        int star = Integer.parseInt(request.getParameter("star"));
-        String comment = request.getParameter("comment");
-
-        ProductRatingDAO pDAO = new ProductRatingDAO();
-        pDAO.addProductRating(customerId, productId, star, comment);
-
-        response.sendRedirect("CommentServlet?productId=" + productId);
+    throws ServletException, IOException {
+        processRequest(request, response);
     }
 
-    /**
+    /** 
      * Returns a short description of the servlet.
-     *
      * @return a String containing servlet description
      */
     @Override

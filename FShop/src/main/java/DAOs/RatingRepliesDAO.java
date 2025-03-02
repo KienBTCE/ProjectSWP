@@ -16,7 +16,6 @@ import java.util.List;
  *
  * @author HP
  */
-
 public class RatingRepliesDAO {
      DBContext db = new DBContext();
     Connection connector = db.getConnection();

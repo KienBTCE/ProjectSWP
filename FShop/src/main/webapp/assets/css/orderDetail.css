@@ -1,3 +1,4 @@
+/* Reset chung */
 body {
     font-family: 'Arial', sans-serif;
     background-color: #f1f1f1;
@@ -6,7 +7,37 @@ body {
     display: flex;
 }
 
-/* Layout chính */
+/* Bọc toàn bộ trang trong một flex container */
+.main-layout {
+    display: flex;
+    width: 100%;
+}
+
+/* Sidebar giữ nguyên thiết kế */
+.sidebar {
+    width: 250px; /* Đảm bảo width cố định */
+    height: 100vh; /* Chiều cao 100% viewport */
+    background: #FFFFFF;
+    color: black;
+    padding-top: 20px;
+    box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.3);
+    position: fixed; /* Giữ cố định */
+    left: 0;
+    top: 0;
+    z-index: 10;
+    border-radius: 10px;
+    margin-top: 10px;
+}
+
+/* Đảm bảo nội dung chính không bị đè */
+.main-content {
+    margin-left: 270px; /* Đẩy nội dung sang phải */
+    padding: 20px;
+    flex-grow: 1;
+    width: calc(100% - 270px); /* Không để nội dung bị tràn */
+}
+
+/* Container chính */
 .container {
     max-width: 1000px;
     background: #fff;
@@ -21,6 +52,7 @@ body {
     display: flex;
     justify-content: space-between;
     align-items: flex-start;
+    flex-wrap: wrap;
 }
 
 /* Bên trái: Order Details */

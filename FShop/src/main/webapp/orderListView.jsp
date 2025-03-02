@@ -7,25 +7,29 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Order List</title>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Order List</title>
 
-        <!-- Bootstrap -->
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css">
+    <!-- Bootstrap -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css">
 
-        <!-- Font Awesome for icons -->
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <!-- Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
 
-        <!-- Custom CSS -->
-        <link rel="stylesheet" href="assets/css/orderlist.css">
-    </head>
-    <body>
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="assets/css/orderlist.css">
+</head>
+<body>
 
-        <jsp:include page="leftshopmanager.jsp" /> 
+    <div class="main-layout">
+        <!-- Giữ sidebar nguyên bản của bạn -->
+        <jsp:include page="sidebarOrderManager.jsp" />
 
-        <div class="container">
+
+        <!-- Nội dung chính -->
+        <div class="content">
             <header>
                 <h2><i class="fa-solid fa-box"></i> Order List</h2>
 
@@ -81,6 +85,7 @@
                 </c:forEach>
             </div>
         </div>
+    </div>
 
-    </body>
+</body>
 </html>

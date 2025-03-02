@@ -1,24 +1,47 @@
+/* Reset chung */
 body {
     font-family: 'Arial', sans-serif;
     background-color: #f4f4f4;
     margin: 0;
     padding: 0;
+    display: flex;
 }
 
-.container {
-    max-width: 1200px;
-    margin: 20px auto;
+/* Bọc toàn bộ trang trong một flex container */
+.main-layout {
+    display: flex;
+    width: 100%;
+}
+
+/* Sidebar giữ nguyên theo thiết kế */
+.sidebar {
+    width: 250px;
+    height: 97vh;
+    background: #FFFFFF;
+    color: black;
+    padding-top: 20px;
+    box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.3);
+    position: fixed;
+    left: 0;
+    top: 0;
+    z-index: 10;
+    border-radius: 10px;
+    margin-top: 10px;
+}
+
+/* Đảm bảo nội dung không bị đè lên */
+.content {
+    flex-grow: 1;
+    margin-left: 270px; /* Để tránh bị đè */
     padding: 20px;
-    background-color: white;
-    box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
-    border-radius: 8px;
+    width: calc(100% - 270px); /* Đảm bảo nội dung có đủ không gian */
 }
 
+/* Header */
 header {
     background-color: #000;
     color: white;
     padding: 15px;
-    text-align: center;
     border-radius: 8px 8px 0 0;
     font-size: 20px;
     display: flex;
@@ -26,25 +49,20 @@ header {
     align-items: center;
 }
 
+/* Thanh tìm kiếm */
 .search-container {
     display: flex;
     align-items: center;
 }
 
-.search-container input {
-    width: 250px;
-    padding: 8px;
-    border-radius: 5px;
-    border: 1px solid #ddd;
-    margin-right: 5px;
-}
-
+/* Order container */
 .order-container {
     display: flex;
     flex-wrap: wrap;
     justify-content: space-between;
 }
 
+/* Order Card */
 .order-card {
     border: 1px solid #ddd;
     border-radius: 10px;
@@ -61,6 +79,7 @@ header {
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
 }
 
+/* Trạng thái đơn hàng */
 .order-status .status {
     display: inline-block;
     padding: 8px 12px;
@@ -69,21 +88,3 @@ header {
     border-radius: 5px;
     margin-top: 10px;
 }
-
-/* Progress Bar Styling */
-.progress {
-    height: 10px;
-    margin-top: 10px;
-    border-radius: 5px;
-}
-
-.progress-bar {
-    border-radius: 5px;
-}
-
-.progress-1 { background-color: #ffcc00; } /* Chờ xác nhận */
-.progress-2 { background-color: #f39c12; } /* Đang đóng gói */
-.progress-3 { background-color: #3498db; } /* Chờ giao hàng */
-.progress-4 { background-color: #2ecc71; } /* Đã giao hàng */
-.progress-0 { background-color: #e74c3c; } /* Đã hủy */
-
