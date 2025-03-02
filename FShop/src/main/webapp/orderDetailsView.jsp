@@ -25,7 +25,7 @@
 
     <div class="main-layout">
         <!-- Sidebar giữ nguyên thiết kế -->
-        <jsp:include page="SidebarDashboard.jsp" />
+        <jsp:include page="sidebarOrderManager.jsp" />
 
         <!-- Nội dung chính -->
         <div class="main-content">
