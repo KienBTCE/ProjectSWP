@@ -5,6 +5,7 @@
 package DAOs;
 
 import DB.DBContext;
+import Models.Customer;
 import Models.Order;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -126,8 +127,7 @@ public class OrderDAO {
         } catch (Exception e) {
         }
     }
-    
-    
+
     public void plusQuantityAfterCancel(int productID, int quantity) {
         try {
             PreparedStatement pr = connector.prepareStatement("Update Products set Quantity = quantity + ? where ProductID=?");
@@ -137,8 +137,6 @@ public class OrderDAO {
         } catch (Exception e) {
         }
     }
-    
-
 
     public void addQuantityAfterCancel(int productID, int quantity) {
         try {
@@ -246,6 +244,38 @@ public class OrderDAO {
             e.printStackTrace();
         }
         return list;
+    }
+
+    public Customer getCustomerByOrderId(int id) {
+        String sql = "SELECT c.CustomerID, c.FullName, c.PhoneNumber, c.Email, "
+                + "c.IsBlock, c.IsDeleted FROM customers c "
+                + "JOIN orders o ON c.CustomerID = o.CustomerID WHERE o.OrderID = ?";
+        try ( PreparedStatement ps = connector.prepareStatement(sql)) {
+            ps.setInt(1, id);
+            try ( ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    return new Customer(
+                            rs.getInt("CustomerID"),
+                            rs.getString("FullName"),
+                            null,
+                            null,
+                            null,
+                            rs.getString("PhoneNumber"),
+                            rs.getString("Email"),
+                            null,
+                            rs.getInt("IsBlock"),
+                            rs.getInt("IsDeleted"),
+                            null
+                    );
+                }
+            }
+        } catch (SQLException e) {
+            System.err.println(e.getMessage());
+        } catch (Exception e) {
+            System.err.println(e.getMessage());
+        }
+
+        return null; // Không tìm thấy khách hàng
     }
 
     public static void main(String[] args) {
