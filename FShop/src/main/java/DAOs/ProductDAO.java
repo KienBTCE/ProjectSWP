@@ -254,17 +254,21 @@ public class ProductDAO {
 
     public int createProduct(Product p) {
         int count = 0;
-        String query = "INSERT INTO Products (Model, FullName, IsDeleted, Price, Stock) "
-                + "VALUES (?, ?, ?, ?, ?)";
+        String query = "INSERT INTO Products (Model, FullName, IsDeleted, Price, Stock, BrandID, CategoryID) "
+                + "VALUES (?, ?, 1, ?, ?, "
+                + "(SELECT BrandID FROM Brands WHERE Name = ?), "
+                + "(SELECT CategoryID FROM Categories WHERE Name = ?))";
 
         try {
             PreparedStatement ps = connector.prepareStatement(query);
 
             ps.setString(1, p.getModel());
             ps.setString(2, p.getFullName());
-            ps.setInt(3, p.getDeleted());
-            ps.setLong(4, p.getPrice());
-            ps.setInt(5, p.getStock());
+//            ps.setInt(3, p.getDeleted());
+            ps.setLong(3, p.getPrice());
+            ps.setInt(4, p.getStock());
+            ps.setString(5, p.getBrandName());
+            ps.setString(6, p.getCategoryName());
 
             count = ps.executeUpdate();
         } catch (SQLException ex) {

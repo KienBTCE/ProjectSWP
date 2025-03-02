@@ -128,6 +128,17 @@ public class Product {
         this.price = price;
         this.stock = stock;
     }
+    //create product
+    public Product(int productId, String categoryName, String brandName, String model, String fullName, int deleted, long price, int stock) {
+        this.productId = productId;
+        this.categoryName = categoryName;
+        this.brandName = brandName;
+        this.model = model;
+        this.fullName = fullName;
+        this.deleted = deleted;
+        this.price = price;
+        this.stock = stock;
+    }
 
     public void setCategoryName(String categoryName) {
         this.categoryName = categoryName;

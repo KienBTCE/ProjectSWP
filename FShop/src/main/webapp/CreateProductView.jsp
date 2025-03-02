@@ -23,6 +23,23 @@
 
             <form action="CreateProductServlet" method="POST">
                 <div class="mb-3">
+                    <label class="form-label">Category</label>
+                    <select class="form-control" name="categoryName" required>
+                        <c:forEach var="category" items="${categories}">
+                            <option value="${category}">${category}</option>
+                        </c:forEach>
+                    </select>
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label">Brand</label>
+                    <select class="form-control" name="brandName" required>
+                        <c:forEach var="brand" items="${brands}">
+                            <option value="${brand}">${brand}</option>
+                        </c:forEach>
+                    </select>
+                </div>
+                <div class="mb-3">
                     <label class="form-label">Product Name</label>
                     <input type="text" class="form-control" name="fullName" required>
                 </div>
