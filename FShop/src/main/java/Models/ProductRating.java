@@ -34,6 +34,18 @@ public class ProductRating {
         this.isRead = isRead;
         this.fullName = fullName;
     }
+
+    public ProductRating(int rateID, int customerID, int productID, int orderID, Date createdDate, int star, String comment, boolean isDeleted, boolean isRead) {
+        this.rateID = rateID;
+        this.customerID = customerID;
+        this.productID = productID;
+        this.orderID = orderID;
+        this.createdDate = createdDate;
+        this.star = star;
+        this.comment = comment;
+        this.isDeleted = isDeleted;
+        this.isRead = isRead;
+    }
    
 
     

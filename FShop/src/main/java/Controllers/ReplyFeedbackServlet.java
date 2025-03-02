@@ -4,12 +4,9 @@
  */
 package Controllers;
 
-import DAOs.OrderDetailDAO;
 import DAOs.ProductRatingDAO;
 import DAOs.RatingRepliesDAO;
-import Models.Customer;
 import Models.Employee;
-import Models.ProductRating;
 import Models.RatingReplies;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -18,14 +15,12 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
-import java.util.List;
-import javax.mail.Session;
 
 /**
  *
  * @author HP
  */
-public class CommentServlet extends HttpServlet {
+public class ReplyFeedbackServlet extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -44,15 +39,16 @@ public class CommentServlet extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet CommentServlet</title>");
+            out.println("<title>Servlet ReplyFeedbackServlet</title>");
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet CommentServlet at " + request.getContextPath() + "</h1>");
+            out.println("<h1>Servlet ReplyFeedbackServlet at " + request.getContextPath() + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }
     }
 
+    // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
      * Handles the HTTP <code>GET</code> method.
      *
@@ -65,33 +61,6 @@ public class CommentServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
-//        String productIdParam = request.getParameter("productId");
-//        int productId = (productIdParam != null) ? Integer.parseInt(productIdParam) : 1;
-//        using when merge code
-        int productId = 1;
-        boolean isOk = false; //Kiem tra xem da mua chua
-        ProductRatingDAO pDAO = new ProductRatingDAO();
-        List<ProductRating> listPro = pDAO.getAllProductRating(productId);
-
-        RatingRepliesDAO rrDAO = new RatingRepliesDAO();
-        List<RatingReplies> listReplies = rrDAO.getAllRatingRepliesByProduct(productId);
-        HttpSession session = request.getSession();
-        Customer cus = (Customer) session.getAttribute("customer");
-
-        OrderDetailDAO odDAO = new OrderDetailDAO();
-        List<Integer> list = odDAO.getCustomerByProductID(productId);
-
-        if (cus != null) {
-            isOk = list.contains(cus.getId());
-        }
-
-    
-
-        request.setAttribute("isOk", isOk);
-        request.setAttribute("dataRating", listPro);
-        request.setAttribute("dataReplies", listReplies);
-
-        request.getRequestDispatcher("viewFeedback.jsp").forward(request, response);
     }
 
     /**
@@ -105,15 +74,19 @@ public class CommentServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        int customerId = Integer.parseInt(request.getParameter("customerId"));
-        int productId = Integer.parseInt(request.getParameter("productId"));
-        int star = Integer.parseInt(request.getParameter("star"));
-        String comment = request.getParameter("comment");
-
-        ProductRatingDAO pDAO = new ProductRatingDAO();
-        pDAO.addProductRating(customerId, productId, star, comment);
-
-        response.sendRedirect("CommentServlet?productId=" + productId);
+        HttpSession session = request.getSession();
+        Employee em = (Employee) session.getAttribute("employee");
+        int rateID = Integer.parseInt(request.getParameter("rateID"));
+//        int emID = em.getEmployeeId();
+        ProductRatingDAO prDAO = new ProductRatingDAO();
+        int emID = 1;
+        String answer = request.getParameter("Answer");
+        RatingRepliesDAO rrDAO = new RatingRepliesDAO();
+        if (rateID > 0  ) {
+            rrDAO.addRatingReply(emID, rateID, answer);
+            prDAO.updateisReadComment(rateID);
+        } 
+        response.sendRedirect("/ViewListNewFeedbackServlet");
     }
 
     /**
