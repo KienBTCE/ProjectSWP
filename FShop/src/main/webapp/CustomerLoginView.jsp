@@ -21,7 +21,7 @@
                 box-sizing: border-box;
                 background-color: #f8f9fa;
             }
-            .container {
+            .container_a {
                 max-width: 1200px;
                 margin: 0 auto;
                 padding: 20px;
@@ -89,10 +89,10 @@
             .forgotpass:hover {
                 text-decoration: underline;
             }
-            ul {
+            .list_ul {
                 padding-left: 20px;
             }
-            ul li {
+            .list_ul li {
                 margin-bottom: 10px;
                 font-size: 14px;
                 color: #555;
@@ -177,7 +177,7 @@
     </head>
     <body>
         <jsp:include page="header.jsp"></jsp:include>
-            <div class="container">
+            <div class="container_a">
                 <p>Home > Login</p>
                 <h1>Customer Login</h1>
 
@@ -200,7 +200,7 @@
                     <div class="form-box">
                         <h2>New Customer?</h2>
                         <p>Creating an account has many benefits:</p>
-                        <ul>
+                        <ul class="list_ul">
                             <li>Check out faster</li>
                             <li>Keep more than one address</li>
                             <li>Track orders and more</li>
