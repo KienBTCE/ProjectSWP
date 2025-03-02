@@ -23,7 +23,7 @@
     </head>
     <body>
 
-        <jsp:include page="leftshopmanager.jsp" /> 
+<!--        < jsp:include page="leftshopmanager.jsp"  /> -->
 
         <div class="container">
             <header>
