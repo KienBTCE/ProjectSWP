@@ -177,7 +177,7 @@
             <a href="#">Product Statistic</a>
         </div>
         <div class="content">
-
+            <jsp:include page="HeaderDashboard.jsp"></jsp:include>
             <form action="ProductListServlet" method="get" class="search-container">
                 <input type="text" name="txt" value="${param.txt}" placeholder="Search by name..." class="search-input">
                 <button type="submit" class="search-button">
