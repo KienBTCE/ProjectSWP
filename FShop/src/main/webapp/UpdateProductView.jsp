@@ -16,8 +16,9 @@
         <div class="container mt-4">
             <c:choose>
                 <c:when test="${product != null}">
-                    <form action="UpdateProductServlet" method="post">
+                    <form action="UpdateProductServlet" method="post" enctype="multipart/form-data">
                         <input type="hidden" name="id" value="${product.productId}" />
+                        <input type="hidden" name="currentImage" value="${product.image}" />
 
                         <div class="mb-3">
                             <label class="form-label">Full Name</label>
@@ -35,8 +36,19 @@
                         </div>
 
                         <div class="mb-3">
-                            <label class="form-label">Image URL</label>
-                            <input type="text" class="form-control" name="image" value="${product.image}" required>
+                            <label for="txtPPic" class="form-label">Current image:</label>
+                            <c:if test="${not empty product.image}">
+                                <c:set var="imagePath" value="${product.image}" />
+                                <img src="<c:out value='${pageContext.request.contextPath}'/>/assets/imgs/Products/<c:out value='${imagePath}'/>" 
+                                     class="product-image" 
+                                     alt="${product.fullName}" 
+                                     width="150" height="150"/>
+                                <br/>
+                            </c:if>
+                            <c:if test="${empty product.image}">
+                                <p>No image uploaded.</p>
+                            </c:if>
+                            <input type="file" class="form-control" name="txtPPic" accept="image/*" onchange="previewImage(event)"/>
                         </div>
 
                         <div class="mb-3">
@@ -50,6 +62,7 @@
                         <button type="submit" class="btn btn-primary">Update Product</button>
                         <a href="ProductListServlet" class="btn btn-secondary">Cancel</a>
                     </form>
+
                 </c:when>
                 <c:otherwise>
                     <p class="text-danger">Product not found.</p>
