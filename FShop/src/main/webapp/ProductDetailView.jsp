@@ -66,7 +66,15 @@
             <c:choose>
                 <c:when test="${product != null}">
                     <div class="product-card">
-                        <img src="assets/imgs/Products/${product.getImage()}" class="product-image" alt="${product.getFullName()}"/>
+                        <div class="image-container">
+                            <c:set var="imagePath" value="${product.image}" />
+                            <c:if test="${not empty imagePath}">
+                                <img src="<c:out value='${pageContext.request.contextPath}'/>/assets/imgs/Products/<c:out value='${imagePath}'/>" 
+                                     class="product-image" 
+                                     alt="${product.fullName}" 
+                                     width="150" height="150"/>
+                            </c:if>
+                        </div>
                         <div class="product-info">
                             <h3>${product.getFullName()}</h3>
                             <p><strong>Price:</strong> $${product.getPrice()}</p>
