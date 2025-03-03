@@ -9,187 +9,110 @@
 <%@page import="java.util.ArrayList"%>
 <%@ taglib prefix = "c" uri = "http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
-<html>
+<html lang="en">
+
     <head>
-        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>F Shop</title>
-        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-        <style>
-            body {
-                display: flex;
-            }
 
-            .sidebar {
-                width: 250px;
-                height: 97vh;
-                background: #FFFFFF;
-                color: black;
-                padding-top: 20px;
-                box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.3);
-                transform: translateZ(0);
-                position: relative;
-                z-index: 10;
-                border-radius: 10px;
-                margin-top: 10px;
-            }
-
-            .sidebar a {
-                color: #7A7D90;
-                text-decoration: none;
-                padding: 10px;
-                display: block;
-            }
-
-            .sidebar a:hover {
-                background: #7D69FF;
-                color: white;
-                width: 90%;
-                font-weight: bold;
-
-                border-top-right-radius: 10px;
-                border-bottom-right-radius: 10px;
-                border-top-left-radius: 0;
-                border-bottom-left-radius: 0;
-
-            }
-
-            .content {
-                flex-grow: 1;
-                padding: 12px;
-            }
-
-            .header {
-                display: flex;
-                justify-content: right;
-                align-items: center;
-                padding: 10px;
-                background: #FFFFFF;
-                box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.3);
-                border-radius: 10px;
-                height: 85px;
-            }
-
-            .icon {
-                width: 40px;
-                height: 40px;
-                border-radius: 50%;
-                object-fit: cover;
-            }
-
-            .logo-side-bar {
-                margin-left: 5%;
-                margin-bottom: 3%;
-            }
-            /* ========================================================= */
-
-            .table-container {
-                background: white;
-                padding: 20px;
-                border-radius: 10px;
-                box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.1);
-            }
-
-            table {
-                border-radius: 10px;
-                overflow: hidden;
-            }
-
-            thead {
-                background: #7D69FF;
-                color: white;
-            }
-
-            tbody tr:hover {
-                background: #f2f2f2;
-                transition: 0.3s;
-            }
-
-            .search-box {
-                max-width: 300px;
-                margin-bottom: 10px;
-            }
-
-            .table-navigate{
-                display: flex;
-                justify-content: space-between;
-            }
-        </style>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+        <link rel="stylesheet" href="assets/css/style.css">
+        <title>Dashboard Design</title>
+        
+          
     </head>
+
     <body>
-        <div class="sidebar">
-            <img src="assets/imgs/Dashboard/Group 1521.svg" class="logo-side-bar">
-            <h6><a href="#">Admin</a></h6>
-            <a href="Employee">Employee Management</a>
-            <a href="#">Statistic Management</a>
-        </div>
-        <div class="content">
-            <jsp:include page="HeaderDashboard.jsp"></jsp:include>
-                <!--                <div style="margin-right: 30px">
-                                    <img style="float: left; margin-right: 15px;"
-                                         src="#" alt="User Icon" class="icon">
-                                    <p style="display: flex; margin: 12px 0 0 0;">Hi, ThNguyen</p>
-                                </div>-->
-                <div class="table-navigate">
-                    <input type="text" id="searchInput" class="form-control search-box" placeholder="Tìm kiếm theo tên..." onkeyup="filterTable()">
-                    <button class="btn btn-detail" style="background-color: #BDF3BD; height: 100%">Create</button>
-                </div>
 
-                <div class="table-container">
-                    <div>
-                        <h3>Employees</h3>
+        <!-- Sidebar -->
+        <jsp:include page="SidebarDashboardAdmin.jsp"></jsp:include>
+            <!-- End of Sidebar -->
+
+            <!-- Main Content -->
+            <div class="content">
+                <!-- Navbar -->
+                <nav>
+                    <i class='bx bx-menu'></i>
+                    <form action="#">
+                        <div class="form-input">
+                            <input type="search" placeholder="Search...">
+                            <button class="search-btn" type="submit"><i class='bx bx-search'></i></button>
+                        </div>
+                    </form>
+                    <a href="#" class="profile">
+                        <img src="assets/imgs/Dashboard/admin.png">
+                    </a>
+                </nav>
+                <!-- End of Navbar -->
+                <main>
+                    <div class="header">
+                        <div class="left">
+                            <h1>Dashboard</h1>
+                        </div>
+
                     </div>
-                    <table class="table table-hover">
-                        <thead>
-                            <tr>
-                                <th>Employee ID</th>
-                                <th>Role ID</th>
-                                <th>Full Name</th>
-                                <th>Birthday</th>
-                                <th>Gender</th>
-                                <th>Email</th>
-                                <th>Created Date</th>
-                                <th>Status</th>
-                                <th>Action</th> <!-- Cột mới -->
-                            </tr>
-                        </thead>
-                        <tbody id="employeeTable">
-                        <c:forEach items="${listEmp}" var="e">
-                            <tr>
-                                <td>${e.getEmployeeId()}</td>
-                                <td>${e.getRoleId()}</td>
-                                <td>${e.getFullname()}</td>
-                                <td>${e.getBirthday()}</td>
-                                <td>${e.getGender()}</td>
-                                <td>${e.getEmail()}</td>
-                                <td>${e.getCreatedDate()}</td>
-                                <td>${e.getStatus()}</td>
-                                <td>
-                                    <a href="Employee?id=${e.getEmployeeId()}" class="btn btn-detail" style="background-color: #BDF3BD">Detail</a>
-                                </td>
-                            </tr>
-                        </c:forEach>
-                    </tbody>
-                </table>
-            </div>
-        </div>
+                    <div class="bottom-data">
+                        <div class="orders">
+                            <div class="header">
+                                <i class='bx bx-group'></i>
+                                <h3>Employee Table</h3>
+                                <a href="AddEmployeeView.jsp" style="background-color: #4da3ff; color: white; text-decoration: none; padding: 4px 20px; border-radius: 5px; display: inline-flex; align-items: center; gap: 5px; cursor: pointer; margin-right: 10px;">
+                                    <i class='bx bx-plus'></i> Add Employee
+                                </a>
+                            </div>
 
-        <script>
-            function filterTable() {
-                let input = document.getElementById("searchInput");
-                let filter = input.value.toLowerCase();
-                let table = document.getElementById("employeeTable");
-                let rows = table.getElementsByTagName("tr");
-                for (let i = 0; i < rows.length; i++) {
-                    let nameCell = rows[i].getElementsByTagName("td")[1];
-                    if (nameCell) {
-                        let nameText = nameCell.textContent || nameCell.innerText;
-                        rows[i].style.display = nameText.toLowerCase().includes(filter) ? "" : "none";
-                    }
-                }
-            }
-        </script>
+                            <table>
 
-    </div>
-</body>
+                                <thead>
+                                    <tr>
+                                        <th>Employee ID</th>
+                                        <th>Role Name</th>
+                                        <th>Full Name</th>
+                                        <th>Email</th>
+                                        <th>Status</th>
+                                        <th>Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                <c:forEach items="${listE}" var="e">
+                                    <tr>
+                                        <td>${e.employeeId}</td>
+                                        <c:forEach items="${listR}" var="r">
+                                            <c:if test="${e.roleId == r.roleId}">
+                                                <td>${r.roleName}</td>
+                                            </c:if>
+                                        </c:forEach>
+                                        <td>${e.fullname}</td>
+                                        <td>${e.email}</td>
+                                        <c:choose>
+                                            <c:when test="${e.status == 1}">
+                                                <td><span style="background-color: #28a745; color: white; padding: 5px 12px; border-radius: 15px; font-size: 12px; display: inline-flex; align-items: center; gap: 5px; text-align: center;">
+                                                        <i class='bx bx-check-circle' style="font-size: 14px;"></i> Available
+                                                    </span></td>
+                                                </c:when>
+                                                <c:otherwise>
+                                                <td><span style="background-color: #dc3545; color: white; padding: 5px 18px; border-radius: 15px; font-size: 12px; display: inline-flex; align-items: center; gap: 5px; text-align: center;">
+                                                        <i class='bx bx-x-circle' style="font-size: 14px;"></i> Disable
+                                                    </span></td>
+                                                </c:otherwise>
+                                            </c:choose>
+                                        <td>
+                                            <a href="UpdateEmployee?id=${e.employeeId}" style="background-color: orange; color: white; text-decoration: none; padding: 3px 9px; border-radius: 5px; display: inline-block; cursor: pointer;">
+                                                <i class='bx bx-edit'></i> Update
+                                            </a>
+                                                
+                                            <a href="EmployeeList?id=${e.employeeId}" style="background-color: red; color: white; text-decoration: none; padding: 3px 9px; border-radius: 5px; display: inline-block; cursor: pointer;">
+                                                <i class='bx bx-detail'></i> Detail
+                                            </a>
+                                        </td>
+                                    </tr>
+                                </c:forEach>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </main>
+        <script src="assets/js/index.js"></script>
+    </body>
+
 </html>

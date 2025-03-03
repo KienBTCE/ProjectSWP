@@ -26,7 +26,8 @@ public class EmployeeDAO {
     DBContext db = new DBContext();
     Connection connector = db.getConnection();
 
-    public String getMD5(String input) {
+    private String getMD5(String input) {
+
         try {
             // Tạo instance của MessageDigest với thuật toán MD5
             MessageDigest md = MessageDigest.getInstance("MD5");
@@ -89,7 +90,7 @@ public class EmployeeDAO {
                 emp = new Employee(rs.getInt("EmployeeID"),
                         rs.getString("FullName"),
                         rs.getDate("Birthday"),
-                        "",
+                        rs.getString("Password"),
                         rs.getString("PhoneNumber"),
                         rs.getString("Email"),
                         rs.getString("Gender"),
@@ -106,7 +107,8 @@ public class EmployeeDAO {
         return emp;
     }
 
-    public void UpdateEmployee(Employee employee) {
+    public int UpdateEmployee(Employee employee) {
+        int effectRows = 0;
         String sql = "Update Employees SET FullName = ?, Birthday = ?, Password = ?, PhoneNumber = ?, Email = ?, Gender = ?, CreatedDate = ?, Status = ?, Avatar = ?, RoleID = ? WHERE EmployeeID = ?";
         try {
             PreparedStatement pr = connector.prepareStatement(sql);
@@ -121,13 +123,15 @@ public class EmployeeDAO {
             pr.setString(9, employee.getAvatar());
             pr.setInt(10, employee.getRoleId());
             pr.setInt(11, employee.getEmployeeId());
-            pr.executeUpdate();
+            effectRows = pr.executeUpdate();
         } catch (SQLException e) {
             System.out.println(e);
         }
+        return effectRows;
     }
 
-    public void AddEmployee(Employee employee) {
+    public int AddEmployee(Employee employee) {
+        int effectRows = 0;
         String sql = "INSERT INTO Employees (FullName, Birthday, [Password], PhoneNumber, Email, Gender, CreatedDate, Status, Avatar, RoleID) VALUES "
                 + "(?,?,?,?,?,?,?,?,?,?)";
         try {
@@ -142,10 +146,11 @@ public class EmployeeDAO {
             pr.setInt(8, employee.getStatus());
             pr.setString(9, employee.getAvatar());
             pr.setInt(10, employee.getRoleId());
-            pr.executeUpdate();
+            effectRows = pr.executeUpdate();
         } catch (SQLException e) {
             System.out.println(e);
         }
+        return effectRows;
     }
 
     public Employee employeeLogin(String email, String password) {
@@ -214,7 +219,8 @@ public class EmployeeDAO {
         }
         return 0;
     }
-    public int changePassword(int id, String password){
+
+    public int changePassword(int id, String password) {
         int effectRow = 0;
         String sql = "Update Employees SET Password = ? WHERE EmployeeID = ?";
         try {
@@ -230,10 +236,10 @@ public class EmployeeDAO {
     }
 
     public static void main(String[] args) {
-        EmployeeDAO e = new EmployeeDAO();
-//        System.out.println(e.checkPassword(1, "User123@"));
-//        System.out.println(e.getMD5("User123@"));
-//        System.out.println(e.changePassword(1, "User123@"));
-//        System.out.println(e.employeeLogin("nguyen.vana@example.com", "User123@"));
+        EmployeeDAO emDAO = new EmployeeDAO();
+        ArrayList<Employee> list = emDAO.getAllEmployees();
+        for (Employee employee : list) {
+            System.out.println(employee.getFullname());
+        }
     }
 }
