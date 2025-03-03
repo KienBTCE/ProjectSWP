@@ -79,7 +79,6 @@
                                 </div>
                                 <input type="submit" value="Add to cart" class="btn-add-cart">
                             </form>
-
                             <a href="ViewProductServlet" class="btn-back">Back to List</a>
                         </div>
                     </div>
