@@ -81,7 +81,6 @@ public class EmployeeLoginServlet extends HttpServlet {
         
         Employee em = emDAO.employeeLogin(email, password);//Emloyee có all thông tin tru di password là ko có
         if(em != null){
-            //response.sendRedirect("/ViewEmployeeProfile");
             if(em.getStatus() == 1){
                 session.setAttribute("employee", em);
                 if(em.getRoleId() == 1){
