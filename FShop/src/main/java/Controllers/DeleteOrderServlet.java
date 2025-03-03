@@ -116,7 +116,7 @@ public class DeleteOrderServlet extends HttpServlet {
                 sb.append("<tr>")
                         .append("<td>").append(item.getProductName()).append("</td>")
                         .append("<td>").append(item.getQuantity()).append("</td>")
-                        .append("<td>").append(String.format("%.02f", item.getPrice())).append(" VND</td>")
+                        .append("<td>").append(String.format("%.02f", (double) item.getPrice())).append(" VND</td>")
                         .append("<td>").append(String.format("%.02f", itemTotal)).append(" VND</td>")
                         .append("</tr>");
             }
