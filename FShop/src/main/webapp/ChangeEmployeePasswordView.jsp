@@ -17,40 +17,6 @@
             body {
                 background-color: #f8f9fa;
             }
-
-            .sidebar {
-                width: 100%;
-                height: 97vh;
-                background: #FFFFFF;
-                color: black;
-                padding-top: 20px;
-                box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.3);
-                transform: translateZ(0);
-                position: relative;
-                border-radius: 10px;
-                margin-top: 10px;
-            }
-
-            .sidebar a {
-                color: #7A7D90;
-                text-decoration: none;
-                padding: 10px;
-                display: block;
-            }
-
-            .sidebar a:hover {
-                background: #7D69FF;
-                color: white;
-                width: 90%;
-                font-weight: bold;
-
-                border-top-right-radius: 10px;
-                border-bottom-right-radius: 10px;
-                border-top-left-radius: 0;
-                border-bottom-left-radius: 0;
-
-            }
-
             .head {
                 margin-top: 10px;
                 display: flex;
@@ -129,35 +95,10 @@
         <div class="container-fluid">
             <div class="row">
                 <div class="col-md-2">
-                    <div class="sidebar">
-                        <img src="assets/imgs/Dashboard/Group 1521.svg" class="logo-side-bar">
-                        <c:if test="${sessionScope.employee.getRoleId() == 1}">
-                            <h6><a href="#">Admin</a></h6>
-                            <a href="Employee">Employee Management</a>
-                            <a href="#">Statistic Management</a>
-                        </c:if>
-                        <c:if test="${sessionScope.employee.getRoleId() == 2}">
-                            <h6><a href="#">Shop Management</a></h6>
-                            <a href="CustomerListServlet">Customer Management</a>
-                            <a href="ProductListServlet">Product Management</a>
-                            <a href="#">Product Statistic</a>
-                        </c:if>
-                        <c:if test="${sessionScope.employee.getRoleId() == 3}">
-                            <h6><a href="#">Order Management</a></h6>
-                            <a href="ViewListNewFeedbackServlet">Feedback</a>
-                            <a href="ViewOrderListServlet">Order</a>
-                        </c:if>
-                        <c:if test="${sessionScope.employee.getRoleId() == 4}">
-                            <h6><a href="#">Warehouse Management</a></h6>
-                            <a href="ImportOrder">Import Order</a>
-                            <a href="Supplier">Supplier</a>
-                            <a href="#">Product Management</a>
-                        </c:if>
-                        <a style="margin-top: auto; color: red;" href="" onclick="confirmLogout()"><i class="bi bi-box-arrow-right"></i> Logout</a>
+                    <jsp:include page="SidebarDashboard.jsp"></jsp:include>
                     </div>
-                </div>
-                <div class="col-md-10" style="padding: 10px;">
-                        <jsp:include page="HeaderDashboard.jsp"></jsp:include>
+                    <div class="col-md-10" style="padding: 10px;">
+                    <jsp:include page="HeaderDashboard.jsp"></jsp:include>
                         <div class="content">
                             <h2 style="width: 100%;">Change Password</h2>
 
