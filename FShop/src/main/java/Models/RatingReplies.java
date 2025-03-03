@@ -9,24 +9,22 @@ package Models;
  * @author HP
  */
 public class RatingReplies {
-    private  int replyID;
-    private  int employeeID;
-    private  int rateID;
-    private  String Answer;
-    private  boolean  isRead;
+    private int replyID;
+    private int employeeID;
+    private int rateID;
+    private String answer;
+    private boolean isRead;
 
     public RatingReplies() {
     }
 
-    public RatingReplies(int replyID, int employeeID, int rateID, String Answer, boolean isRead) {
+    public RatingReplies(int replyID, int employeeID, int rateID, String answer, boolean isRead) {
         this.replyID = replyID;
         this.employeeID = employeeID;
         this.rateID = rateID;
-        this.Answer = Answer;
+        this.answer = answer;
         this.isRead = isRead;
     }
-
-    
     public int getReplyID() {
         return replyID;
     }
@@ -52,11 +50,11 @@ public class RatingReplies {
     }
 
     public String getAnswer() {
-        return Answer;
+        return answer;
     }
 
-    public void setAnswer(String Answer) {
-        this.Answer = Answer;
+    public void setAnswer(String answer) {
+        this.answer = answer;
     }
 
     public boolean isIsRead() {
@@ -66,7 +64,5 @@ public class RatingReplies {
     public void setIsRead(boolean isRead) {
         this.isRead = isRead;
     }
-    
-    
     
 }

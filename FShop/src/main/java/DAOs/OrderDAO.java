@@ -5,6 +5,7 @@
 package DAOs;
 
 import DB.DBContext;
+import Models.Customer;
 import Models.Order;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -126,8 +127,7 @@ public class OrderDAO {
         } catch (Exception e) {
         }
     }
-    
-    
+
     public void plusQuantityAfterCancel(int productID, int quantity) {
         try {
             PreparedStatement pr = connector.prepareStatement("Update Products set Quantity = quantity + ? where ProductID=?");
@@ -137,7 +137,7 @@ public class OrderDAO {
         } catch (Exception e) {
         }
     }
-    
+
 
     public void addQuantityAfterCancel(int productID, int quantity) {
         try {
@@ -151,11 +151,13 @@ public class OrderDAO {
 
     public void updateOrder(int orderID, int status) {
 
+
         String query = "Update Orders SET Orders.Status= ? WHERE Orders.OrderID=?";
         try {
             PreparedStatement pre = connector.prepareStatement(query);
             pre.setInt(1, status);
             pre.setInt(2, orderID);
+
             pre.executeUpdate();
         } catch (Exception e) {
             Logger.getLogger(OrderDAO.class.getName()).log(Level.SEVERE, null, e);
@@ -211,6 +213,72 @@ public class OrderDAO {
             System.out.println(e + "");
         }
         return list;
+    }
+
+    public List<Order> searchOrders(String searchQuery) {
+        List<Order> list = new ArrayList<>();
+        String query = "SELECT * FROM Orders WHERE "
+                + "OrderID LIKE ? OR "
+                + "FullName LIKE ? OR "
+                + "PhoneNumber LIKE ? OR "
+                + "Status LIKE ?";
+        try {
+            PreparedStatement pre = connector.prepareStatement(query);
+            pre.setString(1, "%" + searchQuery + "%");
+            pre.setString(2, "%" + searchQuery + "%");
+            pre.setString(3, "%" + searchQuery + "%");
+            pre.setString(4, "%" + searchQuery + "%");
+
+            ResultSet rs = pre.executeQuery();
+            while (rs.next()) {
+                Order o = new Order(
+                        rs.getInt("OrderID"),
+                        rs.getInt("CustomerID"),
+                        rs.getString("FullName"),
+                        rs.getString("PhoneNumber"),
+                        rs.getString("Address"),
+                        rs.getInt("TotalAmount"),
+                        rs.getString("OrderedDate"),
+                        rs.getInt("Status")
+                );
+                list.add(o);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return list;
+    }
+
+    public Customer getCustomerByOrderId(int id) {
+        String sql = "SELECT c.CustomerID, c.FullName, c.PhoneNumber, c.Email, "
+                + "c.IsBlock, c.IsDeleted FROM customers c "
+                + "JOIN orders o ON c.CustomerID = o.CustomerID WHERE o.OrderID = ?";
+        try ( PreparedStatement ps = connector.prepareStatement(sql)) {
+            ps.setInt(1, id);
+            try ( ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    return new Customer(
+                            rs.getInt("CustomerID"),
+                            rs.getString("FullName"),
+                            null,
+                            null,
+                            null,
+                            rs.getString("PhoneNumber"),
+                            rs.getString("Email"),
+                            null,
+                            rs.getInt("IsBlock"),
+                            rs.getInt("IsDeleted"),
+                            null
+                    );
+                }
+            }
+        } catch (SQLException e) {
+            System.err.println(e.getMessage());
+        } catch (Exception e) {
+            System.err.println(e.getMessage());
+        }
+
+        return null; // Không tìm thấy khách hàng
     }
 
     public static void main(String[] args) {

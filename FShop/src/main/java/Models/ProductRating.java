@@ -20,87 +20,46 @@ public class ProductRating {
     private String comment;
     private boolean isDeleted;
     private boolean isRead;
-    private  String customerName;
-    private String avatar;
-    private  String reply;
-    private int employeeID;
-    
+    private String fullName;
 
+    public ProductRating(int rateID, int customerID, int productID, int orderID, Date createdDate, int star, String comment, boolean isDeleted, boolean isRead, String fullName) {
+        this.rateID = rateID;
+        this.customerID = customerID;
+        this.productID = productID;
+        this.orderID = orderID;
+        this.createdDate = createdDate;
+        this.star = star;
+        this.comment = comment;
+        this.isDeleted = isDeleted;
+        this.isRead = isRead;
+        this.fullName = fullName;
+    }
+
+    public ProductRating(int rateID, int customerID, int productID, int orderID, Date createdDate, int star, String comment, boolean isDeleted, boolean isRead) {
+        this.rateID = rateID;
+        this.customerID = customerID;
+        this.productID = productID;
+        this.orderID = orderID;
+        this.createdDate = createdDate;
+        this.star = star;
+        this.comment = comment;
+        this.isDeleted = isDeleted;
+        this.isRead = isRead;
+    }
+   
+
+    
     public ProductRating() {
     }
 
-
-    public ProductRating(int rateID, int customerID, int productID, int orderID, Date createdDate, int star, String comment, boolean isDeleted, boolean isRead, String customerName, String avatar) {
-        this.rateID = rateID;
-        this.customerID = customerID;
-        this.productID = productID;
-        this.orderID = orderID;
-        this.createdDate = createdDate;
-        this.star = star;
-        this.comment = comment;
-        this.isDeleted = isDeleted;
-        this.isRead = isRead;
-        this.customerName = customerName;
-        this.avatar = avatar;
+    public String getFullName() {
+        return fullName;
     }
 
-    public ProductRating(int rateID, int customerID, int productID, int orderID, Date createdDate, int star, String comment, boolean isDeleted, boolean isRead, String customerName, String avatar, String reply, int employeeID) {
-        this.rateID = rateID;
-        this.customerID = customerID;
-        this.productID = productID;
-        this.orderID = orderID;
-        this.createdDate = createdDate;
-        this.star = star;
-        this.comment = comment;
-        this.isDeleted = isDeleted;
-        this.isRead = isRead;
-        this.customerName = customerName;
-        this.avatar = avatar;
-        this.reply = reply;
-        this.employeeID = employeeID;
-    }
-    
-
-    public String getReply() {
-        return reply;
+    public void setFullName(String fullName) {
+        this.fullName = fullName;
     }
 
-    public void setReply(String reply) {
-        this.reply = reply;
-    }
-
-    public int getEmployeeID() {
-        return employeeID;
-    }
-
-    public void setEmployeeID(int employeeID) {
-        this.employeeID = employeeID;
-    }
-    
-    
-    
-    
-
-    public String getAvatar() {
-        return avatar;
-    }
-
-    public void setAvatar(String avatar) {
-        this.avatar = avatar;
-    }
-    
-    
-
-    public String getCustomerName() {
-        return customerName;
-    }
-
-    public void setCustomerName(String customerName) {
-        this.customerName = customerName;
-    }
-
-    
-    
     public int getRateID() {
         return rateID;
     }

@@ -4,8 +4,11 @@
  */
 package Controllers;
 
+import DAOs.OrderDetailDAO;
 import DAOs.ProductRatingDAO;
 import DAOs.RatingRepliesDAO;
+import Models.Customer;
+import Models.Employee;
 import Models.ProductRating;
 import Models.RatingReplies;
 import java.io.IOException;
@@ -14,8 +17,9 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import java.util.ArrayList;
+import jakarta.servlet.http.HttpSession;
 import java.util.List;
+import javax.mail.Session;
 
 /**
  *
@@ -49,7 +53,6 @@ public class CommentServlet extends HttpServlet {
         }
     }
 
-    // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
      * Handles the HTTP <code>GET</code> method.
      *
@@ -61,18 +64,34 @@ public class CommentServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+
+//        String productIdParam = request.getParameter("productId");
+//        int productId = (productIdParam != null) ? Integer.parseInt(productIdParam) : 1;
+//        using when merge code
+        int productId = 1;
+        boolean isOk = false; //Kiem tra xem da mua chua
         ProductRatingDAO pDAO = new ProductRatingDAO();
-        List<ProductRating> listPro = pDAO.getAllProductRating("1");
+        List<ProductRating> listPro = pDAO.getAllProductRating(productId);
+
         RatingRepliesDAO rrDAO = new RatingRepliesDAO();
-        List<RatingReplies>listRr = rrDAO.GetAllRepliesByID(1);
-       
-        if (listPro != null) {
-            request.setAttribute("dataReply", listRr);
-            request.setAttribute("dataRating", listPro);
-            request.getRequestDispatcher("viewFeedback.jsp").forward(request, response);
-        } else {
-            response.sendRedirect(request.getContextPath() + "/HomeServlet");
+        List<RatingReplies> listReplies = rrDAO.getAllRatingRepliesByProduct(productId);
+        HttpSession session = request.getSession();
+        Customer cus = (Customer) session.getAttribute("customer");
+
+        OrderDetailDAO odDAO = new OrderDetailDAO();
+        List<Integer> list = odDAO.getCustomerByProductID(productId);
+
+        if (cus != null) {
+            isOk = list.contains(cus.getId());
         }
+
+    
+
+        request.setAttribute("isOk", isOk);
+        request.setAttribute("dataRating", listPro);
+        request.setAttribute("dataReplies", listReplies);
+
+        request.getRequestDispatcher("viewFeedback.jsp").forward(request, response);
     }
 
     /**
@@ -86,7 +105,15 @@ public class CommentServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        int customerId = Integer.parseInt(request.getParameter("customerId"));
+        int productId = Integer.parseInt(request.getParameter("productId"));
+        int star = Integer.parseInt(request.getParameter("star"));
+        String comment = request.getParameter("comment");
+
+        ProductRatingDAO pDAO = new ProductRatingDAO();
+        pDAO.addProductRating(customerId, productId, star, comment);
+
+        response.sendRedirect("CommentServlet?productId=" + productId);
     }
 
     /**

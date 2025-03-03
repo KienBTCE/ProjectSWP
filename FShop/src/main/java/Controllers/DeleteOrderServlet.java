@@ -5,7 +5,11 @@
 package Controllers;
 
 import DAOs.OrderDAO;
+import java.util.List;
 import DAOs.OrderDetailDAO;
+import Models.Customer;
+import Models.Email;
+import Models.EmailUtils;
 import Models.OrderDetail;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -13,7 +17,6 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import java.util.List;
 
 /**
  *
@@ -75,15 +78,63 @@ public class DeleteOrderServlet extends HttpServlet {
             throws ServletException, IOException {
         String orderID = request.getParameter("orderID");
         OrderDAO oDAO = new OrderDAO();
-        if (orderID != null) {
-            oDAO.deleteOrder(Integer.parseInt(orderID));
-            OrderDetailDAO odDAO = new OrderDetailDAO();
-            List<OrderDetail> list = odDAO.getOrderDetail(orderID);
-            for (OrderDetail o : list) {
-                oDAO.plusQuantityAfterCancel(o.getProductID(), o.getQuantity());
+        int orderIdInt = Integer.parseInt(orderID);
+        Customer customer = oDAO.getCustomerByOrderId(orderIdInt);
+        oDAO.deleteOrder(Integer.parseInt(orderID));
+        OrderDetailDAO odDAO = new OrderDetailDAO();
+        List<OrderDetail> list = odDAO.getOrderDetail(orderID);
+        for (OrderDetail o : list) {
+            oDAO.plusQuantityAfterCancel(o.getProductID(), o.getQuantity());
+        }
+        System.out.println("Received Order ID: " + orderID);
+        sendCancellationEmail(customer, orderID, list);
+        response.sendRedirect(request.getContextPath() + "/ViewOrderListServlet");
+
+    }
+
+    private void sendCancellationEmail(Customer customer, String orderID, List<OrderDetail> orderItems) {
+        try {
+            Email email = new Email();
+            email.setFrom("kieuthy2004@gmail.com"); // Sender email
+            email.setFromPassword("xkkc ohwn aesf arqm"); // App Password for email
+            email.setTo(customer.getEmail()); // Customer email
+            email.setSubject("Order Cancellation Notification - Order #" + orderID);
+
+            StringBuilder sb = new StringBuilder();
+            sb.append("Dear ").append(customer.getFullName()).append(",<br><br>");
+            sb.append("We regret to inform you that your order <b>#").append(orderID)
+                    .append("</b> has been canceled. Below are the details:<br>");
+            sb.append("<b>Reason:</b> Order cancellation requested or inventory issue.<br><br>");
+            sb.append("<b>Order Details:</b><br>");
+            sb.append("<table border='1' cellspacing='0' cellpadding='5'>");
+            sb.append("<tr><th>Product</th><th>Quantity</th><th>Price</th><th>Total</th></tr>");
+
+            double totalRefund = 0;
+            for (OrderDetail item : orderItems) {
+                double itemTotal = item.getQuantity() * item.getPrice();
+                totalRefund += itemTotal;
+                sb.append("<tr>")
+                        .append("<td>").append(item.getProductName()).append("</td>")
+                        .append("<td>").append(item.getQuantity()).append("</td>")
+                        .append("<td>").append(String.format("%.02f", (double) item.getPrice())).append(" VND</td>")
+                        .append("<td>").append(String.format("%.02f", itemTotal)).append(" VND</td>")
+                        .append("</tr>");
             }
-            System.out.println("Received Order ID: " + orderID);
-            response.sendRedirect(request.getContextPath() + "/ViewOrderListServlet");
+
+            sb.append("</table><br>");
+            sb.append("<b>Total Refund Amount:</b> ").append(String.format("%.02f", totalRefund)).append(" VND<br>");
+            sb.append("If you have already made a payment, the refund will be processed shortly.<br><br>");
+            sb.append("For any further assistance, please contact our support team.<br><br>");
+            sb.append("Best Regards,<br>");
+            sb.append("<b>FShop</b>");
+
+            email.setContent(sb.toString());
+
+            // Send the email
+            EmailUtils.send(email);
+
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 

@@ -1,66 +1,90 @@
+/* Reset chung */
 body {
-    font-family: Arial, sans-serif;
+    font-family: 'Arial', sans-serif;
+    background-color: #f1f1f1;
     margin: 0;
     padding: 0;
-    background-color: #f1f1f1;
     display: flex;
 }
 
-#sidebarMenu {
-    width: 250px;
-    position: fixed;
-    top: 0;
-    left: 0;
-    height: 100vh;
-    overflow-y: auto;
-    border-right: 1px solid #ccc;
-    background-color: white;
-    padding-top: 20px;
+/* Bọc toàn bộ trang trong một flex container */
+.main-layout {
+    display: flex;
+    width: 100%;
 }
 
+/* Sidebar giữ nguyên thiết kế */
+.sidebar {
+    width: 250px; /* Đảm bảo width cố định */
+    height: 100vh; /* Chiều cao 100% viewport */
+    background: #FFFFFF;
+    color: black;
+    padding-top: 20px;
+    box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.3);
+    position: fixed; /* Giữ cố định */
+    left: 0;
+    top: 0;
+    z-index: 10;
+    border-radius: 10px;
+    margin-top: 10px;
+}
+
+/* Đảm bảo nội dung chính không bị đè */
+.main-content {
+    margin-left: 270px; /* Đẩy nội dung sang phải */
+    padding: 20px;
+    flex-grow: 1;
+    width: calc(100% - 270px); /* Không để nội dung bị tràn */
+}
+
+/* Container chính */
 .container {
-    margin-left: 260px;
-    flex: 1;
-    max-width: 900px;
+    max-width: 1000px;
     background: #fff;
     padding: 30px;
     border-radius: 10px;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-    margin-top: 20px;
-    display: flex;
-    flex-direction: column;
+    margin: 40px auto;
 }
 
-h2, h3 {
-    color: #343a40;
-    text-align: center;
-}
-
-.flex-container {
+/* Bố cục 2 phần */
+.order-layout {
     display: flex;
     justify-content: space-between;
+    align-items: flex-start;
+    flex-wrap: wrap;
 }
 
-.order-info, .customer-info {
-    padding: 20px;
+/* Bên trái: Order Details */
+.left-section {
+    flex: 2;
+    margin-right: 20px;
+}
+
+.order-info, .order-details {
     background: #fafafa;
+    padding: 20px;
     border-radius: 5px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     margin-bottom: 20px;
-    flex: 1; /* Chiếm không gian còn lại */
 }
 
-.actions {
-    margin-top: 20px;
-    margin-left: 20px; /* Khoảng cách giữa khu vực chi tiết và khu vực hành động */
-    flex: 0 0 200px; /* Chiều rộng cố định cho khu vực hành động */
-    background: #fafafa;
-    height: 250px;
+/* Bên phải: Customer Info & Manage Order */
+.right-section {
+    flex: 1;
+}
+
+.customer-info, .manage-order {
+    background: #fff;
     padding: 20px;
     border-radius: 5px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    border: 2px solid #007bff;
+    text-align: center;
+    margin-bottom: 20px;
 }
 
+/* Order Items */
 .order-details div {
     display: flex;
     justify-content: space-between;
@@ -71,58 +95,30 @@ h2, h3 {
     border: 1px solid #ddd;
 }
 
-.dropdown select, input[type="submit"] {
-    width: 100%;
-    padding: 12px;
-    border-radius: 5px;
-    border: 1px solid #ddd;
-    font-size: 16px;
-    margin-top: 10px;
-}
-
-.modal {
-    display: none;
-    position: fixed;
-    z-index: 1000;
-    left: 0;
-    top: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0, 0, 0, 0.4);
-    justify-content: center;
-    align-items: center;
-}
-
-.modal-content {
-    background-color: white;
-    padding: 20px;
-    border-radius: 5px;
-    text-align: center;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
-}
-
+/* Buttons */
 button {
-    padding: 10px 20px;
+    padding: 10px 15px;
     border: none;
     border-radius: 5px;
-    color: white;
-    cursor: pointer;
+    font-size: 14px;
     margin-top: 10px;
-    font-size: 16px;
 }
 
-.confirm-btn {
-    background-color: #e74c3c; /* Màu đỏ cho nút xóa */
+.btn-success {
+    background-color: #28a745;
+    color: white;
 }
 
-.confirm-btn:hover {
-    background-color: #c0392b; /* Màu đỏ tối hơn khi hover */
+.btn-danger {
+    background-color: #dc3545;
+    color: white;
 }
 
-.cancel-btn {
-    background-color: #4CAF50; /* Màu xanh cho nút hủy */
+.btn-secondary {
+    background-color: #6c757d;
+    color: white;
 }
 
-.cancel-btn:hover {
-    background-color: #45a049; /* Màu xanh tối hơn khi hover */
+button:hover {
+    opacity: 0.8;
 }

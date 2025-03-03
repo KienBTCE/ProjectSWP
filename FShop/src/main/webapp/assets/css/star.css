@@ -1,167 +1,130 @@
-body {
-    min-height: 100vh;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    padding: 20px 0;
-    background-color: #f8f9fa; /* Thay đổi màu nền */
-}
+       body {
+            font-family: Arial, sans-serif;
+            background-color: #f8f9fa;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
 
-.form-css {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    width: 600px; 
-    align-items: flex-start;
-    border: 1px solid #dee2e6; 
-    border-radius: 8px;
-    padding: 20px;
-    box-sizing: border-box;
-    background-color: #ffffff;
-    box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.1);
-    margin-bottom: 15px; 
-    transition: transform 0.2s; /* Hiệu ứng hover */
-}
+        .container {
+            width: 60%;
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+        }
 
-.form-css:hover {
-    transform: scale(1.02); /* Phóng to nhẹ khi hover */
-}
+        .header {
+            text-align: center;
+            margin-bottom: 20px;
+            font-size: 24px;
+            font-weight: bold;
+        }
 
-.profile {
-    display: flex;
-    align-items: center;
-    width: 100%;
-    margin-bottom: 10px;
-}
+        .form-css {
+            background: #fff;
+            border: 1px solid #ddd;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
 
-img {
-    width: 50px; 
-    height: 50px;
-    border-radius: 50%; 
-    margin-right: 10px;
-}
+        .profile {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+        }
 
-h4 {
-    margin: 0;
-    font-size: 16px;
-    color: #343a40; /* Màu chữ tối hơn */
-}
+        .profile img {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            margin-right: 10px;
+        }
 
-.star-icon {
-    display: flex;
-    margin: 10px 0;
-}
+        .rating-css {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+        }
 
-.fa-star {
-    font-size: 20px;
-    color: #ccc;
-}
+        .star-icon {
+            font-size: 20px;
+            color: #ccc;
+        }
 
-.checked {
-    color: #ffe400 !important;
-}
+        .checked {
+            color: #ffcc00;
+        }
 
-textarea {
-    width: 100%;
-    height: 120px;
-    padding: 10px;
-    border-radius: 5px;
-    border: 1px solid #ced4da; /* Màu sắc nhẹ nhàng hơn */
-    margin-top: 10px;
-    resize: none;
-    font-size: 14px;
-}
+        /* Reply Section */
+        .reply-container {
+            display: flex;
+            align-items: center;
+            margin-left: 30px;
+            padding: 10px;
+            background: #f1f1f1;
+            border-radius: 5px;
+        }
 
-button {
-    width: 100%;
-    padding: 10px;
-    background-color: #28a745; /* Màu xanh lá cây */
-    color: white;
-    border: none; /* Bỏ viền */
-    border-radius: 5px;
-    cursor: pointer;
-    transition: background 0.3s ease;
-    margin-top: 10px;
-}
+        .reply-img {
+            width: 20px;
+            height: 20px;
+            margin-right: 10px;
+        }
 
-button:hover {
-    background-color: #218838; /* Màu tối hơn khi hover */
-}
+        /* Form đánh giá */
+        textarea {
+            width: 100%;
+            height: 100px;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            margin-top: 10px;
+        }
 
-.reply-container {
-    display: flex;
-    flex-direction: column;  
-    align-items: flex-start;
-    gap: 10px;
-    width: 100%;
-    max-width: 500px;
-    margin-top: 10px;
-/*    border-radius: 8px;
-    border: 1px solid #dee2e6;  Màu sắc nhẹ nhàng hơn */
-    padding: 10px; /* Thêm padding */
-}
+        button {
+            background-color: #28a745;
+            color: white;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 10px;
+        }
 
-.reply-img {
-    width: 30px;
-    height: 30px;
-    object-fit: cover;
-    align-self: flex-start; 
-}
+        button:hover {
+            background-color: #218838;
+        }
 
-.formReply-css {
-    width: 100%; 
-    border: 1px solid #dee2e6; /* Màu sắc nhẹ nhàng hơn */
-    border-radius: 8px;
-    padding: 10px;
-    background-color: #ffffff;
-    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
-}
+        /* Style for star selection in form */
+        .star-rating {
+            display: flex;
+            flex-direction: row-reverse;
+            justify-content: center;
+            font-size: 24px;
+            margin-bottom: 10px;
+        }
 
-.comment {
-    border: 1px solid #dee2e6; 
-    width: 600px;
-    border-radius: 8px;
-    padding: 10px; /* Thêm padding */
-    background-color: #ffffff; /* Màu nền trắng */
-}
-.rating-css div{
-    margin-left: 25%;
-    color: #ffe400;
-}
-.rating-css input {
-    display: none;
-}
-.rating-css input + label {
-    text-shadow: 1px 1px;
-    cursor: pointer;
-}
-.rating-css input:checked + label ~ label{
-    color: #838383;
-}
-.rating-css label:active{
-    transform: scale(0.7);
-    transition: 0.3s ease;
-}
-.box {
-    width: 550px;
-    height: 50px;
-  
-}
-.box1 {
-    display: inline-flex;
-    margin: 5%;
-    position: relative;
-    top: 10px;
-    left: 10px;
-    z-index: 2;
-}
+        .star-rating input {
+            display: none;
+        }
 
-.box2 {
-    display: inline-flex;
-    width: 550px;
-    margin: 1%;
-    position: relative;
-    top: 10px;
-   
-    z-index: 1; 
-}
+        .star-rating label {
+            cursor: pointer;
+            color: #ccc;
+        }
+
+        .star-rating label:hover,
+        .star-rating label:hover ~ label,
+        .star-rating input:checked ~ label {
+            color: #ffcc00;
+        }
+
+        .rating-label {
+            text-align: center;
+            font-weight: bold;
+            display: block; 
+            font-size: 18px;
+            margin: 10px 0;
+        }

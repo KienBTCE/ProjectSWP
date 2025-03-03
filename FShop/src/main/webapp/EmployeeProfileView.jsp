@@ -7,13 +7,47 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>Employee Profile Page</title>
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
         <style>
             body {
                 background-color: #f8f9fa;
             }
 
+            .sidebar {
+                width: 100%;
+                height: 97vh;
+                background: #FFFFFF;
+                color: black;
+                padding-top: 20px;
+                box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.3);
+                transform: translateZ(0);
+                position: relative;
+                border-radius: 10px;
+                margin-top: 10px;
+            }
+
+            .sidebar a {
+                color: #7A7D90;
+                text-decoration: none;
+                padding: 10px;
+                display: block;
+            }
+
+            .sidebar a:hover {
+                background: #7D69FF;
+                color: white;
+                width: 90%;
+                font-weight: bold;
+
+                border-top-right-radius: 10px;
+                border-bottom-right-radius: 10px;
+                border-top-left-radius: 0;
+                border-bottom-left-radius: 0;
+
+            }
 
             .head {
+                margin-top: 10px;
                 display: flex;
                 justify-content: right;
                 align-items: center;
@@ -109,7 +143,33 @@
         <div class="container-fluid">
             <div class="row">
                 <div class="col-md-2">
-                    <%-- nho gan them slidebar cho tung role --%>
+                    <div class="sidebar">
+                        <c:if test="${sessionScope.employee.getRoleId() == 1}">
+                            <img src="assets/imgs/Dashboard/Group 1521.svg" class="logo-side-bar">
+                            <h6><a href="#">Admin</a></h6>
+                            <a href="Employee">Employee Management</a>
+                            <a href="#">Statistic Management</a>
+                        </c:if>
+                        <c:if test="${sessionScope.employee.getRoleId() == 2}">
+                            <img src="assets/imgs/Dashboard/Group 1521.svg" class="logo-side-bar">
+                            <h6><a href="#">Shop Manager</a></h6>
+                            <a href="#">... Management</a>
+                            <a href="#">... Management</a>
+                        </c:if>
+                        <c:if test="${sessionScope.employee.getRoleId() == 3}">
+                            <img src="assets/imgs/Dashboard/Group 1521.svg" class="logo-side-bar">
+                            <h6><a href="#">Order Manager</a></h6>
+                            <a href="#">... Management</a>
+                            <a href="#">... Management</a>
+                        </c:if>
+                        <c:if test="${sessionScope.employee.getRoleId() == 4}">
+                            <img src="assets/imgs/Dashboard/Group 1521.svg" class="logo-side-bar">
+                            <h6><a href="#">Warehouse Manager</a></h6>
+                            <a href="#">... Management</a>
+                            <a href="#">... Management</a>
+                        </c:if>
+                        <a style="margin-top: auto; color: red;" href="" onclick="confirmLogout()"><i class="bi bi-box-arrow-right"></i> Logout</a>
+                    </div>
                 </div>
                 <div class="col-md-10">
                     <div class="head">
@@ -122,7 +182,7 @@
                                     <img style="float: left; margin-right: 15px;" class="icon_head" src="assets/imgs/EmployeeAvatar/defauft_avatar.jpg" alt="Avatar">
                                 </c:otherwise>
                             </c:choose>
-                            <p style="display: flex; margin: 12px 0 0 0;">Hi, ${sessionScope.employee.getFullname()}</p>
+                            <a href="/ViewEmployeeProfile" style="display: flex; margin: 12px 0 0 0; text-decoration: none;">Hi, ${sessionScope.employee.getFullname()}</a>
                         </div>
                     </div>
                     <form action="UpdateEmployeeProfile" method="post" enctype="multipart/form-data" onsubmit="return validateForm()">
@@ -212,12 +272,17 @@
                     <button onclick="closePopup()">Close</button>
                 </div>
             </div>
-            <%
-                session.removeAttribute("empromess");
-            %>
+            <c:remove scope="session" var="empromess"/>
+
         </c:if>
 
         <script>
+            function confirmLogout() {
+                if (confirm("Are you sure you want to log out?")) {
+                    // Chuyển hướng tới trang logout hoặc gọi API logout
+                    window.location.href = "/Logout";
+                }
+            }
             function closePopup() {
                 document.getElementById("Popup").style.display = "none";
             }

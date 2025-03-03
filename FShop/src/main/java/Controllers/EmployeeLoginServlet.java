@@ -85,17 +85,15 @@ public class EmployeeLoginServlet extends HttpServlet {
             if(em.getStatus() == 1){
                 session.setAttribute("employee", em);
                 if(em.getRoleId() == 1){
-                    session.setAttribute("message", "Admin");
-                    response.sendRedirect("/EmployeeLogin");//Link qua Admin
+                    response.sendRedirect("/Employee");//Link qua Admin
                 } else if(em.getRoleId() == 2){
-                    session.setAttribute("message", "Shop Managers");
-                    response.sendRedirect("/EmployeeLogin");//Link qua Shop Manager
+                    //session.setAttribute("message", "Shop Managers");
+                    response.sendRedirect("/ProductListServlet");//Link qua Shop Manager
                 } else if(em.getRoleId() == 3){
-                    session.setAttribute("message", "Order Manager");
-                    response.sendRedirect("/EmployeeLogin");//Link qua Order Manager
+                    response.sendRedirect("/ViewOrderListServlet");//Link qua Order Manager
                 } else if(em.getRoleId() == 4){
                     session.setAttribute("message", "Warehouse Manager");
-                    response.sendRedirect("/Warehouse");//Link qua Warehouse Manager
+                    response.sendRedirect("/Supplier");//Link qua Warehouse Manager
                 } else{
                     processRequest(request, response);//ko có roleId thì error
                 }
@@ -110,8 +108,6 @@ public class EmployeeLoginServlet extends HttpServlet {
             session.setAttribute("message", "Wrong password or email!");//sai tài kho?n m?t kh?u thì tr? v? null
             response.sendRedirect("/EmployeeLogin");
         }
-        
-        
         
     }
 

@@ -23,6 +23,7 @@ public class Product {
     private String fullName;
     private String description;
     private int deleted;
+
     private long price;
     private String image;
     private int quantity;
@@ -31,6 +32,22 @@ public class Product {
     private HashMap<String, String> attributes;
 
     public Product() {
+    }
+
+    public Product(String model, int deleted, int stock) {
+        this.model = model;
+        this.deleted = deleted;
+        this.stock = stock;
+    }
+
+    public Product(int productId, String categoryName, String brandName, String model, String fullName, long price, int stock) {
+        this.productId = productId;
+        this.categoryName = categoryName;
+        this.brandName = brandName;
+        this.model = model;
+        this.fullName = fullName;
+        this.price = price;
+        this.stock = stock;
     }
 
     public Product(int productId, int brandId, int categoryId, String model, String fullName, String description, int deleted, long price, String image, int quantity, int stock) {
@@ -103,6 +120,26 @@ public class Product {
         this.image = image;
     }
 
+    public Product(int productId, String model, String fullName, int deleted, long price, int stock) {
+        this.productId = productId;
+        this.model = model;
+        this.fullName = fullName;
+        this.deleted = deleted;
+        this.price = price;
+        this.stock = stock;
+    }
+    //create product
+    public Product(int productId, String categoryName, String brandName, String model, String fullName, int deleted, long price, int stock) {
+        this.productId = productId;
+        this.categoryName = categoryName;
+        this.brandName = brandName;
+        this.model = model;
+        this.fullName = fullName;
+        this.deleted = deleted;
+        this.price = price;
+        this.stock = stock;
+    }
+
     public void setCategoryName(String categoryName) {
         this.categoryName = categoryName;
     }
@@ -167,6 +204,8 @@ public class Product {
         return deleted;
     }
 
+
+
     public Product(int productId, String model, String fullName, String description, int deleted, long price, String image, int stock) {
         this.productId = productId;
         this.model = model;
@@ -177,7 +216,6 @@ public class Product {
         this.image = image;
         this.stock = stock;
     }
-
 
     public void setDeleted(int deleted) {
         this.deleted = deleted;

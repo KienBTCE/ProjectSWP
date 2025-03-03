@@ -119,7 +119,13 @@
                     </c:choose>
                 </table>
                 <div class="image-container">
-                    <img src="assets/imgs/Products/${product.getImage()}" class="product-image" alt="${product.getFullName()}"/>
+                    <c:set var="imagePath" value="${product.image}" />
+                    <c:if test="${not empty imagePath}">
+                        <img src="<c:out value='${pageContext.request.contextPath}'/>/assets/imgs/Products/<c:out value='${imagePath}'/>" 
+                             class="product-image" 
+                             alt="${product.fullName}" 
+                             width="150" height="150"/>
+                    </c:if>
                 </div>
             </div>
             <a href="ProductListServlet" class="btn-back">Back to List</a>

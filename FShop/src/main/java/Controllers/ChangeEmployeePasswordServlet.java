@@ -4,20 +4,25 @@
  */
 package Controllers;
 
-import DAOs.BrandDAO;
-import Models.Brand;
+import DAOs.CustomerDAO;
+import DAOs.EmployeeDAO;
+import Models.Customer;
+import Models.Employee;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
+import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 
 /**
  *
- * @author kiuth
+ * @author TuongMPCE180644
  */
-public class BrandServlet extends HttpServlet {
+@WebServlet(name = "UpdateEmployeePasswordServlet", urlPatterns = {"/ChangeEmployeePassword"})
+public class ChangeEmployeePasswordServlet extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -36,10 +41,10 @@ public class BrandServlet extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet BrandServlet</title>");
+            out.println("<title>Servlet ChangeEmployeePasswordServlet</title>");
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet BrandServlet at " + request.getContextPath() + "</h1>");
+            out.println("<h1>Servlet UpdateEmployeePasswordServlet at " + request.getContextPath() + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }
@@ -57,7 +62,7 @@ public class BrandServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        request.getRequestDispatcher("ChangeEmployeePasswordView.jsp").forward(request, response);
     }
 
     /**
@@ -71,15 +76,35 @@ public class BrandServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        String brandName = request.getParameter("brandName");
-        BrandDAO brandDAO = new BrandDAO();
 
-        if (brandName != null && !brandName.trim().isEmpty()) {
-            Brand newBrand = new Brand(0, brandName);
-            brandDAO.createBrand(newBrand);
+        System.out.println("Current Password param: " + request.getParameter("current"));
+        System.out.println("New Password param: " + request.getParameter("new"));
+
+        String currentPassword = request.getParameter("current");
+        String newPassword = request.getParameter("new");
+
+        System.out.println(currentPassword);
+        System.out.println(newPassword);
+        HttpSession session = request.getSession();
+        Employee em = (Employee) session.getAttribute("employee");
+        if (em == null) {
+            response.sendRedirect("/EmployeeLogin");
+        } else {
+            EmployeeDAO emDAO = new EmployeeDAO();
+            if (emDAO.checkPassword(em.getEmployeeId(), currentPassword) == 1) {
+                if (emDAO.changePassword(em.getEmployeeId(), newPassword) == 1) {
+                    session.setAttribute("empromess", "Change Password Success");
+                    response.sendRedirect("/ViewEmployeeProfile");
+                } else {
+                    session.setAttribute("empromess", "Change Password Fail!");
+                    request.getRequestDispatcher("ChangeEmployeePasswordView.jsp").forward(request, response);
+                }
+            } else {
+                session.setAttribute("empromess", "Current Password is not correct!");
+                request.getRequestDispatcher("ChangeEmployeePasswordView.jsp").forward(request, response);
+            }
         }
-
-        response.sendRedirect("CategoryAndBrand.jsp");
+        
     }
 
     /**

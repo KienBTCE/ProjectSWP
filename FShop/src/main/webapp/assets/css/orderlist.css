@@ -1,85 +1,90 @@
+/* Reset chung */
+body {
+    font-family: 'Arial', sans-serif;
+    background-color: #f4f4f4;
+    margin: 0;
+    padding: 0;
+    display: flex;
+}
 
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #f4f4f4;
-            margin: 0;
-            padding: 0;
-        }
+/* Bọc toàn bộ trang trong một flex container */
+.main-layout {
+    display: flex;
+    width: 100%;
+}
 
-        header {
-            background-color: #000; /* Màu xanh lá cây */
-            color: white;
-            padding: 15px;
-            text-align: center;
-            border-radius: 8px 8px 0 0; /* Bo góc cho header */
-        }
+/* Sidebar giữ nguyên theo thiết kế */
+.sidebar {
+    width: 250px;
+    height: 97vh;
+    background: #FFFFFF;
+    color: black;
+    padding-top: 20px;
+    box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.3);
+    position: fixed;
+    left: 0;
+    top: 0;
+    z-index: 10;
+    border-radius: 10px;
+    margin-top: 10px;
+}
 
-        .container {
-            max-width: 1200px;
-            margin: 20px auto;
-            padding: 20px;
-            background-color: white;
-            box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
-            border-radius: 8px; /* Bo góc cho container */
-        }
+/* Đảm bảo nội dung không bị đè lên */
+.content {
+    flex-grow: 1;
+    margin-left: 270px; /* Để tránh bị đè */
+    padding: 20px;
+    width: calc(100% - 270px); /* Đảm bảo nội dung có đủ không gian */
+}
 
-        .order-container {
-            display: flex;
-            flex-wrap: wrap; /* Cho phép các card xếp chồng lên nhau */
-            justify-content: space-between; /* Căn giữa các card */
-        }
+/* Header */
+header {
+    background-color: #000;
+    color: white;
+    padding: 15px;
+    border-radius: 8px 8px 0 0;
+    font-size: 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
 
-        .order-card {
-            border: 1px solid #ddd;
-            border-radius: 8px;
-            padding: 15px;
-            margin: 10px;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-            background-color: #fff;
-            flex: 1 1 calc(30% - 20px); /* Chiều rộng của mỗi card */
-            transition: transform 0.2s;
-        }
+/* Thanh tìm kiếm */
+.search-container {
+    display: flex;
+    align-items: center;
+}
 
-        .order-card:hover {
-            transform: scale(1.02); /* Phóng to nhẹ khi hover */
-        }
+/* Order container */
+.order-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+}
 
-        .status {
-            padding: 5px;
-            text-align: center;
-            font-weight: bold;
-            border-radius: 5px; /* Bo góc cho trạng thái */
-        }
+/* Order Card */
+.order-card {
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    padding: 20px;
+    margin: 10px;
+    background-color: #fff;
+    flex: 1 1 calc(30% - 20px);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
 
-        .status.waiting {
-            background-color: #ffcc00; /* Màu vàng */
-        }
+.order-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+}
 
-        .status.packaging {
-            background-color: #f39c12; /* Màu cam */
-        }
-
-        .status.waiting-delivery {
-            background-color: #3498db; /* Màu xanh dương */
-            color: white;
-        }
-
-        .status.delivered {
-            background-color: #2ecc71; /* Màu xanh lá cây */
-            color: white;
-        }
-
-        .status.cancelled {
-            background-color: #e74c3c; /* Màu đỏ */
-            color: white;
-        }
-
-        a {
-            text-decoration: none;
-            color: #007BFF; /* Màu xanh dương */
-        }
-
-        a:hover {
-            color: #0056b3; /* Màu tối hơn khi hover */
-        }
- 
+/* Trạng thái đơn hàng */
+.order-status .status {
+    display: inline-block;
+    padding: 8px 12px;
+    font-size: 14px;
+    font-weight: bold;
+    border-radius: 5px;
+    margin-top: 10px;
+}

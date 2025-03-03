@@ -66,6 +66,28 @@ public class OrderDetailDAO {
         }
         return list;
     }
+ public List<Integer> getCustomerByProductID(int productID) {
+        List<Integer> list = new ArrayList<>();
+        String query = "SELECT DISTINCT c.CustomerID FROM Orders AS o " +
+                     "JOIN Customers AS c ON c.CustomerID = o.CustomerID " +
+                     "JOIN OrderDetails AS od ON od.OrderID = o.OrderID " +
+                     "WHERE od.ProductID = ? AND o.Status = 5"; // Chỉ lấy đơn hàng hoàn tất
+
+        try {
+            PreparedStatement pre = connector.prepareStatement(query);
+            pre.setInt(1, productID); // Gán tham số ProductID vào câu SQL
+            ResultSet rs = pre.executeQuery();
+            
+            while (rs.next()) {
+                list.add(rs.getInt("CustomerID")); 
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return list;
+    }
+
+    
 
     public static void main(String[] args) {
         OrderDetailDAO od = new OrderDetailDAO();

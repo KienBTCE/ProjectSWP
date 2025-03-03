@@ -12,6 +12,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.List;
+import java.util.jar.Attributes.Name;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -173,8 +175,8 @@ public class ProductDAO {
                         rs.getInt("isDeleted") // Tránh lỗi nếu DB lưu isDeleted dưới dạng INT
                 ));
             }
-        } catch (SQLException e) {
-            e.printStackTrace(); // In lỗi rõ ràng để debug
+        } catch (SQLException ex) {
+            Logger.getLogger(ProductDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
         return list;
     }
@@ -204,20 +206,21 @@ public class ProductDAO {
                         rs.getString("Model"),
                         rs.getString("FullName"),
                         rs.getString("Description"),
-                        rs.getInt("Stock"),
+                        rs.getInt("isDeleted"),
                         rs.getLong("Price"),
                         rs.getString("Image"),
-                        rs.getInt("isDeleted")
+                        rs.getInt("Stock")
                 );
             }
             return s;
-        } catch (SQLException e) {
-            System.out.println(e);
+        } catch (SQLException ex) {
+            Logger.getLogger(ProductDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
 
         return s;
     }
 
+    //delete product - shop manager
     public int deleteProduct(int productId) {
         int count = 0;
         try {
@@ -233,6 +236,7 @@ public class ProductDAO {
         return count;
     }
 
+    //restore product - shop manager
     public int restoreProduct(int productId) {
         int count = 0;
         try {
@@ -249,47 +253,32 @@ public class ProductDAO {
     }
 
     public int createProduct(Product p) {
-        try {
-            // Chèn sản phẩm vào bảng Products
-            String query = "INSERT INTO Products (Model, FullName, Description, Price, Image, Stock, IssDeleted) "
-                    + "VALUES ( ?, ?, ?, ?, ?, ?)";
+        int count = 0;
+        String query = "INSERT INTO Products (Model, FullName, IsDeleted, Price, Stock, BrandID, CategoryID) "
+                + "VALUES (?, ?, 1, ?, ?, "
+                + "(SELECT BrandID FROM Brands WHERE Name = ?), "
+                + "(SELECT CategoryID FROM Categories WHERE Name = ?))";
 
+        try {
             PreparedStatement ps = connector.prepareStatement(query);
+
             ps.setString(1, p.getModel());
             ps.setString(2, p.getFullName());
-            ps.setString(3, p.getDescription());
-            ps.setLong(4, p.getPrice());
-            ps.setString(5, p.getImage());
-            ps.setInt(6, p.getStock());
-            ps.setInt(7, p.getDeleted());
+//            ps.setInt(3, p.getDeleted());
+            ps.setLong(3, p.getPrice());
+            ps.setInt(4, p.getStock());
+            ps.setString(5, p.getBrandName());
+            ps.setString(6, p.getCategoryName());
 
-            return ps.executeUpdate();
-        } catch (SQLException e) {
-            System.out.println(e);
+            count = ps.executeUpdate();
+        } catch (SQLException ex) {
+            ex.printStackTrace(); // In lỗi ra console
+            Logger.getLogger(ProductDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
-        return 0;
+        return count;
     }
 
-//    //update product - shop manager
-//    public int updateProduct(Product p) {
-//        try {
-//            String query = "UPDATE Products SET Model=?, FullName=?, Description=?, Price=?, Image=?, Stock=? IsDeleted=? WHERE ProductID =?";
-//            PreparedStatement ps = connector.prepareStatement(query);
-//            ps.setInt(1, p.getProductId());
-//            ps.setString(2, p.getModel());
-//            ps.setString(3, p.getFullName());
-//            ps.setString(4, p.getDescription());
-//            ps.setLong(5, p.getPrice());
-//            ps.setString(6, p.getImage());
-//            ps.setInt(7, p.getStock());
-//            ps.setInt(8, p.getDeleted());
-//            return ps.executeUpdate();
-//        } catch (SQLException e) {
-//            System.out.println(e);
-//        }
-//
-//        return 0;
-//    }
+    //update product - shop manager
     public int updateProduct(Product p) {
         String query = "UPDATE Products SET FullName=?, Description=?, Price=?, Image=?, IsDeleted=? WHERE ProductID=?";
 
@@ -302,10 +291,42 @@ public class ProductDAO {
             ps.setInt(6, p.getProductId());
 
             return ps.executeUpdate(); // Trả về số dòng bị ảnh hưởng
-        } catch (SQLException e) {
-            e.printStackTrace();
+        } catch (SQLException ex) {
+            Logger.getLogger(ProductDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
         return 0;
     }
 
+    public List<Product> searchProductByName(String keyword) {
+        List<Product> list = new ArrayList<>();
+        String query = "SELECT sp.ProductID, c.Name AS CategoryName, b.Name AS BrandName, "
+                + "sp.FullName, sp.Price, sp.Image, sp.Stock, sp.isDeleted, sp.Description, sp.Model "
+                + "FROM Products sp "
+                + "JOIN Categories c ON sp.CategoryID = c.CategoryID "
+                + "JOIN Brands b ON sp.BrandID = b.BrandID "
+                + "WHERE sp.FullName LIKE ?";
+
+        try ( PreparedStatement ps = connector.prepareStatement(query)) {
+            ps.setString(1, "%" + keyword + "%");
+
+            try ( ResultSet rs = ps.executeQuery()) {
+                while (rs.next()) {
+                    list.add(new Product(
+                            rs.getInt("ProductID"),
+                            rs.getString("CategoryName"),
+                            rs.getString("BrandName"),
+                            rs.getString("FullName"),
+                            rs.getLong("Price"),
+                            rs.getInt("Stock"),
+                            rs.getInt("isDeleted")
+                    ));
+                }
+
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(ProductDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        return list;
+    }
 }
