@@ -11,6 +11,7 @@ package Models;
 public class Brand {
 
     private int brandId;
+    private String name;
 
     public Brand(int brandId, String name) {
         this.brandId = brandId;
@@ -32,5 +33,5 @@ public class Brand {
     public void setName(String name) {
         this.name = name;
     }
-    private String name;
+
 }

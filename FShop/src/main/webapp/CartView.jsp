@@ -132,77 +132,79 @@
                                                                 </div>-->
                                 </div>
                             </div>
-                            <div class="col-md-4 right">
-                                <h3>Summary</h3>
-                                <div>
+                            <div class="col-md-4 right" style="background: white;">
+                                <div style="background: #f5f7ff; padding: 20px 10px 10px 10px;" >
+                                    <h3>Summary</h3>
+                                    <div>
 
-                                </div>
-                                <div>
-                                    <!--                            <div class="tax">
-                                                                    <p>Apply Discount Code</p>
-                                                                    <button onclick="toggleDisplay('detail2')"
-                                                                            style="width: 10%; border: white solid; border-radius: 30px; height: auto;"><svg
-                                                                            width="16" height="15" viewBox="0 0 16 15" fill="none"
-                                                                            xmlns="http://www.w3.org/2000/svg">
-                                                                        <path d="M6 9.20209L8 7.20209L10 9.20209" stroke="black" stroke-width="1.6"
-                                                                              stroke-linecap="round" />
-                                                                        </svg>
-                                                                    </button>
-                                                                </div>
-                                                                <div id="detail2" style="display: none; color: gray;">
-                                                                    <div>
-                                                                        <form action="" class="discount">
-                                                                            <div class="form-group">
-                                                                                <div class="control-label" style="text-align: left;">Enter discount code
-                                                                                </div>
-                                                                                <div class="">
-                                                                                    <input type="text" class="form-control" value="" required
-                                                                                           placeholder="Enter Discount code" />
-                                                                                </div>
-                                                                            </div>
-                                                                            <button type="submit"
-                                                                                    style="background-color: white; border: #0156ff solid 1px; color: #0156ff;">Apply
-                                                                                Discount</button>
-                                                                        </form>
+                                    </div>
+                                    <div>
+                                        <!--                            <div class="tax">
+                                                                        <p>Apply Discount Code</p>
+                                                                        <button onclick="toggleDisplay('detail2')"
+                                                                                style="width: 10%; border: white solid; border-radius: 30px; height: auto;"><svg
+                                                                                width="16" height="15" viewBox="0 0 16 15" fill="none"
+                                                                                xmlns="http://www.w3.org/2000/svg">
+                                                                            <path d="M6 9.20209L8 7.20209L10 9.20209" stroke="black" stroke-width="1.6"
+                                                                                  stroke-linecap="round" />
+                                                                            </svg>
+                                                                        </button>
                                                                     </div>
-                                                                </div>-->
-                                </div>
+                                                                    <div id="detail2" style="display: none; color: gray;">
+                                                                        <div>
+                                                                            <form action="" class="discount">
+                                                                                <div class="form-group">
+                                                                                    <div class="control-label" style="text-align: left;">Enter discount code
+                                                                                    </div>
+                                                                                    <div class="">
+                                                                                        <input type="text" class="form-control" value="" required
+                                                                                               placeholder="Enter Discount code" />
+                                                                                    </div>
+                                                                                </div>
+                                                                                <button type="submit"
+                                                                                        style="background-color: white; border: #0156ff solid 1px; color: #0156ff;">Apply
+                                                                                    Discount</button>
+                                                                            </form>
+                                                                        </div>
+                                                                    </div>-->
+                                    </div>
 
-                                <svg width="385" height="2" viewBox="0 0 385 2" fill="none"
-                                     xmlns="http://www.w3.org/2000/svg">
-                                <path d="M0 1.00003L385 0.999997" stroke="#CACDD8" />
-                                </svg>
-                                <div>
-                                    <div class="totalPrice">
-                                        <p>Subtotal</p>
-                                        <p><fmt:formatNumber value="${total}" type="currency" /></p>
+                                    <svg width="385" height="2" viewBox="0 0 385 2" fill="none"
+                                         xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M0 1.00003L385 0.999997" stroke="#CACDD8" />
+                                    </svg>
+                                    <div >
+                                        <div class="totalPrice">
+                                            <p>Subtotal</p>
+                                            <p><fmt:formatNumber value="${total}" type="currency" /></p>
+                                        </div>
+                                        <!--                            <div class="totalPrice">
+                                                                        <p>Shipping</p>
+                                                                        <p><fmt:formatNumber value="30000" type="currency" /></p>
+                                                                    </div>-->
+                                        <div class="totalPrice">
+                                            <p>Order Total</p>
+                                            <h4><fmt:formatNumber value="${total}" type="currency" /></h4>
+                                        </div>
                                     </div>
-                                    <!--                            <div class="totalPrice">
-                                                                    <p>Shipping</p>
-                                                                    <p><fmt:formatNumber value="30000" type="currency" /></p>
-                                                                </div>-->
-                                    <div class="totalPrice">
-                                        <p>Order Total</p>
-                                        <h4><fmt:formatNumber value="${total}" type="currency" /></h4>
+                                    <div class="btnSummary">
+                                        <c:if test="${cartList.isEmpty()}">
+                                            <button type="button"
+                                                    style="background-color: #0156ff; border: #0156ff solid 1px; color: white;"
+                                                    id="checkout" disabled>Proceed
+                                                to
+                                                Checkout
+                                            </button>
+                                        </c:if>
+                                        <c:if test="${!cartList.isEmpty()}"> 
+                                            <button type="button"
+                                                    style="background-color: #0156ff; border: #0156ff solid 1px; color: white;"
+                                                    id="checkout">Proceed
+                                                to
+                                                Checkout
+                                            </button>
+                                        </c:if>
                                     </div>
-                                </div>
-                                <div class="btnSummary">
-                                    <c:if test="${cartList.isEmpty()}">
-                                        <button type="button"
-                                                style="background-color: #0156ff; border: #0156ff solid 1px; color: white;"
-                                                id="checkout" disabled>Proceed
-                                            to
-                                            Checkout
-                                        </button>
-                                    </c:if>
-                                    <c:if test="${!cartList.isEmpty()}"> 
-                                        <button type="button"
-                                                style="background-color: #0156ff; border: #0156ff solid 1px; color: white;"
-                                                id="checkout">Proceed
-                                            to
-                                            Checkout
-                                        </button>
-                                    </c:if>
                                 </div>
                             </div>
                         </c:if>

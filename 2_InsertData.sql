@@ -80,11 +80,24 @@ INSERT INTO OrderDetails VALUES (1, 1, 3, 50000000);
 
 -- Insert Employees
 SET IDENTITY_INSERT Employees ON;
+<<<<<<< HEAD
+INSERT INTO Employees (EmployeeID, FullName, Birthday, [Password], PhoneNumber, Email, Gender, CreatedDate, Status,Avatar, RoleID) VALUES
+(1, 'Nguyen Van A', '1990-01-01', 'encrypted_password_here', '0123456789', 'nguyen.vana@example.com', 'Male', GETDATE(), 1,'Employee01.png', 1),
+(2, 'Nguyen Van B', '1990-01-01', 'encrypted_password_here', '0123456788', 'nguyen.vanb@example.com', 'Male', GETDATE(), 1,'Employee02.png', 4),
+(3, 'Tran Thi C', '1995-03-15', 'encrypted_password_here', '0123456787', 'tran.thic@example.com', 'Female', GETDATE(), 1, 'Employee03.png', 2),
+(4, 'Pham Van D', '1988-07-21', 'encrypted_password_here', '0123456786', 'pham.vand@example.com', 'Male', GETDATE(), 1, 'Employee04.png', 3),
+(5, 'Le Thi E', '1992-11-05', 'encrypted_password_here', '0123456785', 'le.thie@example.com', 'Female', GETDATE(), 1, 'Employee05.png', 2),
+(6, 'Hoang Van F', '1993-04-12', 'encrypted_password_here', '0123456784', 'hoang.vanf@example.com', 'Male', GETDATE(), 1, 'Employee06.png', 4),
+(7, 'Nguyen Thi G', '1994-08-30', 'encrypted_password_here', '0123456783', 'nguyen.thig@example.com', 'Female', GETDATE(), 1, 'Employee07.png', 3),
+(8, 'Do Van H', '1989-06-18', 'encrypted_password_here', '0123456782', 'do.vanh@example.com', 'Male', GETDATE(), 1, 'Employee08.png', 1),
+(9, 'Tran Hoang Nam', '1989-06-18', 'encrypted_password_here', '0123456782', 'tranhoangnam@example.com', 'Male', GETDATE(), 0, 'Employee09.png', 1);
+=======
 INSERT INTO Employees (EmployeeID, FullName, Birthday, [Password], PhoneNumber, Email, Gender, [Status], CreatedDate, Avatar, RoleID) VALUES
 (1, 'Nguyen Van A', '1990-01-01', '36fdba5968850579c0a89444f4ca4772', '0123456789', 'nguyenvana@example.com', 'Male', 1, GETDATE(), '', 1), -- Password là: User123@
 (2, 'Nguyen Van B', '1990-01-01', '36fdba5968850579c0a89444f4ca4772', '0123456788', 'nguyenvanb@example.com', 'Male', 1, GETDATE(), '', 2), -- Password là: User123@
 (3, 'Nguyen Van C', '1990-01-01', '36fdba5968850579c0a89444f4ca4772', '0123456789', 'nguyenvanc@example.com', 'Male', 1, GETDATE(), '', 3), -- Password là: User123@
 (4, 'Nguyen Van D', '1990-01-01', '36fdba5968850579c0a89444f4ca4772', '0123456789', 'nguyenvand@example.com', 'Male', 1, GETDATE(), '', 4); -- Password là: User123@
+>>>>>>> 5c7f2e99436400027ee9ff49d4363fda5d0fa9b9
 SET IDENTITY_INSERT Employees OFF;
 
 -- Insert Carts
