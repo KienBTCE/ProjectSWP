@@ -61,7 +61,7 @@ public class ProductListServlet extends HttpServlet {
         String detailID = request.getParameter("id");
         String deleteID = request.getParameter("delete");
         String restoreID = request.getParameter("restore");
-
+        String keyword = request.getParameter("txt");
         if (deleteID != null) {
             int id = Integer.parseInt(deleteID);
             pr.deleteProduct(id);
@@ -84,7 +84,11 @@ public class ProductListServlet extends HttpServlet {
                 System.out.println(e);
             }
         }
-        products = pr.getProductList();
+        if (keyword != null && !keyword.trim().isEmpty()) {
+            products = (ArrayList<Product>) pr.searchProductByName(keyword);
+        } else {
+            products = pr.getProductList();
+        }
         try {
             request.setAttribute("products", products);
             request.getRequestDispatcher("ManageProductView.jsp").forward(request, response);

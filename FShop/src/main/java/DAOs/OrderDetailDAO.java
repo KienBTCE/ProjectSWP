@@ -39,35 +39,61 @@ public class OrderDetailDAO {
         }
         return od;
     }
-       public List<OrderDetail> getOrderDetail(String orderid){
-   
-    List <OrderDetail> list = new ArrayList<>();
-    String query = "SELECT * FROM OrderDetails as od\n" +
-"join Products as p on p.ProductID = od.ProductID\n" +
-"WHERE OrderID = ?";
+
+    public List<OrderDetail> getOrderDetail(String orderid) {
+
+        List<OrderDetail> list = new ArrayList<>();
+        String query = "SELECT * FROM OrderDetails as od\n"
+                + "join Products as p on p.ProductID = od.ProductID\n"
+                + "WHERE OrderID = ?";
         try {
             PreparedStatement pre = connector.prepareStatement(query);
-            pre.setString(1,orderid);
+            pre.setString(1, orderid);
             ResultSet rs = pre.executeQuery();
-            while(rs.next()){
-             OrderDetail od = new OrderDetail(
-            rs.getInt("OrderID"),
-            rs.getInt("ProductID"),
-        rs.getInt("Price"),
-            rs.getInt("Quantity"),
-             rs.getString("CategoryID"),
-             rs.getString("FullName"),
-             rs.getString("Image"));
-            list.add(od);
+            while (rs.next()) {
+                OrderDetail od = new OrderDetail(
+                        rs.getInt("OrderID"),
+                        rs.getInt("ProductID"),
+                        rs.getInt("Quantity"),
+                        rs.getLong("Price"),
+                        rs.getString("CategoryID"),
+                        rs.getString("FullName"),
+                        rs.getString("Image"));
+                list.add(od);
             };
         } catch (Exception e) {
             System.out.println(e);
         }
-    return list;
+        return list;
     }
+ public List<Integer> getCustomerByProductID(int productID) {
+        List<Integer> list = new ArrayList<>();
+        String query = "SELECT DISTINCT c.CustomerID FROM Orders AS o " +
+                     "JOIN Customers AS c ON c.CustomerID = o.CustomerID " +
+                     "JOIN OrderDetails AS od ON od.OrderID = o.OrderID " +
+                     "WHERE od.ProductID = ? AND o.Status = 5"; // Chỉ lấy đơn hàng hoàn tất
+
+        try {
+            PreparedStatement pre = connector.prepareStatement(query);
+            pre.setInt(1, productID); // Gán tham số ProductID vào câu SQL
+            ResultSet rs = pre.executeQuery();
+            
+            while (rs.next()) {
+                list.add(rs.getInt("CustomerID")); 
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return list;
+    }
+
+    
 
     public static void main(String[] args) {
         OrderDetailDAO od = new OrderDetailDAO();
-        System.out.println(od.getOrderDetailOfEachOrder(2));
+        //System.out.println(od.getOrderDetailOfEachOrder(2));
+        for (OrderDetail order : od.getOrderDetail("3")) {
+            System.out.println(order.getPrice());
+        }
     }
 }

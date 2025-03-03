@@ -41,7 +41,7 @@
                 justify-content: center;
             }
             .text-header{
-               color: white;
+                color: white;
             }
             .infor-content p{
                 margin: 0;
@@ -184,16 +184,19 @@
                         </div>
                         <div style="display: flex; align-items: center; font-size: 12px">
                             <c:if test="${sessionScope.customer != null}">
-                                <c:if test="${sessionScope.customer.getAvatar() != ''}">
-                                    <a href="viewCustomerProfile"><i class="ti-user" style="font-size: 150%; color: black; margin-left: 20px;"></i></a>
+                                <a href="viewCustomerProfile">
+                                    <c:if test="${sessionScope.customer.getAvatar().equals('') == true}">
+                                        <img width="30px" src="assets/imgs/icon/user (3).png" alt="default">
+                                    </c:if>   
+                                    <c:if test="${sessionScope.customer.getAvatar().equals('') == false}">
+                                        <img style="border-radius: 50%;" width="40px" height="40px" src="assets/imgs/CustomerAvatar/${sessionScope.customer.getAvatar()}" alt="default">
                                     </c:if>
-                                    <c:if test="${sessionScope.customer.getAvatar() == ''}">
-                                    <a href="viewCustomerProfile"><img style="border-radius: 50%; border: 1px solid gray;" width="30px" height="30px" src="./assets/imgs/icon/person.jpg" alt="alt"/></a>
-                                    </c:if>
-                                </c:if>
-                                <c:if test="${sessionScope.customer == null}">
-                                <a href="customerLogin"><i class="ti-user" style="font-size: 150%; color: black; margin-left: 20px;"></i></a>
-                                </c:if>
+                                </a>
+                            </c:if>
+                            <c:if test="${sessionScope.customer == null}">
+                                <a class="btn btn-primary text-white" href="customerLogin">Login
+                                </a>
+                            </c:if>
                         </div>
                     </div>
                 </div>

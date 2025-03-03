@@ -57,13 +57,20 @@ public class ViewOrderListServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
         OrderDAO oDAO = new OrderDAO();
-        List<Order> list = oDAO.getOrderList();
-        if(list != null){
-        request.setAttribute("data",list);
+        String searchQuery = request.getParameter("search");
+
+        List<Order> list;
+        if (searchQuery != null && !searchQuery.trim().isEmpty()) {
+            list = oDAO.searchOrders(searchQuery.trim());
+        } else {
+            list = oDAO.getOrderList();
+        }
+
+        request.setAttribute("data", list);
+        request.setAttribute("searchQuery", searchQuery);
         request.getRequestDispatcher("orderListView.jsp").forward(request, response);
-        }else{
-        response.sendRedirect(request.getContextPath()+"/ViewOrderList");}
-    } 
+    }
+    
 
     /** 
      * Handles the HTTP <code>POST</code> method.

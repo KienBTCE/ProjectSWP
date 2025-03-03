@@ -5,6 +5,7 @@
 package Models;
 import java.sql.Date;
 
+
 /**
  *
  * @author NguyenPVT-CE181835
@@ -23,6 +24,7 @@ public class Employee {
     private String avatar;
     private int roleId;
 
+
     public Employee() {
     }
 
@@ -39,7 +41,7 @@ public class Employee {
         this.roleId = roleId;
     }
     
-    
+
     public Employee(int employeeId, String fullname, Date birthday, String password, String phoneNumber, String email, String gender, Date createdDate, int Status, String avatar, int roleId) {
         this.employeeId = employeeId;
         this.fullname = fullname;

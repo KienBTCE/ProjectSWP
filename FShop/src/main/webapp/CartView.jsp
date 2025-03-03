@@ -9,7 +9,7 @@
 <!DOCTYPE html>
 <html lang="en">
 
-    
+
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -27,18 +27,15 @@
                 <div class="container">
                     <div class="row">
                         <p><a style=" text-decoration: none;
-                              color: black;" href="HomeServlet">Home</a> › Login</p>
+                              color: black;" href="ProductListView">Home</a> › Login</p>
                         <h2>Shopping Cart</h2>
                     <c:set var="total" value="0" />
-                    <div class="col-md-8">
-                        <c:if test="${sessionScope.customer == null}">
-                            <h2>This feature is being developed by Bui Trung Kien (Guest Cart)</h2>
-                        </c:if>
-                        <c:if test="${sessionScope.customer != null}">
-                            <c:if test="${cartList != null && !cartList.isEmpty()}">
+                    <c:if test="${sessionScope.customer != null}">
+                        <c:if test="${cartList != null && !cartList.isEmpty()}">
+                            <div class="col-md-8">
                                 <table style="width: 100%; border-collapse: collapse; ">
                                     <tr style="height: 60px;">
-                                        <th  class="th" style="width: 3%;"></th>
+                                        <th class="th" style="width: 3%;"></th>
                                         <th class="th" style="width: 17%;">Item</th>
                                         <th class="th" style="width: 34%;"></th>
                                         <th class="th" style="width: 13%;">Price</th>
@@ -46,8 +43,6 @@
                                         <th class="th" style="width: 13%;">Subtotal</th>
                                         <th class="th" style="width: 5%;"></th>
                                     </tr>
-
-
                                     <form id="cartSelected" action="order" method="post">
                                         <c:forEach items="${sessionScope.cartList}" var="p">
                                             <c:if test="${p.getQuantity() == 0}">
@@ -55,9 +50,9 @@
                                                     <td>
                                                         <input disabled type="checkbox" name="cartSelected" value="${p.getProductID()}">
                                                     </td>
-                                                    <td class="td"><img
+                                                    <td class="th"><img
                                                             src="./assets/imgs/Products/${p.getImage()}"
-                                                            alt="" width="105px"></td>
+                                                            alt="" width="90px"></td>
                                                     <td class="th">${p.getFullName()}</td>
                                                     <td class="th">
                                                         <h6>
@@ -90,9 +85,10 @@
                                                     <td>
                                                         <input type="checkbox" name="cartSelected" value="${p.getProductID()}">
                                                     </td>
-                                                    <td class="td"><img
+                                                    <td class="th"><img
                                                             src="./assets/imgs/Products/${p.getImage()}"
-                                                            alt="" width="105px"></td>
+                                                            alt="" width="90px">
+                                                    </td>
                                                     <td class="th">${p.getFullName()}</td>
                                                     <td class="th">
                                                         <h6>
@@ -127,109 +123,100 @@
                                         <input name="buyProductAction" value="checkout" hidden="">         
                                     </form>
                                 </table>
-                            </c:if>
-                            <c:if test="${cartList == null || cartList.isEmpty()}">
-                                <table style="width: 100%; border-collapse: collapse; ">
-                                    <tr style="height: 60px;">
-                                        <th  class="th" style="width: 3%;"></th>
-                                        <th class="th" style="width: 17%;">Item</th>
-                                        <th class="th" style="width: 34%;"></th>
-                                        <th class="th" style="width: 13%;">Price</th>
-                                        <th class="th" style="width: 15%;">Qty</th>
-                                        <th class="th" style="width: 13%;">Subtotal</th>
-                                        <th class="th" style="width: 5%;"></th>
-                                    </tr>
+                                <br>
+                                <div class="btnControl">
+                                    <!--                            <div>
+                                                                    <input type="submit" name="" id="" value="Continue Shopping"
+                                                                           style="height:35px;width: 200px; border-radius: 20px; color: gray; background-color: white;">
+                                                                    <button>Clear Shopping Cart</button>
+                                                                </div>-->
+                                </div>
+                            </div>
+                            <div class="col-md-4 right">
+                                <h3>Summary</h3>
+                                <div>
 
-                                    <c:set var="total" value="0" />
-                                    <tr>
-                                        <td colspan="7" style="text-align: center; padding: 20px"><h4>No products on cart. Countinue to shopping</h4></td>
-                                    </tr>
-
-                                </table>
-                            </c:if>
-                        </c:if>
-                        <br>
-                        <div class="btnControl">
-<!--                            <div>
-                                <input type="submit" name="" id="" value="Continue Shopping"
-                                       style="height:35px;width: 200px; border-radius: 20px; color: gray; background-color: white;">
-                                <button>Clear Shopping Cart</button>
-                            </div>-->
-                        </div>
-                    </div>
-                    <div class="col-md-4 right">
-                        <h3>Summary</h3>
-                        <div>
-
-                        </div>
-                        <div>
-                            <!--                            <div class="tax">
-                                                            <p>Apply Discount Code</p>
-                                                            <button onclick="toggleDisplay('detail2')"
-                                                                    style="width: 10%; border: white solid; border-radius: 30px; height: auto;"><svg
-                                                                    width="16" height="15" viewBox="0 0 16 15" fill="none"
-                                                                    xmlns="http://www.w3.org/2000/svg">
-                                                                <path d="M6 9.20209L8 7.20209L10 9.20209" stroke="black" stroke-width="1.6"
-                                                                      stroke-linecap="round" />
-                                                                </svg>
-                                                            </button>
-                                                        </div>
-                                                        <div id="detail2" style="display: none; color: gray;">
-                                                            <div>
-                                                                <form action="" class="discount">
-                                                                    <div class="form-group">
-                                                                        <div class="control-label" style="text-align: left;">Enter discount code
-                                                                        </div>
-                                                                        <div class="">
-                                                                            <input type="text" class="form-control" value="" required
-                                                                                   placeholder="Enter Discount code" />
-                                                                        </div>
+                                </div>
+                                <div>
+                                    <!--                            <div class="tax">
+                                                                    <p>Apply Discount Code</p>
+                                                                    <button onclick="toggleDisplay('detail2')"
+                                                                            style="width: 10%; border: white solid; border-radius: 30px; height: auto;"><svg
+                                                                            width="16" height="15" viewBox="0 0 16 15" fill="none"
+                                                                            xmlns="http://www.w3.org/2000/svg">
+                                                                        <path d="M6 9.20209L8 7.20209L10 9.20209" stroke="black" stroke-width="1.6"
+                                                                              stroke-linecap="round" />
+                                                                        </svg>
+                                                                    </button>
+                                                                </div>
+                                                                <div id="detail2" style="display: none; color: gray;">
+                                                                    <div>
+                                                                        <form action="" class="discount">
+                                                                            <div class="form-group">
+                                                                                <div class="control-label" style="text-align: left;">Enter discount code
+                                                                                </div>
+                                                                                <div class="">
+                                                                                    <input type="text" class="form-control" value="" required
+                                                                                           placeholder="Enter Discount code" />
+                                                                                </div>
+                                                                            </div>
+                                                                            <button type="submit"
+                                                                                    style="background-color: white; border: #0156ff solid 1px; color: #0156ff;">Apply
+                                                                                Discount</button>
+                                                                        </form>
                                                                     </div>
-                                                                    <button type="submit"
-                                                                            style="background-color: white; border: #0156ff solid 1px; color: #0156ff;">Apply
-                                                                        Discount</button>
-                                                                </form>
-                                                            </div>
-                                                        </div>-->
-                        </div>
+                                                                </div>-->
+                                </div>
 
-                        <svg width="385" height="2" viewBox="0 0 385 2" fill="none"
-                             xmlns="http://www.w3.org/2000/svg">
-                        <path d="M0 1.00003L385 0.999997" stroke="#CACDD8" />
-                        </svg>
-                        <div>
-                            <div class="totalPrice">
-                                <p>Subtotal</p>
-                                <p><fmt:formatNumber value="${total}" type="currency" /></p>
+                                <svg width="385" height="2" viewBox="0 0 385 2" fill="none"
+                                     xmlns="http://www.w3.org/2000/svg">
+                                <path d="M0 1.00003L385 0.999997" stroke="#CACDD8" />
+                                </svg>
+                                <div>
+                                    <div class="totalPrice">
+                                        <p>Subtotal</p>
+                                        <p><fmt:formatNumber value="${total}" type="currency" /></p>
+                                    </div>
+                                    <!--                            <div class="totalPrice">
+                                                                    <p>Shipping</p>
+                                                                    <p><fmt:formatNumber value="30000" type="currency" /></p>
+                                                                </div>-->
+                                    <div class="totalPrice">
+                                        <p>Order Total</p>
+                                        <h4><fmt:formatNumber value="${total}" type="currency" /></h4>
+                                    </div>
+                                </div>
+                                <div class="btnSummary">
+                                    <c:if test="${cartList.isEmpty()}">
+                                        <button type="button"
+                                                style="background-color: #0156ff; border: #0156ff solid 1px; color: white;"
+                                                id="checkout" disabled>Proceed
+                                            to
+                                            Checkout
+                                        </button>
+                                    </c:if>
+                                    <c:if test="${!cartList.isEmpty()}"> 
+                                        <button type="button"
+                                                style="background-color: #0156ff; border: #0156ff solid 1px; color: white;"
+                                                id="checkout">Proceed
+                                            to
+                                            Checkout
+                                        </button>
+                                    </c:if>
+                                </div>
                             </div>
-                            <div class="totalPrice">
-                                <p>Shipping</p>
-                                <p><fmt:formatNumber value="30000" type="currency" /></p>
+                        </c:if>
+                        <c:if test="${cartList == null || cartList.isEmpty()}">
+                            <c:set var="total" value="0" />
+                            <br>
+                            <div style="padding: 100px; column-gap: 20px; text-align: center">
+                                <img  width="100px" src="./assets/imgs/icon/empty-cart.png" alt="alt"/>
+                                <h4 style="margin-top: 20px"> 
+                                    No products on cart. Countinue to shopping
+                                </h4>
                             </div>
-                            <div class="totalPrice">
-                                <p>Order Total</p>
-                                <h4><fmt:formatNumber value="${total + 30000}" type="currency" /></h4>
-                            </div>
-                        </div>
-                        <div class="btnSummary">
-                            <c:if test="${cartList.isEmpty()}">
-                                <button type="button"
-                                        style="background-color: #0156ff; border: #0156ff solid 1px; color: white;"
-                                        id="checkout" disabled>Proceed
-                                    to
-                                    Checkout
-                                </button>
-                            </c:if>
-                            <c:if test="${!cartList.isEmpty()}"> 
-                                <button type="button"
-                                        style="background-color: #0156ff; border: #0156ff solid 1px; color: white;"
-                                        id="checkout">Proceed
-                                    to
-                                    Checkout
-                                </button>
-                            </c:if>
-                        </div>
-                    </div>
+                        </c:if>
+                    </c:if>
                 </div>
                 <br>
                 <br>

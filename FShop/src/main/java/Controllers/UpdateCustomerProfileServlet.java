@@ -110,7 +110,7 @@ public class UpdateCustomerProfileServlet extends HttpServlet {
         if (img != null && img.getSize() > 0) {
             cus.setAvatar(cus.getId() + ".jpg");
             for (Part part : request.getParts()) {
-                part.write("E:\\HocTap\\Ky5\\SWP\\Main\\ProjectSWP\\FShop\\src\\main\\webapp\\assets\\imgs\\CustomerAvatar\\" + cus.getId() + ".jpg");
+                part.write("E:\\HocTap\\Ky5\\ProjectSWP\\FShop\\src\\main\\webapp\\assets\\imgs\\CustomerAvatar\\" + cus.getId() + ".jpg");
             }
             try {
                 Thread.sleep(2500); // 15 giây = 15000 mili giây

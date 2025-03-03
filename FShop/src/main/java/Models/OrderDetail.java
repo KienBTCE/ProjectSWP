@@ -89,5 +89,5 @@ public class OrderDetail {
     public void setPrice(long Price) {
         this.Price = Price;
     }
-// >>>>>>> main
+
 }

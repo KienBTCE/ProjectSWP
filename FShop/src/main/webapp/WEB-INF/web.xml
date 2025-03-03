@@ -1,12 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <web-app version="3.1" xmlns="http://xmlns.jcp.org/xml/ns/javaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd">
-    <welcome-file-list>
-        <welcome-file>ProductListView</welcome-file>
-    </welcome-file-list>
-    <servlet>
-        <servlet-name>SearchProductServlet</servlet-name>
-        <servlet-class>Controllers.SearchProductServlet</servlet-class>
-    </servlet>
     <servlet>
         <servlet-name>UpdateProductServlet</servlet-name>
         <servlet-class>Controllers.UpdateProductServlet</servlet-class>
@@ -44,21 +37,25 @@
         <servlet-class>Controllers.ImportStockServlet</servlet-class>
     </servlet>
     <servlet>
-        <servlet-name>CategoryBrandServlet</servlet-name>
-        <servlet-class>Controllers.CategoryBrandServlet</servlet-class>
-    </servlet>
-    <servlet>
-        <servlet-name>BrandServlet</servlet-name>
-        <servlet-class>Controllers.BrandServlet</servlet-class>
-    </servlet>
-    <servlet>
         <servlet-name>ProductDetailServlet</servlet-name>
         <servlet-class>Controllers.ProductDetailServlet</servlet-class>
     </servlet>
-    <servlet-mapping>
-        <servlet-name>default</servlet-name>
-        <url-pattern>/assets/*</url-pattern>
-    </servlet-mapping>
+    <servlet>
+        <servlet-name>ExportStockToFileServlet</servlet-name>
+        <servlet-class>Controllers.ExportStockToFileServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>VerifyOTPServlet</servlet-name>
+        <servlet-class>Controllers.VerifyOTPServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>ResetPasswordServlet</servlet-name>
+        <servlet-class>Controllers.ResetPasswordServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>SendMailServlet</servlet-name>
+        <servlet-class>Controllers.SendMailServlet</servlet-class>
+    </servlet>
     <servlet>
         <servlet-name>ViewImportOrderServlet</servlet-name>
         <servlet-class>Controllers.ViewImportOrderServlet</servlet-class>
@@ -99,6 +96,26 @@
         <servlet-name>CommentServlet</servlet-name>
         <servlet-class>Controllers.CommentServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>ViewListNewFeedbackServlet</servlet-name>
+        <servlet-class>Controllers.ViewListNewFeedbackServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>ViewFeedbackForManager</servlet-name>
+        <servlet-class>Controllers.ViewFeedbackForManagerServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>UpdateStatusCommentServlet</servlet-name>
+        <servlet-class>Controllers.UpdateStatusCommentServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>ReplyFeedbackServlet</servlet-name>
+        <servlet-class>Controllers.ReplyFeedbackServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>default</servlet-name>
+        <url-pattern>/assets/*</url-pattern>
+    </servlet-mapping>
     <servlet-mapping>
         <servlet-name>ProductListView</servlet-name>
         <url-pattern>/</url-pattern>
@@ -140,10 +157,6 @@
         <url-pattern>/ImportOrder</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
-        <servlet-name>SearchProductServlet</servlet-name>
-        <url-pattern>/SearchProductServlet</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
         <servlet-name>UpdateProductServlet</servlet-name>
         <url-pattern>/UpdateProductServlet</url-pattern>
     </servlet-mapping>
@@ -180,20 +193,45 @@
         <url-pattern>/ImportStock</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
-        <servlet-name>CategoryBrandServlet</servlet-name>
-        <url-pattern>/CategoryBrandServlet</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>BrandServlet</servlet-name>
-        <url-pattern>/BrandServlet</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
         <servlet-name>ProductDetailServlet</servlet-name>
         <url-pattern>/ProductDetailServlet</url-pattern>
     </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ExportStockToFileServlet</servlet-name>
+        <url-pattern>/ExportStockToFileServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>VerifyOTPServlet</servlet-name>
+        <url-pattern>/VerifyOTPServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ResetPasswordServlet</servlet-name>
+        <url-pattern>/ResetPasswordServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>SendMailServlet</servlet-name>
+        <url-pattern>/SendMailServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ViewListNewFeedbackServlet</servlet-name>
+        <url-pattern>/ViewListNewFeedbackServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ViewFeedbackForManager</servlet-name>
+        <url-pattern>/ViewFeedbackForManagerServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>UpdateStatusCommentServlet</servlet-name>
+        <url-pattern>/UpdateStatusCommentServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ReplyFeedbackServlet</servlet-name>
+        <url-pattern>/ReplyFeedbackServlet</url-pattern>
+    </servlet-mapping>
     <session-config>
-        <session-timeout>
-            30
-        </session-timeout>
+        <session-timeout>30</session-timeout>
     </session-config>
+    <welcome-file-list>
+        <welcome-file>ProductListView</welcome-file>
+    </welcome-file-list>
 </web-app>

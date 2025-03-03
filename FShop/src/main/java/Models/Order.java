@@ -10,18 +10,18 @@ package Models;
  */
 public class Order {
 
+    private int orderID;
+    private int accountID;
+    private String fullName;
+    private String phone;
+    private String address;
+    private long totalAmount;
+    private String orderDate;
+    private String deliveredDate;
+    private int status;
+
     public Order() {
     }
-
-    int orderID;
-    int accountID;
-    String fullName;
-    String phone;
-    String address;
-    long totalAmount;
-    String orderDate;
-    String deliveredDate;
-    int status;
 
     public Order(String fullName, String phone, String address) {
         this.fullName = fullName;

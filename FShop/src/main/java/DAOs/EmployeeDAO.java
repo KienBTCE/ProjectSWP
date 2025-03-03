@@ -12,6 +12,9 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 
 /**
@@ -23,6 +26,30 @@ public class EmployeeDAO {
     DBContext db = new DBContext();
     Connection connector = db.getConnection();
 
+    private String getMD5(String input) {
+
+        try {
+            // Tạo instance của MessageDigest với thuật toán MD5
+            MessageDigest md = MessageDigest.getInstance("MD5");
+
+            // Băm chuỗi đầu vào và trả về kết quả dạng byte[]
+            byte[] hashBytes = md.digest(input.getBytes());
+
+            // Chuyển đổi byte[] thành chuỗi hexadecimal
+            StringBuilder hexString = new StringBuilder();
+            for (byte b : hashBytes) {
+                String hex = Integer.toHexString(0xff & b);
+                if (hex.length() == 1) {
+                    hexString.append('0'); // Thêm '0' vào đầu nếu cần
+                }
+                hexString.append(hex);
+            }
+            return hexString.toString();
+        } catch (NoSuchAlgorithmException e) {
+            throw new RuntimeException("MD5 algorithm not found!", e);
+        }
+    }
+
     public ArrayList<Employee> getAllEmployees() {
         ArrayList<Employee> listEmployee = new ArrayList<>();
         String sql = "SELECT * FROM Employees";
@@ -33,7 +60,7 @@ public class EmployeeDAO {
                 listEmployee.add(new Employee(rs.getInt("EmployeeID"),
                         rs.getString("FullName"),
                         rs.getDate("Birthday"),
-                        rs.getString("Password"),
+                        "",
                         rs.getString("PhoneNumber"),
                         rs.getString("Email"),
                         rs.getString("Gender"),
@@ -80,9 +107,9 @@ public class EmployeeDAO {
         return emp;
     }
 
-    public int AddEmployee(Employee employee) {
-        int effectRow = 0;
-        String sql = "INSERT INTO Employees (FullName, Birthday, [Password], PhoneNumber, Email, Gender, CreatedDate, Status, Avatar, RoleID) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+    public int UpdateEmployee(Employee employee) {
+        int effectRows = 0;
+        String sql = "Update Employees SET FullName = ?, Birthday = ?, Password = ?, PhoneNumber = ?, Email = ?, Gender = ?, CreatedDate = ?, Status = ?, Avatar = ?, RoleID = ? WHERE EmployeeID = ?";
         try {
             PreparedStatement pr = connector.prepareStatement(sql);
             pr.setString(1, employee.getFullname());
@@ -95,22 +122,23 @@ public class EmployeeDAO {
             pr.setInt(8, employee.getStatus());
             pr.setString(9, employee.getAvatar());
             pr.setInt(10, employee.getRoleId());
-            effectRow = pr.executeUpdate();
-            return effectRow;
+            pr.setInt(11, employee.getEmployeeId());
+            effectRows = pr.executeUpdate();
         } catch (SQLException e) {
             System.out.println(e);
         }
-        return effectRow;
+        return effectRows;
     }
 
-    public int UpdateEmployee(Employee employee) {
-        int effectRow = 0;
-        String sql = "UPDATE Employees SET FullName = ?, Birthday = ?, [Password] = ?, PhoneNumber = ?, Email = ?, Gender = ?, CreatedDate = ?, Status = ?, Avatar = ?, RoleID = ? WHERE EmployeeID = ?";
+    public int AddEmployee(Employee employee) {
+        int effectRows = 0;
+        String sql = "INSERT INTO Employees (FullName, Birthday, [Password], PhoneNumber, Email, Gender, CreatedDate, Status, Avatar, RoleID) VALUES "
+                + "(?,?,?,?,?,?,?,?,?,?)";
         try {
             PreparedStatement pr = connector.prepareStatement(sql);
             pr.setString(1, employee.getFullname());
-            pr.setDate(2,employee.getBirthday());
-            pr.setString(3, employee.getPassword());
+            pr.setDate(2, employee.getBirthday());
+            pr.setString(3, getMD5(employee.getPassword()));
             pr.setString(4, employee.getPhoneNumber());
             pr.setString(5, employee.getEmail());
             pr.setString(6, employee.getGender());
@@ -118,36 +146,11 @@ public class EmployeeDAO {
             pr.setInt(8, employee.getStatus());
             pr.setString(9, employee.getAvatar());
             pr.setInt(10, employee.getRoleId());
-            pr.setInt(11, employee.getEmployeeId());
-            effectRow = pr.executeUpdate();
-            return effectRow;
+            effectRows = pr.executeUpdate();
         } catch (SQLException e) {
             System.out.println(e);
         }
-        return effectRow;
-    }
-
-    private String getMD5(String input) {
-        try {
-            // Tạo instance của MessageDigest với thuật toán MD5
-            MessageDigest md = MessageDigest.getInstance("MD5");
-
-            // Băm chuỗi đầu vào và trả về kết quả dạng byte[]
-            byte[] hashBytes = md.digest(input.getBytes());
-
-            // Chuyển đổi byte[] thành chuỗi hexadecimal
-            StringBuilder hexString = new StringBuilder();
-            for (byte b : hashBytes) {
-                String hex = Integer.toHexString(0xff & b);
-                if (hex.length() == 1) {
-                    hexString.append('0'); // Thêm '0' vào đầu nếu cần
-                }
-                hexString.append(hex);
-            }
-            return hexString.toString();
-        } catch (NoSuchAlgorithmException e) {
-            throw new RuntimeException("MD5 algorithm not found!", e);
-        }
+        return effectRows;
     }
 
     public Employee employeeLogin(String email, String password) {
@@ -178,6 +181,58 @@ public class EmployeeDAO {
             System.out.println(e);
         }
         return emp;
+    }
+
+    public int updateEmployeeProfile(Employee employee) {
+        int effectRow = 0;
+        String sql = "Update Employees SET FullName = ?, Birthday = ?, PhoneNumber = ?, Gender = ?, Avatar = ? WHERE EmployeeID = ?";
+        try {
+            PreparedStatement pr = connector.prepareStatement(sql);
+            pr.setString(1, employee.getFullname());
+            pr.setDate(2, employee.getBirthday());
+            pr.setString(3, employee.getPhoneNumber());
+            pr.setString(4, employee.getGender());
+            pr.setString(5, employee.getAvatar());
+            pr.setInt(6, employee.getEmployeeId());
+            effectRow = pr.executeUpdate();
+        } catch (SQLException e) {
+            System.out.println(e);
+            return 0;
+        }
+        return effectRow;
+    }
+
+    public int checkPassword(int id, String password) {
+        try {
+            PreparedStatement pr = connector.prepareStatement("SELECT * FROM Employees WHERE EmployeeID = ? AND Password = ?");
+
+            pr.setInt(1, id);
+            pr.setString(2, getMD5(password));
+
+            ResultSet rs = pr.executeQuery();
+            while (rs.next()) {
+                return 1;
+            }
+        } catch (SQLException e) {
+            System.out.println(e);
+            return 0;
+        }
+        return 0;
+    }
+
+    public int changePassword(int id, String password) {
+        int effectRow = 0;
+        String sql = "Update Employees SET Password = ? WHERE EmployeeID = ?";
+        try {
+            PreparedStatement pr = connector.prepareStatement(sql);
+            pr.setInt(2, id);
+            pr.setString(1, getMD5(password));
+            effectRow = pr.executeUpdate();
+        } catch (SQLException e) {
+            System.out.println(e);
+            return 0;
+        }
+        return effectRow;
     }
 
     public static void main(String[] args) {

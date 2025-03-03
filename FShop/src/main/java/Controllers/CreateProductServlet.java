@@ -4,16 +4,20 @@
  */
 package Controllers;
 
+import DAOs.BrandDAO;
 import DAOs.CategoryDAO;
 import DAOs.ProductDAO;
-import Models.Category;
+import Models.Product;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import java.util.ArrayList;
+import jakarta.servlet.http.Part;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.List;
 
 /**
@@ -60,9 +64,19 @@ public class CreateProductServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        CategoryDAO categoryDAO = new CategoryDAO();
+        BrandDAO brandDAO = new BrandDAO();
 
-        response.sendRedirect("CreateProductView.jsp");
+        // Lấy danh sách category và brand từ database
+        List<String> categories = categoryDAO.getAllCategoryNames();
+        List<String> brands = brandDAO.getAllBrandNames();
 
+        // Đưa vào request scope
+        request.setAttribute("categories", categories);
+        request.setAttribute("brands", brands);
+
+        // Chuyển hướng đến JSP
+        request.getRequestDispatcher("CreateProductView.jsp").forward(request, response);
     }
 
     /**
@@ -76,7 +90,26 @@ public class CreateProductServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-     
+        ProductDAO productDAO = new ProductDAO();
+        // Lấy dữ liệu từ form
+        String categoryName = request.getParameter("categoryName");
+        String brandName = request.getParameter("brandName");
+        String model = request.getParameter("model");
+        String fullName = request.getParameter("fullName");
+        long price = Long.parseLong(request.getParameter("price"));
+        int stock = Integer.parseInt(request.getParameter("stock"));
+
+        // Tạo đối tượng sản phẩm
+        Product product = new Product(0, categoryName, brandName, model, fullName, 1, price, stock);
+
+        // Thêm sản phẩm vào database
+        if (productDAO.createProduct(product) != 0) {
+            response.sendRedirect("ProductListServlet");
+        } else {
+//         request.getSession().setAttribute("error", "Product already exists.");
+            response.sendRedirect("CreateProductServlet");
+        }
+        System.out.println("txtID: " + request.getParameter("productId"));
     }
 
     /**

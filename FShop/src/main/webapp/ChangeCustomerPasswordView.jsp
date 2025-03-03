@@ -23,9 +23,9 @@
         </style>
     </head>
     <body>
-        <div style="padding: 15px; background-color: white; border-radius: 5px; height: 500px">
+        <div style="padding: 15px; background-color: white; border-radius: 5px; height: 500px; box-shadow: 2px 2px 2px 2px lightgray; border-radius: 10px ; ">
             <h3>Change Password</h3>
-            <div class="container mt-5" >
+            <div class="container mt-5"  >
                 <div class="row justify-content-center">
                     <div class="col-md-8">
                         <div class="card">
