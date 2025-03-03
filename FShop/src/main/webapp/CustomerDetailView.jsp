@@ -130,7 +130,7 @@
                             </tr>
                             <tr>
                                 <th>Avatar</th>
-                                <td>${customer.getAvatar()}</td>
+                                <td><img src="assets/imgs/CustomerAvatar/${customer.getAvatar()}" width="150px" height="150px" alt="alt"/></td>
                             </tr>
                             <tr>
                                 <th>Email</th>
