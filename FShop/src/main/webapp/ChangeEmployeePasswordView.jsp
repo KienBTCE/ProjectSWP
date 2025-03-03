@@ -130,29 +130,28 @@
             <div class="row">
                 <div class="col-md-2">
                     <div class="sidebar">
+                        <img src="assets/imgs/Dashboard/Group 1521.svg" class="logo-side-bar">
                         <c:if test="${sessionScope.employee.getRoleId() == 1}">
-                            <img src="assets/imgs/Dashboard/Group 1521.svg" class="logo-side-bar">
                             <h6><a href="#">Admin</a></h6>
                             <a href="Employee">Employee Management</a>
                             <a href="#">Statistic Management</a>
                         </c:if>
                         <c:if test="${sessionScope.employee.getRoleId() == 2}">
-                            <img src="assets/imgs/Dashboard/Group 1521.svg" class="logo-side-bar">
-                            <h6><a href="#">Shop Manager</a></h6>
-                            <a href="#">... Management</a>
-                            <a href="#">... Management</a>
+                            <h6><a href="#">Shop Management</a></h6>
+                            <a href="CustomerListServlet">Customer Management</a>
+                            <a href="ProductListServlet">Product Management</a>
+                            <a href="#">Product Statistic</a>
                         </c:if>
                         <c:if test="${sessionScope.employee.getRoleId() == 3}">
-                            <img src="assets/imgs/Dashboard/Group 1521.svg" class="logo-side-bar">
-                            <h6><a href="#">Order Manager</a></h6>
-                            <a href="#">... Management</a>
-                            <a href="#">... Management</a>
+                            <h6><a href="#">Order Management</a></h6>
+                            <a href="ViewListNewFeedbackServlet">Feedback</a>
+                            <a href="ViewOrderListServlet">Order</a>
                         </c:if>
                         <c:if test="${sessionScope.employee.getRoleId() == 4}">
-                            <img src="assets/imgs/Dashboard/Group 1521.svg" class="logo-side-bar">
-                            <h6><a href="#">Warehouse Manager</a></h6>
-                            <a href="#">... Management</a>
-                            <a href="#">... Management</a>
+                            <h6><a href="#">Warehouse Management</a></h6>
+                            <a href="ImportOrder">Import Order</a>
+                            <a href="Supplier">Supplier</a>
+                            <a href="#">Product Management</a>
                         </c:if>
                         <a style="margin-top: auto; color: red;" href="" onclick="confirmLogout()"><i class="bi bi-box-arrow-right"></i> Logout</a>
                     </div>
