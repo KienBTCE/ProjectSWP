@@ -32,17 +32,19 @@
                 border-radius: 50%;
                 object-fit: cover;
             }
+            .fullname{
+                text-decoration: none;
+                font-weight: bold;
+                color: black;
+            }
         </style>
     </head>
     <body>
         <div class="header">
             <a href="ViewEmployeeProfile">
-                <div style="display: flex;">
-
-                    <img
-                        src="assets/imgs/EmployeeAvatar/defauft_avatar.jpg" alt="User Icon" class="icon">
-                    <p style="">Hi, ${sessionScope.employee.getFullname()}</p>
-
+                <div style="display: flex; align-items: center;">
+                    <img src="assets/imgs/EmployeeAvatar/defauft_avatar.jpg" alt="User Icon" class="icon">
+                    <p class="fullname" style="margin-top: 10px;">Hi, ${sessionScope.employee.getFullname()}</p>
                 </div>
             </a>
         </div>
