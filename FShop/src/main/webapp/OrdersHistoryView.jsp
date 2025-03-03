@@ -86,12 +86,14 @@
                                                  alt="">
                                         </div>
                                         <div class="col-md-8">
-                                            <div>
-                                                <a href="odetailforcus?id=${o.getOrderID()}" style="text-decoration: none; color: black;">${od.getProductName()}</a>
-                                            </div>
-                                            <div>
-                                                Quantity: ${od.getQuantity()}
-                                            </div>
+                                            <a href="odetailforcus?id=${o.getOrderID()}" style="text-decoration: none; color: black;">
+                                                <div>
+                                                    ${od.getProductName()}
+                                                </div>
+                                                <div>
+                                                    Quantity: ${od.getQuantity()}
+                                                </div>
+                                            </a>
                                         </div>
                                         <div class="col-md-2" style="color: rgb(238,84,61); text-align: right;"><fmt:formatNumber value="${od.getPrice()}" type="currency"/></div>
                                     </div>
@@ -141,12 +143,14 @@
                                                  alt="">
                                         </div>
                                         <div class="col-md-8">
-                                            <div>
-                                                <a href="odetailforcus?id=${o.getOrderID()}" style="text-decoration: none; color: black;">${od.getProductName()}</a>
-                                            </div>
-                                            <div>
-                                                Quantity: ${od.getQuantity()}
-                                            </div>
+                                            <a href="odetailforcus?id=${o.getOrderID()}" style="text-decoration: none; color: black;">
+                                                <div>
+                                                    ${od.getProductName()}
+                                                </div>
+                                                <div>
+                                                    Quantity: ${od.getQuantity()}
+                                                </div>
+                                            </a>
                                         </div>
                                         <div class="col-md-2" style="color: rgb(238,84,61); text-align: right;"><fmt:formatNumber value="${od.getPrice()}" type="currency"/></div>
                                     </div>
@@ -199,12 +203,14 @@
                                                  alt="">
                                         </div>
                                         <div class="col-md-8">
-                                            <div>
-                                                <a href="odetailforcus?id=${o.getOrderID()}" style="text-decoration: none; color: black;">${od.getProductName()}</a>
-                                            </div>
-                                            <div>
-                                                Quantity: ${od.getQuantity()}
-                                            </div>
+                                            <a href="odetailforcus?id=${o.getOrderID()}" style="text-decoration: none; color: black;">
+                                                <div>
+                                                    ${od.getProductName()}
+                                                </div>
+                                                <div>
+                                                    Quantity: ${od.getQuantity()}
+                                                </div>
+                                            </a>
                                         </div>
                                         <div class="col-md-2" style="color: rgb(238,84,61); text-align: right;"><fmt:formatNumber value="${od.getPrice()}" type="currency"/></div>
                                     </div>
@@ -258,12 +264,14 @@
                                                  alt="">
                                         </div>
                                         <div class="col-md-8">
-                                            <div>
-                                                <a href="odetailforcus?id=${o.getOrderID()}" style="text-decoration: none; color: black;">${od.getProductName()}</a>
-                                            </div>
-                                            <div>
-                                                Quantity: ${od.getQuantity()}
-                                            </div>
+                                            <a href="odetailforcus?id=${o.getOrderID()}" style="text-decoration: none; color: black;">
+                                                <div>
+                                                    ${od.getProductName()}
+                                                </div>
+                                                <div>
+                                                    Quantity: ${od.getQuantity()}
+                                                </div>
+                                            </a>
                                         </div>
                                         <div class="col-md-2" style="color: rgb(238,84,61); text-align: right;"><fmt:formatNumber value="${od.getPrice()}" type="currency"/></div>
                                     </div>
@@ -316,12 +324,14 @@
                                                  alt="">
                                         </div>
                                         <div class="col-md-8">
-                                            <div>
-                                                <a href="odetailforcus?id=${o.getOrderID()}" style="text-decoration: none; color: black;">${od.getProductName()}</a>
-                                            </div>
-                                            <div>
-                                                Quantity: ${od.getQuantity()}
-                                            </div>
+                                            <a href="odetailforcus?id=${o.getOrderID()}" style="text-decoration: none; color: black;">
+                                                <div>
+                                                    ${od.getProductName()}
+                                                </div>
+                                                <div>
+                                                    Quantity: ${od.getQuantity()}
+                                                </div>
+                                            </a>
                                         </div>
                                         <div class="col-md-2" style="color: rgb(238,84,61); text-align: right;"><fmt:formatNumber value="${od.getPrice()}" type="currency"/></div>
                                     </div>
@@ -376,12 +386,14 @@
                                                  alt="">
                                         </div>
                                         <div class="col-md-8">
-                                            <div>
-                                                <a href="odetailforcus?id=${o.getOrderID()}" style="text-decoration: none; color: black;">${od.getProductName()}</a>
-                                            </div>
-                                            <div>
-                                                Quantity: ${od.getQuantity()}
-                                            </div>
+                                            <a href="odetailforcus?id=${o.getOrderID()}" style="text-decoration: none; color: black;">
+                                                <div>
+                                                    ${od.getProductName()}
+                                                </div>
+                                                <div>
+                                                    Quantity: ${od.getQuantity()}
+                                                </div>
+                                            </a>
                                         </div>
                                         <div class="col-md-2" style="color: rgb(238,84,61); text-align: right;"><fmt:formatNumber value="${od.getPrice()}" type="currency"/></div>
                                     </div>
