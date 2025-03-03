@@ -142,3 +142,30 @@ SELECT * FROM Products P JOIN Brands B ON P.BrandID = B.BrandID WHERE B.Name IN 
 SELECT * FROM Products P JOIN Brands B ON P.BrandID = B.BrandID WHERE B.Name IN (SELECT Name FROM Brands WHERE Name IN ('Apple', 'Asus', 'Dell', 'Lenovo', 'MSI') AND price BETWEEN 20000000 AND 25000000) AND P.CategoryID IN (SELECT CategoryID FROM Categories WHERE [Name] = 'Laptop')
 
 SELECT * FROM Products P JOIN Brands B ON P.BrandID = B.BrandID WHERE B.Name IN (SELECT Name FROM Brands WHERE Name IN ('Apple', 'Asus', 'Dell', 'Lenovo', 'MSI') AND (price BETWEEN 20000000 AND 25000000 OR price BETWEEN 25000000 AND 30000000)) AND P.CategoryID IN (SELECT CategoryID FROM Categories WHERE [Name] = 'Laptop')
+
+
+SELECT * FROM Products
+SELECT * FROM ImportOrders
+
+UPDATE Products SET Stock = 10 WHERE ProductID IN (1, 2, 3)
+
+UPDATE Products SET Stock = Stock + 10 WHERE ProductID = 1, Stock = Stock + 11 WHERE ProductID = 2
+
+UPDATE Products SET Stock = Stock + CASE WHEN ProductID = 1 THEN 10 ELSE 0 END
+
+UPDATE Products SET Stock = Stock + CASE WHEN ProductID = 1 THEN 1 ProductID = 3 THEN 1 ProductID = 5 THEN 1 ELSE 0 END
+
+UPDATE Products SET Stock = Stock + CASE WHEN ProductID = 1 THEN 1  WHEN ProductID = 3 THEN 1  WHEN ProductID = 5 THEN 1 END WHERE ProductID IN (1, 3, 5);
+
+
+UPDATE Products SET Stock = Stock + CASE WHEN ProductID = 1 THEN 1  WHEN ProductID = 3 THEN 1  WHEN ProductID = 5 THEN 1 END WHERE ProductID IN ((1, 3, 5), 1(1, 3, 5), 3(1, 3, 5), 51, 3, 5), 1(1, 3, 5), 3(1, 3, 5), 5)
+
+
+UPDATE Products SET Stock = Stock + CASE WHEN ProductID = 1 THEN 1 END WHERE ProductID IN ((1, 3, 5)(1)1, 3, 5)(1))
+
+
+UPDATE Products SET Stock = Stock + CASE WHEN ProductID = 1 THEN 1 END WHERE ProductID IN (1)
+
+UPDATE Products SET Stock = Stock + CASE WHEN ProductID = 1 THEN 1 WHEN ProductID = 3 THEN 1 WHEN ProductID = 5 THEN 1 END WHERE ProductID IN (1, 3, 5)
+
+UPDATE Products SET Stock = Stock + CASE WHEN ProductID = 1 THEN 1 WHEN ProductID = 3 THEN 4 WHEN ProductID = 5 THEN 4 WHEN ProductID = 7 THEN 5 WHEN ProductID = 10 THEN 1 END WHERE ProductID IN (1, 3, 5, 7, 10)

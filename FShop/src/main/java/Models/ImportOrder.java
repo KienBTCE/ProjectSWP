@@ -26,6 +26,12 @@ public class ImportOrder {
 
     public ImportOrder() {
     }
+    
+    public ImportOrder(int employeeId, int supplierId, long totalCost) {
+        this.employeeId = employeeId;
+        this.supplierId = supplierId;
+        this.totalCost = totalCost;
+    }
 
     public ImportOrder(int ioid, int employeeId, int supplierId, Date importDate, long totalCost, Date lastModify) {
         this.ioid = ioid;

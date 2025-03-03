@@ -4,18 +4,27 @@
  */
 package Controllers;
 
+import DAOs.ImportOrderDAO;
+import DAOs.ImportOrderDetailDAO;
 import DAOs.ProductDAO;
 import DAOs.SupplierDAO;
 import Models.ImportOrder;
+import Models.Product;
 import Models.ImportOrderDetail;
 import Models.Supplier;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import java.lang.reflect.Type;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 /**
  *
@@ -93,6 +102,51 @@ public class ImportStockServlet extends HttpServlet {
 //        Supplier s = new Supplier(0, taxId, name, email, phoneNumber, address, LocalDateTime.MAX, LocalDateTime.MIN, 0, 0);
 //        Product p = new Models.Product(0, categoryName, brandName, fullName, 0, 0, 0);
 //        ImportOrderDetail = d = new ImportOrderDetail(0, p, 0, 0);
+        SupplierDAO sd = new SupplierDAO();
+        Supplier s = sd.getSupplierByTaxID(request.getParameter("taxId"));
+        ArrayList<ImportOrderDetail> detailList = null;
+        String jsonS = request.getParameter("selectedProducts");
+
+        if (jsonS != null && s != null) {
+            Gson gson = new Gson();
+            Type listType = new TypeToken<List<Map<String, String>>>() {
+            }.getType();
+            List<Map<String, String>> list = gson.fromJson(jsonS, listType);
+            
+            long sum = 0;
+
+            for (Map<String, String> map : list) {
+                sum += Integer.parseInt(map.get("stock")) * Long.parseLong(map.get("price"));
+                System.out.println("PPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPP" + sum);
+            }
+            System.out.println("PPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPP" + sum);
+
+//            ImportOrderDAO ioD = new ImportOrderDAO();
+//            int importOrderID = ioD.createImportOrder(new ImportOrder(0, s.getSupplierId(), sum));
+//
+//            for (Map<String, String> map : list) {
+//                ImportOrderDetail d = new ImportOrderDetail();
+//                Product p = new Product();
+//                p.setProductId(Integer.parseInt(map.get("id")));
+//
+//                d.setIoid(importOrderID);
+//                d.setImportPrice(Long.parseLong(map.get("price")));
+//                d.setQuantity(Integer.parseInt(map.get("stock")));
+//                d.setProduct(p);
+//
+//                detailList.add(d);
+//            }
+//
+//            ImportOrderDetailDAO iodD = new ImportOrderDetailDAO();
+//
+//            iodD.createImportOrderDetails(detailList);
+//
+//            ioD.importStock(list);
+        }
+
+//        for (Map<String, String> map : list) {
+//            System.out.println("id: " + map.get("id") + ", stock: " + map.get("stock"));
+//        }
     }
 
     /**

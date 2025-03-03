@@ -84,6 +84,38 @@ public class SupplierDAO {
 
         return s;
     }
+    
+    public Supplier getSupplierByTaxID(String supplierTaxId) {
+        Supplier s = null;
+
+        String query = "SELECT * FROM Suppliers WHERE TaxID = ?";
+
+        try {
+            PreparedStatement ps = connector.prepareStatement(query);
+            ps.setString(1, supplierTaxId);
+            ResultSet rs = ps.executeQuery();
+
+            if (rs.next()) {
+                s = new Supplier(
+                        rs.getInt("SupplierID"),
+                        rs.getString("TaxID"),
+                        rs.getString("Name"),
+                        rs.getString("Email"),
+                        rs.getString("PhoneNumber"),
+                        rs.getString("Address"),
+                        rs.getTimestamp("CreatedDate").toLocalDateTime(),
+                        rs.getTimestamp("LastModify").toLocalDateTime(),
+                        rs.getInt("IsDeleted"),
+                        rs.getInt("IsActivate")
+                );
+            }
+            return s;
+        } catch (SQLException e) {
+            System.out.println(e);
+        }
+
+        return s;
+    }
 
     public int createSupplier(Supplier s) {
 

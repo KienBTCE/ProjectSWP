@@ -152,6 +152,7 @@
                     <div class="card mb-4">
                         <div class="card-header d-flex justify-content-between align-items-center">
                             <h4 class="mb-0">Supplier Information</h4>
+                            <button type="button" id="confirmSupplierButton" class="btn btn-primary mt-3">Submit</button>
                         </div>
 
                         <table class="table mt-3">
@@ -174,9 +175,16 @@
                                     <td id="selectedStatus">N/A</td>
                                     <td id="selectedTaxId">N/A</td>
                                 </tr>
+                            <form id="supplierForm" action="ImportStock" method="POST">
+                                <input type="hidden" name="supplierName" id="supplierName" value="\${selectedName}">
+                                <input type="hidden" name="address" id="supplierAddress" value="\${selectedAddress}">
+                                <input type="hidden" name="email" id="supplierEmail" value="\${selectedEmail}">
+                                <input type="hidden" name="phone" id="supplierPhone" value="\${selectedPhone}">
+                                <input type="hidden" name="supplierStatus" id="supplierStatus" value="\${selectedStatus}">
+                                <input type="hidden" name="taxId" id="supplierTaxId" value="\${selectedTaxId}">
+                            </form>
                             </tbody>
                         </table>
-
                     </div>
 
                     <div class="card mb-4">
@@ -224,6 +232,8 @@
                 <div class="card mb-4">
                     <div class="card-header d-flex justify-content-between align-items-center">
                         <h4 class="mb-0">Selected Product</h4>
+                        <!-- Nút submit nằm ngoài form nên phải đặt type="button" -->
+                        <button type="button" id="submitSelectedProducts" class="btn btn-primary">Submit</button>
                     </div>
                     <table class="table mt-3">
                         <thead>
@@ -231,8 +241,9 @@
                                 <th>Product Name</th>
                                 <th>Product ID</th>
                                 <th>Model</th>
-                                <th>Stock</th>
-                                <th>Status</th>
+                                <th>Import Quantity</th>
+                                <th>Import Price</th>
+                                <th>Action</th>
                             </tr>
                         </thead>
                         <tbody id="selectedProductTable">
@@ -246,6 +257,11 @@
                         </tbody>
                     </table>
                 </div>
+
+                <!-- Hidden Form nằm ngoài bảng -->
+                <form id="selectedProductsForm" action="ImportStock" method="POST" style="display:none;">
+                    <input type="hidden" id="selectedProductsInput" name="selectedProducts">
+                </form>
 
                 <!-- Product Entry Section -->
                 <div class="card mb-4">
@@ -261,7 +277,7 @@
                                 <th>Product ID</th>
                                 <th>Model</th>
                                 <th>Stock</th>
-                                <th>Status</th>
+                                <th>Import Price</th>
                             </tr>
                         </thead>
                         <tbody id="productList">
@@ -271,12 +287,12 @@
                                     data-productid="${p.getProductId()}"
                                     data-model="${p.getModel()}"
                                     data-stock="${p.getStock()}"
-                                    data-product-status="${p.getDeleted()}">
+                                    data-import-price="0">
                                     <td>${p.getFullName()}</td>
                                     <td>${p.getProductId()}</td>
                                     <td>${p.getModel()}</td>
                                     <td>${p.getStock()}</td>
-                                    <td>${p.getDeleted()}</td>
+                                    <td>0</td>
                                 </tr>
                             </c:forEach>
 
@@ -303,6 +319,49 @@
                     }
                 }
             }
+// ======================================================================================================================================
+            document.querySelectorAll(".clickable-row").forEach(row => {
+                row.addEventListener("click", function () {
+                    // Lấy dữ liệu từ thuộc tính data-*
+                    let name = this.getAttribute("data-name");
+                    let address = this.getAttribute("data-address");
+                    let email = this.getAttribute("data-email");
+                    let phone = this.getAttribute("data-phone");
+                    let status = this.getAttribute("data-status");
+                    let taxid = this.getAttribute("data-taxid");
+
+                    // Cập nhật bảng hiển thị
+                    document.getElementById("selectedName").textContent = name;
+                    document.getElementById("selectedAddress").textContent = address;
+                    document.getElementById("selectedEmail").textContent = email;
+                    document.getElementById("selectedPhone").textContent = phone;
+                    document.getElementById("selectedStatus").textContent = status;
+                    document.getElementById("selectedTaxId").textContent = taxid;
+
+                    // Cập nhật giá trị vào form ẩn
+                    document.getElementById("supplierName").value = name;
+                    document.getElementById("supplierAddress").value = address;
+                    document.getElementById("supplierEmail").value = email;
+                    document.getElementById("supplierPhone").value = phone;
+                    document.getElementById("supplierStatus").value = status;
+                    document.getElementById("supplierTaxId").value = taxid;
+
+
+                    // Nếu muốn tự động submit form ngay sau khi chọn nhà cung cấp
+//                    document.getElementById("supplierForm").submit();
+                });
+            });
+
+            document.getElementById("confirmSupplierButton").addEventListener("click", function () {
+                // Kiểm tra xem có nhà cung cấp nào được chọn không
+                if (document.getElementById("supplierName").value.trim() === "") {
+                    alert("Vui lòng chọn một nhà cung cấp trước khi xác nhận!");
+                    return;
+                }
+
+                // Gửi form
+                document.getElementById("supplierForm").submit();
+            });
         </script>
 
         <script>
@@ -319,12 +378,11 @@
                     }
                 }
             }
-        </script>
-
-        <script>
+// ======================================================================================================================================
             document.addEventListener("DOMContentLoaded", function () {
                 let selectedProducts = []; // Danh sách chứa các sản phẩm đã chọn
 
+                // Lắng nghe sự kiện click vào hàng sản phẩm
                 document.querySelectorAll(".clickable-product-row").forEach(row => {
                     row.addEventListener("click", function () {
                         // Lấy dữ liệu từ thuộc tính data-*
@@ -333,7 +391,7 @@
                             id: this.getAttribute("data-productid"),
                             model: this.getAttribute("data-model"),
                             stock: this.getAttribute("data-stock"),
-                            status: this.getAttribute("data-product-status")
+                            importPrice: this.getAttribute("data-import-price")
                         };
 
                         // Kiểm tra sản phẩm đã có trong danh sách chưa
@@ -351,97 +409,58 @@
 
                 // Hàm cập nhật bảng Selected Product
                 function updateSelectedProductTable() {
-                    let tableBody = document.getElementById("selectedProductTable");
+                    let tableBody = document.querySelector("#selectedProductTable");
                     tableBody.innerHTML = ""; // Xóa nội dung cũ
 
-                    for (let i = 0; i < selectedProducts.length; i++) {
-                        let product = selectedProducts[i];
+                    selectedProducts.forEach((product, index) => {
                         let row = document.createElement("tr");
-                        row.innerHTML = `
-        <td id="productName${i}"></td>
-        <td id="productId${i}"></td>
-        <td id="productModel${i}"></td>
-        <td id="productStock${i}"></td>
-        <td id="productStatus${i}"></td>`;
+
+                        // Sử dụng dấu `\` để tránh nhầm lẫn với EL của JSP nếu có
+                        row.innerHTML = `<td>\${product.name}</td>
+                             <td>\${product.id}</td>
+                             <td>\${product.model}</td>
+                             <td>
+                                <input style="width: 35%;" type="number" id="productStock\${product.id}" value="1" min="1" class="form-control">
+                             </td>
+                             <td>
+                                <input style="width: 35%;" type="number" id="importPrice\${product.id}" value="0" min="1000" class="form-control">
+                             </td>
+                             <td>
+                                <button class="removeProduct btn btn-danger btn-sm" data-index="\${index}">Xóa</button>
+                             </td>`;
 
                         tableBody.appendChild(row);
-
-                        // Cập nhật nội dung bằng ID duy nhất
-                        document.getElementById(`productName${i}`).innerText = product.name;
-                        document.getElementById(`productId${i}`).innerText = product.id;
-                        document.getElementById(`productModel${i}`).innerText = product.model;
-                        document.getElementById(`productStock${i}`).innerText = product.stock;
-                        document.getElementById(`productStatus${i}`).innerText = product.status;
-                        
-                        console.log("");
-                    }
-
-
+                    });
 
                     // Gán sự kiện xóa sản phẩm
                     document.querySelectorAll(".removeProduct").forEach(btn => {
                         btn.addEventListener("click", function () {
-                            let index = this.getAttribute("data-index");
+                            let index = parseInt(this.getAttribute("data-index"));
                             selectedProducts.splice(index, 1); // Xóa sản phẩm khỏi danh sách
                             updateSelectedProductTable(); // Cập nhật lại bảng
                         });
                     });
                 }
-            });
 
-        </script>
+                document.getElementById("submitSelectedProducts").addEventListener("click", function (e) {
+                    e.preventDefault();
 
-        <script>
-            document.querySelectorAll(".clickable-row").forEach(row => {
-                row.addEventListener("click", function () {
-                    // Lấy dữ liệu từ thuộc tính data-*
-                    let name = this.getAttribute("data-name");
-                    let address = this.getAttribute("data-address");
-                    let email = this.getAttribute("data-email");
-                    let phone = this.getAttribute("data-phone");
-                    let status = this.getAttribute("data-status");
-                    let taxid = this.getAttribute("data-taxid");
+                    let selectedProductData = selectedProducts.map(product => {
+                        // Lấy giá trị stock từ input với id "productStock" + product.id
+                        let quantity = document.getElementById("productStock" + product.id).value;
+                        let price = document.getElementById("importPrice" + product.id).value;
+                        return {id: product.id, stock: quantity, price: price};
+                    });
 
-                    // Cập nhật bảng dưới
-                    document.getElementById("selectedName").textContent = name;
-                    document.getElementById("selectedAddress").textContent = address;
-                    document.getElementById("selectedEmail").textContent = email;
-                    document.getElementById("selectedPhone").textContent = phone;
-                    document.getElementById("selectedStatus").textContent = status;
-                    document.getElementById("selectedTaxId").textContent = taxid;
+                    let jsonData = JSON.stringify(selectedProductData);
+
+                    // Gán giá trị cho input ẩn
+                    document.getElementById("selectedProductsInput").value = jsonData;
+
+                    // Submit form
+                    document.getElementById("selectedProductsForm").submit();
                 });
-            });
 
-
-            // Edit product functionality
-            document.getElementById("productList").addEventListener("click", function (event) {
-                if (event.target.classList.contains("editBtn")) {
-                    const row = event.target.closest("tr");
-                    const supplier = row.cells[0].innerText;
-                    const model = row.cells[1].innerText;
-                    const productName = row.cells[2].innerText;
-                    const quantity = row.cells[3].innerText;
-                    const price = row.cells[4].innerText.replace(" VND", "").replace(",", "");
-                    document.getElementById("supplier").value = supplier;
-                    document.getElementById("model").value = model;
-                    document.getElementById("productName").value = productName;
-                    document.getElementById("quantity").value = quantity;
-                    document.getElementById("price").value = price;
-                    // Delete the row to replace it after editing
-                    row.remove();
-                }
-            });
-            // Delete product functionality
-            document.getElementById("productList").addEventListener("click", function (event) {
-                if (event.target.classList.contains("deleteBtn")) {
-                    event.target.closest("tr").remove();
-                }
-            });
-            document.getElementById("editSupplier").addEventListener("click", function () {
-                document.getElementById("supplier").removeAttribute("readonly");
-            });
-            document.getElementById("addProduct").addEventListener("click", function () {
-                document.getElementById("model").focus();
             });
         </script>
     </body>

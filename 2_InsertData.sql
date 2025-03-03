@@ -117,3 +117,5 @@ VALUES
 (1, 1, 10, 45000000),
 (2, 2, 20, 28000000),
 (2, 3, 15, 18000000);
+
+INSERT INTO ImportOrderDetails (IOID, ProductID, Quantity, ImportPrice) VALUES (1, 1, 10, 45000000), (2, 2, 20, 28000000), (2, 3, 15, 18000000)
