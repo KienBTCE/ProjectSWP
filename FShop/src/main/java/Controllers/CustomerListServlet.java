@@ -2,6 +2,8 @@ package Controllers;
 
 import DAOs.CustomerDAO;
 import Models.Customer;
+import Models.Email;
+import Models.EmailUtils;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -62,15 +64,25 @@ public class CustomerListServlet extends HttpServlet {
         String deleteID = request.getParameter("Blocked");
         String restoreID = request.getParameter("Activate");
         String keyword = request.getParameter("txt");
+
         if (deleteID != null) {
             int id = Integer.parseInt(deleteID);
-            pr.blockCustomer(id);
+            // Retrieve customer details before blocking
+            Customer customer = pr.getCustomerById(id);
+            if (customer != null) {
+                pr.blockCustomer(id);
+                sendStatusChangeNotificationEmail(customer, true); // true -> Blocked
+            }
             response.sendRedirect("CustomerListServlet");
             return;
         }
         if (restoreID != null) {
             int id = Integer.parseInt(restoreID);
-            pr.restoreCustomer(id);
+            Customer customer = pr.getCustomerById(id);
+            if (customer != null) {
+                pr.restoreCustomer(id);
+                sendStatusChangeNotificationEmail(customer, false); // false -> Activated
+            }
             response.sendRedirect("CustomerListServlet");
             return;
         }
@@ -89,12 +101,63 @@ public class CustomerListServlet extends HttpServlet {
         } else {
             customers = pr.getCustomerList();
         }
-        
+
         try {
             request.setAttribute("customers", customers);
             request.getRequestDispatcher("ManageCustomerView.jsp").forward(request, response);
         } catch (NullPointerException e) {
             System.out.println(e);
+        }
+    }
+
+    private void sendStatusChangeNotificationEmail(Customer customer, boolean isBlocked) {
+        try {
+            Email email = new Email();
+            email.setFrom("kieuthy2004@gmail.com"); // Sender email
+            email.setFromPassword("xkkc ohwn aesf arqm"); // App Password for email
+            email.setTo(customer.getEmail()); // Customer email
+
+            // Subject and message customization based on action
+            if (isBlocked) {
+                email.setSubject("Account Suspension Notice");
+
+                StringBuilder sb = new StringBuilder();
+                sb.append("Dear ").append(customer.getFullName()).append(",<br><br>");
+                sb.append("We regret to inform you that your account has been <b>blocked</b> due to a violation of our platform policies.<br>");
+                sb.append("This action was taken to ensure the security and integrity of our system.<br><br>");
+                sb.append("<b>Reason for Blocking:</b> Suspicious or inappropriate activity detected.<br>");
+                sb.append("<b>Account ID:</b> ").append(customer.getId()).append("<br>");
+                sb.append("<b>Email:</b> ").append(customer.getEmail()).append("<br><br>");
+                sb.append("If you believe this action was taken in error, please contact our support team.<br>");
+                sb.append("<b>Support Email:</b> support@fshop.com<br><br>");
+                sb.append("Thank you for your understanding.<br>");
+                sb.append("Best Regards,<br>");
+                sb.append("<b>FShop Team</b>");
+
+                email.setContent(sb.toString());
+            } else {
+                email.setSubject("Account Reinstated Successfully");
+
+                StringBuilder sb = new StringBuilder();
+                sb.append("Dear ").append(customer.getFullName()).append(",<br><br>");
+                sb.append("Good news! Your account has been <b>reactivated</b> and you can now access our platform as usual.<br><br>");
+                sb.append("We appreciate your cooperation and look forward to serving you.<br>");
+                sb.append("<b>Account ID:</b> ").append(customer.getId()).append("<br>");
+                sb.append("<b>Email:</b> ").append(customer.getEmail()).append("<br><br>");
+                sb.append("If you need further assistance, please contact our support team.<br>");
+                sb.append("<b>Support Email:</b> support@fshop.com<br><br>");
+                sb.append("Thank you for being a valued member of <b>FShop</b>.<br>");
+                sb.append("Best Regards,<br>");
+                sb.append("<b>FShop Team</b>");
+
+                email.setContent(sb.toString());
+            }
+
+            // Send the email
+            EmailUtils.send(email);
+
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 
