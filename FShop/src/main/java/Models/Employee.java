@@ -3,30 +3,44 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
 package Models;
-import java.time.LocalDateTime;
+import java.sql.Date;
 
 /**
  *
  * @author NguyenPVT-CE181835
  */
+
 public class Employee {
     private int employeeId;
     private String fullname;
-    private LocalDateTime birthday;
+    private Date birthday;
     private String password;
     private String phoneNumber;
     private String email;
     private String gender;
-    private LocalDateTime createdDate;
-    private String Status;
+    private Date createdDate;
+    private int Status;
     private String avatar;
     private int roleId;
 
     public Employee() {
     }
 
+    public Employee(String fullname, Date birthday, String password, String phoneNumber, String email, String gender, Date createdDate, int Status, String avatar, int roleId) {
+        this.fullname = fullname;
+        this.birthday = birthday;
+        this.password = password;
+        this.phoneNumber = phoneNumber;
+        this.email = email;
+        this.gender = gender;
+        this.createdDate = createdDate;
+        this.Status = Status;
+        this.avatar = avatar;
+        this.roleId = roleId;
+    }
     
-    public Employee(int employeeId, String fullname, LocalDateTime birthday, String password, String phoneNumber, String email, String gender, LocalDateTime createdDate, String Status, String avatar, int roleId) {
+    
+    public Employee(int employeeId, String fullname, Date birthday, String password, String phoneNumber, String email, String gender, Date createdDate, int Status, String avatar, int roleId) {
         this.employeeId = employeeId;
         this.fullname = fullname;
         this.birthday = birthday;
@@ -56,11 +70,11 @@ public class Employee {
         this.fullname = fullname;
     }
 
-    public LocalDateTime getBirthday() {
+    public Date getBirthday() {
         return birthday;
     }
 
-    public void setBirthday(LocalDateTime birthday) {
+    public void setBirthday(Date birthday) {
         this.birthday = birthday;
     }
 
@@ -96,19 +110,19 @@ public class Employee {
         this.gender = gender;
     }
 
-    public LocalDateTime getCreatedDate() {
+    public Date getCreatedDate() {
         return createdDate;
     }
 
-    public void setCreatedDate(LocalDateTime createdDate) {
+    public void setCreatedDate(Date createdDate) {
         this.createdDate = createdDate;
     }
 
-    public String getStatus() {
+    public int getStatus() {
         return Status;
     }
 
-    public void setStatus(String Status) {
+    public void setStatus(int Status) {
         this.Status = Status;
     }
 

@@ -46,8 +46,8 @@ CREATE TABLE Employees (
     PhoneNumber VARCHAR(15),
     Email VARCHAR(254),
     Gender CHAR(6),
-    CreatedDate DATETIME,
-	[Status] NVARCHAR(20),
+    CreatedDate DATE,
+	[Status] BIT,
     Avatar TEXT,
     RoleID INT,
     FOREIGN KEY (RoleID) REFERENCES Roles(RoleID)
@@ -178,7 +178,7 @@ CREATE TABLE ImportOrderDetails (
 );
 
 CREATE TABLE ProductRatings (
-    RateID INT Id PRIMARY KEY,
+    RateID INT PRIMARY KEY,
     CustomerID INT,
     ProductID INT,
 	OrderID INT,

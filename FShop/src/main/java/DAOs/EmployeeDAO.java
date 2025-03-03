@@ -12,7 +12,6 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 
 /**
@@ -33,13 +32,13 @@ public class EmployeeDAO {
             while (rs.next()) {
                 listEmployee.add(new Employee(rs.getInt("EmployeeID"),
                         rs.getString("FullName"),
-                        rs.getTimestamp("Birthday").toLocalDateTime(),
+                        rs.getDate("Birthday"),
                         rs.getString("Password"),
                         rs.getString("PhoneNumber"),
                         rs.getString("Email"),
                         rs.getString("Gender"),
-                        rs.getTimestamp("CreatedDate").toLocalDateTime(),
-                        rs.getString("Status"),
+                        rs.getDate("CreatedDate"),
+                        rs.getInt("Status"),
                         rs.getString("Avatar"),
                         rs.getInt("RoleID")
                 ));
@@ -58,18 +57,18 @@ public class EmployeeDAO {
 
         try {
             PreparedStatement pr = connector.prepareStatement(sql);
-            pr.setInt(empId, 1);
+            pr.setInt(1, empId);
             ResultSet rs = pr.executeQuery();
             while (rs.next()) {
                 emp = new Employee(rs.getInt("EmployeeID"),
                         rs.getString("FullName"),
-                        rs.getTimestamp("Birthday").toLocalDateTime(),
+                        rs.getDate("Birthday"),
                         rs.getString("Password"),
                         rs.getString("PhoneNumber"),
                         rs.getString("Email"),
                         rs.getString("Gender"),
-                        rs.getTimestamp("CreatedDate").toLocalDateTime(),
-                        rs.getString("Status"),
+                        rs.getDate("CreatedDate"),
+                        rs.getInt("Status"),
                         rs.getString("Avatar"),
                         rs.getInt("RoleID")
                 );
@@ -79,6 +78,53 @@ public class EmployeeDAO {
             System.out.println(e);
         }
         return emp;
+    }
+
+    public int AddEmployee(Employee employee) {
+        int effectRow = 0;
+        String sql = "INSERT INTO Employees (FullName, Birthday, [Password], PhoneNumber, Email, Gender, CreatedDate, Status, Avatar, RoleID) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        try {
+            PreparedStatement pr = connector.prepareStatement(sql);
+            pr.setString(1, employee.getFullname());
+            pr.setDate(2, employee.getBirthday());
+            pr.setString(3, employee.getPassword());
+            pr.setString(4, employee.getPhoneNumber());
+            pr.setString(5, employee.getEmail());
+            pr.setString(6, employee.getGender());
+            pr.setDate(7, employee.getCreatedDate());
+            pr.setInt(8, employee.getStatus());
+            pr.setString(9, employee.getAvatar());
+            pr.setInt(10, employee.getRoleId());
+            effectRow = pr.executeUpdate();
+            return effectRow;
+        } catch (SQLException e) {
+            System.out.println(e);
+        }
+        return effectRow;
+    }
+
+    public int UpdateEmployee(Employee employee) {
+        int effectRow = 0;
+        String sql = "UPDATE Employees SET FullName = ?, Birthday = ?, [Password] = ?, PhoneNumber = ?, Email = ?, Gender = ?, CreatedDate = ?, Status = ?, Avatar = ?, RoleID = ? WHERE EmployeeID = ?";
+        try {
+            PreparedStatement pr = connector.prepareStatement(sql);
+            pr.setString(1, employee.getFullname());
+            pr.setDate(2,employee.getBirthday());
+            pr.setString(3, employee.getPassword());
+            pr.setString(4, employee.getPhoneNumber());
+            pr.setString(5, employee.getEmail());
+            pr.setString(6, employee.getGender());
+            pr.setDate(7, employee.getCreatedDate());
+            pr.setInt(8, employee.getStatus());
+            pr.setString(9, employee.getAvatar());
+            pr.setInt(10, employee.getRoleId());
+            pr.setInt(11, employee.getEmployeeId());
+            effectRow = pr.executeUpdate();
+            return effectRow;
+        } catch (SQLException e) {
+            System.out.println(e);
+        }
+        return effectRow;
     }
 
     private String getMD5(String input) {
@@ -116,13 +162,13 @@ public class EmployeeDAO {
             while (rs.next()) {
                 emp = new Employee(rs.getInt("EmployeeID"),
                         rs.getString("FullName"),
-                        rs.getTimestamp("Birthday").toLocalDateTime(),
+                        rs.getDate("Birthday"),
                         "",
                         rs.getString("PhoneNumber"),
                         rs.getString("Email"),
                         rs.getString("Gender"),
-                        rs.getTimestamp("CreatedDate").toLocalDateTime(),
-                        rs.getString("Status"),
+                        rs.getDate("CreatedDate"),
+                        rs.getInt("Status"),
                         rs.getString("Avatar"),
                         rs.getInt("RoleID")
                 );
@@ -133,17 +179,12 @@ public class EmployeeDAO {
         }
         return emp;
     }
-    
-//    public static void main(String[] args) {
-//        EmployeeDAO emDAO = new EmployeeDAO();
-//        Employee em = new Employee();
-//        
-//        
-//        em = emDAO.employeeLogin("nguyen.vana@example.com", "User123@");
-//        
-//        System.out.println(em.getFullname());
-//        System.out.println(emDAO.getMD5("User123@"));
-//    }
-    
-    
+
+    public static void main(String[] args) {
+        EmployeeDAO emDAO = new EmployeeDAO();
+        ArrayList<Employee> list = emDAO.getAllEmployees();
+        for (Employee employee : list) {
+            System.out.println(employee.getFullname());
+        }
+    }
 }

@@ -81,7 +81,7 @@ public class EmployeeLoginServlet extends HttpServlet {
         
         Employee em = emDAO.employeeLogin(email, password);//Emloyee có all thông tin tru di password là ko có
         if(em != null){
-            if(em.getStatus().equals("Active")){
+            if(em.getStatus() == 1){
                 session.setAttribute("employee", em);
                 if(em.getRoleId() == 1){
                     //session.setAttribute("message", "Admin");
@@ -98,7 +98,7 @@ public class EmployeeLoginServlet extends HttpServlet {
                 } else{
                     processRequest(request, response);//ko có roleId thì error
                 }
-            } else if(em.getStatus().equals("Deactive")){
+            } else if(em.getStatus() == 0){
                 session.setAttribute("message", "Your account is deactive!");//deactive thì không login dc
                 response.sendRedirect("/EmployeeLogin");
             } else{

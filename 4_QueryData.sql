@@ -129,6 +129,7 @@ WHERE Laptops.pd_ID IN (
 );select * from Products where CategoryID = 1
 SELECT * FROM Employees
 DELETE FROM Employees WHERE EmployeeID = 2
+SELECT * FROM Roles
 
 
 SELECT DISTINCT B.[Name] FROM Brands B JOIN Products P ON B.BrandID = P.BrandID WHERE P.CategoryID IN (SELECT CategoryID FROM Categories WHERE [Name] = 'Laptop')
