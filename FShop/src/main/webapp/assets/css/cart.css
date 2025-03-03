@@ -29,10 +29,7 @@
     flex-direction: row;
     justify-content: space-between;
 }
-.right{
-    background-color: #f5f7ff;
-    padding: 20px 30px 20px 30px;
-}
+
 .btnSummary button{
     width: 90%;
     text-align: center;
