@@ -93,7 +93,7 @@ public class EmployeeLoginServlet extends HttpServlet {
                     response.sendRedirect("/ViewOrderListServlet");//Link qua Order Manager
                 } else if(em.getRoleId() == 4){
                     session.setAttribute("message", "Warehouse Manager");
-                    response.sendRedirect("/EmployeeLogin");//Link qua Warehouse Manager
+                    response.sendRedirect("/Supplier");//Link qua Warehouse Manager
                 } else{
                     processRequest(request, response);//ko có roleId thì error
                 }
