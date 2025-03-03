@@ -46,26 +46,6 @@
 
             }
 
-            .head {
-                margin-top: 10px;
-                display: flex;
-                justify-content: right;
-                align-items: center;
-                padding: 10px;
-                background: #FFFFFF;
-                box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.3);
-                border-radius: 10px;
-                height: 85px;
-            }
-
-            .icon_head {
-                width: 40px;
-                height: 40px;
-                border-radius: 50%;
-                object-fit: cover;
-            }
-
-
             .profile-container {
                 max-width: 1600px;
                 height: auto;
@@ -144,56 +124,43 @@
             <div class="row">
                 <div class="col-md-2">
                     <div class="sidebar">
+                        <img src="assets/imgs/Dashboard/Group 1521.svg" class="logo-side-bar">
                         <c:if test="${sessionScope.employee.getRoleId() == 1}">
-                            <img src="assets/imgs/Dashboard/Group 1521.svg" class="logo-side-bar">
                             <h6><a href="#">Admin</a></h6>
                             <a href="Employee">Employee Management</a>
                             <a href="#">Statistic Management</a>
                         </c:if>
                         <c:if test="${sessionScope.employee.getRoleId() == 2}">
-                            <img src="assets/imgs/Dashboard/Group 1521.svg" class="logo-side-bar">
-                            <h6><a href="#">Shop Manager</a></h6>
-                            <a href="#">... Management</a>
-                            <a href="#">... Management</a>
+                            <h6><a href="#">Shop Management</a></h6>
+                            <a href="CustomerListServlet">Customer Management</a>
+                            <a href="ProductListServlet">Product Management</a>
+                            <a href="#">Product Statistic</a>
                         </c:if>
                         <c:if test="${sessionScope.employee.getRoleId() == 3}">
-                            <img src="assets/imgs/Dashboard/Group 1521.svg" class="logo-side-bar">
-                            <h6><a href="#">Order Manager</a></h6>
-                            <a href="#">... Management</a>
-                            <a href="#">... Management</a>
+                            <h6><a href="#">Order Management</a></h6>
+                            <a href="ViewListNewFeedbackServlet">Feedback</a>
+                            <a href="ViewOrderListServlet">Order</a>
                         </c:if>
                         <c:if test="${sessionScope.employee.getRoleId() == 4}">
-                            <img src="assets/imgs/Dashboard/Group 1521.svg" class="logo-side-bar">
-                            <h6><a href="#">Warehouse Manager</a></h6>
-                            <a href="#">... Management</a>
-                            <a href="#">... Management</a>
+                            <h6><a href="#">Warehouse Management</a></h6>
+                            <a href="ImportOrder">Import Order</a>
+                            <a href="Supplier">Supplier</a>
+                            <a href="#">Product Management</a>
                         </c:if>
                         <a style="margin-top: auto; color: red;" href="" onclick="confirmLogout()"><i class="bi bi-box-arrow-right"></i> Logout</a>
                     </div>
                 </div>
-                <div class="col-md-10">
-                    <div class="head">
-                        <div style="margin-right: 30px">
-                            <c:choose>
-                                <c:when test="${not empty sessionScope.employee.getAvatar()}">
-                                    <img style="float: left; margin-right: 15px;" class="icon_head" src="assets/imgs/EmployeeAvatar/${sessionScope.employee.getAvatar()}" alt="Avatar">
-                                </c:when>
-                                <c:otherwise>
-                                    <img style="float: left; margin-right: 15px;" class="icon_head" src="assets/imgs/EmployeeAvatar/defauft_avatar.jpg" alt="Avatar">
-                                </c:otherwise>
-                            </c:choose>
-                            <a href="/ViewEmployeeProfile" style="display: flex; margin: 12px 0 0 0; text-decoration: none;">Hi, ${sessionScope.employee.getFullname()}</a>
-                        </div>
-                    </div>
-                    <form action="UpdateEmployeeProfile" method="post" enctype="multipart/form-data" onsubmit="return validateForm()">
+                <div class="col-md-10" style="padding: 10px;">
+                    <jsp:include page="HeaderDashboard.jsp"></jsp:include>
+                        <form action="UpdateEmployeeProfile" method="post" enctype="multipart/form-data" onsubmit="return validateForm()">
 
-                        <div class="profile-container">
+                            <div class="profile-container">
 
-                            <div class="form-container">
+                                <div class="form-container">
 
-                                <div class="mb-3 d-flex">
-                                    <label class="value">Email:</label>
-                                    <p>${sessionScope.employee.getEmail()}</p>
+                                    <div class="mb-3 d-flex">
+                                        <label class="value">Email:</label>
+                                        <p>${sessionScope.employee.getEmail()}</p>
                                 </div>
 
                                 <div class="mb-3 d-flex">

@@ -78,16 +78,6 @@
                 background-color: #0056b3;
                 color: white;
             }
-            .forgotpass {
-                width: 100px;
-                display: inline;
-                margin: 10px 20px;
-                color: #007bff;
-                text-decoration: none;
-            }
-            .forgotpass:hover {
-                text-decoration: underline;
-            }
             ul {
                 padding-left: 20px;
             }
@@ -145,7 +135,6 @@
                         <input type="password" id="password" name="password" placeholder="Your Password" required>
 
                         <button class="summit" type="submit">Sign In</button>
-                        <a class="forgotpass" href="#">Forgot Your Password?</a>
                     </form>
                 </div>
             </div>
