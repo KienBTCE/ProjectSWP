@@ -154,53 +154,41 @@
                             <a href="#">... Management</a>
                             <a href="#">... Management</a>
                         </c:if>
-                            <a style="margin-top: auto; color: red;" href="" onclick="confirmLogout()"><i class="bi bi-box-arrow-right"></i> Logout</a>
+                        <a style="margin-top: auto; color: red;" href="" onclick="confirmLogout()"><i class="bi bi-box-arrow-right"></i> Logout</a>
                     </div>
                 </div>
-                <div class="col-md-10">
-                    <div class="head">
-                        <div style="margin-right: 30px">
-                            <c:choose>
-                                <c:when test="${not empty sessionScope.employee.getAvatar()}">
-                                    <img style="float: left; margin-right: 15px;" class="icon_head" src="assets/imgs/EmployeeAvatar/${sessionScope.employee.getAvatar()}" alt="Avatar">
-                                </c:when>
-                                <c:otherwise>
-                                    <img style="float: left; margin-right: 15px;" class="icon_head" src="assets/imgs/EmployeeAvatar/defauft_avatar.jpg" alt="Avatar">
-                                </c:otherwise>
-                            </c:choose>
-                            <a href="/ViewEmployeeProfile" style="display: flex; margin: 12px 0 0 0; text-decoration: none;">Hi, ${sessionScope.employee.getFullname()}</a>
-                        </div>
-                    </div>
-                    <div class="content">
-                        <h2 style="width: 100%;">Change Password</h2>
+                <div class="col-md-10" style="padding: 10px;">
+                        <jsp:include page="HeaderDashboard.jsp"></jsp:include>
+                        <div class="content">
+                            <h2 style="width: 100%;">Change Password</h2>
 
-                        <div class="change_password_container">
-                            <form action="ChangeEmployeePassword" method="POST" onsubmit="return validatePassword()">
+                            <div class="change_password_container">
+                                <form action="ChangeEmployeePassword" method="POST" onsubmit="return validatePassword()">
 
-                                <div class="mb-4">
-                                    <label for="currentPassword" class="form-label">Current Password</label>
-                                    <input type="password" class="form-control" id="currentPassword" name="current" required>
-                                </div>
-                                <div class="mb-4">
-                                    <label for="newPassword" class="form-label">New Password</label>
-                                    <input type="password" class="form-control" id="newPassword" name="new" required>
-                                    <div id="passwordError" class="error-message mb-8"></div>
-                                </div>
-                                <div class="mb-4">
-                                    <label for="confirmPassword" class="form-label">Confirm New Password</label>
-                                    <input type="password" class="form-control" id="confirmPassword" name="confirm" required>
-                                    <div id="confirmError" class="error-message mb-8"></div>
-                                </div>
-                                <div class="d-grid">
-                                    <button type="submit" class="btn btn-primary">Change Password</button>
-                                </div>
-                            </form>
+                                    <div class="mb-4">
+                                        <label for="currentPassword" class="form-label">Current Password</label>
+                                        <input type="password" class="form-control" id="currentPassword" name="current" required>
+                                    </div>
+                                    <div class="mb-4">
+                                        <label for="newPassword" class="form-label">New Password</label>
+                                        <input type="password" class="form-control" id="newPassword" name="new" required>
+                                        <div id="passwordError" class="error-message mb-8"></div>
+                                    </div>
+                                    <div class="mb-4">
+                                        <label for="confirmPassword" class="form-label">Confirm New Password</label>
+                                        <input type="password" class="form-control" id="confirmPassword" name="confirm" required>
+                                        <div id="confirmError" class="error-message mb-8"></div>
+                                    </div>
+                                    <div class="d-grid">
+                                        <button type="submit" class="btn btn-primary">Change Password</button>
+                                    </div>
+                                </form>
 
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
         <c:if test="${sessionScope.empromess != null}">
             <!-- Popup -->
             <div class="popup" id="Popup">
