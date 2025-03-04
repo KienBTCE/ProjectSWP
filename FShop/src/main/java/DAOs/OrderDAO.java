@@ -218,16 +218,14 @@ public class OrderDAO {
     public List<Order> searchOrders(String searchQuery) {
         List<Order> list = new ArrayList<>();
         String query = "SELECT * FROM Orders WHERE "
-                + "OrderID LIKE ? OR "
                 + "FullName LIKE ? OR "
-                + "PhoneNumber LIKE ? OR "
-                + "Status LIKE ?";
+                + "PhoneNumber LIKE ? ";
         try {
             PreparedStatement pre = connector.prepareStatement(query);
+            
             pre.setString(1, "%" + searchQuery + "%");
             pre.setString(2, "%" + searchQuery + "%");
-            pre.setString(3, "%" + searchQuery + "%");
-            pre.setString(4, "%" + searchQuery + "%");
+        
 
             ResultSet rs = pre.executeQuery();
             while (rs.next()) {
