@@ -24,9 +24,9 @@
             </a>
             <ul class="side-menu">
                 <li><a href="#"><i class='bx bxs-dashboard'></i>Dashboard</a></li>
-                <li><a href="EmployeeList"><i class='bx bx-store-alt'></i>Shop</a></li>
-                <li><a href="EmployeeList"><i class='bx bx-analyse'></i>Statistic</a></li>
-                <li><a href="EmployeeList"><i class='bx bx-group'></i>Employee</a></li>
+                <li><a href="Employee"><i class='bx bx-store-alt'></i>Shop</a></li>
+                <li><a href="Employee"><i class='bx bx-analyse'></i>Statistic</a></li>
+                <li><a href="Employee"><i class='bx bx-group'></i>Employee</a></li>
             </ul>
             <ul class="side-menu">
                 <li>
