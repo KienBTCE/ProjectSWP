@@ -30,12 +30,60 @@ VALUES
 (4, '0400101237', 'SmartTech Supplies', 'sales@smarttech.vn', '0934567890', '101 Future Drive, District 7, Ho Chi Minh City', GETDATE(), GETDATE(), 0, 0),
 (5, '0500101238', 'NextGen Electronics', 'hello@nextgen.vn', '0945678901', '202 Silicon Valley, District 2, Ho Chi Minh City', GETDATE(), GETDATE(), 0, 0);
 SET IDENTITY_INSERT Suppliers OFF;
--- Insert Attributes
-INSERT INTO Attributes ([Name])
-VALUES
-('Processor'), ('RAM'), ('Storage'),
-('Camera'), ('Battery'), ('Screen Size');
 
+-- Insert Attributes
+INSERT INTO [Attributes] ([Name]) VALUES
+
+-- ======== Dùng chung cho Laptop & Điện thoại ========
+('GPU'),                        -- Chip đồ họa (Điện thoại: GPU di động, Laptop: Card đồ họa rời/tích hợp)
+('CPU Speed'),                  -- Tốc độ CPU (Dùng cho cả hai)
+('Display Technology'),         -- Công nghệ màn hình (OLED, IPS, LCD…)
+('Screen Resolution'),          -- Độ phân giải màn hình (FHD, 2K, 4K…)
+('Screen Size'),                -- Kích thước màn hình (Laptop & Điện thoại đều có)
+('Touchscreen Glass'),          -- Mặt kính cảm ứng (Laptop cảm ứng & Điện thoại)
+('Battery Capacity'),           -- Dung lượng pin (Dùng cho cả hai)
+('Battery Technology'),         -- Công nghệ pin (Lithium-ion, Li-Po…)
+('Charging Port'),              -- Cổng sạc (USB-C phổ biến trên cả Laptop & Điện thoại)
+('Bluetooth'),                  -- Bluetooth (Có trên cả hai)
+('Design'),                     -- Thiết kế (Kiểu dáng tổng thể)
+('Material'),                   -- Chất liệu (Nhôm, kính, nhựa…)
+('Size & Weight'),              -- Kích thước, khối lượng (Cả laptop & điện thoại)
+
+-- ======== Laptop ========
+('Keyboard Type'),              -- Loại bàn phím (Cơ, membrane, chiclet)
+('LED Backlight'),              -- Đèn nền bàn phím
+('Mouse & Keyboard Connection Type'), -- Loại kết nối (USB, Bluetooth, Wireless)
+
+-- ======== Điện thoại ========
+('Mobile Network'),             -- Mạng di động (2G, 3G, 4G, 5G)
+('SIM'),                        -- Loại SIM (Nano SIM, eSIM, Dual SIM)
+('Rear Camera Resolution'),     -- Độ phân giải camera sau
+('Front Camera Resolution'),    -- Độ phân giải camera trước
+('Max Charging Support'),       -- Công suất sạc tối đa
+('Advanced Security'),          -- Bảo mật nâng cao (Vân tay, Face ID)
+
+-- ======== Phụ kiện chung ========
+('Color'),                      -- Màu sắc
+
+-- ======== Tai nghe ========
+('Headphone Type'),             -- Kiểu tai nghe (In-ear, Over-ear, True Wireless)
+('Audio Technology'),           -- Công nghệ âm thanh (Dolby, ANC…)
+('Connectivity'),               -- Kết nối (Bluetooth, Jack 3.5mm, USB-C, Lightning)
+('Battery Capacity'),           -- Dung lượng pin (tai nghe không dây)
+('Usage Time'),                 -- Thời gian sử dụng
+('Charging Time'),              -- Thời gian sạc
+
+-- ======== Sạc & Cáp ========
+('Charger Type'),               -- Loại sạc (Adapter, Sạc không dây)
+('Charging Power (W)'),         -- Công suất sạc (W)
+('Fast Charging Standard'),     -- Chuẩn sạc nhanh (PD, QC)
+('Connector Type'),             -- Loại cổng kết nối (USB-A, USB-C, Lightning)
+('Cable Length'),               -- Chiều dài cáp
+('Cable Material'),             -- Chất liệu cáp (Nylon, Cao su)
+
+-- ======== Chuột ========
+('Mouse Type'),                 -- Loại chuột (Có dây, Không dây, Bluetooth, Gaming)
+('RGB Lighting');              -- Đèn LED RGB
 -- Insert Products
 SET IDENTITY_INSERT Products ON;
 
@@ -57,12 +105,129 @@ SET IDENTITY_INSERT Products OFF;
 -- Insert AttributeDetails
 INSERT INTO AttributeDetails (AttributeID, ProductID, AttributeInfor)
 VALUES
-(1, 1, 'Apple M1 Pro'),
-(4, 2, '48MP + 12MP + 12MP'),
-(6, 2, '6.8 inches'),
-(1, 3, 'Intel Core i7-1185G7'),
-(2, 3, '16GB'),
-(3, 3, '512GB SSD');
+-- Macbook Pro 14
+(1, 1, 'Apple M1 Pro GPU'),
+(2, 1, '3.2 GHz'),
+(3, 1, 'Liquid Retina XDR'),
+(4, 1, '3024 x 1964'),
+(5, 1, '14 inch'),
+(6, 1, 'Không'),
+(7, 1, '70Wh'),
+(8, 1, 'Li-Po'),
+(9, 1, 'USB-C (Thunderbolt 4)'),
+(10, 1, '5.0'),
+(11, 1, 'Mỏng nhẹ, viền mỏng'),
+(12, 1, 'Nhôm CNC'),
+(13, 1, '31.26 x 22.12 x 1.55 cm, 1.6 kg'),
+(14, 1, 'Magic Keyboard'),
+(15, 1, 'Có'),
+(16, 1, 'Bluetooth'),
+-- Sony Vaio Z900
+(1, 3, 'Intel Iris Xe'),
+(2, 3, '3.1 GHz'),
+(3, 3, 'IPS'),
+(4, 3, '1920 x 1080'),
+(5, 3, '14 inch'),
+(6, 3, 'Không'),
+(7, 3, '53Wh'),
+(8, 3, 'Li-ion'),
+(9, 3, 'USB-C'),
+(10, 3, '5.1'),
+(11, 3, 'Siêu mỏng, cao cấp'),
+(12, 3, 'Sợi carbon'),
+(13, 3, '32.0 x 21.5 x 1.6 cm, 1.2 kg'),
+(14, 3, 'Chiclet'),
+(15, 3, 'Có'),
+(16, 3, 'Bluetooth'),
+-- ASUS TUF Gaming A17
+(1, 4, 'RTX 3050 4GB'),
+(2, 4, '4.2 GHz'),
+(3, 4, 'IPS'),
+(4, 4, '1920 x 1080'),
+(5, 4, '17.3 inch'),
+(6, 4, 'Không'),
+(7, 4, '90Wh'),
+(8, 4, 'Li-ion'),
+(9, 4, 'USB-C, DC-in'),
+(10, 4, '5.2'),
+(11, 4, 'Gaming mạnh mẽ'),
+(12, 4, 'Nhựa cứng & kim loại'),
+(13, 4, '39.9 x 26.8 x 2.5 cm, 2.6 kg'),
+(14, 4, 'RGB Backlit'),
+(15, 4, 'Có'),
+(16, 4, 'USB, Bluetooth'),
+-- Lenovo Legion Pro 5
+(1, 7, 'RTX 4050 6GB'),
+(2, 7, '4.5 GHz'),
+(3, 7, 'IPS'),
+(4, 7, '2560 x 1600'),
+(5, 7, '16 inch'),
+(6, 7, 'Không'),
+(7, 7, '80Wh'),
+(8, 7, 'Li-ion'),
+(9, 7, 'USB-C, DC-in'),
+(10, 7, '5.2'),
+(11, 7, 'Gaming mạnh mẽ'),
+(12, 7, 'Nhôm & nhựa cứng'),
+(13, 7, '35.9 x 26.5 x 2.6 cm, 2.5 kg'),
+(14, 7, 'RGB Backlit'),
+(15, 7, 'Có'),
+(16, 7, 'USB, Bluetooth'),
+-- Samsung Galaxy S23 Ultra
+(1, 2, 'Adreno 740'),
+(2, 2, '3.36 GHz'),
+(3, 2, 'Dynamic AMOLED 2X'),
+(4, 2, '3088 x 1440'),
+(5, 2, '6.8 inch'),
+(6, 2, 'Gorilla Glass Victus 2'),
+(7, 2, '5000mAh'),
+(8, 2, 'Li-ion'),
+(9, 2, 'USB-C'),
+(10, 2, '5.3'),
+(11, 2, 'Mặt lưng kính, viền nhôm'),
+(12, 2, 'Nhôm Armor + kính cường lực'),
+(13, 2, '163.4 x 78.1 x 8.9 mm, 234g'),
+(17, 2, '5G'),
+(18, 2, 'Dual SIM (Nano-SIM + eSIM)'),
+(19, 2, '200MP + 12MP + 10MP + 10MP'),
+(20, 2, '12MP'),
+(21, 2, '45W'),
+(22, 2, 'Vân tay siêu âm'),
+-- Galaxy S23
+(1, 6, 'Adreno 740'),
+(2, 6, '3.36 GHz'),
+(3, 6, 'Dynamic AMOLED 2X'),
+(4, 6, '2340 x 1080'),
+(5, 6, '6.1 inch'),
+(7, 6, '3900mAh'),
+(8, 6, 'Li-ion'),
+(9, 6, 'USB-C'),
+(10, 6, '5.3'),
+(19, 6, '50MP + 10MP + 12MP'),
+-- ASUS TUF A17
+(1, 8, 'RTX 4060 8GB'),
+(2, 8, '4.2 GHz'),
+(3, 8, 'IPS'),
+(4, 8, '1920 x 1080'),
+(5, 8, '17.3 inch'),
+(7, 8, '90Wh'),
+(8, 8, 'Li-ion'),
+-- MSI Katana A15
+(1, 9, 'RTX 4060 8GB'),
+(2, 9, '4.5 GHz'),
+(3, 9, 'IPS'),
+(4, 9, '1920 x 1080'),
+(5, 9, '15.6 inch'),
+(7, 9, '90Wh'),
+(8, 9, 'Li-ion'),
+-- Dell G5511
+(1, 10, 'RTX 3060 6GB'),
+(2, 10, '4.6 GHz'),
+(3, 10, 'IPS'),
+(4, 10, '1920 x 1080'),
+(5, 10, '15.6 inch'),
+(7, 10, '86Wh'),
+(8, 10, 'Li-ion');
 
 -- Insert Customers
 INSERT INTO Customers (FullName, Birthday, [Password], PhoneNumber, Email, Gender, CreatedDate, IsBlock, IsDeleted, Avatar)
