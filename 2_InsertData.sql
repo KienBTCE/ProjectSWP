@@ -10,8 +10,7 @@ INSERT INTO Roles ([Name]) VALUES
 -- Insert Categories
 INSERT INTO Categories ([Name]) 
 VALUES 
-('Laptop'), ('Smartphone'), ('Tablet'), ('Smartwatch'), ('Desktop'),
-('Monitor'), ('Keyboard'), ('Mouse'), ('Headphone'), ('Speaker');
+('Laptop'), ('Smartphone'), ('Mouse'), ('Headphone'), ('Charger'), ('Charging Cable');
 
 -- Insert Brands
 INSERT INTO Brands ([Name]) 
@@ -32,58 +31,72 @@ VALUES
 SET IDENTITY_INSERT Suppliers OFF;
 
 -- Insert Attributes
-INSERT INTO [Attributes] ([Name]) VALUES
+-- Insert Attributes
+INSERT INTO [Attributes] ([CategoryID], [Name]) VALUES
 
 -- ======== Dùng chung cho Laptop & Điện thoại ========
-('GPU'),                        -- Chip đồ họa (Điện thoại: GPU di động, Laptop: Card đồ họa rời/tích hợp)
-('CPU Speed'),                  -- Tốc độ CPU (Dùng cho cả hai)
-('Display Technology'),         -- Công nghệ màn hình (OLED, IPS, LCD…)
-('Screen Resolution'),          -- Độ phân giải màn hình (FHD, 2K, 4K…)
-('Screen Size'),                -- Kích thước màn hình (Laptop & Điện thoại đều có)
-('Touchscreen Glass'),          -- Mặt kính cảm ứng (Laptop cảm ứng & Điện thoại)
-('Battery Capacity'),           -- Dung lượng pin (Dùng cho cả hai)
-('Battery Technology'),         -- Công nghệ pin (Lithium-ion, Li-Po…)
-('Charging Port'),              -- Cổng sạc (USB-C phổ biến trên cả Laptop & Điện thoại)
-('Bluetooth'),                  -- Bluetooth (Có trên cả hai)
-('Design'),                     -- Thiết kế (Kiểu dáng tổng thể)
-('Material'),                   -- Chất liệu (Nhôm, kính, nhựa…)
-('Size & Weight'),              -- Kích thước, khối lượng (Cả laptop & điện thoại)
+(1, 'GPU'),                        
+(1, 'CPU Speed'),                  
+(1, 'Display Technology'),         
+(1, 'Screen Resolution'),          
+(1, 'Screen Size'),                
+(1, 'Touchscreen Glass'),          
+(1, 'Battery Capacity'),           
+(1, 'Battery Technology'),         
+(1, 'Charging Port'),              
+(1, 'Bluetooth'),                  
+(1, 'Design'),                     
+(1, 'Material'),                   
+(1, 'Size & Weight'),              
+
+(2, 'GPU'),                        
+(2, 'CPU Speed'),                  
+(2, 'Display Technology'),         
+(2, 'Screen Resolution'),          
+(2, 'Screen Size'),                
+(2, 'Touchscreen Glass'),          
+(2, 'Battery Capacity'),           
+(2, 'Battery Technology'),         
+(2, 'Charging Port'),              
+(2, 'Bluetooth'),                  
+(2, 'Design'),                     
+(2, 'Material'),                   
+(2, 'Size & Weight'),              
 
 -- ======== Laptop ========
-('Keyboard Type'),              -- Loại bàn phím (Cơ, membrane, chiclet)
-('LED Backlight'),              -- Đèn nền bàn phím
-('Mouse & Keyboard Connection Type'), -- Loại kết nối (USB, Bluetooth, Wireless)
+(1, 'Keyboard Type'),              
+(1, 'LED Backlight'),              
+(1, 'Mouse & Keyboard Connection Type'), 
 
 -- ======== Điện thoại ========
-('Mobile Network'),             -- Mạng di động (2G, 3G, 4G, 5G)
-('SIM'),                        -- Loại SIM (Nano SIM, eSIM, Dual SIM)
-('Rear Camera Resolution'),     -- Độ phân giải camera sau
-('Front Camera Resolution'),    -- Độ phân giải camera trước
-('Max Charging Support'),       -- Công suất sạc tối đa
-('Advanced Security'),          -- Bảo mật nâng cao (Vân tay, Face ID)
-
--- ======== Phụ kiện chung ========
-('Color'),                      -- Màu sắc
+(2, 'Mobile Network'),             
+(2, 'SIM'),                        
+(2, 'Rear Camera Resolution'),     
+(2, 'Front Camera Resolution'),    
+(2, 'Max Charging Support'),       
+(2, 'Advanced Security'),                             
 
 -- ======== Tai nghe ========
-('Headphone Type'),             -- Kiểu tai nghe (In-ear, Over-ear, True Wireless)
-('Audio Technology'),           -- Công nghệ âm thanh (Dolby, ANC…)
-('Connectivity'),               -- Kết nối (Bluetooth, Jack 3.5mm, USB-C, Lightning)
-('Battery Capacity'),           -- Dung lượng pin (tai nghe không dây)
-('Usage Time'),                 -- Thời gian sử dụng
-('Charging Time'),              -- Thời gian sạc
+(4, 'Headphone Type'),             
+(4, 'Audio Technology'),           
+(4, 'Connectivity'),               
+(4, 'Battery Capacity'),           
+(4, 'Usage Time'),                 
+(4, 'Charging Time'),              
 
 -- ======== Sạc & Cáp ========
-('Charger Type'),               -- Loại sạc (Adapter, Sạc không dây)
-('Charging Power (W)'),         -- Công suất sạc (W)
-('Fast Charging Standard'),     -- Chuẩn sạc nhanh (PD, QC)
-('Connector Type'),             -- Loại cổng kết nối (USB-A, USB-C, Lightning)
-('Cable Length'),               -- Chiều dài cáp
-('Cable Material'),             -- Chất liệu cáp (Nylon, Cao su)
+(5, 'Charger Type'),               
+(5, 'Charging Power (W)'),         
+(5, 'Fast Charging Standard'),     
+
+(6, 'Connector Type'),             
+(6, 'Cable Length'),               
+(6, 'Cable Material'),             
 
 -- ======== Chuột ========
-('Mouse Type'),                 -- Loại chuột (Có dây, Không dây, Bluetooth, Gaming)
-('RGB Lighting');              -- Đèn LED RGB
+(3, 'Mouse Type'),                 
+(3, 'RGB Lighting');              
+
 -- Insert Products
 SET IDENTITY_INSERT Products ON;
 

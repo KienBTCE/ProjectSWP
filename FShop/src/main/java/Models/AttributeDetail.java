@@ -9,5 +9,42 @@ package Models;
  * @author ThyLTKCE181577
  */
 public class AttributeDetail {
-    
+
+    private int attributeId;
+    private int productId;
+    private String attributeInfor;
+
+    public AttributeDetail() {
+    }
+
+    public AttributeDetail(int attributeId, int productId, String attributeInfor) {
+        this.attributeId = attributeId;
+        this.productId = productId;
+        this.attributeInfor = attributeInfor;
+    }
+
+    public int getAttributeId() {
+        return attributeId;
+    }
+
+    public void setAttributeId(int attributeId) {
+        this.attributeId = attributeId;
+    }
+
+    public int getProductId() {
+        return productId;
+    }
+
+    public void setProductId(int productId) {
+        this.productId = productId;
+    }
+
+    public String getAttributeInfor() {
+        return attributeInfor;
+    }
+
+    public void setAttributeInfor(String attributeInfor) {
+        this.attributeInfor = attributeInfor;
+    }
+
 }
