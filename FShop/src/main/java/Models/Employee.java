@@ -25,9 +25,6 @@ public class Employee {
     private int roleId;
 
 
-    public Employee() {
-    }
-
     public Employee(String fullname, Date birthday, String password, String phoneNumber, String email, String gender, Date createdDate, int Status, String avatar, int roleId) {
         this.fullname = fullname;
         this.birthday = birthday;
