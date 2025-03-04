@@ -5,6 +5,7 @@
 --%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <!DOCTYPE html>
 <html>
     <head>
@@ -12,6 +13,7 @@
         <title>F Shop</title>
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
         <style>
             body {
                 display: flex;
@@ -72,10 +74,37 @@
     <body>
         <div class="sidebar">
             <img src="assets/imgs/Dashboard/Group 1521.svg" class="logo-side-bar">
-            <h6><a href="#">Warehouse Management</a></h6>
-            <a href="ImportOrder">Import Order</a>
-            <a href="Supplier">Supplier</a>
-            <a href="#">Product Management</a>
+            <c:if test="${sessionScope.employee.getRoleId() == 1}">
+                <h6><a href="#">Admin</a></h6>
+                <a href="EmployeeList">Employee Management</a>
+                <a href="#">Statistic Management</a>
+            </c:if>
+            <c:if test="${sessionScope.employee.getRoleId() == 2}">
+                <h6><a href="#">Shop Management</a></h6>
+                <a href="CustomerListServlet">Customer Management</a>
+                <a href="ProductListServlet">Product Management</a>
+                <a href="#">Product Statistic</a>
+            </c:if>
+            <c:if test="${sessionScope.employee.getRoleId() == 3}">
+                <h6><a href="#">Order Management</a></h6>
+                <a href="ViewListNewFeedbackServlet">Feedback</a>
+                <a href="ViewOrderListServlet">Order</a>
+            </c:if>
+            <c:if test="${sessionScope.employee.getRoleId() == 4}">
+                <h6><a href="#">Warehouse Management</a></h6>
+                <a href="ImportOrder">Import Order</a>
+                <a href="Supplier">Supplier</a>
+                <a href="#">Product Management</a>
+            </c:if>
+            <a style="margin-top: auto; color: red;" href="" onclick="confirmLogout()"><i class="bi bi-box-arrow-right"></i> Logout</a>
         </div>
+        <script>
+            function confirmLogout() {
+                if (confirm("Are you sure you want to log out?")) {
+                    // Chuyển hướng tới trang logout hoặc gọi API logout
+                    window.location.href = "/Logout";
+                }
+            }
+        </script>
     </body>
 </html>

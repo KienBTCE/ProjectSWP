@@ -33,15 +33,21 @@
                 <!-- Navbar -->
                 <nav>
                     <i class='bx bx-menu'></i>
-
                     <form action="SearchEmployee" method="GET">
                         <div class="form-input">
                             <input type="text" name="query" value="${searchQuery}" placeholder="Search by Name..." required>
                         <button class="search-btn" type="submit"><i class='bx bx-search'></i></button>
                     </div>
                 </form>
-                <a href="ViewEmployeeProfile" class="profile">
-                    <img src="assets/imgs/Dashboard/admin.png">
+
+              
+                    <a href="ViewEmployeeProfile" class="profile">
+                    <c:if test="${sessionScope.employee.getAvatar().equals('') == false}">
+                        <img src="assets/imgs/EmployeeAvatar/${sessionScope.employee.getAvatar()}">
+                    </c:if>
+                    <c:if test="${sessionScope.employee.getAvatar().equals('')}">
+                        <img src="assets/imgs/EmployeeAvatar/defauft_avatar.jpg}">
+                    </c:if>
                 </a>
             </nav>
             <!-- End of Navbar -->
@@ -159,5 +165,4 @@
             </main>
             <script src="assets/js/index.js"></script>
     </body>
-
 </html>

@@ -5,8 +5,10 @@
 package Controllers;
 
 import DAOs.CartDAO;
+import DAOs.ProductDAO;
 import Models.Cart;
 import Models.Customer;
+import Models.Product;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -20,7 +22,7 @@ import jakarta.servlet.http.HttpSession;
  *
  * @author nhutb
  */
-@WebServlet(name = "AddToCartServlet", urlPatterns = {"/addToCart"})
+@WebServlet(name = "AddToCartServlet", urlPatterns = {"/AddToCart"})
 public class AddToCartServlet extends HttpServlet {
 
     /**
@@ -77,17 +79,24 @@ public class AddToCartServlet extends HttpServlet {
             throws ServletException, IOException {
         HttpSession session = request.getSession();
         Customer cus = (Customer) session.getAttribute("customer");
+        ProductDAO p = new ProductDAO();
         if (cus == null) {
             response.sendRedirect("customerLogin");
         } else {
             int id = Integer.parseInt(request.getParameter("productID"));
             int quantity = Integer.parseInt(request.getParameter("quantity"));
-
             CartDAO cart = new CartDAO();
             Cart cartCheck = cart.getProductOfCart(cus.getId(), id);
             if (cartCheck != null) {
-                cart.updateProductQuantity(cartCheck.getProductID(), cartCheck.getQuantity() + quantity, cus.getId());
-                response.sendRedirect("cart");
+                Product product = p.getProductByID(id);
+                System.out.println(cartCheck.getQuantity() + quantity);
+                if (product.getStock() >= cartCheck.getQuantity() + quantity) {
+                    cart.updateProductQuantity(cartCheck.getProductID(), cartCheck.getQuantity() + quantity, cus.getId());
+                    response.sendRedirect("cart");
+                } else if(product.getStock() < cartCheck.getQuantity() + quantity){
+                    session.setAttribute("message", "Sorry, the product quantity in stock is not enough.");
+                    response.sendRedirect("ProductDetailServlet?id=" + id);
+                }
             } else {
                 cart.addToCart(cus.getId(), new Cart(id, quantity));
                 response.sendRedirect("cart");

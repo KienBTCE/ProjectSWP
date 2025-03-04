@@ -112,6 +112,10 @@
         <servlet-name>ReplyFeedbackServlet</servlet-name>
         <servlet-class>Controllers.ReplyFeedbackServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>RegisterOTPServlet</servlet-name>
+        <servlet-class>Controllers.RegisterOTPServlet</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>default</servlet-name>
         <url-pattern>/assets/*</url-pattern>
@@ -227,6 +231,10 @@
     <servlet-mapping>
         <servlet-name>ReplyFeedbackServlet</servlet-name>
         <url-pattern>/ReplyFeedbackServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>RegisterOTPServlet</servlet-name>
+        <url-pattern>/RegisterOTPServlet</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>30</session-timeout>

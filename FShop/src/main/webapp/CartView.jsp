@@ -45,41 +45,6 @@
                                     </tr>
                                     <form id="cartSelected" action="order" method="post">
                                         <c:forEach items="${sessionScope.cartList}" var="p">
-                                            <c:if test="${p.getQuantity() == 0}">
-                                                <tr>
-                                                    <td>
-                                                        <input disabled type="checkbox" name="cartSelected" value="${p.getProductID()}">
-                                                    </td>
-                                                    <td class="th"><img
-                                                            src="./assets/imgs/Products/${p.getImage()}"
-                                                            alt="" width="90px"></td>
-                                                    <td class="th">${p.getFullName()}</td>
-                                                    <td class="th">
-                                                        <h6>
-                                                            <fmt:formatNumber value="${p.getPrice()}" type="currency" />
-                                                        </h6>
-                                                    </td>
-                                                    <td class="th">
-                                                        <input 
-                                                            style="width: 60%; height: 40px; padding-left: 10px; font-weight: bold; background-color: #f5f7ff; border: #f5f7ff solid 1px;"
-                                                            type="number" 
-                                                            min="1" 
-                                                            value="${p.getQuantity()}" 
-                                                            name="quantity" disabled>
-                                                    </td>
-                                                    <td class="th">
-                                                        <h6>
-                                                            Sold out
-                                                        </h6>
-                                                    </td>
-                                                    <td class="th">
-                                                        <a href="updateCart?id=${p.getProductID()}"><img src="./assets/imgs/ShoppingCartImg/x.jpg" alt=""
-                                                                                                         width="25px" ></a>
-                                                        <!--                                                        <a href=""><img src="./assets/imgs/ShoppingCartImg/pen.jpg" alt="" width="25px"
-                                                                                                                                style="margin-top: 5px;"></a>-->
-                                                    </td>
-                                                </tr>
-                                            </c:if>
                                             <c:if test="${p.getQuantity() > 0}">
                                                 <tr>
                                                     <td>
@@ -89,7 +54,7 @@
                                                             src="./assets/imgs/Products/${p.getImage()}"
                                                             alt="" width="90px">
                                                     </td>
-                                                    <td class="th">${p.getFullName()}</td>
+                                                    <td class="th"><a style="text-decoration: none; color: black;" href="ProductDetailServlet?id=${p.getProductID()}">${p.getFullName()}</a></td>
                                                     <td class="th">
                                                         <h6>
                                                             <fmt:formatNumber value="${p.getPrice()}" type="currency" />
@@ -118,7 +83,45 @@
                                                     </td>
                                                 </tr>
                                             </c:if>
+
                                             <c:set var="total" value="${total + (p.getPrice() * p.getQuantity())}" />
+                                        </c:forEach>
+                                        <c:forEach items="${sessionScope.cartList}" var="p">
+                                            <c:if test="${p.getQuantity() == 0}">
+                                                <tr>
+                                                    <td>
+                                                        <input disabled type="checkbox" name="cartSelected" value="${p.getProductID()}">
+                                                    </td>
+                                                    <td class="th"><img
+                                                            src="./assets/imgs/Products/${p.getImage()}"
+                                                            alt="" width="90px"></td>
+                                                    <td class="th"><a style="text-decoration: none; color: black;" href="ProductDetailServlet?id=${p.getProductID()}">${p.getFullName()}</a></td>
+                                                    <td class="th">
+                                                        <h6>
+                                                            <fmt:formatNumber value="${p.getPrice()}" type="currency" />
+                                                        </h6>
+                                                    </td>
+                                                    <td class="th">
+                                                        <input 
+                                                            style="width: 60%; height: 40px; padding-left: 10px; font-weight: bold; background-color: #f5f7ff; border: #f5f7ff solid 1px;"
+                                                            type="number" 
+                                                            min="1" 
+                                                            value="${p.getQuantity()}" 
+                                                            name="quantity" disabled>
+                                                    </td>
+                                                    <td class="th">
+                                                        <h6>
+                                                            Sold out
+                                                        </h6>
+                                                    </td>
+                                                    <td class="th">
+                                                        <a href="updateCart?id=${p.getProductID()}"><img src="./assets/imgs/ShoppingCartImg/x.jpg" alt=""
+                                                                                                         width="25px" ></a>
+                                                        <!--                                                        <a href=""><img src="./assets/imgs/ShoppingCartImg/pen.jpg" alt="" width="25px"
+                                                                                                                                style="margin-top: 5px;"></a>-->
+                                                    </td>
+                                                </tr>
+                                            </c:if>
                                         </c:forEach>
                                         <input name="buyProductAction" value="checkout" hidden="">         
                                     </form>
@@ -250,24 +253,62 @@
                     </div>
                 </div>
             </div>
+
+
+
             <div class="popup" id="orderPopup">
                 <div class="popup-content">
-                    <h3>No products.</h3>
-                    <p>Please choose at least one product to checkout.</p>
+                    <h4 id="message-content">${requestScope.message}Please choose at least one product to checkout.</h4>
                     <div style="display: flex; justify-content: center;">
                         <button onclick="closePopup()">OK</button>
                     </div>
                 </div>
             </div>
+            <%
+                String message = (String) session.getAttribute("message");
+                System.out.println("Session message: " + message + request.getRequestURI());
+            %>
+            <%
+                if (message != null) {
+            %>
+            <div style="display:flex;" class="popup" id="updatePopup">
+                <div class="popup-content">
+                    <h4>${sessionScope.message}</h4>
+                    <div style="display: flex; justify-content: center;">
+                        <c:choose>
+                            <c:when test="${sessionScope.message.contains('add your address')}">
+                                <div>
+                                    <a class="btn btn-success" href="ViewShippingAddress">OK</a>
+                                    <a class="btn btn-danger text-white" onclick="closePopup()">Cancel</a>
+                                </div>
+                            </c:when>
+                            <c:otherwise>  
+                                <button class="btn btn-primary" onclick="closePopup()">OK</button>
+                            </c:otherwise>
+                        </c:choose>
+
+
+                    </div>
+                </div>
+            </div>
+            <%
+                    session.removeAttribute("message");
+                }
+            %>
+
         </main>
         <jsp:include page="footer.jsp"></jsp:include>
         <script>
+            function showUpdatePopup() {
+                document.getElementById("updatePopup").style.display = "flex";
+            }
             function showPopup() {
                 document.getElementById("orderPopup").style.display = "flex";
             }
 
             function closePopup() {
                 document.getElementById("orderPopup").style.display = "none";
+                document.getElementById("updatePopup").style.display = "none";
             }
             function updateQuantity(productId, quantity) {
                 // Gửi dữ liệu tới Servlet qua AJAX

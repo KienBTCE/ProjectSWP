@@ -21,7 +21,7 @@ public class DBContext {
             Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver"); // regist a class Database of Microsoft to memory
             String dbURL = "jdbc:sqlserver://localhost:1433;"
                     + "databaseName=FSHOP;"
-                    + "user=;" // Enter your user SQL Server
+                    + "user=sa;" // Enter your user SQL Server
                     + "password=;" // Enter your password SQL Server
                     + "encrypt=true;trustServerCertificate=true";
 
@@ -39,9 +39,10 @@ public class DBContext {
         }
         return connector;
     }
+
     public static void main(String[] args) {
-        
-       DBContext db = new DBContext();
-       db.getConnection();
+
+        DBContext db = new DBContext();
+        db.getConnection();
     }
 }

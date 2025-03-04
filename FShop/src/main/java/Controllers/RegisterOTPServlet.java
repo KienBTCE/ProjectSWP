@@ -4,32 +4,21 @@
  */
 package Controllers;
 
-import DAOs.CartDAO;
-import DAOs.ProductDAO;
+import DAOs.CustomerDAO;
 import Models.Customer;
-import Models.Product;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
-import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
-import java.io.BufferedReader;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  *
- * @author nhutb
+ * @author ThyLTKCE181577
  */
-@WebServlet(name = "UpdateCartServlet", urlPatterns = {"/updateCart"})
-public class UpdateCartServlet extends HttpServlet {
+public class RegisterOTPServlet extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -48,10 +37,10 @@ public class UpdateCartServlet extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet UpdateCart</title>");
+            out.println("<title>Servlet RegisterOTPServlet</title>");
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet UpdateCart at " + request.getContextPath() + "</h1>");
+            out.println("<h1>Servlet RegisterOTPServlet at " + request.getContextPath() + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }
@@ -69,7 +58,7 @@ public class UpdateCartServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-
+        request.getRequestDispatcher("VerifyOTPView.jsp").forward(request, response);
     }
 
     /**
@@ -84,34 +73,40 @@ public class UpdateCartServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         HttpSession session = request.getSession();
-        Customer cus = (Customer) session.getAttribute("customer");
-        CartDAO c = new CartDAO();
-        ProductDAO p = new ProductDAO();
-        // Đọc dữ liệu JSON từ yêu cầu
-        BufferedReader reader = request.getReader();
-        StringBuilder json = new StringBuilder();
-        String line;
-        while ((line = reader.readLine()) != null) {
-            json.append(line);
-        }
+        String otpEntered = request.getParameter("otp");
+        String otpStored = (String) session.getAttribute("otp");
 
-        // Parse JSON
-        String data = json.toString();
-        System.out.println(data);
-        String proId = data.replaceAll(".*\"productId\":(\\d+).*", "$1");
-        System.out.println("ProID " + proId);
-        String quan = data.replaceAll(".*\"productId\":(\\d+).*,\"quantity\":", "").replaceAll("[^0-9]", "");
-        System.out.println("Quan " + quan);
-        int productId = Integer.parseInt(proId);
-        int quantity = Integer.parseInt(quan);
-        System.out.println("Received productId: " + productId);
-        System.out.println("Received quantity: " + quantity);
-        Product product = p.getProductByID(productId);
-        if (product.getStock() >= quantity) {
-            c.updateProductQuantity(productId, quantity, cus.getId());
-        } else if (product.getStock() < quantity) {
-            session.setAttribute("message", "Sorry, the product quantity in stock is not enough.");
+        // Check if OTP matches
+        if (otpStored != null && otpStored.equals(otpEntered)) {
+            // Retrieve customer details from session
+            Customer customer = (Customer) session.getAttribute("registerCustomer");
 
+            if (customer != null) {
+                // Register the customer
+                CustomerDAO ctmDAO = new CustomerDAO();
+                int result = ctmDAO.addNewCustomer(customer);
+
+                if (result != 0) {
+                    // Registration successful, remove session attributes
+                    session.removeAttribute("otp");
+                    session.removeAttribute("registerCustomer");
+
+                    // Redirect to login page
+                    response.sendRedirect("/customerLogin");
+                } else {
+                    // Database error occurred
+                    request.setAttribute("error", "Registration failed. Please try again.");
+                    request.getRequestDispatcher("OTPView.jsp").forward(request, response);
+                }
+            } else {
+                // No customer data found in session
+                request.setAttribute("error", "Session expired! Please register again.");
+                request.getRequestDispatcher("RegisterView.jsp").forward(request, response);
+            }
+        } else {
+            // Incorrect OTP
+            request.setAttribute("error", "Incorrect OTP code!");
+            request.getRequestDispatcher("OTPView.jsp").forward(request, response);
         }
     }
 
