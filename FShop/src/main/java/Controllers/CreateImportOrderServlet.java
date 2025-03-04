@@ -5,8 +5,6 @@
 package Controllers;
 
 import DAOs.ImportOrderDAO;
-import DAOs.ProductDAO;
-import DAOs.SupplierDAO;
 import Models.ImportOrder;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -14,13 +12,12 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import java.util.ArrayList;
 
 /**
  *
  * @author KienBTCE180180
  */
-public class ViewImportOrderServlet extends HttpServlet {
+public class CreateImportOrderServlet extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -39,45 +36,13 @@ public class ViewImportOrderServlet extends HttpServlet {
 //            out.println("<!DOCTYPE html>");
 //            out.println("<html>");
 //            out.println("<head>");
-//            out.println("<title>Servlet ViewImportOrderServlet</title>");  
+//            out.println("<title>Servlet CreateImportOrderServlet</title>");  
 //            out.println("</head>");
 //            out.println("<body>");
-//            out.println("<h1>Servlet ViewImportOrderServlet at " + request.getContextPath () + "</h1>");
+//            out.println("<h1>Servlet CreateImportOrderServlet at " + request.getContextPath () + "</h1>");
 //            out.println("</body>");
 //            out.println("</html>");
 //        }
-
-        ImportOrderDAO importD = new ImportOrderDAO();
-        SupplierDAO sd = new SupplierDAO();
-        ArrayList<ImportOrder> importOrders;
-        
-        String detailID = request.getParameter("id");
-        
-        if (detailID != null) {
-            int id = Integer.parseInt(detailID);
-            ImportOrder importOrder = importD.getImportOrderDetailsByID(id);
-            
-            if (importOrder.getCompleted() == 0) {
-                response.sendRedirect("ImportStock?id=" + id);
-                return;
-            }
-            
-            try {
-                request.setAttribute("importOrder", importOrder);
-                request.getRequestDispatcher("ImportOrderDetailsView.jsp").forward(request, response);
-            } catch (NullPointerException e) {
-                System.out.println(e);
-            }
-        }
-        
-        importOrders = importD.getAllImportOrders();
-        try {
-            request.setAttribute("importOrders", importOrders);
-            request.setAttribute("suppliers", sd.getAllSuppliers());
-            request.getRequestDispatcher("ImportOrderListView.jsp").forward(request, response);
-        } catch (NullPointerException e) {
-            System.out.println(e);
-        }
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
@@ -106,7 +71,13 @@ public class ViewImportOrderServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+//        processRequest(request, response);
+        ImportOrderDAO ioD = new ImportOrderDAO();
+        ImportOrder io = new ImportOrder(4, Integer.parseInt(request.getParameter("supplierId")));
+        int generatedId = ioD.createImportOrder(io);
+
+        response.sendRedirect("/ImportStock?id=" + generatedId);
+
     }
 
     /**

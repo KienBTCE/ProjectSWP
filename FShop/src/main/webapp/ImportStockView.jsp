@@ -146,161 +146,276 @@
             <div class="content">
             <jsp:include page="HeaderDashboard.jsp"></jsp:include>
                 <div class="container mt-4">
-                    <h2 class="text-center mb-4">Import Order</h2>
-
-                    <!-- Supplier Section -->
-                    <div class="card mb-4">
-                        <div class="card-header d-flex justify-content-between align-items-center">
-                            <h4 class="mb-0">Supplier Information</h4>
-                            <button type="button" id="confirmSupplierButton" class="btn btn-primary mt-3">Submit</button>
-                        </div>
-
-                        <table class="table mt-3">
-                            <thead>
-                                <tr>
-                                    <th>Supplier</th>
-                                    <th>Address</th>
-                                    <th>Email</th>
-                                    <th>Phone</th>
-                                    <th>Status</th>
-                                    <th>Tax ID</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td id="selectedName">N/A</td>
-                                    <td id="selectedAddress">N/A</td>
-                                    <td id="selectedEmail">N/A</td>
-                                    <td id="selectedPhone">N/A</td>
-                                    <td id="selectedStatus">N/A</td>
-                                    <td id="selectedTaxId">N/A</td>
-                                </tr>
-                            <form id="supplierForm" action="ImportStock" method="POST">
-                                <input type="hidden" name="supplierName" id="supplierName" value="\${selectedName}">
-                                <input type="hidden" name="address" id="supplierAddress" value="\${selectedAddress}">
-                                <input type="hidden" name="email" id="supplierEmail" value="\${selectedEmail}">
-                                <input type="hidden" name="phone" id="supplierPhone" value="\${selectedPhone}">
-                                <input type="hidden" name="supplierStatus" id="supplierStatus" value="\${selectedStatus}">
-                                <input type="hidden" name="taxId" id="supplierTaxId" value="\${selectedTaxId}">
-                            </form>
-                            </tbody>
-                        </table>
+                <c:set value="${supplier}" var="sup"></c:set>
+                <c:set value="0" var="sum"></c:set>
+                    <div class="table-navigate">
                     </div>
-
-                    <div class="card mb-4">
+                    <div class="table-container">
                         <div class="card-header d-flex justify-content-between align-items-center">
-                            <h4 class="mb-0">Supplier List</h4>
-                            <input type="text" id="searchSupplierInput" class="form-control search-box" placeholder="Find by name ..." onkeyup="searchSupplier()">
+                            <div>
+                                <h3>Selected Supplier</h3>
+                                <div class="table-navigate">
+                                    <button id="openModalBtn" class="btn btn-detail" style="background-color: #BDF3BD; height: 100%">Select Supplier</button>
+                                </div>
+                            </div>
                         </div>
-
-                        <table class="table mt-3">
+                        <table class="table table-hover">
                             <thead>
                                 <tr>
-                                    <th>Supplier</th>
-                                    <th>Address</th>
+                                    <th>Tax ID</th>
+                                    <th>Company Name</th>
                                     <th>Email</th>
                                     <th>Phone</th>
-                                    <th>Status</th>
-                                    <th>Tax ID</th>
+                                    <th>Address</th>
                                 </tr>
                             </thead>
-                            <tbody id="supplierListTable">
-                            <c:forEach items="${suppliers}" var="s">
-                                <tr class="clickable-row" data-name="${s.getName()}" 
-                                    data-address="${s.getAddress()}" 
-                                    data-email="${s.getEmail()}" 
-                                    data-phone="${s.getPhoneNumber()}" 
-                                    data-status="${s.getStatus()}" 
-                                    data-taxid="${s.getTaxId()}">
-                                    <td>${s.getName()}</td>
-                                    <td>${s.getAddress()}</td>
-                                    <td>${s.getEmail()}</td>
-                                    <td>${s.getPhoneNumber()}</td>
-                                    <td>${s.getStatus()}</td>
-                                    <td>${s.getTaxId()}</td>
-                                </tr>
-                            </c:forEach>
+                            <tbody id="supplierTable">
+                                <tr>
+                                    <td>${sup.getTaxId()}</td>
+                                <td>${sup.getName()}</td>
+                                <td>${sup.getEmail()}</td>
+                                <td>${sup.getPhoneNumber()}</td>
+                                <td>${sup.getAddress()}</td>
+                            </tr>
                         </tbody>
                     </table>
-
                 </div>
-
-                <!-- =============================================== PRODUCT =============================================== -->
-
-                <!-- Product List Table -->
-                <!-- Product Information Section -->
-                <div class="card mb-4">
-                    <div class="card-header d-flex justify-content-between align-items-center">
-                        <h4 class="mb-0">Selected Product</h4>
-                        <!-- Nút submit nằm ngoài form nên phải đặt type="button" -->
-                        <button type="button" id="submitSelectedProducts" class="btn btn-primary">Submit</button>
+                <!--          Start Modal Select Supplier            -->
+                <div class="modal fade" id="createImportOrder" tabindex="-1" aria-labelledby="createImportOrderLabel" aria-hidden="true">
+                    <div class="modal-dialog modal-lg">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="createImportOrderLabel">Select Supplier</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <table class="table table-striped" id="supplierListTable">
+                                    <thead>
+                                        <tr>
+                                            <th>Tax ID</th>
+                                            <th>Company Name</th>
+                                            <th>Email</th>
+                                            <th>Phone</th>
+                                            <th>Address</th>
+                                            <th>Select</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <c:forEach items="${suppliers}" var="s">
+                                            <tr>
+                                                <td>${s.getTaxId()}</td>
+                                                <td>${s.getName()}</td>
+                                                <td>${s.getEmail()}</td>
+                                                <td>${s.getPhoneNumber()}</td>
+                                                <td>${s.getAddress()}</td>
+                                                <td>
+                                                    <button class="btn btn-primary select-supplier" data-id="${s.getSupplierId()}">Select</button>
+                                                </td>
+                                            </tr>
+                                        </c:forEach>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="modal-footer">
+                                <form id="importOrderForm" method="POST" action="ImportStock">
+                                    <input type="hidden" name="supplierId" id="selectedSupplierId">
+                                    <button type="submit" class="btn btn-success" id="confirmSelection" disabled>Confirm</button>
+                                </form>
+                            </div>
+                        </div>
                     </div>
-                    <table class="table mt-3">
+                </div>
+                <!--          End Modal Select Supplier            -->
+
+                <!-- Start Popup import price and quantity -->
+                <div class="modal fade" id="productInputModal" tabindex="-1" aria-labelledby="productInputLabel" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="productInputLabel">Enter Quantity & Price</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <form id="productInputForm">
+                                    <input type="hidden" id="selectedSupplierId">
+
+                                    <div class="mb-3">
+                                        <label for="inputQuantity" class="form-label">Quantity</label>
+                                        <input type="number" class="form-control" id="inputQuantity" min="1" required>
+                                    </div>
+
+                                    <div class="mb-3">
+                                        <label for="inputPrice" class="form-label">Price</label>
+                                        <input type="number" class="form-control" id="inputPrice" min="1" required>
+                                    </div>
+
+                                    <button type="button" class="btn btn-success" id="confirmProduct">Confirm</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- End Popup import price and quantity -->
+
+
+                <!-- ================================================================================================================================================================================================================================= -->
+
+                <!-- Selected Products -->
+                <div class="table-container">
+                    <div class="card-header d-flex justify-content-between align-items-center">
+                        <div>
+                            <h3>Selected Products</h3>
+                            <button id="openProductModalBtn" class="btn btn-detail" style="background-color: #BDF3BD; height: 100%">
+                                Select Product
+                            </button>
+                        </div>
+                    </div>
+                    <table class="table table-hover">
                         <thead>
                             <tr>
-                                <th>Product Name</th>
                                 <th>Product ID</th>
+                                <th>Product Name</th>
                                 <th>Model</th>
                                 <th>Import Quantity</th>
                                 <th>Import Price</th>
                                 <th>Action</th>
                             </tr>
                         </thead>
-                        <tbody id="selectedProductTable">
-                            <tr>
-                                <td id="selectedProductName"></td>
-                                <td id="selectedProductId"></td>
-                                <td id="selectedProductModel"></td>
-                                <td id="selectedProductStock"></td>
-                                <td id="selectedProductStatus"></td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-
-                <!-- Hidden Form nằm ngoài bảng -->
-                <form id="selectedProductsForm" action="ImportStock" method="POST" style="display:none;">
-                    <input type="hidden" id="selectedProductsInput" name="selectedProducts">
-                </form>
-
-                <!-- Product Entry Section -->
-                <div class="card mb-4">
-                    <div class="card-header d-flex justify-content-between align-items-center">
-                        <h4 class="mb-0">Product List</h4>
-                        <input type="text" id="searchProductInput" class="form-control search-box" placeholder="Find by name ..." onkeyup="searchProduct()">
-                    </div>
-
-                    <table class="table mt-3">
-                        <thead>
-                            <tr>
-                                <th>Product Name</th>
-                                <th>Product ID</th>
-                                <th>Model</th>
-                                <th>Stock</th>
-                                <th>Import Price</th>
-                            </tr>
-                        </thead>
-                        <tbody id="productList">
-                            <c:forEach items="${products}" var="p">
-                                <tr class="clickable-product-row"
-                                    data-product-name="${p.getFullName()}"
-                                    data-productid="${p.getProductId()}"
-                                    data-model="${p.getModel()}"
-                                    data-stock="${p.getStock()}"
-                                    data-import-price="0">
-                                    <td>${p.getFullName()}</td>
-                                    <td>${p.getProductId()}</td>
-                                    <td>${p.getModel()}</td>
-                                    <td>${p.getStock()}</td>
-                                    <td>0</td>
+                        <tbody id="productTable">
+                            <c:forEach items="${importOrder.getImportOrderDetails()}" var="d">
+                                <tr>
+                                    <td>${d.getProduct().getProductId()}</td>
+                                    <td>${d.getProduct().getModel()}</td>
+                                    <td>${d.getProduct().getFullName()}</td>
+                                    <td>${d.getQuantity()}</td>
+                                    <td>${d.getPriceFormatted()}</td>
+                                    <td>
+                                        <button class="btn btn-warning edit-product"
+                                                data-id="${d.getProduct().getProductId()}"
+                                                data-name="${d.getProduct().getFullName()}"
+                                                data-model="${d.getProduct().getModel()}"
+                                                data-quantity="${d.getQuantity()}"
+                                                data-price="${d.getPriceFormatted()}">
+                                            Edit
+                                        </button>
+                                    </td>
                                 </tr>
+                                <c:set var="sum" value="${sum + d.getQuantity() * d.getImportPrice()}" scope="page"></c:set>
                             </c:forEach>
-
+                            <tr>
+                                <td colspan="3"></td>
+                                <td class="text-end fw-bold" style="text-align: left">Total:</td>
+                                <td class="text-start fw-bold">${sum} VND</td>
+                            </tr>
                         </tbody>
-
                     </table>
                 </div>
+                <!--          Start Modal Select Product            -->
+                <div class="modal fade" id="selectProductModal" tabindex="-1" aria-labelledby="selectProductLabel" aria-hidden="true">
+                    <div class="modal-dialog modal-lg">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="selectProductLabel">Select Product</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <table class="table table-striped" id="productListTable">
+                                    <thead>
+                                        <tr>
+                                            <th>Product ID</th>
+                                            <th>Name</th>
+                                            <th>Model</th>
+                                            <th>Import Quantity</th>
+                                            <th>Import Price</th>
+                                            <th>Select</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <c:forEach items="${products}" var="p">
+                                            <tr>
+                                                <td>${p.getProductId()}</td>
+                                                <td>${p.getFullName()}</td>
+                                                <td>${p.getModel()}</td>
+                                                <td>
+                                                    <input type="number" class="form-control product-quantity" data-id="${p.getProductId()}" min="1000" placeholder="Enter quantity">
+                                                </td>
+                                                <td>
+                                                    <input type="number" class="form-control product-price" data-id="${p.getProductId()}" min="1000" step="0.01" placeholder="Enter price">
+                                                </td>
+                                                <td>
+                                                    <button class="btn btn-primary select-product" data-id="${p.getProductId()}">Select</button>
+                                                </td>
+                                            </tr>
+                                        </c:forEach>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="modal-footer">
+                                <form id="productOrderForm" method="POST" action="ImportStock">
+                                    <input type="hidden" name="productId" id="selectedProductId" value="${p.getProductId()}">
+                                    <input type="hidden" name="importQuantity" id="selectedProductQuantity">
+                                    <input type="hidden" name="importPrice" id="selectedProductPrice">
+                                    <button type="submit" class="btn btn-success" id="confirmProductSelection" disabled>Confirm</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!--          End Modal Select Supplier            -->
 
+                <!-- Star Edit Modal -->
+                <div class="modal fade" id="editProductModal" tabindex="-1" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title">Edit Imported Product</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                            </div>
+                            <div class="modal-body">
+                                <form id="editProductForm" method="POST" action="ImportStock">
+                                    <input type="hidden" id="editProductId" name="productEditedId">
+
+                                    <div class="mb-3">
+                                        <label class="form-label">Product Name:</label>
+                                        <input type="text" class="form-control" id="editProductName" readonly>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label class="form-label">Model:</label>
+                                        <input type="text" class="form-control" id="editProductModel" readonly>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label class="form-label">Quantity:</label>
+                                        <input type="number" class="form-control" id="editProductQuantity" name="quantity" min="1">
+                                    </div>
+                                    <div class="mb-3">
+                                        <label class="form-label">Price:</label>
+                                        <input type="number" class="form-control" id="editProductPrice" name="price" min="1" step="0.01">
+                                    </div>
+                                </form>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-danger" id="deleteProduct">Delete</button>
+                                <button type="submit" class="btn btn-success" form="editProductForm">Save</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- End Edit Modal -->
+
+                <button type="button" class="btn btn-success" onclick="redirectToImport()">Import</button>
+            </div>
+        </div>
+
+        <!-- Toast Thông báo -->
+        <div class="toast-container position-fixed top-0 end-0 p-3">
+            <div id="errorToast" class="toast text-bg-danger border-0" role="alert" aria-live="assertive" aria-atomic="true">
+                <div class="toast-header">
+                    <strong class="me-auto">Thông báo</strong>
+                    <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+                </div>
+                <div class="toast-body">
+                    Sản phẩm đã tồn tại trong danh sách!
+                </div>
             </div>
         </div>
 
@@ -319,49 +434,6 @@
                     }
                 }
             }
-// ======================================================================================================================================
-            document.querySelectorAll(".clickable-row").forEach(row => {
-                row.addEventListener("click", function () {
-                    // Lấy dữ liệu từ thuộc tính data-*
-                    let name = this.getAttribute("data-name");
-                    let address = this.getAttribute("data-address");
-                    let email = this.getAttribute("data-email");
-                    let phone = this.getAttribute("data-phone");
-                    let status = this.getAttribute("data-status");
-                    let taxid = this.getAttribute("data-taxid");
-
-                    // Cập nhật bảng hiển thị
-                    document.getElementById("selectedName").textContent = name;
-                    document.getElementById("selectedAddress").textContent = address;
-                    document.getElementById("selectedEmail").textContent = email;
-                    document.getElementById("selectedPhone").textContent = phone;
-                    document.getElementById("selectedStatus").textContent = status;
-                    document.getElementById("selectedTaxId").textContent = taxid;
-
-                    // Cập nhật giá trị vào form ẩn
-                    document.getElementById("supplierName").value = name;
-                    document.getElementById("supplierAddress").value = address;
-                    document.getElementById("supplierEmail").value = email;
-                    document.getElementById("supplierPhone").value = phone;
-                    document.getElementById("supplierStatus").value = status;
-                    document.getElementById("supplierTaxId").value = taxid;
-
-
-                    // Nếu muốn tự động submit form ngay sau khi chọn nhà cung cấp
-//                    document.getElementById("supplierForm").submit();
-                });
-            });
-
-            document.getElementById("confirmSupplierButton").addEventListener("click", function () {
-                // Kiểm tra xem có nhà cung cấp nào được chọn không
-                if (document.getElementById("supplierName").value.trim() === "") {
-                    alert("Vui lòng chọn một nhà cung cấp trước khi xác nhận!");
-                    return;
-                }
-
-                // Gửi form
-                document.getElementById("supplierForm").submit();
-            });
         </script>
 
         <script>
@@ -378,91 +450,169 @@
                     }
                 }
             }
-// ======================================================================================================================================
+        </script>
+        <!-- Search -->
+        <script>
+            document.getElementById("openModalBtn").addEventListener("click", function () {
+                var myModal = new bootstrap.Modal(document.getElementById("createImportOrder"));
+                myModal.show();
+            });
+        </script>
+
+        <script>
             document.addEventListener("DOMContentLoaded", function () {
-                let selectedProducts = []; // Danh sách chứa các sản phẩm đã chọn
+                // Lấy tham chiếu đến nút "Select Product"
+                let openProductModalBtn = document.getElementById("openProductModalBtn");
 
-                // Lắng nghe sự kiện click vào hàng sản phẩm
-                document.querySelectorAll(".clickable-product-row").forEach(row => {
-                    row.addEventListener("click", function () {
-                        // Lấy dữ liệu từ thuộc tính data-*
-                        let product = {
-                            name: this.getAttribute("data-product-name"),
-                            id: this.getAttribute("data-productid"),
-                            model: this.getAttribute("data-model"),
-                            stock: this.getAttribute("data-stock"),
-                            importPrice: this.getAttribute("data-import-price")
-                        };
+                // Khi nút được nhấn, hiển thị modal product
+                openProductModalBtn.addEventListener("click", function () {
+                    let productModal = new bootstrap.Modal(document.getElementById("selectProductModal"));
+                    productModal.show();
+                });
+            });
 
-                        // Kiểm tra sản phẩm đã có trong danh sách chưa
-                        let exists = selectedProducts.some(p => p.id === product.id);
-                        if (exists) {
-                            alert("Sản phẩm này đã được chọn!");
+        </script>
+        <!-- Modal -->
+        <script>
+            document.addEventListener("DOMContentLoaded", function () {
+                const confirmBtn = document.getElementById("confirmSelection");
+                const supplierIdInput = document.getElementById("selectedSupplierId");
+
+                // Xử lý sự kiện khi nhấn nút Select
+                document.querySelectorAll(".select-supplier").forEach(button => {
+                    button.addEventListener("click", function () {
+                        const supplierId = this.dataset.id;
+                        const selectedRow = this.closest("tr");
+
+                        // Lưu ID vào input ẩn
+                        supplierIdInput.value = supplierId;
+
+                        // Loại bỏ highlight khỏi tất cả các dòng
+                        document.querySelectorAll("#supplierListTable tbody tr").forEach(row => {
+                            row.classList.remove("table-success");
+                        });
+
+                        // Thêm highlight cho dòng được chọn
+                        selectedRow.classList.add("table-success");
+
+                        // Bật nút Confirm
+                        confirmBtn.disabled = false;
+                    });
+                });
+            });
+        </script>
+
+        <script>
+            document.addEventListener("DOMContentLoaded", function () {
+                const confirmProductBtn = document.getElementById("confirmProductSelection");
+                const productIdInput = document.getElementById("selectedProductId");
+
+                const productQuantityInput = document.getElementById("selectedProductQuantity");
+                const productPriceInput = document.getElementById("selectedProductPrice");
+
+                // Xử lý sự kiện khi nhấn nút Select trong danh sách sản phẩm
+                document.querySelectorAll(".select-product").forEach(button => {
+                    button.addEventListener("click", function () {
+                        const productId = this.dataset.id;
+                        const selectedRow = this.closest("tr");
+
+                        const quantityInput = selectedRow.querySelector(".product-quantity");
+                        const priceInput = selectedRow.querySelector(".product-price");
+
+                        const productQuantity = parseInt(quantityInput.value);
+                        const productPrice = parseFloat(priceInput.value);
+
+                        if (isNaN(productQuantity) || productQuantity == 0) {
+                            alert("Please enter a valid quantity (min: 1000).");
+                            return;
+                        }
+                        if (isNaN(productPrice) || productPrice < 1000) {
+                            alert("Please enter a valid price (min: 1000).");
                             return;
                         }
 
-                        // Thêm sản phẩm vào danh sách
-                        selectedProducts.push(product);
-                        updateSelectedProductTable();
-                    });
-                });
+                        // Lưu dữ liệu vào input ẩn để gửi đến Servlet
+                        productQuantityInput.value = productQuantity;
+                        productPriceInput.value = productPrice;
 
-                // Hàm cập nhật bảng Selected Product
-                function updateSelectedProductTable() {
-                    let tableBody = document.querySelector("#selectedProductTable");
-                    tableBody.innerHTML = ""; // Xóa nội dung cũ
+                        // Lưu ID vào input ẩn
+                        productIdInput.value = productId;
 
-                    selectedProducts.forEach((product, index) => {
-                        let row = document.createElement("tr");
-
-                        // Sử dụng dấu `\` để tránh nhầm lẫn với EL của JSP nếu có
-                        row.innerHTML = `<td>\${product.name}</td>
-                             <td>\${product.id}</td>
-                             <td>\${product.model}</td>
-                             <td>
-                                <input style="width: 35%;" type="number" id="productStock\${product.id}" value="1" min="1" class="form-control">
-                             </td>
-                             <td>
-                                <input style="width: 35%;" type="number" id="importPrice\${product.id}" value="0" min="1000" class="form-control">
-                             </td>
-                             <td>
-                                <button class="removeProduct btn btn-danger btn-sm" data-index="\${index}">Xóa</button>
-                             </td>`;
-
-                        tableBody.appendChild(row);
-                    });
-
-                    // Gán sự kiện xóa sản phẩm
-                    document.querySelectorAll(".removeProduct").forEach(btn => {
-                        btn.addEventListener("click", function () {
-                            let index = parseInt(this.getAttribute("data-index"));
-                            selectedProducts.splice(index, 1); // Xóa sản phẩm khỏi danh sách
-                            updateSelectedProductTable(); // Cập nhật lại bảng
+                        // Loại bỏ highlight khỏi tất cả các dòng
+                        document.querySelectorAll("#productListTable tbody tr").forEach(row => {
+                            row.classList.remove("table-success");
                         });
+
+                        // Thêm highlight cho dòng được chọn
+                        selectedRow.classList.add("table-success");
+
+                        // Bật nút Confirm
+                        confirmProductBtn.disabled = false;
                     });
-                }
-
-                document.getElementById("submitSelectedProducts").addEventListener("click", function (e) {
-                    e.preventDefault();
-
-                    let selectedProductData = selectedProducts.map(product => {
-                        // Lấy giá trị stock từ input với id "productStock" + product.id
-                        let quantity = document.getElementById("productStock" + product.id).value;
-                        let price = document.getElementById("importPrice" + product.id).value;
-                        return {id: product.id, stock: quantity, price: price};
-                    });
-
-                    let jsonData = JSON.stringify(selectedProductData);
-
-                    // Gán giá trị cho input ẩn
-                    document.getElementById("selectedProductsInput").value = jsonData;
-
-                    // Submit form
-                    document.getElementById("selectedProductsForm").submit();
                 });
-
             });
         </script>
+
+        <script>
+            document.addEventListener("DOMContentLoaded", function () {
+                const editModal = new bootstrap.Modal(document.getElementById("editProductModal"));
+                const editForm = document.getElementById("editProductForm");
+
+                document.querySelectorAll(".edit-product").forEach(button => {
+                    button.addEventListener("click", function () {
+                        // Lấy dữ liệu từ nút Edit
+                        const productId = this.dataset.id;
+                        const productName = this.dataset.name;
+                        const productModel = this.dataset.model;
+                        const quantity = this.dataset.quantity;
+                        const price = this.dataset.price;
+
+                        // Điền dữ liệu vào form
+                        document.getElementById("editProductId").value = productId;
+                        document.getElementById("editProductName").value = productName;
+                        document.getElementById("editProductModel").value = productModel;
+                        document.getElementById("editProductQuantity").value = quantity;
+                        document.getElementById("editProductPrice").value = price;
+
+                        // Hiển thị modal
+                        editModal.show();
+                    });
+                });
+
+                // Xóa sản phẩm
+                document.getElementById("deleteProduct").addEventListener("click", function () {
+                    if (confirm("Are you sure you want to delete this product?")) {
+                        editForm.action = "DeleteImportOrder";
+                        editForm.submit();
+                    }
+                });
+            });
+        </script>
+        <!-- tuong tac -->
+        <script>
+            document.addEventListener("DOMContentLoaded", function () {
+                let errorMessage = "<%= request.getAttribute("duplicatedProduct")%>";
+                if (errorMessage && errorMessage !== "null") {
+                    let toastElement = document.getElementById("errorToast");
+                    let toast = new bootstrap.Toast(toastElement);
+                    toast.show();
+                }
+            });
+        </script>
+        <!-- error -->
+        <script>
+            function redirectToImport() {
+                const urlParams = new URLSearchParams(window.location.search);
+                const id = urlParams.get('id'); // Lấy id từ URL
+
+                if (id) {
+                    window.location.href = `ImportStock?importStockId=\${id}`;
+                } else {
+                    alert("Không tìm thấy ID trong URL!");
+                }
+            }
+        </script>
+        <!-- submit final -->
     </body>
 </html>
 

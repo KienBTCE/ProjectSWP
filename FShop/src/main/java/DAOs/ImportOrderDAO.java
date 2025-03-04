@@ -56,7 +56,7 @@ public class ImportOrderDAO {
                         rs.getInt("SupplierID"),
                         rs.getDate("ImportDate"),
                         rs.getLong("TotalCost"),
-                        rs.getDate("LastModify")
+                        rs.getInt("Completed")
                 );
 
                 io.setSupplier(s);
@@ -101,7 +101,7 @@ public class ImportOrderDAO {
                         rs.getInt("SupplierID"),
                         rs.getDate("ImportDate"),
                         rs.getLong("TotalCost"),
-                        rs.getDate("LastModify")
+                        rs.getInt("Completed")
                 );
 
                 io.setSupplier(s);
@@ -149,20 +149,40 @@ public class ImportOrderDAO {
     }
 
     public int createImportOrder(ImportOrder io) {
-        String query = "INSERT INTO ImportOrders (EmployeeID, SupplierID, ImportDate, TotalCost, LastModify) VALUES (?, ?, GETDATE(), ?, GETDATE())";
+        String query = "INSERT INTO ImportOrders (EmployeeID, SupplierID, ImportDate, TotalCost, Completed) VALUES (?, ?, GETDATE(), ?, 0)";
         try {
             PreparedStatement ps = connector.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
+
             ps.setInt(1, io.getEmployeeId());
             ps.setInt(2, io.getSupplierId());
             ps.setLong(3, io.getTotalCost());
 
             int affectedRows = ps.executeUpdate();
+
             if (affectedRows > 0) {
                 ResultSet rs = ps.getGeneratedKeys();
                 if (rs.next()) {
-                    return rs.getInt(1);
+                    int generatedId = rs.getInt(1); // Lấy ID vừa được tạo
+                    return generatedId;
                 }
+                rs.close();
             }
+            ps.close();
+        } catch (SQLException e) {
+            System.out.println(e);
+        }
+        return -1;
+    }
+
+    public int updateImportOrderSupplier(int supplierId) {
+        String query = "UPDATE ImportOrders SET SupplierID = ?";
+        try {
+            PreparedStatement ps = connector.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
+
+            ps.setInt(1, supplierId);
+
+            return ps.executeUpdate();
+
         } catch (SQLException e) {
             System.out.println(e);
         }
@@ -196,4 +216,40 @@ public class ImportOrderDAO {
 
         return 1;
     }
+
+    private int completedImportOrder(int importId, long total) {
+        String query = "UPDATE ImportOrders SET Completed = 1, ImportDate = GETDATE(), TotalCost = ? WHERE IOID = ?";
+
+        try {
+            PreparedStatement ps = connector.prepareStatement(query);
+            ps.setLong(1, total);
+            ps.setInt(2, importId);
+
+            return ps.executeUpdate();
+        } catch (SQLException e) {
+            System.out.println(e);
+        }
+
+        return -1;
+    }
+
+    public int importStock(int importId, long total) {
+        String query = "UPDATE P SET P.Stock = P.Stock + D.Quantity FROM Products P INNER JOIN ImportOrderDetails D ON P.ProductID = D.ProductID WHERE D.IOID = ?";
+
+        try {
+            PreparedStatement ps = connector.prepareStatement(query);
+            ps.setInt(1, importId);
+
+            int count = ps.executeUpdate();
+            int c = completedImportOrder(importId, total);
+            if (count != -1 && c != -1) {
+                return count;
+            }
+        } catch (SQLException e) {
+            System.out.println(e);
+        }
+
+        return -1;
+    }
+
 }

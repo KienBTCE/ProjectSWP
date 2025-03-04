@@ -6,6 +6,7 @@ package DAOs;
 
 import DB.DBContext;
 import Models.ImportOrderDetail;
+import Models.Product;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -17,13 +18,14 @@ import java.util.ArrayList;
  * @author KienBTCE180180
  */
 public class ImportOrderDetailDAO {
+
     DBContext db = new DBContext();
     Connection connector = db.getConnection();
-    
+
     public int createImportOrderDetails(ArrayList<ImportOrderDetail> detailList) {
         String query = "INSERT INTO ImportOrderDetails (IOID, ProductID, Quantity, ImportPrice) VALUES";
         ArrayList<String> values = new ArrayList<>();
-        
+
         for (ImportOrderDetail d : detailList) {
             String value = "(";
             value += d.getIoid() + ",";
@@ -31,18 +33,18 @@ public class ImportOrderDetailDAO {
             value += d.getQuantity() + ",";
             value += d.getImportPrice() + ")";
         }
-        
+
         for (String v : values) {
             query += " " + v + ",";
         }
-        
+
         String finalQuery = query.substring(0, query.length() - 1);
-        
+
         try {
             PreparedStatement ps = connector.prepareStatement(finalQuery);
             ResultSet rs = ps.executeQuery();
-            
-            if(rs.next()) {
+
+            if (rs.next()) {
                 return 1;
             }
         } catch (SQLException e) {
@@ -51,5 +53,81 @@ public class ImportOrderDetailDAO {
 
         return 0;
     }
-    
+
+    public int createImportOrderDetail(ImportOrderDetail detail) {
+        String query = "INSERT INTO ImportOrderDetails (IOID, ProductID, Quantity, ImportPrice) VALUES (?, ?, ?, ?)";
+
+        try {
+            PreparedStatement ps = connector.prepareStatement(query);
+
+            ps.setInt(1, detail.getIoid());
+            ps.setInt(2, detail.getProduct().getProductId());
+            ps.setInt(3, detail.getQuantity());
+            ps.setLong(4, detail.getImportPrice());
+
+            return ps.executeUpdate();
+        } catch (SQLException e) {
+            System.out.println(e);
+        }
+
+        return 0;
+    }
+
+    public ArrayList<ImportOrderDetail> getDetailsById(int detailId) {
+        String query = "SELECT * FROM ImportOrderDetails WHERE IOID = ?";
+        ArrayList<ImportOrderDetail> list = null;
+        try {
+            PreparedStatement ps = connector.prepareStatement(query);
+            ps.setInt(1, detailId);
+
+            ResultSet rs = ps.executeQuery();
+            list = new ArrayList<>();
+            while (rs.next()) {
+                Product p = new Product();
+                p.setProductId(rs.getInt("ProductID"));
+                list.add(new ImportOrderDetail(rs.getInt("IOID"), p, rs.getInt("Quantity"), rs.getLong("ImportPrice")));
+            }
+            return list;
+        } catch (SQLException e) {
+            System.out.println(e);
+        }
+
+        return list;
+    }
+
+    public int updateDetailById(ImportOrderDetail d) {
+        String query = "UPDATE ImportOrderDetails SET Quantity = ?, ImportPrice = ? WHERE ProductID = ?";
+
+        try {
+            PreparedStatement ps = connector.prepareStatement(query);
+            ps.setInt(1, d.getQuantity());
+            ps.setLong(2, d.getImportPrice());
+            ps.setInt(3, d.getProduct().getProductId());
+
+            return ps.executeUpdate();
+        } catch (SQLException e) {
+            System.out.println(e);
+        }
+
+        return 0;
+    }
+
+    public long calculateTotalPrice(int importId) {
+        String query = "SELECT SUM(ImportPrice) AS TotalPrice FROM ImportOrderDetails WHERE IOID = ?";
+
+        try {
+            PreparedStatement ps = connector.prepareStatement(query);
+            ps.setInt(1, importId);
+            ResultSet rs = ps.executeQuery();
+
+            if (rs.next()) {
+                return rs.getInt("TotalPrice");
+            }
+        } catch (SQLException e) {
+            System.out.println(e);
+        }
+
+        return 0;
+    }
+
 }

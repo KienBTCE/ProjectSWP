@@ -9,19 +9,17 @@ import DAOs.ImportOrderDetailDAO;
 import DAOs.ProductDAO;
 import DAOs.SupplierDAO;
 import Models.ImportOrder;
-import Models.Product;
 import Models.ImportOrderDetail;
+import Models.Product;
 import Models.Supplier;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import java.io.IOException;
-import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.lang.reflect.Type;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -31,6 +29,16 @@ import java.util.Map;
  * @author KienBTCE180180
  */
 public class ImportStockServlet extends HttpServlet {
+
+    SupplierDAO sd = new SupplierDAO();
+    ProductDAO pd = new ProductDAO();
+    ImportOrder io;
+    ImportOrderDAO ioD = new ImportOrderDAO();
+    ImportOrderDetailDAO iodD = new ImportOrderDetailDAO();
+    ArrayList<Product> selectedProducts;
+    Supplier s;
+    int importId;
+    ImportOrder importOrder;
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -72,17 +80,25 @@ public class ImportStockServlet extends HttpServlet {
             throws ServletException, IOException {
 //        processRequest(request, response);
 
-        SupplierDAO sd = new SupplierDAO();
-        ProductDAO pd = new ProductDAO();
-
-        try {
-            request.setAttribute("suppliers", sd.getAllSuppliers());
-            request.setAttribute("products", pd.getAllProducts());
-            request.getRequestDispatcher("ImportStockView.jsp").forward(request, response);
-        } catch (NullPointerException e) {
-            System.out.println(e);
+        if (request.getParameter("id") != null) {
+            importId = Integer.parseInt(request.getParameter("id"));
+            io = ioD.getImportOrderByID(Integer.parseInt(request.getParameter("id")));
+            importOrder = ioD.getImportOrderDetailsByID(importId);
+            s = sd.getSupplierByID(io.getSupplierId());
+            try {
+                request.setAttribute("supplier", io.getSupplier());
+                request.setAttribute("suppliers", sd.getAllSuppliers());
+                request.setAttribute("products", pd.getAllProducts());
+                request.setAttribute("importOrder", importOrder);
+                request.getRequestDispatcher("ImportStockView.jsp").forward(request, response);
+            } catch (NullPointerException e) {
+                System.out.println(e);
+            }
+        } else if (request.getParameter("importStockId") != null) {
+            System.out.println("helo3");
+            ioD.importStock(Integer.parseInt(request.getParameter("importStockId")), iodD.calculateTotalPrice(importId));
+            response.sendRedirect("ImportOrder?id=" + importId);
         }
-
     }
 
     /**
@@ -96,57 +112,65 @@ public class ImportStockServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-//        processRequest(request, response);
 
-//        ImportOrder i = new ImportOrder(0, 0, 0, importDate, 0, lastModify);
-//        Supplier s = new Supplier(0, taxId, name, email, phoneNumber, address, LocalDateTime.MAX, LocalDateTime.MIN, 0, 0);
-//        Product p = new Models.Product(0, categoryName, brandName, fullName, 0, 0, 0);
-//        ImportOrderDetail = d = new ImportOrderDetail(0, p, 0, 0);
-        SupplierDAO sd = new SupplierDAO();
-        Supplier s = sd.getSupplierByTaxID(request.getParameter("taxId"));
-        ArrayList<ImportOrderDetail> detailList = null;
-        String jsonS = request.getParameter("selectedProducts");
-
-        if (jsonS != null && s != null) {
-            Gson gson = new Gson();
-            Type listType = new TypeToken<List<Map<String, String>>>() {
-            }.getType();
-            List<Map<String, String>> list = gson.fromJson(jsonS, listType);
-            
-            long sum = 0;
-
-            for (Map<String, String> map : list) {
-                sum += Integer.parseInt(map.get("stock")) * Long.parseLong(map.get("price"));
-                System.out.println("PPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPP" + sum);
-            }
-            System.out.println("PPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPP" + sum);
-
-//            ImportOrderDAO ioD = new ImportOrderDAO();
-//            int importOrderID = ioD.createImportOrder(new ImportOrder(0, s.getSupplierId(), sum));
-//
-//            for (Map<String, String> map : list) {
-//                ImportOrderDetail d = new ImportOrderDetail();
-//                Product p = new Product();
-//                p.setProductId(Integer.parseInt(map.get("id")));
-//
-//                d.setIoid(importOrderID);
-//                d.setImportPrice(Long.parseLong(map.get("price")));
-//                d.setQuantity(Integer.parseInt(map.get("stock")));
-//                d.setProduct(p);
-//
-//                detailList.add(d);
-//            }
-//
-//            ImportOrderDetailDAO iodD = new ImportOrderDetailDAO();
-//
-//            iodD.createImportOrderDetails(detailList);
-//
-//            ioD.importStock(list);
+        if (request.getParameter("supplierId") != null) {
+            System.out.println("helo5");
+            s = sd.getSupplierByID(Integer.parseInt(request.getParameter("supplierId")));
+            io.setSupplier(s);
+            ioD.updateImportOrderSupplier(Integer.parseInt(request.getParameter("supplierId")));
+            response.sendRedirect("ImportStock?id=" + importId);
+            return;
         }
 
-//        for (Map<String, String> map : list) {
-//            System.out.println("id: " + map.get("id") + ", stock: " + map.get("stock"));
-//        }
+        if (request.getParameter("productEditedId") != null) {
+            System.out.println("helo1");
+            ImportOrderDetail updatedIOD = new ImportOrderDetail();
+            updatedIOD.setProduct(pd.getProductByID(Integer.parseInt(request.getParameter("productEditedId"))));
+            updatedIOD.setQuantity(Integer.parseInt(request.getParameter("quantity")));
+            updatedIOD.setImportPrice(Integer.parseInt(request.getParameter("price")));
+            iodD.updateDetailById(updatedIOD);
+        }
+
+        if (request.getParameter("productId") != null) {
+            System.out.println("helo2");
+            int pId = Integer.parseInt(request.getParameter("productId"));
+            Product p = pd.getProductByID(pId);
+            ImportOrderDetail d = new ImportOrderDetail();
+
+            d.setIoid(importId);
+            d.setProduct(p);
+            d.setQuantity(Integer.parseInt(request.getParameter("importQuantity")));
+            d.setImportPrice(Integer.parseInt(request.getParameter("importPrice")));
+
+            boolean isContained = false;
+            ArrayList<ImportOrderDetail> listDetail = iodD.getDetailsById(importId);
+
+            for (ImportOrderDetail det : listDetail) {
+                if (det.getProduct().getProductId() == pId) {
+                    isContained = true;
+                }
+            }
+
+            if (!isContained) {
+                iodD.createImportOrderDetail(d);
+            } else {
+                String error = "duplicatedProduct";
+                request.setAttribute("duplicatedProduct", error);
+            }
+
+//            request.setAttribute("selectedProducts", iodD.getDetailsById(Integer.parseInt(request.getParameter("id"))));
+        }
+
+        try {
+            request.setAttribute("supplier", s);
+            request.setAttribute("suppliers", sd.getAllSuppliers());
+            request.setAttribute("products", pd.getAllProducts());
+            importOrder = ioD.getImportOrderDetailsByID(importId);
+            request.setAttribute("importOrder", importOrder);
+            request.getRequestDispatcher("ImportStockView.jsp").forward(request, response);
+        } catch (NullPointerException e) {
+            System.out.println(e);
+        }
     }
 
     /**

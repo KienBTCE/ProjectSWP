@@ -146,10 +146,16 @@ SELECT * FROM Products P JOIN Brands B ON P.BrandID = B.BrandID WHERE B.Name IN 
 
 SELECT * FROM Products
 SELECT * FROM ImportOrders
+SELECT * FROM ImportOrderDetails
 
 UPDATE Products SET Stock = 10 WHERE ProductID IN (1, 2, 3)
 
 UPDATE Products SET Stock = Stock + 10 WHERE ProductID = 1, Stock = Stock + 11 WHERE ProductID = 2
+
+UPDATE P SET P.Stock = P.Stock + D.Quantity FROM Products P INNER JOIN ImportOrderDetails D ON P.ProductID = D.ProductID WHERE D.IOID = 4
+
+UPDATE ImportOrders SET Completed = 1, ImportDate = GETDATE(), TotalCost = 1 WHERE IOID = 4
+
 
 UPDATE Products SET Stock = Stock + CASE WHEN ProductID = 1 THEN 10 ELSE 0 END
 
