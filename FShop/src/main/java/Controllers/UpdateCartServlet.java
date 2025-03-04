@@ -1,11 +1,13 @@
-   /*
+/*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
  */
 package Controllers;
 
 import DAOs.CartDAO;
+import DAOs.ProductDAO;
 import Models.Customer;
+import Models.Product;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -67,7 +69,7 @@ public class UpdateCartServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-       
+
     }
 
     /**
@@ -82,8 +84,9 @@ public class UpdateCartServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         HttpSession session = request.getSession();
-        Customer cus = (Customer)session.getAttribute("customer");
+        Customer cus = (Customer) session.getAttribute("customer");
         CartDAO c = new CartDAO();
+        ProductDAO p = new ProductDAO();
         // Đọc dữ liệu JSON từ yêu cầu
         BufferedReader reader = request.getReader();
         StringBuilder json = new StringBuilder();
@@ -98,14 +101,18 @@ public class UpdateCartServlet extends HttpServlet {
         String proId = data.replaceAll(".*\"productId\":(\\d+).*", "$1");
         System.out.println("ProID " + proId);
         String quan = data.replaceAll(".*\"productId\":(\\d+).*,\"quantity\":", "").replaceAll("[^0-9]", "");
-        System.out.println("Quan "+ quan);
+        System.out.println("Quan " + quan);
         int productId = Integer.parseInt(proId);
         int quantity = Integer.parseInt(quan);
         System.out.println("Received productId: " + productId);
         System.out.println("Received quantity: " + quantity);
+        Product product = p.getProductByID(productId);
+        if (product.getStock() >= quantity) {
+            c.updateProductQuantity(productId, quantity, cus.getId());
+        } else if (product.getStock() < quantity) {
+            session.setAttribute("message", "Sorry, the product quantity in stock is not enough.");
 
-        c.updateProductQuantity(productId, quantity, cus.getId());
-        request.getRequestDispatcher("CartView.jsp").forward(request, response);
+        }
     }
 
     /**

@@ -18,8 +18,8 @@
         <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
         <link rel="stylesheet" href="assets/css/style.css">
         <title>Dashboard Design</title>
-        
-          
+
+
     </head>
 
     <body>
@@ -39,41 +39,46 @@
                             <button class="search-btn" type="submit"><i class='bx bx-search'></i></button>
                         </div>
                     </form>
-                    <a href="#" class="profile">
-                        <img src="assets/imgs/Dashboard/admin.png">
-                    </a>
-                </nav>
-                <!-- End of Navbar -->
-                <main>
-                    <div class="header">
-                        <div class="left">
-                            <h1>Dashboard</h1>
+                    <a href="ViewEmployeeProfile" class="profile">
+                    <c:if test="${sessionScope.employee.getAvatar().equals('') == false}">
+                        <img src="assets/imgs/EmployeeAvatar/${sessionScope.employee.getAvatar()}">
+                    </c:if>
+                    <c:if test="${sessionScope.employee.getAvatar().equals('')}">
+                        <img src="assets/imgs/EmployeeAvatar/defauft_avatar.jpg}">
+                    </c:if>
+                </a>
+            </nav>
+            <!-- End of Navbar -->
+            <main>
+                <div class="header">
+                    <div class="left">
+                        <h1>Dashboard</h1>
+                    </div>
+
+                </div>
+                <div class="bottom-data">
+                    <div class="orders">
+                        <div class="header">
+                            <i class='bx bx-group'></i>
+                            <h3>Employee Table</h3>
+                            <a href="AddEmployeeView.jsp" style="background-color: #4da3ff; color: white; text-decoration: none; padding: 4px 20px; border-radius: 5px; display: inline-flex; align-items: center; gap: 5px; cursor: pointer; margin-right: 10px;">
+                                <i class='bx bx-plus'></i> Add Employee
+                            </a>
                         </div>
 
-                    </div>
-                    <div class="bottom-data">
-                        <div class="orders">
-                            <div class="header">
-                                <i class='bx bx-group'></i>
-                                <h3>Employee Table</h3>
-                                <a href="AddEmployeeView.jsp" style="background-color: #4da3ff; color: white; text-decoration: none; padding: 4px 20px; border-radius: 5px; display: inline-flex; align-items: center; gap: 5px; cursor: pointer; margin-right: 10px;">
-                                    <i class='bx bx-plus'></i> Add Employee
-                                </a>
-                            </div>
+                        <table>
 
-                            <table>
-
-                                <thead>
-                                    <tr>
-                                        <th>Employee ID</th>
-                                        <th>Role Name</th>
-                                        <th>Full Name</th>
-                                        <th>Email</th>
-                                        <th>Status</th>
-                                        <th>Action</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
+                            <thead>
+                                <tr>
+                                    <th>Employee ID</th>
+                                    <th>Role Name</th>
+                                    <th>Full Name</th>
+                                    <th>Email</th>
+                                    <th>Status</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
                                 <c:forEach items="${listE}" var="e">
                                     <tr>
                                         <td>${e.employeeId}</td>
@@ -100,7 +105,7 @@
                                             <a href="UpdateEmployee?id=${e.employeeId}" style="background-color: orange; color: white; text-decoration: none; padding: 3px 9px; border-radius: 5px; display: inline-block; cursor: pointer;">
                                                 <i class='bx bx-edit'></i> Update
                                             </a>
-                                                
+
                                             <a href="EmployeeList?id=${e.employeeId}" style="background-color: red; color: white; text-decoration: none; padding: 3px 9px; border-radius: 5px; display: inline-block; cursor: pointer;">
                                                 <i class='bx bx-detail'></i> Detail
                                             </a>
@@ -112,7 +117,7 @@
                     </div>
                 </div>
             </main>
-        <script src="assets/js/index.js"></script>
+            <script src="assets/js/index.js"></script>
     </body>
 
 </html>

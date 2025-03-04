@@ -61,6 +61,11 @@
                 width: 150px;
 
             }
+            #avatar {
+                width: 30px;
+                height: 30px;
+                border-radius: 50%;
+            }
         </style>
     </head>
 
@@ -87,17 +92,20 @@
                         <i class='bx bx-bell'></i>
                         <span class="count">12</span>
                     </a>
-                    <a href="#" class="profile">
-                        <img src="assets/imgs/Dashboard/admin.png">
-                    </a>
-                </nav>
-                <!-- End of Navbar -->
-                <main>
-                    <div class="profile-container">
-                        <div class="form-container">
-                            <div class="mb-1 d-flex">
-                                <label class="value fw-bold">Employee ID:</label>
-                                <p>${employee.employeeId}</p>
+                <c:if test="${sessionScope.employee.getAvatar().equals('') == false}">
+                    <img id="avatar" src="assets/imgs/EmployeeAvatar/${sessionScope.employee.getAvatar()}">
+                </c:if>
+                <c:if test="${sessionScope.employee.getAvatar().equals('')}">
+                    <img id="avatar" src="assets/imgs/EmployeeAvatar/defauft_avatar.jpg}">
+                </c:if>
+            </nav>
+            <!-- End of Navbar -->
+            <main>
+                <div class="profile-container">
+                    <div class="form-container">
+                        <div class="mb-1 d-flex">
+                            <label class="value fw-bold">Employee ID:</label>
+                            <p>${employee.employeeId}</p>
                         </div>
 
                         <div class="mb-1 d-flex">
@@ -148,12 +156,29 @@
                             <label class="value fw-bold">Status:</label>
                             <c:choose>
                                 <c:when test="${employee.status == 1}">
-                                    <p><span style="background-color: #28a745; color: white; padding: 5px 12px; border-radius: 15px; font-size: 12px; display: inline-flex; align-items: center; gap: 5px; text-align: center;">
+                                    <p><span style="background-color: #28a745;
+                                             color: white;
+                                             padding: 5px 12px;
+                                             border-radius: 15px;
+                                             font-size: 12px;
+                                             display: inline-flex;
+                                             align-items: center;
+                                             gap: 5px;
+                                             text-align: center;">
                                             <i class='bx bx-check-circle' style="font-size: 14px;"></i> Available
                                         </span></p>
                                     </c:when>
                                     <c:otherwise>
-                                    <p><span style="background-color: #dc3545; color: white; padding: 5px 12px; border-radius: 15px; font-size: 12px; display: inline-flex; align-items: center; gap: 5px; text-align: center; margin-left: 10px;">
+                                    <p><span style="background-color: #dc3545;
+                                             color: white;
+                                             padding: 5px 12px;
+                                             border-radius: 15px;
+                                             font-size: 12px;
+                                             display: inline-flex;
+                                             align-items: center;
+                                             gap: 5px;
+                                             text-align: center;
+                                             margin-left: 10px;">
                                             <i class='bx bx-x-circle' style="font-size: 14px;"></i> Disable
                                         </span></p>
                                     </c:otherwise>
@@ -161,10 +186,24 @@
                         </div>
 
                         <div class="d-flex gap-1" style="justify-content: left;">
-                            <a href="EmployeeList" style="background-color: #4da3ff; color: white; text-decoration: none; padding: 3px 9px; border-radius: 5px; display: inline-flex; align-items: center; gap: 5px; cursor: pointer;">
+                            <a href="EmployeeList" style="background-color: #4da3ff;
+                               color: white;
+                               text-decoration: none;
+                               padding: 3px 9px;
+                               border-radius: 5px;
+                               display: inline-flex;
+                               align-items: center;
+                               gap: 5px;
+                               cursor: pointer;">
                                 <i class='bx bx-arrow-back'></i> Back to List
                             </a>
-                            <a href="UpdateEmployee?id=${employee.employeeId}" style="background-color: orange; color: white; text-decoration: none; padding: 3px 9px; border-radius: 5px; display: inline-block; cursor: pointer;">
+                            <a href="UpdateEmployee?id=${employee.employeeId}" style="background-color: orange;
+                               color: white;
+                               text-decoration: none;
+                               padding: 3px 9px;
+                               border-radius: 5px;
+                               display: inline-block;
+                               cursor: pointer;">
                                 <i class='bx bx-edit'></i> Update
                             </a>
                         </div>
