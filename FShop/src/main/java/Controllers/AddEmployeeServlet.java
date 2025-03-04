@@ -2,7 +2,6 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
  */
-
 package Controllers;
 
 import DAOs.EmployeeDAO;
@@ -22,23 +21,22 @@ import java.nio.file.Paths;
  *
  * @author NguyenPVT-CE181835
  */
-@WebServlet(name="AddEmployeeServlet", urlPatterns={"/AddEmployee"})
+@WebServlet(name = "AddEmployeeServlet", urlPatterns = {"/AddEmployee"})
 @MultipartConfig(fileSizeThreshold = 1024 * 1024 * 2, // 2MB
         maxFileSize = 1024 * 1024 * 10, // 10MB
         maxRequestSize = 1024 * 1024 * 50) // 50MB
 public class AddEmployeeServlet extends HttpServlet {
-    
+
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
-    throws ServletException, IOException {
-        
-    } 
+            throws ServletException, IOException {
+    }
 
-   
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
-    throws ServletException, IOException {
-       try {
+            throws ServletException, IOException {
+        try {
+            EmployeeDAO empDAO = new EmployeeDAO();
             int roleId = Integer.parseInt(request.getParameter("txtRoleId"));
             String name = request.getParameter("txtName");
             String password = request.getParameter("txtPass");
@@ -48,10 +46,44 @@ public class AddEmployeeServlet extends HttpServlet {
             String gender = request.getParameter("txtGender");
             java.sql.Date createdDate = java.sql.Date.valueOf(request.getParameter("txtCreatedDate"));
             int status = Integer.parseInt(request.getParameter("txtStatus"));
-
+            String avatar = request.getParameter("currentAvatar");
             Part part = request.getPart("txtAvatar");
             String fileName = Paths.get(part.getSubmittedFileName()).getFileName().toString();
-            String avatar = null;
+            
+
+            // **1. Kiểm tra email đã tồn tại chưa**
+            if (empDAO.isEmailExists(email)) {
+                request.setAttribute("errorMsg", "Email đã tồn tại! Vui lòng chọn email khác.");
+                request.setAttribute("txtRoleId", roleId);
+                request.setAttribute("txtName", name);
+                request.setAttribute("txtPass", password);
+                request.setAttribute("txtBirthday", birthday);
+                request.setAttribute("txtPhoneNumber", phone);
+                request.setAttribute("txtEmail", email);
+                request.setAttribute("txtGender", gender);
+                request.setAttribute("txtCreatedDate", createdDate);
+                request.setAttribute("txtStatus", status);
+                request.setAttribute("currentAvatar", avatar);
+                request.getRequestDispatcher("AddEmployeeView.jsp").forward(request, response);
+                return;
+            }
+
+            // **2. Kiểm tra mật khẩu có hợp lệ không**
+            if (!isValidPassword(password)) {
+                request.setAttribute("errorMsg", "Mật khẩu phải có ít nhất 8 ký tự, bao gồm 1 chữ hoa và 1 ký tự đặc biệt!");
+                request.setAttribute("txtRoleId", roleId);
+                request.setAttribute("txtName", name);
+                request.setAttribute("txtPass", password);
+                request.setAttribute("txtBirthday", birthday);
+                request.setAttribute("txtPhoneNumber", phone);
+                request.setAttribute("txtEmail", email);
+                request.setAttribute("txtGender", gender);
+                request.setAttribute("txtCreatedDate", createdDate);
+                request.setAttribute("txtStatus", status);
+                request.setAttribute("currentAvatar", avatar);
+                request.getRequestDispatcher("AddEmployeeView.jsp").forward(request, response);
+                return;
+            }
 
             if (fileName != null && !fileName.isEmpty()) {
                 String uploadPath = getServletContext().getRealPath("/") + "assets/imgs/Employee";
@@ -65,23 +97,26 @@ public class AddEmployeeServlet extends HttpServlet {
             if (avatar == null || avatar.isEmpty()) {
                 avatar = request.getParameter("currentAvatar");
             }
-
             request.setAttribute("currentAvatar", avatar);
 
-            EmployeeDAO empDAO = new EmployeeDAO();
             Employee emp = new Employee(name, birthday, password, phone, email, gender, createdDate, status, avatar, roleId);
             int result = empDAO.AddEmployee(emp);
 
             if (result > 0) {
-                response.sendRedirect("EmployeeList?success=Employee updated successfully");
+                request.setAttribute("successMsg", "Add successfully");
+                request.getRequestDispatcher("AddEmployeeView.jsp").forward(request, response);
             } else {
-                request.setAttribute("errorMsg", "Add Employee failed! Please try again.");
+                request.setAttribute("errorMsg", "Add failed! Please try again.");
                 request.getRequestDispatcher("AddEmployeeView.jsp").forward(request, response);
             }
-        } catch (Exception e) {
-            e.printStackTrace();
-            request.setAttribute("errorMsg", "Invalid data! Please check your input.");
-            request.getRequestDispatcher("AddEmployeeView.jsp").forward(request, response);
+        } catch (NullPointerException e) {
+            System.out.println(e);
         }
     }
+
+    // **Hàm kiểm tra mật khẩu**
+    private boolean isValidPassword(String password) {
+        return password.matches("^(?=.*[A-Z])(?=.*[@#$%^&+=])(?=\\S+$).{8,}$");
+    }
+
 }
