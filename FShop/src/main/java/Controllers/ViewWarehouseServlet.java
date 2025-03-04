@@ -4,20 +4,18 @@
  */
 package Controllers;
 
-import DAOs.CustomerDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import jakarta.servlet.http.HttpSession;
 
 /**
  *
- * @author ThyLTKCE181577
+ * @author KienBTCE180180
  */
-public class ResetPasswordServlet extends HttpServlet {
+public class ViewWarehouseServlet extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -30,18 +28,23 @@ public class ResetPasswordServlet extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        response.setContentType("text/html;charset=UTF-8");
-        try ( PrintWriter out = response.getWriter()) {
-            /* TODO output your page here. You may use the following sample code. */
-            out.println("<!DOCTYPE html>");
-            out.println("<html>");
-            out.println("<head>");
-            out.println("<title>Servlet ResetPasswordServlet</title>");
-            out.println("</head>");
-            out.println("<body>");
-            out.println("<h1>Servlet ResetPasswordServlet at " + request.getContextPath() + "</h1>");
-            out.println("</body>");
-            out.println("</html>");
+//        response.setContentType("text/html;charset=UTF-8");
+//        try (PrintWriter out = response.getWriter()) {
+//            /* TODO output your page here. You may use following sample code. */
+//            out.println("<!DOCTYPE html>");
+//            out.println("<html>");
+//            out.println("<head>");
+//            out.println("<title>Servlet ViewWarehouseServlet</title>");  
+//            out.println("</head>");
+//            out.println("<body>");
+//            out.println("<h1>Servlet ViewWarehouseServlet at " + request.getContextPath () + "</h1>");
+//            out.println("</body>");
+//            out.println("</html>");
+//        }
+        try {
+            request.getRequestDispatcher("WarehouseManagerView.jsp").forward(request, response);
+        } catch (NullPointerException e) {
+            System.out.println(e);
         }
     }
 
@@ -57,7 +60,7 @@ public class ResetPasswordServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        request.getRequestDispatcher("ResetPasswordView.jsp").forward(request, response);
+        processRequest(request, response);
     }
 
     /**
@@ -71,29 +74,7 @@ public class ResetPasswordServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        String newPassword = request.getParameter("newPassword");
-        String confirmPassword = request.getParameter("confirmPassword");
-        HttpSession session = request.getSession();
-        String email = (String) session.getAttribute("resetEmail");
-
-        if (newPassword == null || confirmPassword == null || !newPassword.equals(confirmPassword)) {
-            request.setAttribute("error", "Passwords do not match!");
-            request.getRequestDispatcher("ResetPasswordView.jsp").forward(request, response);
-            return;
-        }
-
-        // Update password in the database
-        CustomerDAO userDAO = new CustomerDAO();
-        boolean success = userDAO.updatePassword(email, newPassword);
-
-        if (success) {
-            session.removeAttribute("otp");
-            session.removeAttribute("resetEmail");
-            response.sendRedirect("/customerLogin");
-        } else {
-            request.setAttribute("error", "An error occurred! Please try again.");
-            request.getRequestDispatcher("ResetPasswordView.jsp").forward(request, response);
-        }
+        processRequest(request, response);
     }
 
     /**
