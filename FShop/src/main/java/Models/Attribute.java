@@ -12,15 +12,15 @@ public class Attribute {
 
     private int attributeId;
     private int categoryId;
-    private String atrributeName;
+    private String attributeName;
 
     public Attribute() {
     }
 
-    public Attribute(int attributeId, int categoryId, String atrributeName) {
+    public Attribute(int attributeId, int categoryId, String attributeName) {
         this.attributeId = attributeId;
         this.categoryId = categoryId;
-        this.atrributeName = atrributeName;
+        this.attributeName = attributeName;
     }
 
     public int getAttributeId() {
@@ -39,12 +39,12 @@ public class Attribute {
         this.categoryId = categoryId;
     }
 
-    public String getAtrributeName() {
-        return atrributeName;
+    public String getAttributeName() {
+        return attributeName;
     }
 
-    public void setAtrributeName(String atrributeName) {
-        this.atrributeName = atrributeName;
+    public void setAttributeName(String atrributeName) {
+        this.attributeName = atrributeName;
     }
 
 }

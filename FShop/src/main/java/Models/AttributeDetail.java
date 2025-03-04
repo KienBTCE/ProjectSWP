@@ -13,14 +13,16 @@ public class AttributeDetail {
     private int attributeId;
     private int productId;
     private String attributeInfor;
+    private String attributeName;
 
     public AttributeDetail() {
     }
 
-    public AttributeDetail(int attributeId, int productId, String attributeInfor) {
+    public AttributeDetail(int attributeId, int productId, String attributeInfor, String attributeName) {
         this.attributeId = attributeId;
         this.productId = productId;
         this.attributeInfor = attributeInfor;
+        this.attributeName = attributeName;
     }
 
     public int getAttributeId() {
@@ -45,6 +47,14 @@ public class AttributeDetail {
 
     public void setAttributeInfor(String attributeInfor) {
         this.attributeInfor = attributeInfor;
+    }
+
+    public String getAttributeName() {
+        return attributeName;
+    }
+
+    public void setAttributeName(String attributeName) {
+        this.attributeName = attributeName;
     }
 
 }

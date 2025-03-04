@@ -1,6 +1,8 @@
 package Controllers;
 
+import DAOs.AttributeDAO;
 import DAOs.ProductDAO;
+import Models.AttributeDetail;
 import Models.Product;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -9,6 +11,7 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  *
@@ -77,8 +80,12 @@ public class ProductListServlet extends HttpServlet {
         if (detailID != null) {
             int id = Integer.parseInt(detailID);
             Product product = pr.getProductByID(id);
+            // Thêm đoạn lấy attribute
+            AttributeDAO ad = new AttributeDAO();
+            List<AttributeDetail> attributes = ad.getAttributesByProductID(id);
             try {
                 request.setAttribute("product", product);
+                request.setAttribute("attributes", attributes);
                 request.getRequestDispatcher("ProductDetailManagerView.jsp").forward(request, response);
             } catch (NullPointerException e) {
                 System.out.println(e);
