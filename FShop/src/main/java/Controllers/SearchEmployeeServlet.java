@@ -4,23 +4,25 @@
  */
 package Controllers;
 
-import DAOs.AttributeDAO;
-import DAOs.ProductDAO;
-import Models.AttributeDetail;
+import DAOs.EmployeeDAO;
+import DAOs.RoleDAO;
+import Models.Employee;
+import Models.Role;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
+import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.util.ArrayList;
-import java.util.List;
 
 /**
  *
- * @author kiuth
+ * @author NguyenPVT-CE181835
  */
-public class ProductDetailServlet extends HttpServlet {
+@WebServlet(name = "SearchEmployeeServlet", urlPatterns = {"/SearchEmployee"})
+public class SearchEmployeeServlet extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -39,10 +41,10 @@ public class ProductDetailServlet extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet ProductDetailServlet</title>");
+            out.println("<title>Servlet SearchEmployeeServlet</title>");
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet ProductDetailServlet at " + request.getContextPath() + "</h1>");
+            out.println("<h1>Servlet SearchEmployeeServlet at " + request.getContextPath() + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }
@@ -60,33 +62,18 @@ public class ProductDetailServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        RoleDAO roleDAO = new RoleDAO();
+         EmployeeDAO employeeDAO = new EmployeeDAO();
+        String query = request.getParameter("query");
+        ArrayList<Role> listR1 = roleDAO.getAllRoles();
+        if (query != null && !query.trim().isEmpty()) {
+           
+            ArrayList<Employee> searchResults = employeeDAO.searchEmployeesByName(query);
 
-        ProductDAO pr = new ProductDAO();
-        ArrayList<Models.Product> products;
-
-        AttributeDAO ad = new AttributeDAO();
-        String detailID = request.getParameter("id");
-
-        if (detailID != null) {
-            int id = Integer.parseInt(detailID);
-            Models.Product product = pr.getProductByID(id);
-            List<AttributeDetail> attributes = ad.getAttributesByProductID(id);
-            try {
-                request.setAttribute("product", product);
-                request.setAttribute("attributes", attributes);
-                System.out.println("Attributes forwarded: " + attributes.size()); // Debug
-                request.getRequestDispatcher("ProductDetailView.jsp").forward(request, response);
-                return;
-            } catch (NullPointerException e) {
-                System.out.println(e);
-            }
-        }
-        products = pr.getProductList();
-        try {
-            request.setAttribute("products", products);
-            request.getRequestDispatcher("ProductListView.jsp").forward(request, response);
-        } catch (NullPointerException e) {
-            System.out.println(e);
+            request.setAttribute("employees", searchResults);
+            request.setAttribute("listR1", listR1);
+            request.setAttribute("searchQuery", query);
+            request.getRequestDispatcher("EmployeeListView.jsp").forward(request, response);
         }
     }
 

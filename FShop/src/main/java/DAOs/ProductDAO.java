@@ -271,8 +271,8 @@ public class ProductDAO {
             ps.setString(6, p.getCategoryName());
 
             count = ps.executeUpdate();
-        } catch (SQLException ex) {
-            ex.printStackTrace(); // In lỗi ra console
+        } catch (SQLException ex) { // In lỗi ra console
+            // In lỗi ra console
             Logger.getLogger(ProductDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
         return count;

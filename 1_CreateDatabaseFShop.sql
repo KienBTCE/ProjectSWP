@@ -116,6 +116,8 @@ CREATE TABLE Products (
 
 CREATE TABLE Attributes (
     AttributeID INT PRIMARY KEY IDENTITY(1,1),
+	CategoryID INT,
+	FOREIGN KEY (CategoryID) REFERENCES Categories(CategoryID),
     [Name] NVARCHAR(100) NOT NULL
 );
 
