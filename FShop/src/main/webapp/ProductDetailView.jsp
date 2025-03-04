@@ -11,6 +11,7 @@
         <title>Product Detail</title>
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+        <link rel="stylesheet" href="./assets/css/popup.css"/>
         <style>
             .container {
                 max-width: 800px;
@@ -62,7 +63,7 @@
         </style>
     </head>
     <body>
-        <div class="container">
+        <div class="container">   
             <c:choose>
                 <c:when test="${product != null}">
                     <div class="product-card">
@@ -79,11 +80,11 @@
                             <h3>${product.getFullName()}</h3>
                             <p><strong>Price:</strong> $${product.getPrice()}</p>
                             <p><strong>Quantity:</strong> ${product.getStock()}</p>
-                            <form action="addToCart?productID=${product.getProductId()}" method="POST" class="d-inline">
+                            <form action="AddToCart?productID=${product.getProductId()}" method="POST" class="d-inline">
                                 <div class="quantity-controls">
-                                    <button style="border: 1px solid white;" type="button" onclick="decreaseQuantity()">-</button>
-                                    <input type="number" name="quantity" id="quantity" value="1" min="1" max="${product.getStock()}">
-                                    <button style="border: 1px solid white;" type="button" onclick="increaseQuantity()">+</button>
+                                    <button style="border: 1px solid white; background: white" type="button" onclick="decreaseQuantity()">-</button>
+                                    <input style="width: 50px" type="number" name="quantity" id="quantity" value="1" min="1" max="${product.getStock()}">
+                                    <button style="border: 1px solid white; background: white" type="button" onclick="increaseQuantity()">+</button>
                                 </div>
                                 <input type="submit" value="Add to cart" class="btn-add-cart">
                             </form>
@@ -97,6 +98,25 @@
                 </c:otherwise>
             </c:choose>
         </div>
+        <%
+            String message = (String) session.getAttribute("message");
+            System.out.println("Session message: " + message + request.getRequestURI());
+        %>
+        <%
+            if (message != null) {
+        %>
+        <div style="display:flex;" class="popup" id="updatePopup">
+            <div class="popup-content">
+                <h4>${sessionScope.message}</h4>
+                <div style="display: flex; justify-content: center;">
+                    <button class="btn btn-primary" onclick="closePopup()">OK</button>
+                </div>
+            </div>
+        </div>
+        <%
+                session.removeAttribute("message");
+            }
+        %>
         <script>
             function increaseQuantity() {
                 const quantityInput = document.getElementById('quantity');
@@ -111,6 +131,13 @@
                 if (quantityInput.value > 1) {
                     quantityInput.value = parseInt(quantityInput.value) - 1;
                 }
+            }
+            function showPopup() {
+                document.getElementById("updatePopup").style.display = "flex";
+            }
+
+            function closePopup() {
+                document.getElementById("updatePopup").style.display = "none";
             }
         </script>
     </body>

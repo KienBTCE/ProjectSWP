@@ -78,7 +78,8 @@
                             <div>
                                 <div class="control-label">Address</div>
                                 <div class="">
-                                    <input style="width: 70%; border: black solid 1px;" name="address" type="text" class="form-control" value="${shipAddress}" placeholder="" readonly/>
+                                    <textarea rows="2" cols="50" style="
+                                              width: 70%; border: black solid 1px;" name="address" type="text" class="form-control" value="" placeholder="" readonly>${shipAddress}</textarea>
                                 </div>
                                 <a href="url">Change address</a>
                                 <!--                                <form> 
