@@ -103,10 +103,10 @@ public class AddEmployeeServlet extends HttpServlet {
             int result = empDAO.AddEmployee(emp);
 
             if (result > 0) {
-                request.setAttribute("successMsg", "Add successfully");
+                request.setAttribute("popupSuccessMsg", "Add successfully");
                 request.getRequestDispatcher("AddEmployeeView.jsp").forward(request, response);
             } else {
-                request.setAttribute("errorMsg", "Add failed! Please try again.");
+                request.setAttribute("popupErrorMsg", "Add failed! Please try again.");
                 request.getRequestDispatcher("AddEmployeeView.jsp").forward(request, response);
             }
         } catch (NullPointerException e) {

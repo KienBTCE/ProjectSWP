@@ -246,14 +246,14 @@
                     }
 
                     // Example: Show success or fail message
-                    <c:if test="${not empty successMsg}">
+                    <c:if test="${not empty popupSuccessMsg}">
                         window.onload = function () {
-                            showPopup("${successMsg}", 'success');
+                            showPopup("${popupSuccessMsg}", 'success');
                         };
                     </c:if>
-                    <c:if test="${not empty errorMsg}">
+                    <c:if test="${not empty popupErrorMsg}">
                         window.onload = function () {
-                            showPopup("${errorMsg}", 'fail');
+                            showPopup("${popupErrorMsg}", 'fail');
                         };
                     </c:if>
                 </script>
