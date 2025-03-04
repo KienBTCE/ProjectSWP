@@ -22,26 +22,27 @@ public class DBContext {
             String dbURL = "jdbc:sqlserver://localhost:1433;"
                     + "databaseName=FSHOP;"
                     + "user=sa;" // Enter your user SQL Server
-                    + "password=240204;" // Enter your password SQL Server
+                    + "password=;" // Enter your password SQL Server
                     + "encrypt=true;trustServerCertificate=true";
 
             connector = DriverManager.getConnection(dbURL); // connect to database server follow the dbURL string
 
-//            if (connector != null) {
-//                DatabaseMetaData dm = (DatabaseMetaData) connector.getMetaData();
-//                System.out.println("Driver name: " + dm.getDriverName());
-//                System.out.println("Driver version: " + dm.getDriverVersion());
-//                System.out.println("Product name: " + dm.getDatabaseProductName());
-//                System.out.println("Product version: " + dm.getDatabaseProductVersion());
-//            }
+            if (connector != null) {
+                DatabaseMetaData dm = (DatabaseMetaData) connector.getMetaData();
+                System.out.println("Driver name: " + dm.getDriverName());
+                System.out.println("Driver version: " + dm.getDriverVersion());
+                System.out.println("Product name: " + dm.getDatabaseProductName());
+                System.out.println("Product version: " + dm.getDatabaseProductVersion());
+            }
         } catch (ClassNotFoundException | SQLException ex) {
             System.out.println(ex);
         }
         return connector;
     }
+
     public static void main(String[] args) {
-        
-       DBContext db = new DBContext();
-       db.getConnection();
+
+        DBContext db = new DBContext();
+        db.getConnection();
     }
 }

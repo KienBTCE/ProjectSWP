@@ -5,6 +5,7 @@
 package Controllers;
 
 import DAOs.CustomerDAO;
+import Models.Customer;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -17,7 +18,7 @@ import jakarta.servlet.http.HttpSession;
  *
  * @author ThyLTKCE181577
  */
-public class ResetPasswordServlet extends HttpServlet {
+public class RegisterOTPServlet extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -32,14 +33,14 @@ public class ResetPasswordServlet extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         try ( PrintWriter out = response.getWriter()) {
-            /* TODO output your page here. You may use the following sample code. */
+            /* TODO output your page here. You may use following sample code. */
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet ResetPasswordServlet</title>");
+            out.println("<title>Servlet RegisterOTPServlet</title>");
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet ResetPasswordServlet at " + request.getContextPath() + "</h1>");
+            out.println("<h1>Servlet RegisterOTPServlet at " + request.getContextPath() + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }
@@ -57,7 +58,7 @@ public class ResetPasswordServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        request.getRequestDispatcher("ResetPasswordView.jsp").forward(request, response);
+        request.getRequestDispatcher("VerifyOTPView.jsp").forward(request, response);
     }
 
     /**
@@ -71,28 +72,41 @@ public class ResetPasswordServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        String newPassword = request.getParameter("newPassword");
-        String confirmPassword = request.getParameter("confirmPassword");
         HttpSession session = request.getSession();
-        String email = (String) session.getAttribute("resetEmail");
+        String otpEntered = request.getParameter("otp");
+        String otpStored = (String) session.getAttribute("otp");
 
-        if (newPassword == null || confirmPassword == null || !newPassword.equals(confirmPassword)) {
-            request.setAttribute("error", "Passwords do not match!");
-            request.getRequestDispatcher("ResetPasswordView.jsp").forward(request, response);
-            return;
-        }
+        // Check if OTP matches
+        if (otpStored != null && otpStored.equals(otpEntered)) {
+            // Retrieve customer details from session
+            Customer customer = (Customer) session.getAttribute("registerCustomer");
 
-        // Update password in the database
-        CustomerDAO userDAO = new CustomerDAO();
-        boolean success = userDAO.updatePassword(email, newPassword);
+            if (customer != null) {
+                // Register the customer
+                CustomerDAO ctmDAO = new CustomerDAO();
+                int result = ctmDAO.addNewCustomer(customer);
 
-        if (success) {
-            session.removeAttribute("otp");
-            session.removeAttribute("resetEmail");
-            response.sendRedirect("/customerLogin");
+                if (result != 0) {
+                    // Registration successful, remove session attributes
+                    session.removeAttribute("otp");
+                    session.removeAttribute("registerCustomer");
+
+                    // Redirect to login page
+                    response.sendRedirect("/customerLogin");
+                } else {
+                    // Database error occurred
+                    request.setAttribute("error", "Registration failed. Please try again.");
+                    request.getRequestDispatcher("OTPView.jsp").forward(request, response);
+                }
+            } else {
+                // No customer data found in session
+                request.setAttribute("error", "Session expired! Please register again.");
+                request.getRequestDispatcher("RegisterView.jsp").forward(request, response);
+            }
         } else {
-            request.setAttribute("error", "An error occurred! Please try again.");
-            request.getRequestDispatcher("ResetPasswordView.jsp").forward(request, response);
+            // Incorrect OTP
+            request.setAttribute("error", "Incorrect OTP code!");
+            request.getRequestDispatcher("OTPView.jsp").forward(request, response);
         }
     }
 
