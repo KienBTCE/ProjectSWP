@@ -29,7 +29,6 @@
     </head>
     <body>
         <div class="container my-5">
-            <h3 class="text-center mb-4">Product Detail</h3>
             <div class="row">
                 <!-- Product details table -->
                 <div class="col-md-8">
@@ -111,7 +110,7 @@
                 </div>
             </div>
             <!-- Back button -->
-            <div class="text-center mt-3">
+            <div class="text-left mt-3">
                 <a href="ProductListServlet" class="btn btn-primary">Back to List</a>
             </div>
         </div>
