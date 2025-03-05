@@ -4,7 +4,9 @@
  */
 package Controllers;
 
+import DAOs.AttributeDAO;
 import DAOs.ProductDAO;
+import Models.AttributeDetail;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -12,6 +14,7 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  *
@@ -61,14 +64,19 @@ public class ProductDetailServlet extends HttpServlet {
         ProductDAO pr = new ProductDAO();
         ArrayList<Models.Product> products;
 
+        AttributeDAO ad = new AttributeDAO();
         String detailID = request.getParameter("id");
 
         if (detailID != null) {
             int id = Integer.parseInt(detailID);
             Models.Product product = pr.getProductByID(id);
+            List<AttributeDetail> attributes = ad.getAttributesByProductID(id);
             try {
                 request.setAttribute("product", product);
+                request.setAttribute("attributes", attributes);
+                System.out.println("Attributes forwarded: " + attributes.size()); // Debug
                 request.getRequestDispatcher("ProductDetailView.jsp").forward(request, response);
+                return;
             } catch (NullPointerException e) {
                 System.out.println(e);
             }

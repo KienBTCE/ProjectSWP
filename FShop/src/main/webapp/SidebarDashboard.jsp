@@ -28,7 +28,6 @@
                 box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.3);
                 transform: translateZ(0);
                 position: relative;
-                z-index: 10;
                 border-radius: 10px;
                 margin-top: 10px;
                 position: fixed;
@@ -101,8 +100,13 @@
         <script>
             function confirmLogout() {
                 if (confirm("Are you sure you want to log out?")) {
-                    // Chuyển hướng tới trang logout hoặc gọi API logout
-                    window.location.href = "/Logout";
+                    fetch('<%= request.getContextPath()%>/Logout', {
+                        method: 'GET'
+                    }).then(response => {
+                        if (response.redirected) {
+                            window.location.href = response.url;
+                        }
+                    }).catch(error => console.error('Logout failed:', error));
                 }
             }
         </script>

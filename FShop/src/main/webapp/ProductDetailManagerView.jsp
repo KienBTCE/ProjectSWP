@@ -5,7 +5,7 @@
 --%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <!DOCTYPE html>
 <html>
     <head>
@@ -15,120 +15,134 @@
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
         <style>
             body {
-                display: flex;
-                justify-content: center;
-                align-items: center;
-                height: 100vh;
                 background-color: #f8f9fa;
-            }
-            .container {
-                max-width: 900px;
-                background: white;
-                padding: 20px;
-                border-radius: 10px;
-                box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.1);
             }
             .table th {
                 background: #7D69FF;
                 color: white;
-                width: 30%;
-                text-align: left;
+                width: 35%;
             }
-            .image-container {
-                text-align: right;
+            .badge {
+                font-size: 100%;
             }
-            .product-image {
-                max-width: 370px;
+            .product-img {
+                max-width: 100%;
                 height: auto;
-            }
-            .btn-back {
-                background-color: #7D69FF;
-                color: white;
-                border: none;
-                padding: 10px 20px;
-                border-radius: 5px;
-                text-decoration: none;
-                display: block;
-                text-align: center;
-                margin-top: 20px;
-            }
-            .btn-back:hover {
-                background-color: #5a4edc;
-            }
-            .product-details {
-                display: flex;
-                align-items: center;
-                gap: 20px;
             }
         </style>
     </head>
     <body>
-        <div class="container">
-            <h3 class="mb-4 text-center">Product Detail</h3>
-            <div class="product-details">
-
-                <table class="table table-bordered">
-                    <c:choose>
-                        <c:when test="${product != null}">
-                            <tr>
-                                <th>Product ID</th>
-                                <td>${product.getProductId()}</td>
-                            </tr>
-                            <tr>
-                                <th>Category</th>
-                                <td>${product.getCategoryName()}</td>
-                            </tr>
-                            <tr>
-                                <th>Brand</th>
-                                <td>${product.getBrandName()}</td>
-                            </tr>
-                            <tr>
-                                <th>Model</th>
-                                <td>${product.getModel()}</td>
-                            </tr>
-                            <tr>
-                                <th>Product Name</th>
-                                <td>${product.getFullName()}</td>
-                            </tr>
-                            <tr>
-                                <th>Stock</th>
-                                <td>${product.getStock()}</td>
-                            </tr>
-                            <tr>
-                                <th>Price</th>
-                                <td>${product.getPrice()}</td>
-                            </tr>
-                            <tr>
-                                <th>Description</th>
-                                <td>${product.getDescription()}</td>
-                            </tr>
-                            <tr>
-                                <th>Status</th>
-                                <td>
-                                    <span class="badge ${product.getDeleted() == 1 ? 'bg-danger' : 'bg-success'}">
-                                        ${product.getDeleted() == 1 ? 'Deleted' : 'Active'}
-                                    </span>
-                                </td>
-                            </tr>
-                        </c:when>
-                        <c:otherwise>
-                            <tr>
-                                <td colspan="2" class="text-danger text-center">Product not found!</td>
-                            </tr>
-                        </c:otherwise>
-                    </c:choose>
-                </table>
-                <div class="image-container">
-                    <c:set var="imagePath" value="${product.image}" />
-                    <c:if test="${not empty imagePath}">
-                        <img src="<c:out value='${pageContext.request.contextPath}'/>/assets/imgs/Products/<c:out value='${imagePath}'/>" 
-                             class="product-image" 
-                             alt="${product.fullName}" 
-                             width="150" height="150"/>
-                    </c:if>
+        <div class="container my-5">
+            <div class="row">
+                <!-- Product details table -->
+                <div class="col-md-8">
+                    <table class="table table-bordered">
+                        <c:choose>
+                            <c:when test="${product != null}">
+                                <tr>
+                                    <th>Product ID</th>
+                                    <td>${product.productId}</td>
+                                </tr>
+                                <tr>
+                                    <th>Category</th>
+                                    <td>${product.categoryName}</td>
+                                </tr>
+                                <tr>
+                                    <th>Brand</th>
+                                    <td>${product.brandName}</td>
+                                </tr>
+                                <tr>
+                                    <th>Model</th>
+                                    <td>${product.model}</td>
+                                </tr>
+                                <tr>
+                                    <th>Product Name</th>
+                                    <td>${product.fullName}</td>
+                                </tr>
+                                <tr>
+                                    <th>Attributes</th>
+                                    <td>
+                                        <c:if test="${not empty product.attributeDetails}">
+                                            <ul class="list-unstyled mb-0">
+                                                <c:forEach var="attr" items="${product.attributeDetails}">
+                                                    <li>
+                                                        <strong>${attr.attributeName}:</strong> ${attr.attributeInfor}
+                                                    </li>
+                                                </c:forEach>
+                                            </ul>
+                                        </c:if>
+                                        <c:if test="${empty product.attributeDetails}">
+                                            <span class="text-danger">No attributes found</span>
+                                        </c:if>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th>Stock</th>
+                                    <td>${product.stock}</td>
+                                </tr>
+                                <tr>
+                                    <th>Price</th>
+                                    <td>${product.price}</td>
+                                </tr>
+                                <tr>
+                                    <th>Description</th>
+                                    <td>${product.description}</td>
+                                </tr>
+                                <tr>
+                                    <th>Status</th>
+                                    <td>
+                                        <span class="badge ${product.deleted == 1 ? 'bg-danger' : 'bg-success'}">
+                                            ${product.deleted == 1 ? 'Deleted' : 'Active'}
+                                        </span>
+                                    </td>
+                                </tr>
+                            </c:when>
+                            <c:otherwise>
+                                <tr>
+                                    <td colspan="2" class="text-danger text-center">Product not found!</td>
+                                </tr>
+                            </c:otherwise>
+                        </c:choose>
+                    </table>
+                </div>
+                <!-- Product images -->
+                <div class="col-md-4">
+                    <div class="row">
+                        <!-- Ảnh chính -->
+                        <c:if test="${not empty product.image}">
+                            <div class="col-6 mb-3">
+                                <img src="${pageContext.request.contextPath}/assets/imgs/Products/${product.image}" 
+                                     class="img-fluid rounded product-img" alt="${product.fullName} - Image 1">
+                            </div>
+                        </c:if>
+                        <!-- Ảnh thứ 2 -->
+                        <c:if test="${not empty product.image1}">
+                            <div class="col-6 mb-3">
+                                <img src="${pageContext.request.contextPath}/assets/imgs/Products/${product.image1}" 
+                                     class="img-fluid rounded product-img" alt="${product.fullName} - Image 2">
+                            </div>
+                        </c:if>
+                        <!-- Ảnh thứ 3 -->
+                        <c:if test="${not empty product.image2}">
+                            <div class="col-6 mb-3">
+                                <img src="${pageContext.request.contextPath}/assets/imgs/Products/${product.image2}" 
+                                     class="img-fluid rounded product-img" alt="${product.fullName} - Image 3">
+                            </div>
+                        </c:if>
+                        <!-- Ảnh thứ 4 -->
+                        <c:if test="${not empty product.image3}">
+                            <div class="col-6 mb-3">
+                                <img src="${pageContext.request.contextPath}/assets/imgs/Products/${product.image3}" 
+                                     class="img-fluid rounded product-img" alt="${product.fullName} - Image 4">
+                            </div>
+                        </c:if>
+                    </div>
                 </div>
             </div>
-            <a href="ProductListServlet" class="btn-back">Back to List</a>
+            <!-- Back button -->
+            <div class="text-start mt-3">
+                <a href="ProductListServlet" class="btn btn-primary">Back to List</a>
+            </div>
         </div>
     </body>
 </html>

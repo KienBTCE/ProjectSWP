@@ -62,7 +62,17 @@ public class ChangeEmployeePasswordServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        request.getRequestDispatcher("ChangeEmployeePasswordView.jsp").forward(request, response);
+        HttpSession session = request.getSession();
+        EmployeeDAO emDAO = new EmployeeDAO();
+
+        Employee emLogin = (Employee) session.getAttribute("employee");
+        if (emLogin != null) {
+            Employee emView = emDAO.getEmployeeById(emLogin.getEmployeeId() + "");
+            session.setAttribute("employee", emView);
+            request.getRequestDispatcher("ChangeEmployeePasswordView.jsp").forward(request, response);
+        } else {
+            response.sendRedirect("/EmployeeLogin");
+        }
     }
 
     /**
@@ -104,7 +114,7 @@ public class ChangeEmployeePasswordServlet extends HttpServlet {
                 request.getRequestDispatcher("ChangeEmployeePasswordView.jsp").forward(request, response);
             }
         }
-        
+
     }
 
     /**
