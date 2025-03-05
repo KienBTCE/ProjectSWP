@@ -108,6 +108,9 @@ CREATE TABLE Products (
 	IsDeleted BIT,
 	Price BIGINT,
     [Image] TEXT,
+	[Image1] TEXT,
+	[Image2] TEXT,
+	[Image3] TEXT,
     Quantity INT,
 	Stock INT
     FOREIGN KEY (BrandID) REFERENCES Brands(BrandID),
