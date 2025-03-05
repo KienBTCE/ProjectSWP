@@ -75,7 +75,7 @@
             <img src="assets/imgs/Dashboard/Group 1521.svg" class="logo-side-bar">
             <c:if test="${sessionScope.employee.getRoleId() == 1}">
                 <h6><a href="#">Admin</a></h6>
-                <a href="EmployeeList">Employee Management</a>
+                <a href="Employee">Employee Management</a>
                 <a href="#">Statistic Management</a>
             </c:if>
             <c:if test="${sessionScope.employee.getRoleId() == 2}">
