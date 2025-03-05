@@ -6,6 +6,7 @@ package Models;
 
 import java.text.NumberFormat;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Locale;
 
 /**
@@ -30,6 +31,7 @@ public class Product {
     private int stock;
 
     private HashMap<String, String> attributes;
+    private List<AttributeDetail> attributeDetails;
 
     public Product() {
     }
@@ -128,6 +130,7 @@ public class Product {
         this.price = price;
         this.stock = stock;
     }
+
     //create product
     public Product(int productId, String categoryName, String brandName, String model, String fullName, int deleted, long price, int stock) {
         this.productId = productId;
@@ -204,8 +207,6 @@ public class Product {
         return deleted;
     }
 
-
-
     public Product(int productId, String model, String fullName, String description, int deleted, long price, String image, int stock) {
         this.productId = productId;
         this.model = model;
@@ -274,4 +275,11 @@ public class Product {
         return currencyFormatter.format(price);
     }
 
+    public List<AttributeDetail> getAttributeDetails() {
+        return attributeDetails;
+    }
+
+    public void setAttributeDetails(List<AttributeDetail> attributeDetails) {
+        this.attributeDetails = attributeDetails;
+    }
 }
