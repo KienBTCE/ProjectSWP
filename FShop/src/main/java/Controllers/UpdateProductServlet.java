@@ -120,7 +120,11 @@ public class UpdateProductServlet extends HttpServlet {
             int isDeleted = Integer.parseInt(request.getParameter("isDeleted"));
             String categoryName = request.getParameter("categoryName");
 
-            // Lấy thông tin sản phẩm hiện tại từ DB
+            // In log giá trị cơ bản
+            System.out.println("doPost - Cập nhật Product ID: " + id);
+            System.out.println("doPost - FullName: " + fullName + ", Price: " + price);
+
+            // Lấy sản phẩm hiện có để giữ lại các trường không cập nhật từ form
             Product currentProduct = productDAO.getProductByID(id);
             if (currentProduct == null) {
                 request.getSession().setAttribute("error", "Product not found.");
@@ -128,10 +132,8 @@ public class UpdateProductServlet extends HttpServlet {
                 return;
             }
 
-            // Sử dụng ảnh hiện tại nếu không cập nhật ảnh mới
+            // Xử lý upload file cho ảnh chính
             String photoPath = currentProduct.getImage();
-
-            // Xử lý upload file nếu có ảnh mới được chọn
             Part part = request.getPart("txtPPic");
             if (part != null && part.getSize() > 0) {
                 String fileName = Paths.get(part.getSubmittedFileName()).getFileName().toString();
@@ -143,9 +145,60 @@ public class UpdateProductServlet extends HttpServlet {
                 String fileSavePath = imgDir.toString() + File.separator + fileName;
                 part.write(fileSavePath);
                 photoPath = fileName;
+                System.out.println("doPost - Ảnh chính mới: " + fileName);
+            } else {
+                System.out.println("doPost - Giữ ảnh chính hiện tại: " + photoPath);
             }
 
-            // Tạo đối tượng Product mới để update, dùng các giá trị từ form và currentProduct cho các trường không có trong form
+            // Xử lý ảnh thứ 2
+            String photoPath1 = currentProduct.getImage1();
+            Part part1 = request.getPart("txtPPic1");
+            if (part1 != null && part1.getSize() > 0) {
+                String fileName = Paths.get(part1.getSubmittedFileName()).getFileName().toString();
+                String realPath = request.getServletContext().getRealPath("/");
+                Path imgDir = Paths.get(realPath, "assets", "imgs", "Products");
+                if (!Files.exists(imgDir)) {
+                    Files.createDirectories(imgDir);
+                }
+                String fileSavePath = imgDir.toString() + File.separator + fileName;
+                part1.write(fileSavePath);
+                photoPath1 = fileName;
+                System.out.println("doPost - Ảnh thứ 2 mới: " + fileName);
+            }
+
+            // Xử lý ảnh thứ 3
+            String photoPath2 = currentProduct.getImage2();
+            Part part2 = request.getPart("txtPPic2");
+            if (part2 != null && part2.getSize() > 0) {
+                String fileName = Paths.get(part2.getSubmittedFileName()).getFileName().toString();
+                String realPath = request.getServletContext().getRealPath("/");
+                Path imgDir = Paths.get(realPath, "assets", "imgs", "Products");
+                if (!Files.exists(imgDir)) {
+                    Files.createDirectories(imgDir);
+                }
+                String fileSavePath = imgDir.toString() + File.separator + fileName;
+                part2.write(fileSavePath);
+                photoPath2 = fileName;
+                System.out.println("doPost - Ảnh thứ 3 mới: " + fileName);
+            }
+
+            // Xử lý ảnh thứ 4
+            String photoPath3 = currentProduct.getImage3();
+            Part part3 = request.getPart("txtPPic3");
+            if (part3 != null && part3.getSize() > 0) {
+                String fileName = Paths.get(part3.getSubmittedFileName()).getFileName().toString();
+                String realPath = request.getServletContext().getRealPath("/");
+                Path imgDir = Paths.get(realPath, "assets", "imgs", "Products");
+                if (!Files.exists(imgDir)) {
+                    Files.createDirectories(imgDir);
+                }
+                String fileSavePath = imgDir.toString() + File.separator + fileName;
+                part3.write(fileSavePath);
+                photoPath3 = fileName;
+                System.out.println("doPost - Ảnh thứ 4 mới: " + fileName);
+            }
+
+            // Tạo đối tượng Product mới để update
             Product product = new Product();
             product.setProductId(id);
             product.setFullName(fullName);
@@ -153,8 +206,10 @@ public class UpdateProductServlet extends HttpServlet {
             product.setPrice(price);
             product.setDeleted(isDeleted);
             product.setImage(photoPath);
+            product.setImage1(photoPath1);
+            product.setImage2(photoPath2);
+            product.setImage3(photoPath3);
             product.setCategoryName(categoryName);
-            // Lấy model và brandName từ sản phẩm hiện có vì form không cập nhật chúng
             product.setModel(currentProduct.getModel());
             product.setBrandName(currentProduct.getBrandName());
 
@@ -164,17 +219,19 @@ public class UpdateProductServlet extends HttpServlet {
                 List<AttributeDetail> attributeDetails = new ArrayList<>();
                 for (String attrIdStr : attributeIds) {
                     int attrId = Integer.parseInt(attrIdStr);
-                    // Các input được đặt tên theo định dạng "attributeInfor_${attrId}"
                     String attributeInfor = request.getParameter("attributeInfor_" + attrId);
-                    // attributeName không cần update (hoặc có thể lấy lại từ DB nếu cần)
+                    System.out.println("doPost - Attribute " + attrId + ": " + attributeInfor);
                     AttributeDetail detail = new AttributeDetail(attrId, id, attributeInfor, null);
                     attributeDetails.add(detail);
                 }
                 product.setAttributeDetails(attributeDetails);
+            } else {
+                System.out.println("doPost - Không có attribute nào được gửi từ form.");
             }
 
-            // Gọi phương thức updateProduct đã được tích hợp cập nhật cả sản phẩm và attribute details (sử dụng transaction)
+            // Gọi updateProduct (nếu phương thức updateProduct trong ProductDAO trả về số dòng > 0 thì update thành công)
             int check = productDAO.updateProduct(product);
+            System.out.println("doPost - Số dòng cập nhật: " + check);
             if (check > 0) {
                 response.sendRedirect("ProductListServlet?id=" + product.getProductId());
             } else {
@@ -182,7 +239,7 @@ public class UpdateProductServlet extends HttpServlet {
                 response.sendRedirect("UpdateProductServlet?id=" + product.getProductId());
             }
         } catch (Exception e) {
-            e.printStackTrace(); // Log lỗi để debug
+            e.printStackTrace();
             request.getSession().setAttribute("error", "An unexpected error occurred.");
             response.sendRedirect("UpdateProductServlet?id=" + request.getParameter("id"));
         }
