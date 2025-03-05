@@ -82,7 +82,17 @@ public class LogoutServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        HttpSession session = request.getSession();
+        if(session.getAttribute("employee") != null){
+            session.invalidate();
+            response.sendRedirect("/EmployeeLogin");
+        } else if(session.getAttribute("customer") != null) {
+            session.invalidate();
+            response.sendRedirect("/customerLogin");
+        } else{
+            session.invalidate();
+            response.sendRedirect("/");
+        }
     }
 
     /**

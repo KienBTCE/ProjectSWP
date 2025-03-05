@@ -100,8 +100,13 @@
         <script>
             function confirmLogout() {
                 if (confirm("Are you sure you want to log out?")) {
-                    // Chuyển hướng tới trang logout hoặc gọi API logout
-                    window.location.href = "/Logout";
+                    fetch('<%= request.getContextPath()%>/Logout', {
+                        method: 'GET'
+                    }).then(response => {
+                        if (response.redirected) {
+                            window.location.href = response.url;
+                        }
+                    }).catch(error => console.error('Logout failed:', error));
                 }
             }
         </script>
