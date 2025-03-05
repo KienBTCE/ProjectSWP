@@ -80,17 +80,15 @@ public class ProductListServlet extends HttpServlet {
         if (detailID != null) {
             int id = Integer.parseInt(detailID);
             Product product = pr.getProductByID(id);
-            // Thêm đoạn lấy attribute
+            // Lấy danh sách attribute và gán vào product
             AttributeDAO ad = new AttributeDAO();
             List<AttributeDetail> attributes = ad.getAttributesByProductID(id);
-            try {
-                request.setAttribute("product", product);
-                request.setAttribute("attributes", attributes);
-                request.getRequestDispatcher("ProductDetailManagerView.jsp").forward(request, response);
-            } catch (NullPointerException e) {
-                System.out.println(e);
-            }
+            product.setAttributeDetails(attributes);
+            request.setAttribute("product", product);
+            request.getRequestDispatcher("ProductDetailManagerView.jsp").forward(request, response);
+            return; // Dừng xử lý để không tiếp tục hiển thị danh sách sản phẩm
         }
+
         if (keyword != null && !keyword.trim().isEmpty()) {
             products = (ArrayList<Product>) pr.searchProductByName(keyword);
         } else {

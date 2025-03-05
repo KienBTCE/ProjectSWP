@@ -27,6 +27,9 @@ public class Product {
 
     private long price;
     private String image;
+    private String image1;
+    private String image2;
+    private String image3;
     private int quantity;
     private int stock;
 
@@ -143,6 +146,32 @@ public class Product {
         this.stock = stock;
     }
 
+    public Product(int productId, String model, String fullName, String description, int deleted, long price, String image, int stock) {
+        this.productId = productId;
+        this.model = model;
+        this.fullName = fullName;
+        this.description = description;
+        this.deleted = deleted;
+        this.price = price;
+        this.image = image;
+        this.stock = stock;
+    }
+
+    public Product(int productId, String categoryName, String brandName, String model, String fullName, String description, int deleted, long price, String image, String image1, String image2, String image3) {
+        this.productId = productId;
+        this.categoryName = categoryName;
+        this.brandName = brandName;
+        this.model = model;
+        this.fullName = fullName;
+        this.description = description;
+        this.deleted = deleted;
+        this.price = price;
+        this.image = image;
+        this.image1 = image1;
+        this.image2 = image2;
+        this.image3 = image3;
+    }
+
     public void setCategoryName(String categoryName) {
         this.categoryName = categoryName;
     }
@@ -207,17 +236,6 @@ public class Product {
         return deleted;
     }
 
-    public Product(int productId, String model, String fullName, String description, int deleted, long price, String image, int stock) {
-        this.productId = productId;
-        this.model = model;
-        this.fullName = fullName;
-        this.description = description;
-        this.deleted = deleted;
-        this.price = price;
-        this.image = image;
-        this.stock = stock;
-    }
-
     public void setDeleted(int deleted) {
         this.deleted = deleted;
     }
@@ -252,6 +270,30 @@ public class Product {
 
     public void setStock(int stock) {
         this.stock = stock;
+    }
+
+    public String getImage1() {
+        return image1;
+    }
+
+    public void setImage1(String image1) {
+        this.image1 = image1;
+    }
+
+    public String getImage2() {
+        return image2;
+    }
+
+    public void setImage2(String image2) {
+        this.image2 = image2;
+    }
+
+    public String getImage3() {
+        return image3;
+    }
+
+    public void setImage3(String image3) {
+        this.image3 = image3;
     }
 
     public HashMap<String, String> getAttributes() {

@@ -23,11 +23,11 @@
                 <c:when test="${product != null}">
                     <h3 class="mb-4">Update Product</h3>
                     <form action="UpdateProductServlet" method="post" enctype="multipart/form-data">
-                        <!-- Hidden fields -->
+                        <!-- Hidden Fields -->
                         <input type="hidden" name="id" value="${product.productId}" />
                         <input type="hidden" name="currentImage" value="${product.image}" />
-                        
-                        <!-- Category Selection (ch? xem ???c) -->
+
+                        <!-- Category (Read-only) -->
                         <div class="mb-3">
                             <label class="form-label">Category</label>
                             <select class="form-select" disabled>
@@ -35,13 +35,14 @@
                                     <option value="${cat}" ${cat == product.categoryName ? 'selected' : ''}>${cat}</option>
                                 </c:forEach>
                             </select>
-                            <!-- Input ?n ?? g?i giá tr? -->
+                            <!-- Hidden input ?? g?i giá tr? category -->
                             <input type="hidden" name="categoryName" value="${product.categoryName}" />
                         </div>
+
                         <!-- Full Name -->
                         <div class="mb-3">
                             <label class="form-label">Full Name</label>
-                            <input type="text" class="form-control" name="fullName" value="${product.fullName}" required>
+                            <input type="text" class="form-control" name="fullName" value="${product.fullName}" required />
                         </div>
 
                         <!-- Description -->
@@ -53,11 +54,10 @@
                         <!-- Price -->
                         <div class="mb-3">
                             <label class="form-label">Price</label>
-                            <input type="number" class="form-control" name="price" value="${product.price}" required>
+                            <input type="number" class="form-control" name="price" value="${product.price}" required />
                         </div>
 
-
-                        <!-- Attributes (dynamic: d?a theo category ???c ch?n) -->
+                        <!-- Attributes -->
                         <div class="mb-3">
                             <label class="form-label">Attributes</label>
                             <c:if test="${not empty product.attributeDetails}">
@@ -66,12 +66,12 @@
                                         <div class="mb-2 row align-items-center">
                                             <div class="col-sm-4">
                                                 <label class="form-label fw-bold">${attr.attributeName}</label>
-                                                <!-- ?n field attributeId ?? x? lı update -->
+                                                <!-- Hidden field cho attributeId -->
                                                 <input type="hidden" name="attributeId" value="${attr.attributeId}" />
                                             </div>
                                             <div class="col-sm-8">
                                                 <input type="text" class="form-control" name="attributeInfor_${attr.attributeId}" 
-                                                       value="${attr.attributeInfor}" placeholder="Enter ${attr.attributeName}"/>
+                                                       value="${attr.attributeInfor}" placeholder="Enter ${attr.attributeName}" />
                                             </div>
                                         </div>
                                     </c:forEach>
@@ -82,19 +82,67 @@
                             </c:if>
                         </div>
 
-                        <!-- Image Upload -->
+                        <!-- Images Upload (Hi?n th? 4 ?nh) -->
                         <div class="mb-3">
-                            <label class="form-label">Current Image</label>
-                            <c:if test="${not empty product.image}">
-                                <div class="mb-2">
-                                    <img src="${pageContext.request.contextPath}/assets/imgs/Products/${product.image}" 
-                                         class="product-image img-thumbnail" alt="${product.fullName}">
+                            <label class="form-label">Current Images</label>
+                            <div class="row">
+                                <!-- anh 1 -->
+                                <div class="mb-3">
+                                    <label class="form-label">Current Image</label>
+                                    <c:if test="${not empty product.image}">
+                                        <div class="mb-2">
+                                            <img src="${pageContext.request.contextPath}/assets/imgs/Products/${product.image}" 
+                                                 class="product-image img-thumbnail" alt="${product.fullName}">
+                                        </div>
+                                    </c:if>
+                                    <c:if test="${empty product.image}">
+                                        <p>No image uploaded.</p>
+                                    </c:if>
+                                    <input type="file" class="form-control" name="txtPPic" accept="image/*"/>
                                 </div>
-                            </c:if>
-                            <c:if test="${empty product.image}">
-                                <p>No image uploaded.</p>
-                            </c:if>
-                            <input type="file" class="form-control" name="txtPPic" accept="image/*"/>
+                                <!--anh 2-->
+                                <div class="mb-3">
+                                    <label class="form-label">Current Image</label>
+                                    <c:if test="${not empty product.image1}">
+                                        <div class="mb-2">
+                                            <img src="${pageContext.request.contextPath}/assets/imgs/Products/${product.image1}" 
+                                                 class="product-image img-thumbnail" alt="${product.fullName}">
+                                        </div>
+                                    </c:if>
+                                    <c:if test="${empty product.image1}">
+                                        <p>No image uploaded.</p>
+                                    </c:if>
+                                    <input type="file" class="form-control" name="txtPPic1" accept="image/*"/>
+                                </div>
+                                <!--anh 3-->
+                                <div class="mb-3">
+                                    <label class="form-label">Current Image</label>
+                                    <c:if test="${not empty product.image2}">
+                                        <div class="mb-2">
+                                            <img src="${pageContext.request.contextPath}/assets/imgs/Products/${product.image2}" 
+                                                 class="product-image img-thumbnail" alt="${product.fullName}">
+                                        </div>
+                                    </c:if>
+                                    <c:if test="${empty product.image2}">
+                                        <p>No image uploaded.</p>
+                                    </c:if>
+                                    <input type="file" class="form-control" name="txtPPic2" accept="image/*"/>
+                                </div>
+                                <!-- anh 4 -->
+                                <div class="mb-3">
+                                    <label class="form-label">Current Image</label>
+                                    <c:if test="${not empty product.image3}">
+                                        <div class="mb-2">
+                                            <img src="${pageContext.request.contextPath}/assets/imgs/Products/${product.image3}" 
+                                                 class="product-image img-thumbnail" alt="${product.fullName}">
+                                        </div>
+                                    </c:if>
+                                    <c:if test="${empty product.image3}">
+                                        <p>No image uploaded.</p>
+                                    </c:if>
+                                    <input type="file" class="form-control" name="txtPPic3" accept="image/*"/>
+                                </div>
+                            </div>
                         </div>
 
                         <!-- Is Deleted -->

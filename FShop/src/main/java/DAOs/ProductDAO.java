@@ -281,7 +281,7 @@ public class ProductDAO {
 
     public int updateProduct(Product p) {
         // Câu lệnh cập nhật sản phẩm
-        String query = "UPDATE Products SET Model=?, FullName=?, Description=?, Price=?, Image=?, IsDeleted=?, "
+        String query = "UPDATE Products SET Model=?, FullName=?, Description=?, Price=?, Image=?, Image1=?, Image2=?, Image3=?, IsDeleted=?, "
                 + "BrandID = (SELECT BrandID FROM Brands WHERE Name = ?), "
                 + "CategoryID = (SELECT CategoryID FROM Categories WHERE Name = ?) "
                 + "WHERE ProductID=?";
@@ -297,10 +297,13 @@ public class ProductDAO {
                 ps.setString(3, p.getDescription());
                 ps.setLong(4, p.getPrice());
                 ps.setString(5, p.getImage());
-                ps.setInt(6, p.getDeleted());
-                ps.setString(7, p.getBrandName());
-                ps.setString(8, p.getCategoryName());
-                ps.setInt(9, p.getProductId());
+                ps.setString(6, p.getImage1());
+                ps.setString(7, p.getImage2());
+                ps.setString(8, p.getImage3());
+                ps.setInt(9, p.getDeleted());
+                ps.setString(10, p.getBrandName());
+                ps.setString(11, p.getCategoryName());
+                ps.setInt(12, p.getProductId());
 
                 result = ps.executeUpdate();
             }
