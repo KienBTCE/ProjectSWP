@@ -64,7 +64,7 @@ public class LogoutServlet extends HttpServlet {
             response.sendRedirect("/EmployeeLogin");
         } else if(session.getAttribute("customer") != null) {
             session.invalidate();
-            response.sendRedirect("/CustomerLogin");
+            response.sendRedirect("/customerLogin");
         } else{
             session.invalidate();
             response.sendRedirect("/");
