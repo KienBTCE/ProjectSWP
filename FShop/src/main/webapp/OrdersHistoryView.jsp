@@ -243,6 +243,7 @@
         <div id="delivery" class="order-list">
             <c:forEach items="${sessionScope.orderList}" var="o">
                 <c:if test="${o.getStatus() == 3}">
+                    <% hasDelivery = true; %>
                     <div style="background-color: white; width: 100%; box-shadow: 2px 2px 2px 2px lightgray; border-radius: 10px ;">
                         <div style="text-align: right; padding: 15px; border-bottom: 0.5px solid rgb(226, 214, 214); color:rgb(238,84,61); width: 95%; margin: 0 auto">
                             <c:choose>
@@ -303,6 +304,7 @@
         <div id="delivered" class="order-list">
             <c:forEach items="${sessionScope.orderList}" var="o">
                 <c:if test="${o.getStatus() == 4}">
+                    <%  hasDelivered = true; %>
                     <div style="background-color: white; width: 100%; box-shadow: 2px 2px 2px 2px lightgray; border-radius: 10px ;">
                         <div style="text-align: right; padding: 15px; border-bottom: 0.5px solid rgb(226, 214, 214); color:rgb(238,84,61); width: 95%; margin: 0 auto">
                             <c:choose>

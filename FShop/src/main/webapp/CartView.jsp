@@ -256,7 +256,7 @@
 
 
 
-            <div class="popup" id="orderPopup">
+            <div style="display: none;" class="popup" id="orderPopup">
                 <div class="popup-content">
                     <h4 id="message-content">${requestScope.message}Please choose at least one product to checkout.</h4>
                     <div style="display: flex; justify-content: center;">
