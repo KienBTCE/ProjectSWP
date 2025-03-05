@@ -247,6 +247,14 @@ INSERT INTO Customers (FullName, Birthday, [Password], PhoneNumber, Email, Gende
 VALUES 
 ('Nguyen Van A', '1995-05-15', '6ad14ba9986e3615423dfca256d04e3f', '0901234567', 'nguyenvana@example.com', 'Male', GETDATE(), 0, 0, 'avatar1.jpg');
 
+-- Insert OrderStatus
+INSERT INTO OrderStatus (ID, [Status])
+VALUES 
+(1, 'Waiting for acceptance'),
+(2, 'Packaging'),
+(3, 'Waiting for delivery'),
+(4, 'Delivered'),
+(5, 'Canceled');
 
 -- Insert Orders
 INSERT INTO Orders (CustomerID, FullName, [Address], PhoneNumber, OrderedDate, DeliveredDate, Status, TotalAmount)
@@ -273,14 +281,7 @@ VALUES
 (1, 1, 1),
 (1, 2, 5);
 
--- Insert OrderStatus
-INSERT INTO OrderStatus (ID, [Status])
-VALUES 
-(1, 'Waiting for acceptance'),
-(2, 'Packaging'),
-(3, 'Waiting for delivery'),
-(4, 'Delivered'),
-(5, 'Canceled');
+
 
 -- Insert Addresses
 INSERT INTO Addresses (CustomerID, AddressDetails, IsDefault)
