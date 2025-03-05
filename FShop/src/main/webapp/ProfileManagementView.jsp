@@ -170,7 +170,7 @@
 
                                     </div>
                                 </div>
-                                <a href="viewOrderHistory?profilePage=OrdersHistoryView.jsp" class="menu-item">📦 Orders</a>
+                                <a href="ViewOrderHistory" class="menu-item">📦 Orders</a>
                             </ul>
                         </div>
                     </div>

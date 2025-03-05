@@ -115,13 +115,13 @@
                                             data-commune="${commune}"
                                             data-address="${address}"
                                             onclick="openPopupFromButton(this)">Update</button>
-                                    <c:if test="${ad.getIsDefault() != 1}">
+                                    <c:if test="${ad.getIsDefault() == 0}">
                                         <a href="DeleteAddress?id=${ad.getAddressID()}" class="btn btn-delete"
                                            style="color: red; background: none; padding: 5px 5px; cursor: pointer; border: none; margin-left: 5px;">Delete</a>
                                     </c:if>
 
                                 </div>
-                                <c:if test="${ad.getIsDefault() != 1}">
+                                <c:if test="${ad.getIsDefault() == 0}">
                                     <form style="padding: 3px" method="POST" action="UpdateAddress?action=setAsDefault&id=${ad.getAddressID()}">
                                         <button class="btn btn-default" type="submit"
                                                 style="background: #f5f5f5; padding: 5px 5px; cursor: pointer; border: none; margin-left: 5px;"
@@ -170,13 +170,15 @@
                     <c:if test="${sessionScope.addressList.isEmpty()}">
                         <%  first = true; %>
                         <div class="mb-3 form-check form-switch">
-                            <input checked hidden class="form-check-input" name="isDefault" type="checkbox" role="switch" id="flexSwitchCheckDefault">
-                            <label hidden class="form-check-label" for="flexSwitchCheckDefault" id="defaultSwitch">Set as default</label>
+                            <input type="hidden" name="isDefault" value="1">
+                            <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault" checked disabled>
+                            <label class="form-check-label" for="flexSwitchCheckDefault">Set as default</label>
                         </div>
                     </c:if>
                     <c:if test="${!sessionScope.addressList.isEmpty()}">
                         <div class="mb-3 form-check form-switch">
-                            <input class="form-check-input" name="isDefault" type="checkbox" role="switch" id="flexSwitchCheckDefault">
+                            <input type="hidden" name="isDefault" value="1">
+                            <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault">
                             <label class="form-check-label" for="flexSwitchCheckDefault" id="defaultSwitch">Set as default</label>
                         </div>
                     </c:if>

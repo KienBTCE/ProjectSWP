@@ -150,8 +150,8 @@ public class BuyProductsServlet extends HttpServlet {
     private void sendOrderConfirmationEmail(Customer customer, Order order, List<Cart> cartItems, long totalAmount) {
         try {
             Email email = new Email();
-            email.setFrom("kieuthy2004@gmail.com");
-            email.setFromPassword("xkkc ohwn aesf arqm");
+            email.setFrom("nhutlac2004@gmail.com");
+            email.setFromPassword("nxsg zrqd kuvt zgwi");
             email.setTo(customer.getEmail());
             email.setSubject("Order Confirmation from Fshop");
 
