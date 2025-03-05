@@ -128,7 +128,6 @@ WHERE Laptops.pd_ID IN (
       AND (price BETWEEN 25000000 AND 30000000 OR price BETWEEN 30000000 AND 35000000)
 );select * from Products where CategoryID = 1
 SELECT * FROM Employees
-DELETE FROM Employees WHERE EmployeeID = 2
 SELECT * FROM Roles
 
 

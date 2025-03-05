@@ -4,23 +4,21 @@
  */
 package Controllers;
 
-import DAOs.AttributeDAO;
-import DAOs.ProductDAO;
-import Models.AttributeDetail;
+import DAOs.CustomerDAO;
+import Models.Customer;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import java.util.ArrayList;
-import java.util.List;
+import jakarta.servlet.http.HttpSession;
 
 /**
  *
- * @author kiuth
+ * @author ThyLTKCE181577
  */
-public class ProductDetailServlet extends HttpServlet {
+public class RegisterOTPServlet extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -39,10 +37,10 @@ public class ProductDetailServlet extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet ProductDetailServlet</title>");
+            out.println("<title>Servlet RegisterOTPServlet</title>");
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet ProductDetailServlet at " + request.getContextPath() + "</h1>");
+            out.println("<h1>Servlet RegisterOTPServlet at " + request.getContextPath() + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }
@@ -60,34 +58,7 @@ public class ProductDetailServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-
-        ProductDAO pr = new ProductDAO();
-        ArrayList<Models.Product> products;
-
-        AttributeDAO ad = new AttributeDAO();
-        String detailID = request.getParameter("id");
-
-        if (detailID != null) {
-            int id = Integer.parseInt(detailID);
-            Models.Product product = pr.getProductByID(id);
-            List<AttributeDetail> attributes = ad.getAttributesByProductID(id);
-            try {
-                request.setAttribute("product", product);
-                request.setAttribute("attributes", attributes);
-                System.out.println("Attributes forwarded: " + attributes.size()); // Debug
-                request.getRequestDispatcher("ProductDetailView.jsp").forward(request, response);
-                return;
-            } catch (NullPointerException e) {
-                System.out.println(e);
-            }
-        }
-        products = pr.getProductList();
-        try {
-            request.setAttribute("products", products);
-            request.getRequestDispatcher("ProductListView.jsp").forward(request, response);
-        } catch (NullPointerException e) {
-            System.out.println(e);
-        }
+        request.getRequestDispatcher("VerifyOTPView.jsp").forward(request, response);
     }
 
     /**
@@ -101,7 +72,42 @@ public class ProductDetailServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        HttpSession session = request.getSession();
+        String otpEntered = request.getParameter("otp");
+        String otpStored = (String) session.getAttribute("otp");
+
+        // Check if OTP matches
+        if (otpStored != null && otpStored.equals(otpEntered)) {
+            // Retrieve customer details from session
+            Customer customer = (Customer) session.getAttribute("registerCustomer");
+
+            if (customer != null) {
+                // Register the customer
+                CustomerDAO ctmDAO = new CustomerDAO();
+                int result = ctmDAO.addNewCustomer(customer);
+
+                if (result != 0) {
+                    // Registration successful, remove session attributes
+                    session.removeAttribute("otp");
+                    session.removeAttribute("registerCustomer");
+
+                    // Redirect to login page
+                    response.sendRedirect("/customerLogin");
+                } else {
+                    // Database error occurred
+                    request.setAttribute("error", "Registration failed. Please try again.");
+                    request.getRequestDispatcher("OTPView.jsp").forward(request, response);
+                }
+            } else {
+                // No customer data found in session
+                request.setAttribute("error", "Session expired! Please register again.");
+                request.getRequestDispatcher("RegisterView.jsp").forward(request, response);
+            }
+        } else {
+            // Incorrect OTP
+            request.setAttribute("error", "Incorrect OTP code!");
+            request.getRequestDispatcher("OTPView.jsp").forward(request, response);
+        }
     }
 
     /**

@@ -21,7 +21,7 @@ import java.util.ArrayList;
  *
  * @author NguyenPVT-CE181835
  */
-@WebServlet(name = "ViewEmployeeServlet", urlPatterns = {"/EmployeeList"})
+@WebServlet(name = "ViewEmployeeServlet", urlPatterns = {"/Employee"})
 public class ViewEmployeeServlet extends HttpServlet {
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)

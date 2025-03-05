@@ -116,6 +116,8 @@ CREATE TABLE Products (
 
 CREATE TABLE Attributes (
     AttributeID INT PRIMARY KEY IDENTITY(1,1),
+	CategoryID INT,
+	FOREIGN KEY (CategoryID) REFERENCES Categories(CategoryID),
     [Name] NVARCHAR(100) NOT NULL
 );
 
@@ -128,6 +130,11 @@ CREATE TABLE AttributeDetails (
     FOREIGN KEY (ProductID) REFERENCES Products(ProductID)
 );
 
+CREATE TABLE OrderStatus (
+    ID INT PRIMARY KEY,
+    [Status]NVARCHAR(50) NOT NULL
+);
+
 CREATE TABLE Orders (
     OrderID INT PRIMARY KEY IDENTITY(1,1),
     CustomerID INT,
@@ -138,7 +145,8 @@ CREATE TABLE Orders (
     DeliveredDate DATETIME,
     [Status]INT,
     TotalAmount BIGINT,
-    FOREIGN KEY (CustomerID) REFERENCES Customers(CustomerID)
+    FOREIGN KEY (CustomerID) REFERENCES Customers(CustomerID),
+	FOREIGN KEY ([Status]) REFERENCES OrderStatus(ID),
 );
 
 CREATE TABLE OrderDetails (
@@ -151,10 +159,6 @@ CREATE TABLE OrderDetails (
     FOREIGN KEY (ProductID) REFERENCES Products(ProductID)
 );
 
-CREATE TABLE OrderStatus (
-    ID INT PRIMARY KEY,
-    [Status]NVARCHAR(50) NOT NULL
-);
 
 CREATE TABLE ImportOrders (
     IOID INT PRIMARY KEY IDENTITY(1,1),

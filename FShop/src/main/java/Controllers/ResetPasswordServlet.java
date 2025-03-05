@@ -89,7 +89,7 @@ public class ResetPasswordServlet extends HttpServlet {
         if (success) {
             session.removeAttribute("otp");
             session.removeAttribute("resetEmail");
-            response.sendRedirect("CustomerLoginView.jsp");
+            response.sendRedirect("/customerLogin");
         } else {
             request.setAttribute("error", "An error occurred! Please try again.");
             request.getRequestDispatcher("ResetPasswordView.jsp").forward(request, response);
