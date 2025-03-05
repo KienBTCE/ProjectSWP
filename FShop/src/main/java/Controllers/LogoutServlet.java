@@ -62,10 +62,13 @@ public class LogoutServlet extends HttpServlet {
         if(session.getAttribute("employee") != null){
             session.invalidate();
             response.sendRedirect("/EmployeeLogin");
-        } else {
+        } else if(session.getAttribute("customer") != null) {
+            session.invalidate();
+            response.sendRedirect("/customerLogin");
+        } else{
             session.invalidate();
             response.sendRedirect("/");
-        } 
+        }
     }
 
     /**

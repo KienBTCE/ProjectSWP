@@ -70,7 +70,7 @@ public class CancelOrderServlet extends HttpServlet {
         for (OrderDetail orderDetail : odList) {
             o.addQuantityAfterCancel(orderDetail.getProductID(), orderDetail.getQuantity());
         }
-        request.getRequestDispatcher("viewOrderHistory").forward(request, response);
+        request.getRequestDispatcher("ViewOrderHistory").forward(request, response);
 
     }
 

@@ -28,7 +28,6 @@
                 box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.3);
                 transform: translateZ(0);
                 position: relative;
-                z-index: 10;
                 border-radius: 10px;
                 margin-top: 10px;
                 position: fixed;

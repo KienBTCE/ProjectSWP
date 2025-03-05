@@ -83,7 +83,7 @@ public class UpdateAddressServlet extends HttpServlet {
             if (request.getParameter("action") != null && request.getParameter("action").equals("setAsDefault")) {
                 add.setAsDefault(id);
                 add.disableDefaultAddress(id, cus.getId());
-                session.setAttribute("message", "Update Address Success");
+                session.setAttribute("message", "Update Address Successfully");
                 response.sendRedirect("ViewShippingAddress");
             } else {
                 String province = request.getParameter("province");
@@ -94,11 +94,11 @@ public class UpdateAddressServlet extends HttpServlet {
                 if (request.getParameter("isDefault") != null) {
                     add.updateAddress(new Address(id, cus.getId(), 1, addressDetails));
                     add.disableDefaultAddress(id, cus.getId());
-                    session.setAttribute("message", "Update Address Success");
+                    session.setAttribute("message", "Update Address Successfully");
                     response.sendRedirect("ViewShippingAddress");
                 } else {
                     add.updateAddress(new Address(id, cus.getId(), 0, addressDetails));
-                    session.setAttribute("message", "Update Address Success");
+                    session.setAttribute("message", "Update Address Successfully");
                     response.sendRedirect("ViewShippingAddress");
                 }
             }
