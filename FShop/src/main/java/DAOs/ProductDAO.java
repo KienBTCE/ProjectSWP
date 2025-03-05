@@ -187,7 +187,7 @@ public class ProductDAO {
         Product s = null;
 
         String query = "SELECT sp.ProductID, c.Name AS CategoryName, b.Name AS BrandName, "
-                + "sp.FullName, sp.Price, sp.Image, sp.Stock, sp.isDeleted, sp.Description, sp.Model "
+                + "sp.FullName, sp.Price, sp.Image, sp.Image1, sp.Image2, sp.Image3, sp.Stock, sp.isDeleted, sp.Description, sp.Model "
                 + "FROM Products sp "
                 + "JOIN Categories c ON sp.CategoryID = c.CategoryID "
                 + "JOIN Brands b ON sp.BrandID = b.BrandID "
@@ -210,6 +210,9 @@ public class ProductDAO {
                         rs.getInt("isDeleted"),
                         rs.getLong("Price"),
                         rs.getString("Image"),
+                         rs.getString("Image1"),
+                         rs.getString("Image2"),
+                         rs.getString("Image3"),
                         rs.getInt("Stock")
                 );
             }
