@@ -21,13 +21,8 @@ public class DBContext {
             Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver"); // regist a class Database of Microsoft to memory
             String dbURL = "jdbc:sqlserver://localhost:1433;"
                     + "databaseName=FSHOP;"
-<<<<<<< HEAD
-                    + "user=;" // Enter your user SQL Server
-                    + "password=;" // Enter your password SQL Server
-=======
                     + "user=sa;" // Enter your user SQL Server
-                    + "password=240204;" // Enter your password SQL Server
->>>>>>> d7ff473b60a8a00d0e3440210f2e5112fa3e3715
+                    + "password=;" // Enter your password SQL Server
                     + "encrypt=true;trustServerCertificate=true";
 
             connector = DriverManager.getConnection(dbURL); // connect to database server follow the dbURL string
