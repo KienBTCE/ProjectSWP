@@ -97,10 +97,9 @@ public class CreateProductServlet extends HttpServlet {
         String model = request.getParameter("model");
         String fullName = request.getParameter("fullName");
         long price = Long.parseLong(request.getParameter("price"));
-        int stock = Integer.parseInt(request.getParameter("stock"));
 
         // Tạo đối tượng sản phẩm
-        Product product = new Product(0, categoryName, brandName, model, fullName, 1, price, stock);
+        Product product = new Product(0, categoryName, brandName, model, fullName, 1, price);
 
         // Thêm sản phẩm vào database
         if (productDAO.createProduct(product) != 0) {

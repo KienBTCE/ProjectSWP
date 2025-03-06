@@ -135,7 +135,7 @@ public class Product {
     }
 
     //create product
-    public Product(int productId, String categoryName, String brandName, String model, String fullName, int deleted, long price, int stock) {
+    public Product(int productId, String categoryName, String brandName, String model, String fullName, int deleted, long price) {
         this.productId = productId;
         this.categoryName = categoryName;
         this.brandName = brandName;
@@ -143,7 +143,6 @@ public class Product {
         this.fullName = fullName;
         this.deleted = deleted;
         this.price = price;
-        this.stock = stock;
     }
 
     //getproduct by id
