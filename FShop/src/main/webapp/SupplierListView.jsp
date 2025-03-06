@@ -124,7 +124,7 @@
             <div class="content">
             <jsp:include page="HeaderDashboard.jsp"></jsp:include>
                 <div class="table-navigate">
-                    <input type="text" id="searchInput" class="form-control search-box" placeholder="Find by name ..." onkeyup="filterTable()">
+                    <input type="text" id="searchInput" class="form-control search-box" placeholder="Find by name ..." onkeyup="searchTable()">
                     <button class="btn btn-detail" data-bs-toggle="modal" data-bs-target="#createSupplierModal" style="background-color: #BDF3BD; height: 100%">Create</button>
                 </div>
 
@@ -224,7 +224,7 @@
         </div>
 
         <script>
-            function filterTable() {
+            function searchTable() {
                 let input = document.getElementById("searchInput");
                 let filter = input.value.toLowerCase();
                 let table = document.getElementById("supplierTable");

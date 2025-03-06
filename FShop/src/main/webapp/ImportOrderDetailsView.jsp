@@ -129,7 +129,7 @@
                     <div class="table-navigate">
                     </div>
                 </div>
-                
+
                 <div class="table-container">
                     <div>
                         <h3></h3>
@@ -147,33 +147,33 @@
                         </thead>
                         <tbody id="supplierTable">
                         <c:set var="i" value="${importOrder}"/>
-                            <tr>
-                                <td>${i.getIoid()}</td>
-                                <td>(later)</td>
-                                <td>(later)</td>
-                                <td>${i.getImportDate()}</td>
-                                <td>${i.getSupplier().getName()}</td>
-                                <td>${i.getPriceFormatted()}</td>
-                            </tr>
+                        <tr>
+                            <td>${i.getIoid()}</td>
+                            <td>(later)</td>
+                            <td>(later)</td>
+                            <td>${i.getImportDate()}</td>
+                            <td>${i.getSupplier().getName()}</td>
+                            <td>${i.getPriceFormatted()}</td>
+                        </tr>
                     </tbody>
                 </table>
             </div>
 
-                <div class="table-container">
-                    <div>
-                        <h3>Details</h3>
-                    </div>
-                    <table class="table table-hover">
-                        <thead>
-                            <tr>
-                                <th>Product ID</th>
-                                <th>Product Model</th>
-                                <th>Product Name</th>
-                                <th>Quantity</th>
-                                <th>Import Price</th>
-                            </tr>
-                        </thead>
-                        <tbody id="supplierTable">
+            <div class="table-container">
+                <div>
+                    <h3>Details</h3>
+                </div>
+                <table class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th>Product ID</th>
+                            <th>Product Model</th>
+                            <th>Product Name</th>
+                            <th>Quantity</th>
+                            <th>Import Price</th>
+                        </tr>
+                    </thead>
+                    <tbody id="supplierTable">
                         <c:forEach items="${importOrder.getImportOrderDetails()}" var="d">
                             <tr>
                                 <td>${d.getProduct().getProductId()}</td>

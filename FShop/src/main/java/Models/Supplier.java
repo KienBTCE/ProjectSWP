@@ -23,6 +23,9 @@ public class Supplier {
     private int deleted;
     private int activate;
 
+    public Supplier() {
+    }
+
     public Supplier(int supplierId, String taxId, String name, String email, String phoneNumber, String address, LocalDateTime createdDate, LocalDateTime lastModify, int deleted, int activate) {
         this.supplierId = supplierId;
         this.taxId = taxId;

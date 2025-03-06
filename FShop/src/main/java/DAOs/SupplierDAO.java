@@ -52,6 +52,37 @@ public class SupplierDAO {
 
         return list;
     }
+    
+    public ArrayList<Supplier> getAllActivatedSuppliers() {
+        ArrayList<Supplier> list = new ArrayList<>();
+
+        String query = "SELECT * FROM Suppliers WHERE IsDeleted = 0 AND IsActivate = 1";
+
+        try {
+            PreparedStatement ps = connector.prepareStatement(query);
+            ResultSet rs = ps.executeQuery();
+
+            while (rs.next()) {
+                list.add(new Supplier(
+                        rs.getInt("SupplierID"),
+                        rs.getString("TaxID"),
+                        rs.getString("Name"),
+                        rs.getString("Email"),
+                        rs.getString("PhoneNumber"),
+                        rs.getString("Address"),
+                        rs.getTimestamp("CreatedDate").toLocalDateTime(),
+                        rs.getTimestamp("LastModify").toLocalDateTime(),
+                        rs.getInt("IsDeleted"),
+                        rs.getInt("IsActivate")
+                ));
+            }
+            return list;
+        } catch (SQLException e) {
+            System.out.println(e);
+        }
+
+        return list;
+    }
 
     public Supplier getSupplierByID(int supplierId) {
         Supplier s = null;
@@ -61,6 +92,38 @@ public class SupplierDAO {
         try {
             PreparedStatement ps = connector.prepareStatement(query);
             ps.setInt(1, supplierId);
+            ResultSet rs = ps.executeQuery();
+
+            if (rs.next()) {
+                s = new Supplier(
+                        rs.getInt("SupplierID"),
+                        rs.getString("TaxID"),
+                        rs.getString("Name"),
+                        rs.getString("Email"),
+                        rs.getString("PhoneNumber"),
+                        rs.getString("Address"),
+                        rs.getTimestamp("CreatedDate").toLocalDateTime(),
+                        rs.getTimestamp("LastModify").toLocalDateTime(),
+                        rs.getInt("IsDeleted"),
+                        rs.getInt("IsActivate")
+                );
+            }
+            return s;
+        } catch (SQLException e) {
+            System.out.println(e);
+        }
+
+        return s;
+    }
+    
+    public Supplier getSupplierByTaxID(String supplierTaxId) {
+        Supplier s = null;
+
+        String query = "SELECT * FROM Suppliers WHERE TaxID = ?";
+
+        try {
+            PreparedStatement ps = connector.prepareStatement(query);
+            ps.setString(1, supplierTaxId);
             ResultSet rs = ps.executeQuery();
 
             if (rs.next()) {

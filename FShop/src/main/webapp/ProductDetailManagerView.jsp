@@ -25,11 +25,14 @@
             .badge {
                 font-size: 100%;
             }
+            .product-img {
+                max-width: 100%;
+                height: auto;
+            }
         </style>
     </head>
     <body>
         <div class="container my-5">
-            <h3 class="text-center mb-4">Product Detail</h3>
             <div class="row">
                 <!-- Product details table -->
                 <div class="col-md-8">
@@ -59,16 +62,16 @@
                                 <tr>
                                     <th>Attributes</th>
                                     <td>
-                                        <c:if test="${not empty attributes}">
+                                        <c:if test="${not empty product.attributeDetails}">
                                             <ul class="list-unstyled mb-0">
-                                                <c:forEach var="attribute" items="${attributes}">
+                                                <c:forEach var="attr" items="${product.attributeDetails}">
                                                     <li>
-                                                        <strong>${attribute.attributeName}:</strong> ${attribute.attributeInfor}
+                                                        <strong>${attr.attributeName}:</strong> ${attr.attributeInfor}
                                                     </li>
                                                 </c:forEach>
                                             </ul>
                                         </c:if>
-                                        <c:if test="${empty attributes}">
+                                        <c:if test="${empty product.attributeDetails}">
                                             <span class="text-danger">No attributes found</span>
                                         </c:if>
                                     </td>
@@ -102,16 +105,42 @@
                         </c:choose>
                     </table>
                 </div>
-                <!-- Product image -->
-                <div class="col-md-4 text-center">
-                    <c:if test="${not empty product.image}">
-                        <img src="${pageContext.request.contextPath}/assets/imgs/Products/${product.image}" 
-                             class="img-fluid rounded" alt="${product.fullName}">
-                    </c:if>
+                <!-- Product images -->
+                <div class="col-md-4">
+                    <div class="row">
+                        <!-- Ảnh chính -->
+                        <c:if test="${not empty product.image}">
+                            <div class="col-6 mb-3">
+                                <img src="${pageContext.request.contextPath}/assets/imgs/Products/${product.image}" 
+                                     class="img-fluid rounded product-img" alt="${product.fullName} - Image 1">
+                            </div>
+                        </c:if>
+                        <!-- Ảnh thứ 2 -->
+                        <c:if test="${not empty product.image1}">
+                            <div class="col-6 mb-3">
+                                <img src="${pageContext.request.contextPath}/assets/imgs/Products/${product.image1}" 
+                                     class="img-fluid rounded product-img" alt="${product.fullName} - Image 2">
+                            </div>
+                        </c:if>
+                        <!-- Ảnh thứ 3 -->
+                        <c:if test="${not empty product.image2}">
+                            <div class="col-6 mb-3">
+                                <img src="${pageContext.request.contextPath}/assets/imgs/Products/${product.image2}" 
+                                     class="img-fluid rounded product-img" alt="${product.fullName} - Image 3">
+                            </div>
+                        </c:if>
+                        <!-- Ảnh thứ 4 -->
+                        <c:if test="${not empty product.image3}">
+                            <div class="col-6 mb-3">
+                                <img src="${pageContext.request.contextPath}/assets/imgs/Products/${product.image3}" 
+                                     class="img-fluid rounded product-img" alt="${product.fullName} - Image 4">
+                            </div>
+                        </c:if>
+                    </div>
                 </div>
             </div>
             <!-- Back button -->
-            <div class="text-center mt-3">
+            <div class="text-start mt-3">
                 <a href="ProductListServlet" class="btn btn-primary">Back to List</a>
             </div>
         </div>

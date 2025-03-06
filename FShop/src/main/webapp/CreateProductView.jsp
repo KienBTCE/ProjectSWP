@@ -51,10 +51,6 @@
                     <label class="form-label">Price</label>
                     <input type="number" class="form-control" name="price" required>
                 </div>
-                <div class="mb-3">
-                    <label class="form-label">Stock Quantity</label>
-                    <input type="number" class="form-control" name="stock" required>
-                </div>
 
                 <button type="submit" class="btn btn-primary w-100">Create Product</button>
             </form>

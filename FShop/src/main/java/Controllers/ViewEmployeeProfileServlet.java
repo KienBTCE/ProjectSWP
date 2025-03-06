@@ -71,6 +71,7 @@ public class ViewEmployeeProfileServlet extends HttpServlet {
         } else {
             response.sendRedirect("/EmployeeLogin");
         }
+
     }
 
     /**

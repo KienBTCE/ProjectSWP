@@ -57,6 +57,10 @@
         <servlet-class>Controllers.SendMailServlet</servlet-class>
     </servlet>
     <servlet>
+        <servlet-name>CreateImportOrderServlet</servlet-name>
+        <servlet-class>Controllers.CreateImportOrderServlet</servlet-class>
+    </servlet>
+    <servlet>
         <servlet-name>ViewImportOrderServlet</servlet-name>
         <servlet-class>Controllers.ViewImportOrderServlet</servlet-class>
     </servlet>
@@ -115,6 +119,18 @@
     <servlet>
         <servlet-name>RegisterOTPServlet</servlet-name>
         <servlet-class>Controllers.RegisterOTPServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>ViewWarehouseServlet</servlet-name>
+        <servlet-class>Controllers.ViewWarehouseServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>UpdateImportOrderServlet</servlet-name>
+        <servlet-class>Controllers.UpdateImportOrderServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>DeleteImportOrderServlet</servlet-name>
+        <servlet-class>Controllers.DeleteImportOrderServlet</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>default</servlet-name>
@@ -236,10 +252,26 @@
         <servlet-name>RegisterOTPServlet</servlet-name>
         <url-pattern>/RegisterOTPServlet</url-pattern>
     </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>CreateImportOrderServlet</servlet-name>
+        <url-pattern>/CreateImportOrder</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ViewWarehouseServlet</servlet-name>
+        <url-pattern>/Warehouse</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>UpdateImportOrderServlet</servlet-name>
+        <url-pattern>/UpdateImportOrder</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>DeleteImportOrderServlet</servlet-name>
+        <url-pattern>/DeleteImportOrder</url-pattern>
+    </servlet-mapping>
     <session-config>
         <session-timeout>30</session-timeout>
     </session-config>
     <welcome-file-list>
-        <welcome-file>ProductListView</welcome-file>
+        <welcome-file>/</welcome-file>
     </welcome-file-list>
 </web-app>

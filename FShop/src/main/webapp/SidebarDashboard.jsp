@@ -17,6 +17,7 @@
         <style>
             body {
                 display: flex;
+                padding: 12px;
             }
 
             .sidebar {
@@ -75,7 +76,7 @@
             <img src="assets/imgs/Dashboard/Group 1521.svg" class="logo-side-bar">
             <c:if test="${sessionScope.employee.getRoleId() == 1}">
                 <h6><a href="#">Admin</a></h6>
-                <a href="EmployeeList">Employee Management</a>
+                <a href="Employee">Employee Management</a>
                 <a href="#">Statistic Management</a>
             </c:if>
             <c:if test="${sessionScope.employee.getRoleId() == 2}">
@@ -90,7 +91,7 @@
                 <a href="ViewOrderListServlet">Order</a>
             </c:if>
             <c:if test="${sessionScope.employee.getRoleId() == 4}">
-                <h6><a href="#">Warehouse Management</a></h6>
+                <h6><a href="Warehouse">Warehouse Management</a></h6>
                 <a href="ImportOrder">Import Order</a>
                 <a href="Supplier">Supplier</a>
                 <a href="#">Product Management</a>

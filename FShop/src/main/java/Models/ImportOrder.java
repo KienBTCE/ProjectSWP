@@ -20,20 +20,31 @@ public class ImportOrder {
     private int supplierId;
     private Date importDate;
     private long totalCost;
-    private Date lastModify;
+    private int completed;
     private Supplier supplier;
     private List<ImportOrderDetail> importOrderDetails;
 
     public ImportOrder() {
     }
 
-    public ImportOrder(int ioid, int employeeId, int supplierId, Date importDate, long totalCost, Date lastModify) {
+    public ImportOrder(int employeeId, int supplierId) {
+        this.employeeId = employeeId;
+        this.supplierId = supplierId;
+    }
+
+    public ImportOrder(int employeeId, int supplierId, long totalCost) {
+        this.employeeId = employeeId;
+        this.supplierId = supplierId;
+        this.totalCost = totalCost;
+    }
+
+    public ImportOrder(int ioid, int employeeId, int supplierId, Date importDate, long totalCost, int completed) {
         this.ioid = ioid;
         this.employeeId = employeeId;
         this.supplierId = supplierId;
         this.importDate = importDate;
         this.totalCost = totalCost;
-        this.lastModify = lastModify;
+        this.completed = completed;
     }
 
     public int getIoid() {
@@ -76,14 +87,14 @@ public class ImportOrder {
         this.totalCost = totalCost;
     }
 
-    public Date getLastModify() {
-        return lastModify;
+    public int getCompleted() {
+        return completed;
     }
 
-    public void setLastModify(Date lastModify) {
-        this.lastModify = lastModify;
+    public void setCompleted(int completed) {
+        this.completed = completed;
     }
-    
+
     public Supplier getSupplier() {
         return supplier;
     }
@@ -99,11 +110,18 @@ public class ImportOrder {
     public void setImportOrderDetails(List<ImportOrderDetail> importOrderDetails) {
         this.importOrderDetails = importOrderDetails;
     }
-    
+
     public String getPriceFormatted() {
         Locale vietnam = new Locale("vi", "VN");
         NumberFormat currencyFormatter = NumberFormat.getCurrencyInstance(vietnam);
         return currencyFormatter.format(totalCost);
+    }
+    
+    public String getStatus() {
+        if (completed == 1) {
+            return "Completed";
+        }
+        return "Unfinished";
     }
 
 }

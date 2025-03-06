@@ -204,10 +204,10 @@ public class EmployeeDAO {
 
     public ArrayList<Employee> searchEmployeesByName(String employeeName) {
         ArrayList<Employee> employees = new ArrayList<>();
-        String sql = "SELECT * FROM Employees WHERE fullname LIKE %?%";
+        String sql = "SELECT * FROM Employees WHERE fullname LIKE ?";
         try {
             PreparedStatement pr = connector.prepareStatement(sql);
-            pr.setString(1, employeeName); // Tìm kiếm gần đúng
+            pr.setString(1, "%" + employeeName + "%"); // Tìm kiếm gần đúng
             ResultSet rs = pr.executeQuery();
             while (rs.next()) {
                 employees.add(new Employee(

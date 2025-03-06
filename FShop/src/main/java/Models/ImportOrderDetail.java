@@ -18,6 +18,9 @@ public class ImportOrderDetail {
     private int quantity;
     private long importPrice;
 
+    public ImportOrderDetail() {
+    }
+    
     public ImportOrderDetail(int ioid, Product product, int quantity, long importPrice) {
         this.ioid = ioid;
         this.product = product;
