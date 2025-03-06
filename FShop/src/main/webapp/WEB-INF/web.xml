@@ -136,6 +136,10 @@
         <servlet-name>ProductStatisticServlet</servlet-name>
         <servlet-class>Controllers.ProductStatisticServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>ShopDashboardServlet</servlet-name>
+        <servlet-class>Controllers.ShopDashboardServlet</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>default</servlet-name>
         <url-pattern>/assets/*</url-pattern>
@@ -275,6 +279,10 @@
     <servlet-mapping>
         <servlet-name>ProductStatisticServlet</servlet-name>
         <url-pattern>/ProductStatisticServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ShopDashboardServlet</servlet-name>
+        <url-pattern>/ShopDashboardServlet</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>30</session-timeout>

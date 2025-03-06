@@ -383,7 +383,6 @@ public class ProductDAO {
         } catch (SQLException ex) {
             Logger.getLogger(ProductDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
-
         return list;
     }
 
@@ -429,5 +428,66 @@ public class ProductDAO {
             }
         }
         return data;
+    }
+
+    public Map<String, Object> getDashboardStats() throws SQLException {
+        Map<String, Object> stats = new HashMap<>();
+        String query
+                = "SELECT "
+                + "    (SELECT COUNT(*) FROM Customers) AS totalCustomers, "
+                + "    (SELECT COUNT(*) FROM Products) AS totalProducts, "
+                + "    (SELECT SUM(Stock) FROM Products) AS totalInventory, "
+                + "    (SELECT COUNT(*) FROM Orders) AS totalOrders";
+
+        try ( Statement stmt = connector.createStatement();  ResultSet rs = stmt.executeQuery(query)) {
+            if (rs.next()) {
+                stats.put("totalCustomers", rs.getInt("totalCustomers"));
+                stats.put("totalProducts", rs.getInt("totalProducts"));
+                stats.put("totalInventory", rs.getInt("totalInventory"));
+                stats.put("totalOrders", rs.getInt("totalOrders"));
+            }
+        }
+        return stats;
+    }
+
+    public List<Map<String, Object>> getWeeklySales(String category) throws SQLException {
+        List<Map<String, Object>> sales = new ArrayList<>();
+        String query
+                = "SELECT p.FullName, SUM(od.Quantity) AS totalSold "
+                + "FROM OrderDetails od "
+                + "JOIN Products p ON od.ProductID = p.ProductID "
+                + "JOIN Categories c ON p.CategoryID = c.CategoryID "
+                + "WHERE c.Name = ? AND od.OrderID IN ( "
+                + "    SELECT OrderID FROM Orders WHERE OrderedDate >= DATEADD(DAY, -7, GETDATE()) "
+                + ") "
+                + "GROUP BY p.FullName ORDER BY totalSold DESC";
+
+        try ( PreparedStatement stmt = connector.prepareStatement(query)) {
+            stmt.setString(1, category);
+            ResultSet rs = stmt.executeQuery();
+            while (rs.next()) {
+                Map<String, Object> data = new HashMap<>();
+                data.put("productName", rs.getString("FullName"));
+                data.put("totalSold", rs.getInt("totalSold"));
+                sales.add(data);
+            }
+        }
+        return sales;
+    }
+
+    public List<Map<String, Object>> getNewCustomers() throws SQLException {
+        List<Map<String, Object>> customers = new ArrayList<>();
+        String query
+                = "SELECT TOP 2 FullName, Email FROM Customers ORDER BY CreatedDate DESC";
+
+        try ( Statement stmt = connector.createStatement();  ResultSet rs = stmt.executeQuery(query)) {
+            while (rs.next()) {
+                Map<String, Object> customer = new HashMap<>();
+                customer.put("name", rs.getString("FullName"));
+                customer.put("email", rs.getString("Email"));
+                customers.add(customer);
+            }
+        }
+        return customers;
     }
 }

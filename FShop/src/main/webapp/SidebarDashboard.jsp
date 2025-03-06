@@ -80,7 +80,7 @@
                 <a href="#">Statistic Management</a>
             </c:if>
             <c:if test="${sessionScope.employee.getRoleId() == 2}">
-                <h6><a href="#">Shop Management</a></h6>
+                <h6><a href="ShopDashboardServlet">Shop Management</a></h6>
                 <a href="CustomerListServlet">Customer Management</a>
                 <a href="ProductListServlet">Product Management</a>
                 <a href="ProductStatisticServlet">Product Statistic</a>
