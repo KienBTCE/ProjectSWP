@@ -289,10 +289,10 @@ VALUES
 (1, 'Ap Tra Coi A, My Huong, My Tu, Soc Trang', 1);
 
 -- Insert ImportOrders
-INSERT INTO ImportOrders (EmployeeID, SupplierID, ImportDate, TotalCost, LastModify)
+INSERT INTO ImportOrders (EmployeeID, SupplierID, ImportDate, TotalCost, Completed)
 VALUES
-(2, 1, GETDATE(), 100000000, GETDATE()),
-(2, 2, GETDATE(), 50000000, GETDATE());
+(2, 1, GETDATE(), 100000000, 1),
+(2, 2, GETDATE(), 50000000, 1);
 
 -- Insert ImportOrderDetails
 INSERT INTO ImportOrderDetails (IOID, ProductID, Quantity, ImportPrice)

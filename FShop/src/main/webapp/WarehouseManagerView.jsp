@@ -10,8 +10,112 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>JSP Page</title>
+        <style>
+            body {
+                display: flex;
+            }
+
+            .sidebar {
+                width: 250px;
+                height: 97vh;
+                background: #FFFFFF;
+                color: black;
+                padding-top: 20px;
+                box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.3);
+                transform: translateZ(0);
+                position: relative;
+                z-index: 10;
+                border-radius: 10px;
+                margin-top: 10px;
+            }
+
+            .sidebar a {
+                color: #7A7D90;
+                text-decoration: none;
+                padding: 10px;
+                display: block;
+            }
+
+            .sidebar a:hover {
+                background: #7D69FF;
+                color: white;
+                width: 90%;
+                font-weight: bold;
+
+                border-top-right-radius: 10px;
+                border-bottom-right-radius: 10px;
+                border-top-left-radius: 0;
+                border-bottom-left-radius: 0;
+
+            }
+
+            .content {
+                flex-grow: 1;
+                padding: 12px;
+                margin-left: 250px;
+            }
+
+            .header {
+                display: flex;
+                justify-content: right;
+                align-items: center;
+                padding: 10px;
+                background: #FFFFFF;
+                box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.3);
+                border-radius: 10px;
+                height: 85px;
+            }
+
+            .icon {
+                width: 40px;
+                height: 40px;
+                border-radius: 50%;
+                object-fit: cover;
+            }
+
+            .logo-side-bar {
+                margin-left: 5%;
+                margin-bottom: 3%;
+            }
+            /* ========================================================= */
+
+            .table-container {
+                background: white;
+                padding: 20px;
+                border-radius: 10px;
+                box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.1);
+            }
+
+            table {
+                border-radius: 10px;
+                overflow: hidden;
+            }
+
+            thead {
+                background: #7D69FF;
+                color: white;
+            }
+
+            tbody tr:hover {
+                background: #f2f2f2;
+                transition: 0.3s;
+            }
+
+            .search-box {
+                max-width: 300px;
+                margin-bottom: 10px;
+            }
+
+            .table-navigate{
+                display: flex;
+                justify-content: space-between;
+            }
+        </style>
     </head>
     <body>
-        <h1>Hello World!</h1>
+        <jsp:include page="SidebarDashboard.jsp"></jsp:include>
+            <div class="content">
+            <jsp:include page="HeaderDashboard.jsp"></jsp:include>
+        </div>
     </body>
 </html>
