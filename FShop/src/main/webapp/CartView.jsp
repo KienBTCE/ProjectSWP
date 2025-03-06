@@ -282,6 +282,12 @@
                                     <a class="btn btn-danger text-white" onclick="closePopup()">Cancel</a>
                                 </div>
                             </c:when>
+                            <c:when test="${sessionScope.message.contains('add your phone number')}">
+                                <div>
+                                    <a class="btn btn-success" href="viewCustomerProfile">OK</a>
+                                    <a class="btn btn-danger text-white" onclick="closePopup()">Cancel</a>
+                                </div>
+                            </c:when>
                             <c:otherwise>  
                                 <button class="btn btn-primary" onclick="closePopup()">OK</button>
                             </c:otherwise>
