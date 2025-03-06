@@ -128,6 +128,7 @@ public class Product {
         this.price = price;
         this.stock = stock;
     }
+
     //create product
     public Product(int productId, String categoryName, String brandName, String model, String fullName, int deleted, long price, int stock) {
         this.productId = productId;
@@ -203,8 +204,6 @@ public class Product {
     public int getDeleted() {
         return deleted;
     }
-
-
 
     public Product(int productId, String model, String fullName, String description, int deleted, long price, String image, int stock) {
         this.productId = productId;

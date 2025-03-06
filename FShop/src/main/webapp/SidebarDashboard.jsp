@@ -17,6 +17,7 @@
         <style>
             body {
                 display: flex;
+                padding: 12px;
             }
 
             .sidebar {
@@ -91,7 +92,7 @@
                 <a href="ViewOrderListServlet">Order</a>
             </c:if>
             <c:if test="${sessionScope.employee.getRoleId() == 4}">
-                <h6><a href="#">Warehouse Management</a></h6>
+                <h6><a href="Warehouse">Warehouse Management</a></h6>
                 <a href="ImportOrder">Import Order</a>
                 <a href="Supplier">Supplier</a>
                 <a href="#">Product Management</a>

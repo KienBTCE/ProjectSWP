@@ -4,24 +4,39 @@
  */
 package Controllers;
 
+import DAOs.ImportOrderDAO;
+import DAOs.ImportOrderDetailDAO;
 import DAOs.ProductDAO;
 import DAOs.SupplierDAO;
 import Models.ImportOrder;
 import Models.ImportOrderDetail;
+import Models.Product;
 import Models.Supplier;
 import java.io.IOException;
-import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import java.time.LocalDateTime;
+import jakarta.servlet.http.HttpSession;
+import java.util.ArrayList;
 
 /**
  *
  * @author KienBTCE180180
  */
 public class ImportStockServlet extends HttpServlet {
+
+    SupplierDAO sd = new SupplierDAO();
+    ProductDAO pd = new ProductDAO();
+    ImportOrder io;
+    ImportOrderDAO ioD = new ImportOrderDAO();
+    ImportOrderDetailDAO iodD = new ImportOrderDetailDAO();
+    ArrayList<Product> selectedProducts;
+    ArrayList<ImportOrderDetail> detailList = new ArrayList<>();
+    Supplier s;
+    int importId;
+    ImportOrder importOrder;
+    long sum = 0;
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -63,17 +78,15 @@ public class ImportStockServlet extends HttpServlet {
             throws ServletException, IOException {
 //        processRequest(request, response);
 
-        SupplierDAO sd = new SupplierDAO();
-        ProductDAO pd = new ProductDAO();
-
         try {
-            request.setAttribute("suppliers", sd.getAllSuppliers());
+            request.setAttribute("supplier", s);
+            request.setAttribute("suppliers", sd.getAllActivatedSuppliers());
             request.setAttribute("products", pd.getAllProducts());
+            request.setAttribute("selectedProducts", detailList);
             request.getRequestDispatcher("ImportStockView.jsp").forward(request, response);
         } catch (NullPointerException e) {
             System.out.println(e);
         }
-
     }
 
     /**
@@ -87,12 +100,79 @@ public class ImportStockServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-//        processRequest(request, response);
+        if (request.getParameter("supplierId") != null) {
+            s = sd.getSupplierByID(Integer.parseInt(request.getParameter("supplierId")));
+            request.setAttribute("supplier", s);
+            response.sendRedirect("ImportStock");
+        } else if (request.getParameter("productId") != null) {
+            int pId = Integer.parseInt(request.getParameter("productId"));
+            Product p = pd.getProductByID(pId);
+            ImportOrderDetail d = new ImportOrderDetail();
 
-//        ImportOrder i = new ImportOrder(0, 0, 0, importDate, 0, lastModify);
-//        Supplier s = new Supplier(0, taxId, name, email, phoneNumber, address, LocalDateTime.MAX, LocalDateTime.MIN, 0, 0);
-//        Product p = new Models.Product(0, categoryName, brandName, fullName, 0, 0, 0);
-//        ImportOrderDetail = d = new ImportOrderDetail(0, p, 0, 0);
+            d.setProduct(p);
+            d.setQuantity(Integer.parseInt(request.getParameter("importQuantity")));
+            d.setImportPrice(Long.parseLong(request.getParameter("importPrice")));
+
+            boolean isContained = false;
+
+            for (ImportOrderDetail proDet : detailList) {
+                if (proDet.getProduct().getProductId() == pId) {
+                    isContained = true;
+                }
+            }
+
+            if (!isContained) {
+                detailList.add(d);
+            } else {
+                String error = "Duplicated Product";
+                HttpSession session = request.getSession();
+                session.setAttribute("error", error);
+            }
+            response.sendRedirect("ImportStock");
+        } else if (request.getParameter("action") != null) {
+            String action = request.getParameter("action");
+            if ("delete".equals(action)) {
+                int pId = Integer.parseInt(request.getParameter("productEditedId"));
+
+                for (ImportOrderDetail proDet : detailList) {
+                    if (proDet.getProduct().getProductId() == pId) {
+                        detailList.remove(proDet);
+                        break;
+                    }
+                }
+            } else if ("save".equals(action)) {
+                int pId = Integer.parseInt(request.getParameter("productEditedId"));
+
+                for (ImportOrderDetail proDet : detailList) {
+                    if (proDet.getProduct().getProductId() == pId) {
+                        proDet.setQuantity(Integer.parseInt(request.getParameter("quantity")));
+                        proDet.setImportPrice(Long.parseLong(request.getParameter("price")));
+                        break;
+                    }
+                }
+            }
+
+            response.sendRedirect("ImportStock");
+        } else if (s != null && !detailList.isEmpty()) {
+            for (ImportOrderDetail proDet : detailList) {
+                sum += proDet.getQuantity() * proDet.getImportPrice();
+            }
+
+            io = new ImportOrder(4, s.getSupplierId(), sum);
+            int impId = ioD.createImportOrder(io);
+            for (ImportOrderDetail proDet : detailList) {
+                proDet.setIoid(impId);
+                iodD.createImportOrderDetail(proDet);
+            }
+            ioD.importStock(impId);
+
+            response.sendRedirect("ImportOrder?id=" + impId);
+        } else {
+            String error = "Please select full";
+            HttpSession session = request.getSession();
+            session.setAttribute("error", error);
+            response.sendRedirect("ImportStock");
+        }
     }
 
     /**

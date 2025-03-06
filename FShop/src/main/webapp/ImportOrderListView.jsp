@@ -117,12 +117,18 @@
                 display: flex;
                 justify-content: space-between;
             }
+
+            .table-success {
+                /*font-weight: bold;*/
+            }
+
         </style>
     </head>
     <body>
         <jsp:include page="SidebarDashboard.jsp"></jsp:include>
             <div class="content">
             <jsp:include page="HeaderDashboard.jsp"></jsp:include>
+
                 <div class="table-navigate">
                     <div class="table-navigate">
                         <label for="startDate" class="me-2">From:</label>
@@ -136,24 +142,74 @@
 
                     <div class="table-navigate">
                         <button class="btn btn-detail" data-bs-toggle="modal" data-bs-target="#importOrderModal" style="background-color: #BDF3BD; height: 100%" onclick="window.location.href = 'ImportStock'">Create</button>
+                        <!--<button id="openModalBtn" class="btn btn-detail" style="background-color: #BDF3BD; height: 100%">Create</button>-->
                     </div>
                 </div>
 
-                <div class="table-container">
-                    <div>
-                        <h3>Import Order History</h3>
+                <!--          Start Modal Select Supplier            -->
+                <div class="modal fade" id="createImportOrder" tabindex="-1" aria-labelledby="createImportOrderLabel" aria-hidden="true">
+                    <div class="modal-dialog modal-lg">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="createImportOrderLabel">Select Supplier</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <table class="table table-striped" id="supplierListTable">
+                                    <thead>
+                                        <tr>
+                                            <th>Tax ID</th>
+                                            <th>Company Name</th>
+                                            <th>Email</th>
+                                            <th>Phone</th>
+                                            <th>Address</th>
+                                            <th>Select</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                    <c:forEach items="${suppliers}" var="s">
+                                        <tr>
+                                            <td>${s.getTaxId()}</td>
+                                            <td>${s.getName()}</td>
+                                            <td>${s.getEmail()}</td>
+                                            <td>${s.getPhoneNumber()}</td>
+                                            <td>${s.getAddress()}</td>
+                                            <td>
+                                                <button class="btn btn-primary select-supplier" data-id="${s.getSupplierId()}">Select</button>
+                                            </td>
+                                        </tr>
+                                    </c:forEach>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="modal-footer">
+                            <form id="importOrderForm" method="POST" action="CreateImportOrder">
+                                <input type="hidden" name="supplierId" id="selectedSupplierId">
+                                <button type="submit" class="btn btn-success" id="confirmSelection" disabled>Confirm</button>
+                            </form>
+                        </div>
                     </div>
-                    <table class="table table-hover">
-                        <thead>
-                            <tr>
-                                <th>Import ID</th>
-                                <th>Date & Time</th>
-                                <th>Amount</th>
-                                <th>Supplier</th>
-                                <th>Action</th>
-                            </tr>
-                        </thead>
-                        <tbody id="supplierTable">
+                </div>
+            </div>
+
+            <!--          End Modal Select Supplier            -->
+
+            <div class="table-container">
+                <div>
+                    <h3>Import Order History</h3>
+                </div>
+
+                <table class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th>Import ID</th>
+                            <th>Date & Time</th>
+                            <th>Amount</th>
+                            <th>Supplier</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody id="supplierTable">
                         <c:forEach items="${importOrders}" var="i">
                             <tr>
                                 <td>${i.getIoid()}</td>
@@ -168,6 +224,7 @@
                     </tbody>
                 </table>
             </div>
+
         </div>
     </div>
 
@@ -196,6 +253,42 @@
                 }
             }
         }
+    </script>
+
+    <script>
+        document.getElementById("openModalBtn").addEventListener("click", function () {
+            var myModal = new bootstrap.Modal(document.getElementById("createImportOrder"));
+            myModal.show();
+        });
+    </script>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const confirmBtn = document.getElementById("confirmSelection");
+            const supplierIdInput = document.getElementById("selectedSupplierId");
+
+            // Xử lý sự kiện khi nhấn nút Select
+            document.querySelectorAll(".select-supplier").forEach(button => {
+                button.addEventListener("click", function () {
+                    const supplierId = this.dataset.id;
+                    const selectedRow = this.closest("tr");
+
+                    // Lưu ID vào input ẩn
+                    supplierIdInput.value = supplierId;
+
+                    // Loại bỏ highlight khỏi tất cả các dòng
+                    document.querySelectorAll("#supplierListTable tbody tr").forEach(row => {
+                        row.classList.remove("table-success");
+                    });
+
+                    // Thêm highlight cho dòng được chọn
+                    selectedRow.classList.add("table-success");
+
+                    // Bật nút Confirm
+                    confirmBtn.disabled = false;
+                });
+            });
+        });
     </script>
 
 </body>
