@@ -173,10 +173,7 @@
                                         </select>
                                     </div>
 
-                                    <div class="d-flex gap-1" style="justify-content: left;">
-                                        <a href="Employee" style="background-color: #4da3ff; color: white; text-decoration: none; padding: 3px 9px; border-radius: 5px; display: inline-flex; align-items: center; gap: 5px; cursor: pointer;">
-                                            <i class='bx bx-arrow-back'></i> Back to List
-                                        </a>
+                                    <div class="d-flex gap-1" style="justify-content: left;">                                      
                                         <button type="submit" style="background-color: #28a745; color: white; padding: 8px 20px; border: none; border-radius: 10px; display: inline-flex; align-items: center; gap: 5px; cursor: pointer;">
                                             <i class='bx bx-save'></i> Save
                                         </button>                               
@@ -186,9 +183,16 @@
                                 <div class="avatar-container">
                                     <label class="form-label">Avatar</label>
                                     <div class="mb-3">
-                                        <img id="avatarPreview" class="avatar-preview" src="assets/imgs/Employee/${currentAvatar != null ? currentAvatar : 'default.png'}" alt="Avatar">                          
+                                          <c:choose>
+                                            <c:when test="${not empty employee.avatar}">
+                                               <img id="avatarPreview" class="avatar-preview" src="assets/imgs/Employee/${currentAvatar != null ? currentAvatar : 'default.png'}" alt="Avatar">  
+                                            </c:when>
+                                            <c:otherwise>
+                                                <img id="avatarPreview" class="avatar-preview" src="assets/imgs/Employee/defauft.png" alt="Avatar">
+                                            </c:otherwise>
+                                          </c:choose>                                   
                                     </div>
-                                    <input type="hidden" name="currentAvatar" value="${currentAvatar != null ? currentAvatar : ''}">
+                                    <input type="hidden" name="currentAvatar" value="${currentAvatar != null ? currentAvatar : 'default.png'}">
                                     <input type="file" class="form-control" name="txtAvatar" accept="image/*" onchange="previewImage(event)">
                                 </div>
                             </div>

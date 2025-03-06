@@ -166,7 +166,7 @@
                                                 <img id="avatarPreview" class="avatar-preview" src="assets/imgs/Employee/${employee.avatar}" alt="Avatar">
                                             </c:when>
                                             <c:otherwise>
-                                                <img id="avatarPreview" class="avatar-preview" src="assets/imgs/EmployeeAvatar/defauft_avatar.jpg" alt="Avatar">
+                                                <img id="avatarPreview" class="avatar-preview" src="assets/imgs/Employee/defauft.png" alt="Avatar">
                                             </c:otherwise>
                                         </c:choose>
 
