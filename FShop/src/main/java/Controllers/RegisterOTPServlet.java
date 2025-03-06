@@ -87,6 +87,7 @@ public class RegisterOTPServlet extends HttpServlet {
                 int result = ctmDAO.addNewCustomer(customer);
 
                 if (result != 0) {
+                    session.setAttribute("message", "Register Successfully");
                     // Registration successful, remove session attributes
                     session.removeAttribute("otp");
                     session.removeAttribute("registerCustomer");

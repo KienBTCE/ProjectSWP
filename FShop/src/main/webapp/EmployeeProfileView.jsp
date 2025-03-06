@@ -40,15 +40,6 @@
                 object-fit: cover;
                 border: 3px solid #ddd;
             }
-            .btn-save {
-                background-color: #007bff;
-                color: white;
-            }
-            .btn-change {
-                background-color: #dc3545;
-                color: white;
-            }
-
             .value{
                 width: 150px;
 
@@ -92,7 +83,7 @@
                 <div class="col-md-2">
                     <jsp:include page="SidebarDashboard.jsp"></jsp:include>
                     </div>
-                    <div class="col-md-10" style="padding: 10px;">
+                    <div class="col-md-10" style="padding-top: 10px;">
                     <jsp:include page="HeaderDashboard.jsp"></jsp:include>
                         <form action="UpdateEmployeeProfile" method="post" enctype="multipart/form-data" onsubmit="return validateForm()">
 
@@ -163,8 +154,8 @@
                             </div>
                             <div class="form-container">
                                 <div class="d-flex gap-3" style="justify-content: space-between;">
-                                    <button type="submit" class="btn btn-save px-4 py-2">Save</button>
-                                    <button type="button" class="btn btn-change px-4 py-2" onclick="changePassword()">Change Password</button>
+                                    <button type="submit" class="btn btn-primary px-4 py-2">Save</button>
+                                    <button type="button" class="btn btn-warning px-4 py-2" onclick="changePassword()">Change Password</button>
                                 </div>
                             </div>
 

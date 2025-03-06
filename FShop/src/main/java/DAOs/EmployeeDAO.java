@@ -114,7 +114,7 @@ public class EmployeeDAO {
             PreparedStatement pr = connector.prepareStatement(sql);
             pr.setString(1, employee.getFullname());
             pr.setDate(2, employee.getBirthday());
-            pr.setString(3, employee.getPassword());
+            pr.setString(3, getMD5(employee.getPassword()));
             pr.setString(4, employee.getPhoneNumber());
             pr.setString(5, employee.getEmail());
             pr.setString(6, employee.getGender());
@@ -200,6 +200,49 @@ public class EmployeeDAO {
             return 0;
         }
         return effectRow;
+    }
+
+    public ArrayList<Employee> searchEmployeesByName(String employeeName) {
+        ArrayList<Employee> employees = new ArrayList<>();
+        String sql = "SELECT * FROM Employees WHERE fullname LIKE ?";
+        try {
+            PreparedStatement pr = connector.prepareStatement(sql);
+            pr.setString(1, "%" + employeeName + "%"); // Tìm kiếm gần đúng
+            ResultSet rs = pr.executeQuery();
+            while (rs.next()) {
+                employees.add(new Employee(
+                        rs.getInt("EmployeeID"),
+                        rs.getString("FullName"),
+                        rs.getDate("Birthday"),
+                        "",
+                        rs.getString("PhoneNumber"),
+                        rs.getString("Email"),
+                        rs.getString("Gender"),
+                        rs.getDate("CreatedDate"),
+                        rs.getInt("Status"),
+                        rs.getString("Avatar"),
+                        rs.getInt("RoleID")
+                ));
+            }
+        } catch (SQLException e) {
+            System.out.println(e);
+        }
+        return employees;
+    }
+
+    public boolean isEmailExists(String email) {
+        String sql = "SELECT COUNT(*) FROM Employees WHERE Email = ?";
+        try {
+            PreparedStatement pr = connector.prepareStatement(sql);
+            pr.setString(1, email);
+            ResultSet rs = pr.executeQuery();
+            if (rs.next()) {
+                return rs.getInt(1) > 0; // Trả về true nếu có ít nhất 1 email trùng
+            }
+        } catch (SQLException e) {
+            System.out.println(e);
+        }
+        return false;
     }
 
     public int checkPassword(int id, String password) {

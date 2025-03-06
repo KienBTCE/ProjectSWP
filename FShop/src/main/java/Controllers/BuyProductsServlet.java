@@ -95,25 +95,29 @@ public class BuyProductsServlet extends HttpServlet {
             List<Cart> cartSelected = new ArrayList<>();
             AddressDAO cdao = new AddressDAO();
             Address add = cdao.getDefaultAddress(cus.getId());
-            String address = add.getAddressDetails();
-            int count = 0;
-            long totalAmount = 0;
-            for (int i = 0; i < cart.size(); i++) {
-                for (String selectedProductId : selectedProductIds) {
-                    if (cart.get(i).getProductID() == Integer.parseInt(selectedProductId)) {
-                        cartSelected.add(cart.get(i));
-                        totalAmount += cart.get(i).getPrice() * cart.get(i).getQuantity();
-                        count++;
-                        System.out.println(cart.get(i).getFullName());
+            if (add == null) {
+                session.setAttribute("message", "Please add your address before order");
+                response.sendRedirect("CartView.jsp");
+            } else {
+                String address = add.getAddressDetails();
+                int count = 0;
+                long totalAmount = 0;
+                for (int i = 0; i < cart.size(); i++) {
+                    for (String selectedProductId : selectedProductIds) {
+                        if (cart.get(i).getProductID() == Integer.parseInt(selectedProductId)) {
+                            cartSelected.add(cart.get(i));
+                            totalAmount += cart.get(i).getPrice() * cart.get(i).getQuantity();
+                            count++;
+                            System.out.println(cart.get(i).getFullName());
+                        }
                     }
                 }
+                session.setAttribute("cartSelected", cartSelected);
+                session.setAttribute("totalAmount", totalAmount);
+                session.setAttribute("shipAddress", address);
+                session.setAttribute("numOfItems", count);
+                request.getRequestDispatcher("CheckoutView.jsp").forward(request, response);
             }
-
-            session.setAttribute("cartSelected", cartSelected);
-            session.setAttribute("totalAmount", totalAmount);
-            session.setAttribute("shipAddress", address);
-            session.setAttribute("numOfItems", count);
-            request.getRequestDispatcher("CheckoutView.jsp").forward(request, response);
         } else if (action.equals("confirm")) {
             String fullname = request.getParameter("fullname");
             String phone = request.getParameter("phone");
@@ -146,8 +150,8 @@ public class BuyProductsServlet extends HttpServlet {
     private void sendOrderConfirmationEmail(Customer customer, Order order, List<Cart> cartItems, long totalAmount) {
         try {
             Email email = new Email();
-            email.setFrom("kieuthy2004@gmail.com");
-            email.setFromPassword("xkkc ohwn aesf arqm");
+            email.setFrom("nhutlac2004@gmail.com");
+            email.setFromPassword("nxsg zrqd kuvt zgwi");
             email.setTo(customer.getEmail());
             email.setSubject("Order Confirmation from Fshop");
 

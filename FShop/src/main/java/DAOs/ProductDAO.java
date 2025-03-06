@@ -5,6 +5,7 @@
 package DAOs;
 
 import DB.DBContext;
+import Models.AttributeDetail;
 import Models.Product;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -186,7 +187,7 @@ public class ProductDAO {
         Product s = null;
 
         String query = "SELECT sp.ProductID, c.Name AS CategoryName, b.Name AS BrandName, "
-                + "sp.FullName, sp.Price, sp.Image, sp.Stock, sp.isDeleted, sp.Description, sp.Model "
+                + "sp.FullName, sp.Price, sp.Image, sp.Image1, sp.Image2, sp.Image3, sp.Stock, sp.isDeleted, sp.Description, sp.Model "
                 + "FROM Products sp "
                 + "JOIN Categories c ON sp.CategoryID = c.CategoryID "
                 + "JOIN Brands b ON sp.BrandID = b.BrandID "
@@ -209,6 +210,9 @@ public class ProductDAO {
                         rs.getInt("isDeleted"),
                         rs.getLong("Price"),
                         rs.getString("Image"),
+                         rs.getString("Image1"),
+                         rs.getString("Image2"),
+                         rs.getString("Image3"),
                         rs.getInt("Stock")
                 );
             }
@@ -271,28 +275,75 @@ public class ProductDAO {
             ps.setString(6, p.getCategoryName());
 
             count = ps.executeUpdate();
-        } catch (SQLException ex) {
-            ex.printStackTrace(); // In lỗi ra console
+        } catch (SQLException ex) { // In lỗi ra console
+            // In lỗi ra console
             Logger.getLogger(ProductDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
         return count;
     }
 
-    //update product - shop manager
     public int updateProduct(Product p) {
-        String query = "UPDATE Products SET FullName=?, Description=?, Price=?, Image=?, IsDeleted=? WHERE ProductID=?";
+        // Câu lệnh cập nhật sản phẩm
+        String query = "UPDATE Products SET Model=?, FullName=?, Description=?, Price=?, Image=?, Image1=?, Image2=?, Image3=?, IsDeleted=?, "
+                + "BrandID = (SELECT BrandID FROM Brands WHERE Name = ?), "
+                + "CategoryID = (SELECT CategoryID FROM Categories WHERE Name = ?) "
+                + "WHERE ProductID=?";
+        try {
+            // Bắt đầu transaction
+            connector.setAutoCommit(false);
+            int result;
 
-        try ( PreparedStatement ps = connector.prepareStatement(query)) {
-            ps.setString(1, p.getFullName());
-            ps.setString(2, p.getDescription());
-            ps.setLong(3, p.getPrice());
-            ps.setString(4, p.getImage());
-            ps.setInt(5, p.getDeleted());
-            ps.setInt(6, p.getProductId());
+            // Update thông tin sản phẩm
+            try ( PreparedStatement ps = connector.prepareStatement(query)) {
+                ps.setString(1, p.getModel());
+                ps.setString(2, p.getFullName());
+                ps.setString(3, p.getDescription());
+                ps.setLong(4, p.getPrice());
+                ps.setString(5, p.getImage());
+                ps.setString(6, p.getImage1());
+                ps.setString(7, p.getImage2());
+                ps.setString(8, p.getImage3());
+                ps.setInt(9, p.getDeleted());
+                ps.setString(10, p.getBrandName());
+                ps.setString(11, p.getCategoryName());
+                ps.setInt(12, p.getProductId());
 
-            return ps.executeUpdate(); // Trả về số dòng bị ảnh hưởng
+                result = ps.executeUpdate();
+            }
+
+            // Nếu sản phẩm có attribute details, cập nhật chúng
+            if (p.getAttributeDetails() != null && !p.getAttributeDetails().isEmpty()) {
+                String query2 = "UPDATE AttributeDetails SET AttributeInfor = ? WHERE ProductID = ? AND AttributeID = ?";
+                try ( PreparedStatement ps2 = connector.prepareStatement(query2)) {
+                    // Duyệt qua danh sách attribute details và add batch
+                    for (AttributeDetail attr : p.getAttributeDetails()) {
+                        ps2.setString(1, attr.getAttributeInfor());
+                        ps2.setInt(2, p.getProductId());
+                        ps2.setInt(3, attr.getAttributeId());
+                        ps2.addBatch();
+                    }
+                    ps2.executeBatch();
+                }
+            }
+
+            // Commit transaction nếu mọi thứ đều ổn
+            connector.commit();
+            return result;
         } catch (SQLException ex) {
+            // Rollback nếu có lỗi
+            try {
+                connector.rollback();
+            } catch (SQLException e) {
+                Logger.getLogger(ProductDAO.class.getName()).log(Level.SEVERE, null, e);
+            }
             Logger.getLogger(ProductDAO.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            // Đặt lại AutoCommit về true
+            try {
+                connector.setAutoCommit(true);
+            } catch (SQLException e) {
+                Logger.getLogger(ProductDAO.class.getName()).log(Level.SEVERE, null, e);
+            }
         }
         return 0;
     }

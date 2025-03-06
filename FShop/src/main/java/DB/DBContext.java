@@ -5,7 +5,6 @@
 package DB;
 
 import java.sql.Connection;
-import java.sql.DatabaseMetaData;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
@@ -27,13 +26,13 @@ public class DBContext {
 
             connector = DriverManager.getConnection(dbURL); // connect to database server follow the dbURL string
 
-            if (connector != null) {
-                DatabaseMetaData dm = (DatabaseMetaData) connector.getMetaData();
-                System.out.println("Driver name: " + dm.getDriverName());
-                System.out.println("Driver version: " + dm.getDriverVersion());
-                System.out.println("Product name: " + dm.getDatabaseProductName());
-                System.out.println("Product version: " + dm.getDatabaseProductVersion());
-            }
+//            if (connector != null) {
+//                DatabaseMetaData dm = (DatabaseMetaData) connector.getMetaData();
+//                System.out.println("Driver name: " + dm.getDriverName());
+//                System.out.println("Driver version: " + dm.getDriverVersion());
+//                System.out.println("Product name: " + dm.getDatabaseProductName());
+//                System.out.println("Product version: " + dm.getDatabaseProductVersion());
+//            }
         } catch (ClassNotFoundException | SQLException ex) {
             System.out.println(ex);
         }

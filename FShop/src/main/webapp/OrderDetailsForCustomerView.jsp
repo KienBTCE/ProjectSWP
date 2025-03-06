@@ -47,7 +47,7 @@
                                 </div>
                                 <div class="progress-step">
                                     <div class="circle">4</div>
-                                    <div class="label">Delivering</div>
+                                    <div class="label">Delivered</div>
                                 </div>
                                 <div class="progress-step">
                                     <div class="circle">5</div>
@@ -173,14 +173,20 @@
                     </div>
                 </div>
             </div>
-
-
+            <c:set var="status" value="0"></c:set>
+            <c:if test="${sessionScope.order.getStatus() < 4}">
+                <c:set var="status" value="${sessionScope.order.getStatus() - 1}"></c:set>
+            </c:if>
+             <c:if test="${sessionScope.order.getStatus() == 4}">
+                <c:set var="status" value="${sessionScope.order.getStatus()}"></c:set>
+            </c:if>
         </main>
+
         <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.21.1/axios.min.js"></script>
         <script src="./assets/js/orderDetail.js"></script>
         <script>
 
-                                let currentStep = ${sessionScope.order.getStatus() - 1}; // Thay đổi bước hiện tại theo trạng thái đơn hàng
+                                let currentStep = ${status}; // Thay đổi bước hiện tại theo trạng thái đơn hàng
                                 const steps = document.querySelectorAll(".progress-step");
                                 const progress = document.querySelector(".progress");
 
