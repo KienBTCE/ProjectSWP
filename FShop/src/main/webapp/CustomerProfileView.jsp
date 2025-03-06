@@ -97,16 +97,10 @@
                     <div class="mb-3">
                         <label class="form-label">Phone Number:</label>
                         <p>
-                            <c:if test="${sessionScope.customer.getPhoneNumber() != null} && ${sessionScope.customer.getPhoneNumber() != ''}">
-                                ********<span id="phoneDisplay">${sessionScope.customer.getPhoneNumber().substring(sessionScope.customer.getPhoneNumber().length()-2)}</span> 
-                                <input id="phoneInput" name="phoneNumber" type="tel" value="${sessionScope.customer.getPhoneNumber()}" hidden>
-                            </c:if>
-                            <c:if test="${sessionScope.customer.getPhoneNumber() == null} || ${sessionScope.customer.getPhoneNumber() == ''}">
-                                **********</span> 
-                                <input id="phoneInput" name="phoneNumber" type="tel" value="${sessionScope.customer.getPhoneNumber()}" hidden>
-                            </c:if>
+                            ********<span id="phoneDisplay">${sessionScope.customer.getPhoneNumber() != null && sessionScope.customer.getPhoneNumber() != '' ? sessionScope.customer.getPhoneNumber().substring(sessionScope.customer.getPhoneNumber().length()-2) : '**'}</span> 
                             <a href="#" onclick="openModal()">Change</a>
                         </p>
+                        <input id="phoneInput" name="phoneNumber" type="tel" value="${sessionScope.customer.getPhoneNumber()}" hidden>
                     </div>
 
                     <div class="mb-3">

@@ -92,11 +92,14 @@ public class UpdateCustomerProfileServlet extends HttpServlet {
         String day = request.getParameter("day");
         String month = request.getParameter("month");
         String year = request.getParameter("year");
+        System.out.println("Day " + day);
 
         cus.setFullName(fullname);
         cus.setPhoneNumber(phoneNumber);
         cus.setGender(gender);
-        cus.setBirthday(year + "-" + month + "-" + day);
+        String monthStr = Integer.parseInt(month) < 10 ? "0" + month : month;
+        String dayStr = Integer.parseInt(day) < 10 ? "0" + day : day;
+        cus.setBirthday(year + "-" + monthStr + "-" + dayStr);
         int rs = cusDAO.updateCustomerProfile(cus);
         if (rs == 0) {
             session.setAttribute("message", "Update customer fail!");

@@ -18,11 +18,27 @@ public class Customer {
     private String phoneNumber;
     private String email;
     private String createDate;
+    private String type;
     private int isBlock;
     private int isDeleted;
     private String avatar;
 
     public Customer() {
+    }
+
+    public Customer(int id, String fullName, String password, String birthday, String gender, String phoneNumber, String email, String createDate, String type, int isBlock, int isDeleted, String avatar) {
+        this.id = id;
+        this.fullName = fullName;
+        this.password = password;
+        this.birthday = birthday;
+        this.gender = gender;
+        this.phoneNumber = phoneNumber;
+        this.email = email;
+        this.createDate = createDate;
+        this.type = type;
+        this.isBlock = isBlock;
+        this.isDeleted = isDeleted;
+        this.avatar = avatar;
     }
 
     public Customer(int id, String fullName, String password, String birthday, String gender, String phoneNumber, String email, String createDate, int isBlock, int isDeleted, String avatar) {
@@ -72,6 +88,15 @@ public class Customer {
         this.phoneNumber = phoneNumber;
         this.isBlock = isBlock;
     }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
+    
 
     public int getId() {
         return id;

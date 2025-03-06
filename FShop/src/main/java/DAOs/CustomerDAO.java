@@ -113,6 +113,7 @@ public class CustomerDAO {
                             rs.getString("PhoneNumber"),
                             rs.getString("Email"),
                             rs.getString("CreatedDate"),
+                            rs.getString("Type"),
                             rs.getInt("IsBlock"),
                             rs.getInt("IsDeleted"),
                             rs.getString("Avatar")
@@ -145,6 +146,7 @@ public class CustomerDAO {
                             rs.getString("PhoneNumber"),
                             rs.getString("Email"),
                             rs.getString("CreatedDate"),
+                            rs.getString("Type"),
                             rs.getInt("IsBlock"),
                             rs.getInt("IsDeleted"),
                             rs.getString("Avatar")
@@ -177,8 +179,8 @@ public class CustomerDAO {
     public int addNewCustomer(Customer ctm) {
         try {
             PreparedStatement pr = connector.prepareStatement(
-                    "INSERT INTO Customers (FullName, Birthday, [Password], PhoneNumber, Email, Gender, CreatedDate, IsBlock, IsDeleted, Avatar) "
-                    + "VALUES (?, ?, ?, ?, ?, ?, GETDATE(), ?, ?, ?);"
+                    "INSERT INTO Customers (FullName, Birthday, [Password], PhoneNumber, Email, Gender, CreatedDate, Type, IsBlock, IsDeleted, Avatar) "
+                    + "VALUES (?, ?, ?, ?, ?, ?, GETDATE(), 'FShop', ?, ?, ?);"
             );
             pr.setString(1, ctm.getFullName());
             pr.setString(2, ctm.getBirthday());
@@ -201,12 +203,12 @@ public class CustomerDAO {
     public int addNewGoogleCustomer(Customer ctm) {
         try {
             PreparedStatement pr = connector.prepareStatement(
-                    "INSERT INTO Customers (FullName, Email, Password, CreatedDate, IsBlock, IsDeleted, Avatar)"
-                    + "VALUES (?, ?, '', GETDATE(), 0, 0, '');"
+                    "INSERT INTO Customers (FullName, Email, Password, CreatedDate, Type, IsBlock, IsDeleted, Avatar)"
+                    + "VALUES (?, ?, '', GETDATE(), ?, 0, 0, '');"
             );
             pr.setString(1, ctm.getFullName());
             pr.setString(2, ctm.getEmail());
-
+            pr.setString(3, ctm.getType());
             int rs = pr.executeUpdate();
             return rs;
         } catch (SQLException e) {
@@ -215,11 +217,11 @@ public class CustomerDAO {
         return 0;
     }
 
-    public Customer getGoogleCustomer(String email) {
-        String sql = "SELECT * FROM Customers WHERE Email = ? AND IsBlock = 0 AND IsDeleted = 0";
+    public Customer getGoogleCustomer(String email, String type) {
+        String sql = "SELECT * FROM Customers WHERE Email = ? AND Type = ? AND IsBlock = 0 AND IsDeleted = 0";
         try ( PreparedStatement ps = connector.prepareStatement(sql)) {
             ps.setString(1, email);
-
+            ps.setString(2, type);
             try ( ResultSet rs = ps.executeQuery()) {
                 if (rs.next()) {
                     return new Customer(
@@ -231,6 +233,7 @@ public class CustomerDAO {
                             rs.getString("PhoneNumber"),
                             rs.getString("Email"),
                             rs.getString("CreatedDate"),
+                            rs.getString("Type"),
                             rs.getInt("IsBlock"),
                             rs.getInt("IsDeleted"),
                             rs.getString("Avatar")

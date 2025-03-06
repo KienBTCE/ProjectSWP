@@ -62,6 +62,7 @@ CREATE TABLE Customers (
     Email VARCHAR(254),
     Gender CHAR(6),
     CreatedDate DATETIME,
+	[Type] VARCHAR(254),
     IsBlock BIT,
     IsDeleted BIT,
     Avatar TEXT
