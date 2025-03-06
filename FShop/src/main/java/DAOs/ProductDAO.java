@@ -210,11 +210,15 @@ public class ProductDAO {
                         rs.getInt("isDeleted"),
                         rs.getLong("Price"),
                         rs.getString("Image"),
-                         rs.getString("Image1"),
-                         rs.getString("Image2"),
-                         rs.getString("Image3"),
+                        rs.getString("Image1"),
+                        rs.getString("Image2"),
+                        rs.getString("Image3"),
                         rs.getInt("Stock")
                 );
+                // Sử dụng đối tượng s đã có
+                AttributeDAO attributeDAO = new AttributeDAO();
+                List<AttributeDetail> attributes = attributeDAO.getAttributesByProductID(s.getProductId());
+                s.setAttributeDetails(attributes);
             }
             return s;
         } catch (SQLException ex) {
