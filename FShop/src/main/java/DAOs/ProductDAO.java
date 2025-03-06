@@ -10,10 +10,13 @@ import Models.Product;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.jar.Attributes.Name;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -382,5 +385,49 @@ public class ProductDAO {
         }
 
         return list;
+    }
+
+    public List<Map<String, Object>> getSalesData(String period) throws SQLException {
+        String query = "SELECT FORMAT(OrderedDate, 'yyyy-MM-dd') AS date, SUM(Quantity) AS total "
+                + "FROM Orders JOIN OrderDetails ON Orders.OrderID = OrderDetails.OrderID "
+                + "WHERE OrderedDate >= DATEADD(" + period + ", -1, GETDATE()) "
+                + "GROUP BY FORMAT(OrderedDate, 'yyyy-MM-dd') ORDER BY date";
+        return executeQuery(query);
+    }
+
+    public List<Map<String, Object>> getTopSellingProducts() throws SQLException {
+        String query = "SELECT TOP 10 Products.FullName, SUM(OrderDetails.Quantity) AS totalSold "
+                + "FROM OrderDetails JOIN Products ON OrderDetails.ProductID = Products.ProductID "
+                + "GROUP BY Products.FullName ORDER BY totalSold DESC";
+        return executeQuery(query);
+    }
+
+    public List<Map<String, Object>> getLowStockProducts() throws SQLException {
+        String query = "SELECT FullName, Stock FROM Products WHERE Stock < 10 ORDER BY Stock ASC";
+        return executeQuery(query);
+    }
+
+    public List<Map<String, Object>> getCategorySales() throws SQLException {
+        String query = "SELECT Categories.Name, SUM(OrderDetails.Quantity) AS totalSold "
+                + "FROM OrderDetails JOIN Products ON OrderDetails.ProductID = Products.ProductID "
+                + "JOIN Categories ON Products.CategoryID = Categories.CategoryID "
+                + "GROUP BY Categories.Name ORDER BY totalSold DESC";
+        return executeQuery(query);
+    }
+
+    private List<Map<String, Object>> executeQuery(String query) throws SQLException {
+        List<Map<String, Object>> data = new ArrayList<>();
+        try (
+                 Statement stmt = connector.createStatement();  ResultSet rs = stmt.executeQuery(query)) {
+            while (rs.next()) {
+                Map<String, Object> record = new HashMap<>();
+                ResultSetMetaData metaData = rs.getMetaData();
+                for (int i = 1; i <= metaData.getColumnCount(); i++) {
+                    record.put(metaData.getColumnName(i), rs.getObject(i));
+                }
+                data.add(record);
+            }
+        }
+        return data;
     }
 }

@@ -180,7 +180,7 @@
             <h6><a href="#">Shop Management</a></h6>
             <a href="CustomerListServlet">Customer Management</a>
             <a href="ProductListServlet">Product Management</a>
-            <a href="#">Product Statistic</a>
+            <a href="ProductStatisticServlet">Product Statistic</a>
         </div>
         <div class="content">
             <jsp:include page="HeaderDashboard.jsp"></jsp:include>
