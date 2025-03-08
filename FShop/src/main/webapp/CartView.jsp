@@ -44,6 +44,7 @@
                                         <th class="th" style="width: 5%;"></th>
                                     </tr>
                                     <form id="cartSelected" action="order" method="post">
+                                        <input type="text" name="orderUrl" value="Cart" hidden>
                                         <c:forEach items="${sessionScope.cartList}" var="p">
                                             <c:if test="${p.getQuantity() > 0}">
                                                 <tr>
@@ -279,6 +280,12 @@
                             <c:when test="${sessionScope.message.contains('add your address')}">
                                 <div>
                                     <a class="btn btn-success" href="ViewShippingAddress">OK</a>
+                                    <a class="btn btn-danger text-white" onclick="closePopup()">Cancel</a>
+                                </div>
+                            </c:when>
+                            <c:when test="${sessionScope.message.contains('add your phone number')}">
+                                <div>
+                                    <a class="btn btn-success" href="viewCustomerProfile">OK</a>
                                     <a class="btn btn-danger text-white" onclick="closePopup()">Cancel</a>
                                 </div>
                             </c:when>

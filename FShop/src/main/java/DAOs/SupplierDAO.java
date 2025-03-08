@@ -12,6 +12,9 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -52,7 +55,7 @@ public class SupplierDAO {
 
         return list;
     }
-    
+
     public ArrayList<Supplier> getAllActivatedSuppliers() {
         ArrayList<Supplier> list = new ArrayList<>();
 
@@ -115,7 +118,7 @@ public class SupplierDAO {
 
         return s;
     }
-    
+
     public Supplier getSupplierByTaxID(String supplierTaxId) {
         Supplier s = null;
 
@@ -204,5 +207,35 @@ public class SupplierDAO {
         }
 
         return 0;
+    }
+
+    public List<Supplier> searchSupplierByName(String name) {
+        List<Supplier> list = new ArrayList<>();
+        String query = "SELECT * FROM Suppliers WHERE Name LIKE ?";
+
+        try ( PreparedStatement ps = connector.prepareStatement(query)) {
+            ps.setString(1, "%" + name + "%");
+
+            try ( ResultSet rs = ps.executeQuery()) {
+                while (rs.next()) {
+                    list.add(new Supplier(
+                            rs.getInt("SupplierID"),
+                            rs.getString("TaxID"),
+                            rs.getString("Name"),
+                            rs.getString("Email"),
+                            rs.getString("PhoneNumber"),
+                            rs.getString("Address"),
+                            rs.getTimestamp("CreatedDate").toLocalDateTime(),
+                            rs.getTimestamp("LastModify").toLocalDateTime(),
+                            rs.getInt("IsDeleted"),
+                            rs.getInt("IsActivate")
+                    ));
+                }
+                return list;
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(ProductDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return list;
     }
 }

@@ -97,6 +97,9 @@
             .nav-infor-content:nth-child(3) *{
                 margin-left: 5px
             }
+            .list-cat{
+                flex-direction: column;
+            }
             .list-categories{
                 margin: 0;
                 padding: 0;
@@ -116,6 +119,12 @@
                 opacity: 0.7;
                 text-decoration: none;
             }
+            .search-box {
+                width: 100%; /* Để thanh tìm kiếm rộng bằng danh mục */
+                margin-top: 12px;
+            }
+
+
             @media all and (max-width: 1000px) {
                 .header-container .time-head, .phone-head {
                     display: none;
@@ -170,9 +179,10 @@
                                 <a href="#">Accessories</a>
                             </li>
                         </ul>
+                        <input type="text" id="searchInput" class="form-control search-box" placeholder="Find by name ..." value="${searchValue}">
                     </div>
                     <div class="nav-infor-content col-md-4">
-                        <i class="ti-search" style="font-size: 150%; color: black;"></i>    
+                        <!--<i class="ti-search" style="font-size: 150%; color: black;"></i>-->
                         <div style="display: flex; align-items: center">
                             <c:if test="${sessionScope.customer == null}">
                                 <a href="cart"><i class="ti-shopping-cart" style="font-size: 150%; color: black;"></i></a>
@@ -202,6 +212,19 @@
                 </div>
             </div>
         </nav>
+
         <script src="assets/js/bootstrap.min.js"></script>
+
+        <script>
+            document.getElementById("searchInput").addEventListener("keypress", function (event) {
+                if (event.key === "Enter") {
+                    event.preventDefault();
+                    let searchValue = this.value.trim();
+                    if (searchValue !== "") {
+                        window.location.href = "SearchProduct?name=" + encodeURIComponent(searchValue);
+                    }
+                }
+            });
+        </script>
     </body>
 </html>

@@ -181,3 +181,8 @@ DELETE ImportOrderDetails WHERE ProductID = 3 AND IOID = 5
 DELETE ImportOrderDetails WHERE ProductID = 3 AND IOID = 5
 
 DELETE ImportOrders WHERE IOID in (13, 14, 15, 16)
+
+SELECT * FROM ImportOrders WHERE ImportDate BETWEEN '06-03 00:00:00' AND '2025-03-06 23:59:59'
+
+SELECT sp.ProductID, c.Name AS CategoryName, b.Name AS BrandName, sp.FullName, sp.Price, sp.Image, sp.Stock, sp.isDeleted, sp.Description, sp.Model FROM Products sp JOIN Categories c ON sp.CategoryID = c.CategoryID JOIN Brands b ON sp.BrandID = b.BrandID WHERE sp.FullName LIKE '%apple%'
+select * from Products

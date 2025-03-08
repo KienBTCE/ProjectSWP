@@ -171,10 +171,10 @@
     <body>
         <div class="sidebar">
             <img src="assets/imgs/Dashboard/Group 1521.svg" class="logo-side-bar">
-            <h6><a href="#">Shop Management</a></h6>
+            <h6><a href="ShopDashboardServlet">Shop Management</a></h6>
             <a href="CustomerListServlet">Customer Management</a>
             <a href="ProductListServlet">Product Management</a>
-            <a href="#">Product Statistic</a>
+            <a href="ProductStatisticServlet">Product Statistic</a>
         </div>
         <div class="content">
             <jsp:include page="HeaderDashboard.jsp"></jsp:include>
@@ -250,4 +250,3 @@
 </body>
 
 </html>
-
