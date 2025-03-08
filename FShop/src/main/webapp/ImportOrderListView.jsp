@@ -131,13 +131,16 @@
 
                 <div class="table-navigate">
                     <div class="table-navigate">
-                        <label for="startDate" class="me-2">From:</label>
-                        <input type="date" id="startDate" class="form-control me-3">
+                        <form method="POST" action="ImportOrder" style="display: flex;">
+                            <label for="startDate" class="me-2">From:</label>
+                            <input name="fromDate" type="date" id="startDate" class="form-control me-3">
 
-                        <label for="endDate" class="me-2">To:</label>
-                        <input type="date" id="endDate" class="form-control me-3">
+                            <label for="endDate" class="me-2">To:</label>
+                            <input name="toDate" type="date" id="endDate" class="form-control me-3">
 
-                        <button onclick="filterByDate()" class="btn btn-primary">Filter</button>
+                            <!--<button type="submit" onclick="filterByDate()" class="btn btn-primary">Filter</button>-->
+                            <button type="submit" class="btn btn-primary">Filter</button>
+                        </form>
                     </div>
 
                     <div class="table-navigate">
@@ -228,32 +231,36 @@
         </div>
     </div>
 
-    <script>
-        function filterByDate() {
-            let startDate = document.getElementById("startDate").value;
-            let endDate = document.getElementById("endDate").value;
-            let table = document.getElementById("supplierTable");
-            let rows = table.getElementsByTagName("tr");
-
-            // Chuyển đổi định dạng ngày về timestamp để so sánh
-            let startTimestamp = new Date(startDate).getTime();
-            let endTimestamp = new Date(endDate).getTime();
-
-            for (let i = 0; i < rows.length; i++) {
-                let dateCell = rows[i].getElementsByTagName("td")[1]; // Lấy cột ngày
-                if (dateCell) {
-                    let rowDate = new Date(dateCell.textContent.trim()).getTime();
-
-                    if ((!startDate || rowDate >= startTimestamp) &&
-                            (!endDate || rowDate <= endTimestamp)) {
-                        rows[i].style.display = "";
-                    } else {
-                        rows[i].style.display = "none";
+<!--        <script>
+            function filterByDate() {
+                let startDate = document.getElementById("startDate").value;
+                let endDate = document.getElementById("endDate").value;
+                let table = document.getElementById("supplierTable");
+                let rows = table.getElementsByTagName("tr");
+    
+                // Chuyển đổi định dạng ngày về timestamp để so sánh
+                let startTimestamp = new Date(startDate).getTime();
+                let endTimestamp = new Date(endDate).getTime();
+                
+                console.log(startTimestamp);
+                console.log(endTimestamp);
+    
+                for (let i = 0; i < rows.length; i++) {
+                    let dateCell = rows[i].getElementsByTagName("td")[1]; // Lấy cột ngày
+                    console.log(dateCell);
+                    if (dateCell) {
+                        let rowDate = new Date(dateCell.textContent.trim()).getTime();
+    
+                        if ((!startDate || rowDate >= startTimestamp) &&
+                                (!endDate || rowDate <= endTimestamp)) {
+                            rows[i].style.display = "";
+                        } else {
+                            rows[i].style.display = "none";
+                        }
                     }
                 }
             }
-        }
-    </script>
+        </script>-->
 
     <script>
         document.getElementById("openModalBtn").addEventListener("click", function () {

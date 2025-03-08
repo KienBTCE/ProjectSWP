@@ -194,6 +194,10 @@
 
                             <button class="summit" type="submit">Sign In</button>
                             <a class="forgotpass" href="SendMailServlet">Forgot Your Password?</a>
+                            <br>
+                            <a style="width: 100%" class="btn btn-danger" href="https://accounts.google.com/o/oauth2/auth?scope=email%20profile%20openid&redirect_uri=http://localhost:8080/GoogleLogin&response_type=code&client_id=1041129117035-jujhcv76iq77j9a3t75g3m451ku5b1lb.apps.googleusercontent.com&approval_prompt=force">
+                                <img src="./assets/imgs/icon/google.png" alt="Google" width="30px" height="30px"/> Login With Google Account
+                            </a>
                         </form>
 
                     </div>

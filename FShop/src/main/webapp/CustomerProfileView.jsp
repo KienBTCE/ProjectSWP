@@ -97,8 +97,14 @@
                     <div class="mb-3">
                         <label class="form-label">Phone Number:</label>
                         <p>
-                            ********<span id="phoneDisplay">${sessionScope.customer.getPhoneNumber().substring(sessionScope.customer.getPhoneNumber().length()-2)}</span> 
-                            <input id="phoneInput" name="phoneNumber" type="tel" value="${sessionScope.customer.getPhoneNumber()}" hidden>
+                            <c:if test="${sessionScope.customer.getPhoneNumber() != null} && ${sessionScope.customer.getPhoneNumber() != ''}">
+                                ********<span id="phoneDisplay">${sessionScope.customer.getPhoneNumber().substring(sessionScope.customer.getPhoneNumber().length()-2)}</span> 
+                                <input id="phoneInput" name="phoneNumber" type="tel" value="${sessionScope.customer.getPhoneNumber()}" hidden>
+                            </c:if>
+                            <c:if test="${sessionScope.customer.getPhoneNumber() == null} || ${sessionScope.customer.getPhoneNumber() == ''}">
+                                **********</span> 
+                                <input id="phoneInput" name="phoneNumber" type="tel" value="${sessionScope.customer.getPhoneNumber()}" hidden>
+                            </c:if>
                             <a href="#" onclick="openModal()">Change</a>
                         </p>
                     </div>
@@ -120,7 +126,7 @@
                                 <select class="form-select" name="day">
                                     <option>Day</option>
                                     <c:forEach var="i" begin="1" end="31">
-                                        <option ${sessionScope.customer.getBirthday() != null && sessionScope.customer.getBirthday().split("-")[2].equals(String.format("%02d", i)) ? 'selected' : ''}>${i}</option>
+                                        <option ${!sessionScope.customer.getBirthday().equals('') && sessionScope.customer.getBirthday().split("-")[2].equals(String.format("%02d", i)) ? 'selected' : ''}>${i}</option>
                                     </c:forEach>
                                 </select>
                             </div>
@@ -129,10 +135,7 @@
                                     <option>Month</option>
                                     <c:forEach var="i" begin="1" end="12">
                                         <c:set var="formattedMonth" value="${String.format('%02d', i)}" />
-                                        <option value="${formattedMonth}"
-                                                ${sessionScope.customer.getBirthday() != null && sessionScope.customer.getBirthday().split('-')[1] == formattedMonth ? 'selected' : ''}>
-                                            ${formattedMonth}
-                                        </option>
+                                        <option value="${formattedMonth}" ${!sessionScope.customer.getBirthday().equals('') && sessionScope.customer.getBirthday().split('-')[1] == formattedMonth ? 'selected' : ''}>${i}</option>
                                     </c:forEach>
                                 </select>
                             </div>
@@ -140,7 +143,7 @@
                                 <select class="form-select" name="year">
                                     <option>Year</option>
                                     <c:forEach var="i" begin="1900" end="2024">
-                                        <option ${sessionScope.customer.getBirthday() != null && sessionScope.customer.getBirthday().split("-")[0].equals(String.valueOf(i)) ? 'selected' : ''}>${i}</option>
+                                        <option ${!sessionScope.customer.getBirthday().equals('') && sessionScope.customer.getBirthday().split("-")[0].equals(String.valueOf(i)) ? 'selected' : ''}>${i}</option>
                                     </c:forEach>
                                 </select>
                             </div>
