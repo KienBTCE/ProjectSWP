@@ -77,7 +77,10 @@ public class AddAddressServlet extends HttpServlet {
             throws ServletException, IOException {
         HttpSession session = request.getSession();
         Customer cus = (Customer) session.getAttribute("customer");
+
         if (cus != null) {
+            String url = request.getParameter("currentAddressPage");
+            System.out.println("Context: " + url);
             AddressDAO add = new AddressDAO();
             String province = request.getParameter("province");
             String district = request.getParameter("district");
@@ -88,10 +91,13 @@ public class AddAddressServlet extends HttpServlet {
                 int id = add.addAddress(new Address(cus.getId(), 1, addressDetails));
                 add.disableDefaultAddress(id, cus.getId());
                 session.setAttribute("message", "Add Address Successfully");
-                response.sendRedirect("ViewShippingAddress?action=forOrder");
             } else {
                 add.addAddress(new Address(cus.getId(), 0, addressDetails));
                 session.setAttribute("message", "Add Address Successfully");
+            }
+            if (url.equalsIgnoreCase("addressPage")) {
+                response.sendRedirect("ViewShippingAddress");
+            } else if (url.equalsIgnoreCase("forOrder")) {
                 response.sendRedirect("ViewShippingAddress?action=forOrder");
             }
         }
