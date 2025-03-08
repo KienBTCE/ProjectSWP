@@ -104,14 +104,14 @@ public class OrderDAO {
         }
     }
 
-    public void addOrderDetail(int orderID, int productID, int quantity, int price) {
+    public void addOrderDetail(int orderID, int productID, int quantity, long price) {
         try {
             PreparedStatement pre = connector.prepareStatement("Insert into [OrderDetails] values"
                     + "(?, ?, ?, ?)");
             pre.setInt(1, orderID);
             pre.setInt(2, productID);
             pre.setInt(3, quantity);
-            pre.setInt(4, price);
+            pre.setLong(4, price);
             pre.executeUpdate();
         } catch (SQLException e) {
             System.out.println(e);

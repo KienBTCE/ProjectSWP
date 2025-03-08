@@ -4,9 +4,10 @@
  */
 package Controllers;
 
-import DAOs.AddressDAO;
-import Models.Address;
+import DAOs.CustomerDAO;
+import DAOs.GoogleLogin;
 import Models.Customer;
+import Models.GoogleAccount;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -18,10 +19,10 @@ import jakarta.servlet.http.HttpSession;
 
 /**
  *
- * @author nhutb
+ * @author TuongMPCE180644
  */
-@WebServlet(name = "AddAddressServlet", urlPatterns = {"/AddAddress"})
-public class AddAddressServlet extends HttpServlet {
+@WebServlet(name = "GoogleLoginServlet", urlPatterns = {"/GoogleLogin"})
+public class GoogleLoginServlet extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -35,18 +36,36 @@ public class AddAddressServlet extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        try ( PrintWriter out = response.getWriter()) {
-            /* TODO output your page here. You may use following sample code. */
-            out.println("<!DOCTYPE html>");
-            out.println("<html>");
-            out.println("<head>");
-            out.println("<title>Servlet AddAddressServlet</title>");
-            out.println("</head>");
-            out.println("<body>");
-            out.println("<h1>Servlet AddAddressServlet at " + request.getContextPath() + "</h1>");
-            out.println("</body>");
-            out.println("</html>");
+        String code = request.getParameter("code");
+        HttpSession session = request.getSession();
+        GoogleLogin gg = new GoogleLogin();
+
+        String accessToken = gg.getToken(code);
+        System.out.println("ACCESS: " + accessToken);
+        if (accessToken != null && !accessToken.equalsIgnoreCase("")) {
+            GoogleAccount acc = gg.getUserInfo(accessToken);
+            if (acc != null) {
+                Customer cus = new Customer(0, acc.getName(), null, null, null, null, acc.getEmail(), null, acc.getId(), 0, 0, null);
+                CustomerDAO cusDAO = new CustomerDAO();
+                if (cusDAO.checkEmailExisted(acc.getEmail()) == 0) {
+                    if (cusDAO.addNewGoogleCustomer(cus) == 1) {
+                        cus = cusDAO.getGoogleCustomer(acc.getEmail(), acc.getId());
+                    }
+                } else {
+                    cus = cusDAO.getGoogleCustomer(acc.getEmail(), acc.getId());
+                }
+                if (cus.getIsBlock() == 0) {
+                    session.setAttribute("customer", cus);
+                    response.sendRedirect("/");
+                    return;
+                } else{
+                    session.setAttribute("message", "Your account has been locked!");
+                    response.sendRedirect("/customerLogin");
+                    return;
+                }
+            }
         }
+        response.sendRedirect("/");
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
@@ -75,26 +94,7 @@ public class AddAddressServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        HttpSession session = request.getSession();
-        Customer cus = (Customer) session.getAttribute("customer");
-        if (cus != null) {
-            AddressDAO add = new AddressDAO();
-            String province = request.getParameter("province");
-            String district = request.getParameter("district");
-            String ward = request.getParameter("ward");
-            String address = request.getParameter("address");
-            String addressDetails = address + ", " + ward + ", " + district + ", " + province;
-            if (request.getParameter("isDefault") != null) {
-                int id = add.addAddress(new Address(cus.getId(), 1, addressDetails));
-                add.disableDefaultAddress(id, cus.getId());
-                session.setAttribute("message", "Add Address Successfully");
-                response.sendRedirect("ViewShippingAddress?action=forOrder");
-            } else {
-                add.addAddress(new Address(cus.getId(), 0, addressDetails));
-                session.setAttribute("message", "Add Address Successfully");
-                response.sendRedirect("ViewShippingAddress?action=forOrder");
-            }
-        }
+        processRequest(request, response);
     }
 
     /**

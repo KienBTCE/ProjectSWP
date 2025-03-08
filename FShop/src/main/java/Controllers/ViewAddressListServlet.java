@@ -67,8 +67,16 @@ public class ViewAddressListServlet extends HttpServlet {
         } else {
             AddressDAO a = new AddressDAO();
             session.setAttribute("addressList", a.getAddress(cus.getId()));
-            request.setAttribute("profilePage", "AddressView.jsp");
-            request.getRequestDispatcher("ProfileManagementView.jsp").forward(request, response);
+            String action = request.getParameter("action");
+            if (action != null) {
+                if (action.equalsIgnoreCase("forOrder")) {
+                    request.setAttribute("profilePage", "AddressView.jsp");
+                    request.getRequestDispatcher("AddressView.jsp").forward(request, response);
+                }
+            } else {
+                request.setAttribute("profilePage", "AddressView.jsp");
+                request.getRequestDispatcher("ProfileManagementView.jsp").forward(request, response);
+            }
         }
     }
 

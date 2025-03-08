@@ -243,9 +243,9 @@ VALUES
 (8, 10, 'Li-ion');
 
 -- Insert Customers
-INSERT INTO Customers (FullName, Birthday, [Password], PhoneNumber, Email, Gender, CreatedDate, IsBlock, IsDeleted, Avatar)
+INSERT INTO Customers (FullName, Birthday, [Password], PhoneNumber, Email, Gender, CreatedDate, GoogleID, IsBlock, IsDeleted, Avatar)
 VALUES 
-('Nguyen Van A', '1995-05-15', '6ad14ba9986e3615423dfca256d04e3f', '0901234567', 'nguyenvana@example.com', 'Male', GETDATE(), 0, 0, 'avatar1.jpg');
+('Nguyen Van A', '1995-05-15', '6ad14ba9986e3615423dfca256d04e3f', '0901234567', 'nguyenvana@example.com', 'Male', GETDATE(), '', 0, 0, 'avatar1.jpg');
 
 -- Insert OrderStatus
 INSERT INTO OrderStatus (ID, [Status])
