@@ -104,13 +104,20 @@ public class UpdateCustomerProfileServlet extends HttpServlet {
         }
 
         try {
-            String monthStr = Integer.parseInt(month) < 10 ? "0" + month : month;
-            String dayStr = Integer.parseInt(day) < 10 ? "0" + day : day;
-            int yearStr = Integer.parseInt(year);
-            cus.setBirthday(yearStr + "-" + monthStr + "-" + dayStr);
-        } catch (NumberFormatException e) {
+            int dayInt = Integer.parseInt(day.trim());
+            int monthInt = Integer.parseInt(month.trim());
+            int yearInt = Integer.parseInt(year.trim());
+
+            String dayStr = dayInt < 10 ? "0" + dayInt : String.valueOf(dayInt);
+            String monthStr = monthInt < 10 ? "0" + monthInt : String.valueOf(monthInt);
+
+            cus.setBirthday(yearInt + "-" + monthStr + "-" + dayStr);
+        } catch (NumberFormatException | NullPointerException e) {
             e.printStackTrace();
             session.setAttribute("message", "Invalid date format!");
+
+            response.sendRedirect("/viewCustomerProfile");
+            return;
         }
         if (img != null && img.getSize() > 0) {
             cus.setAvatar(cus.getId() + ".jpg");
