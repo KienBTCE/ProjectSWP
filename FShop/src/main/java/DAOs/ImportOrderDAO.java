@@ -10,6 +10,7 @@ import Models.ImportOrderDetail;
 import Models.Product;
 import Models.Supplier;
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -246,6 +247,52 @@ public class ImportOrderDAO {
         }
 
         return -1;
+    }
+
+    public ArrayList<ImportOrder> filterHistoryByDate(String from, String to) {
+        ArrayList<ImportOrder> list = new ArrayList<>();
+
+        String query = "SELECT * FROM ImportOrders I JOIN Suppliers S ON I.SupplierID = S.SupplierID WHERE ImportDate BETWEEN ? AND ?";
+
+        try {
+            PreparedStatement ps = connector.prepareStatement(query);
+            ps.setString(1, from + " 00:00:00");
+            ps.setString(2, to + " 23:59:59");
+            ResultSet rs = ps.executeQuery();
+
+            while (rs.next()) {
+                Supplier s = new Supplier(
+                        rs.getInt("SupplierID"),
+                        rs.getString("TaxID"),
+                        rs.getString("Name"),
+                        rs.getString("Email"),
+                        rs.getString("PhoneNumber"),
+                        rs.getString("Address"),
+                        rs.getTimestamp("CreatedDate").toLocalDateTime(),
+                        rs.getTimestamp("LastModify").toLocalDateTime(),
+                        rs.getInt("IsDeleted"),
+                        rs.getInt("IsActivate")
+                );
+
+                ImportOrder io = new ImportOrder(
+                        rs.getInt("IOID"),
+                        rs.getInt("EmployeeID"),
+                        rs.getInt("SupplierID"),
+                        rs.getDate("ImportDate"),
+                        rs.getLong("TotalCost"),
+                        rs.getInt("Completed")
+                );
+
+                io.setSupplier(s);
+
+                list.add(io);
+            }
+            return list;
+        } catch (SQLException e) {
+            System.out.println(e);
+        }
+
+        return list;
     }
 
 }

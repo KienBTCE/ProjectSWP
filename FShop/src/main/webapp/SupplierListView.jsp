@@ -124,7 +124,8 @@
             <div class="content">
             <jsp:include page="HeaderDashboard.jsp"></jsp:include>
                 <div class="table-navigate">
-                    <input type="text" id="searchInput" class="form-control search-box" placeholder="Find by name ..." onkeyup="searchTable()">
+                    <!--<input type="text" id="searchInput" class="form-control search-box" placeholder="Find by name ..." onkeyup="searchTable()">-->
+                    <input type="text" id="searchInput" class="form-control search-box" placeholder="Find by name ..." value="${searchValue}">
                     <button class="btn btn-detail" data-bs-toggle="modal" data-bs-target="#createSupplierModal" style="background-color: #BDF3BD; height: 100%">Create</button>
                 </div>
 
@@ -223,21 +224,33 @@
 
         </div>
 
-        <script>
-            function searchTable() {
-                let input = document.getElementById("searchInput");
-                let filter = input.value.toLowerCase();
-                let table = document.getElementById("supplierTable");
-                let rows = table.getElementsByTagName("tr");
+        <!--        <script>
+                    function searchTable() {
+                        let input = document.getElementById("searchInput");
+                        let filter = input.value.toLowerCase();
+                        let table = document.getElementById("supplierTable");
+                        let rows = table.getElementsByTagName("tr");
+        
+                        for (let i = 1; i < rows.length; i++) {
+                            let nameCell = rows[i].getElementsByTagName("td")[1];
+                            if (nameCell) {
+                                let nameText = nameCell.textContent || nameCell.innerText;
+                                rows[i].style.display = nameText.toLowerCase().includes(filter) ? "" : "none";
+                            }
+                        }
+                    }
+                </script>-->
 
-                for (let i = 1; i < rows.length; i++) {
-                    let nameCell = rows[i].getElementsByTagName("td")[1];
-                    if (nameCell) {
-                        let nameText = nameCell.textContent || nameCell.innerText;
-                        rows[i].style.display = nameText.toLowerCase().includes(filter) ? "" : "none";
+        <script>
+            document.getElementById("searchInput").addEventListener("keypress", function (event) {
+                if (event.key === "Enter") {
+                    event.preventDefault();
+                    let searchValue = this.value.trim();
+                    if (searchValue !== "") {
+                        window.location.href = "SearchSupplier?name=" + encodeURIComponent(searchValue);
                     }
                 }
-            }
+            });
         </script>
 
         <%

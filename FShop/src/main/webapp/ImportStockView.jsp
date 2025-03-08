@@ -402,8 +402,7 @@
                     </div>
                 </div>
                 <!-- End Edit Modal -->
-
-                <button type="button" class="btn btn-success" onclick="window.location.href='ImportOrder'">Cancel</button>
+                <button type="button" class="btn btn-success" onclick="cancelImportOrder()">Cancel</button>
                 <button type="button" class="btn btn-success" onclick="redirectToImport()">Import</button>
             </div>
         </div>
@@ -630,6 +629,11 @@
                 form.submit();
             }
 
+        </script>
+        <script>
+            function cancelImportOrder() {
+                window.location.href = 'ImportStock?status=cancel';
+            }
         </script>
         <!-- submit final -->
     </body>
