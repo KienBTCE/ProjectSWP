@@ -51,7 +51,7 @@ public class AttributeDAO {
 
     public List<Attribute> getAttributesByCategoryID(int categoryId) {
         List<Attribute> attributes = new ArrayList<>();
-        String query = "SELECT AttributeID, CategoryID, AttributeName FROM Attributes WHERE CategoryID = ?";
+        String query = "SELECT AttributeID, CategoryID, Name FROM Attributes WHERE CategoryID = ?";
 
         try {
             PreparedStatement ps = connector.prepareStatement(query);
@@ -62,7 +62,7 @@ public class AttributeDAO {
                 Attribute attribute = new Attribute(
                         rs.getInt("AttributeID"),
                         rs.getInt("CategoryID"),
-                        rs.getString("AttributeName")
+                        rs.getString("Name")
                 );
                 attributes.add(attribute);
             }
@@ -107,6 +107,13 @@ public class AttributeDAO {
         }
 
         return attributes;
+    }
+    public static void main(String[] args) {
+        AttributeDAO a = new AttributeDAO();
+        List<Attribute> l = a.getAttributesByCategoryID(1);
+        for (Attribute attribute : l) {
+            System.out.println(attribute.getAttributeName());
+        }
     }
 
 }

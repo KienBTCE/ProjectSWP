@@ -36,4 +36,44 @@ public class CategoryDAO {
         }
         return list;
     }
+
+    public int getCategoryIdByName(String categoryName) {
+        int categoryId = -1;
+        String query = "SELECT CategoryID FROM Categories WHERE Name = ?";
+        try {
+            PreparedStatement ps = connector.prepareStatement(query);
+            ps.setString(1, categoryName);
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                categoryId = rs.getInt("CategoryID");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return categoryId;
+    }
+
+    public List<Category> getAllCategory() {
+        List<Category> list = new ArrayList<>();
+        String query = "SELECT * FROM Categories";
+        try {
+            PreparedStatement ps = connector.prepareStatement(query);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                list.add(new Category(rs.getInt(1), rs.getString(2)));
+            }
+        } catch (SQLException e) {
+            System.out.println(e);
+        }
+        return list;
+    }
+
+    public static void main(String[] args) {
+        CategoryDAO c = new CategoryDAO();
+        System.out.println(c.getCategoryIdByName("Laptop"));
+        List<String> l = c.getAllCategoryNames();
+        for (String string : l) {
+            System.out.println(string);
+        }
+    }
 }

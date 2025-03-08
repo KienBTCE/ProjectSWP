@@ -13,7 +13,6 @@ import Models.ImportOrderDetail;
 import Models.Product;
 import Models.Supplier;
 import java.io.IOException;
-import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
@@ -91,6 +90,7 @@ public class UpdateImportOrderServlet extends HttpServlet {
             } catch (NullPointerException e) {
                 System.out.println(e);
             }
+
         } else if (request.getParameter("importStockId") != null) {
 //        if (request.getParameter("id") != null) {
 //            importId = Integer.parseInt(request.getParameter("id"));
