@@ -10,10 +10,13 @@ import Models.Product;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.jar.Attributes.Name;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -132,6 +135,45 @@ public class ProductDAO {
 
         return list;
     }
+    
+    public ArrayList<Product> filterProductsByPrice(ArrayList<String> filters) {
+        ArrayList<Product> list = null;
+
+        String query = "SELECT * FROM Products P JOIN Brands B ON P.BrandID = B.BrandID WHERE B.Name IN (SELECT Name FROM Brands WHERE ";
+
+        for (String filter : filters) {
+            query += filter;
+        }
+
+        query += ") AND P.IsDeleted = 0";
+
+//        System.out.println("QUERY " + query);
+        try {
+            PreparedStatement ps = connector.prepareStatement(query);
+            ResultSet rs = ps.executeQuery();
+            list = new ArrayList<>();
+            while (rs.next()) {
+                list.add(new Product(
+                        rs.getInt("ProductID"),
+                        rs.getInt("BrandID"),
+                        rs.getInt("CategoryID"),
+                        rs.getString("Model"),
+                        rs.getString("FullName"),
+                        rs.getString("Description"),
+                        rs.getInt("IsDeleted"),
+                        rs.getLong("Price"),
+                        rs.getString("Image"),
+                        rs.getInt("Quantity"),
+                        rs.getInt("Stock")
+                ));
+            }
+            return list;
+        } catch (SQLException e) {
+            System.out.println(e);
+        }
+
+        return list;
+    }
 
     public ArrayList<String> getAllBrandByCategory(String category) {
         ArrayList<String> list = null;
@@ -210,11 +252,15 @@ public class ProductDAO {
                         rs.getInt("isDeleted"),
                         rs.getLong("Price"),
                         rs.getString("Image"),
-                         rs.getString("Image1"),
-                         rs.getString("Image2"),
-                         rs.getString("Image3"),
+                        rs.getString("Image1"),
+                        rs.getString("Image2"),
+                        rs.getString("Image3"),
                         rs.getInt("Stock")
                 );
+                // Sử dụng đối tượng s đã có
+                AttributeDAO attributeDAO = new AttributeDAO();
+                List<AttributeDetail> attributes = attributeDAO.getAttributesByProductID(s.getProductId());
+                s.setAttributeDetails(attributes);
             }
             return s;
         } catch (SQLException ex) {
@@ -256,29 +302,67 @@ public class ProductDAO {
         return count;
     }
 
-    public int createProduct(Product p) {
-        int count = 0;
-        String query = "INSERT INTO Products (Model, FullName, IsDeleted, Price, BrandID, CategoryID) "
-                + "VALUES (?, ?, 1, ?, "
-                + "(SELECT BrandID FROM Brands WHERE Name = ?), "
-                + "(SELECT CategoryID FROM Categories WHERE Name = ?))";
-
-        try {
-            PreparedStatement ps = connector.prepareStatement(query);
-
-            ps.setString(1, p.getModel());
-            ps.setString(2, p.getFullName());
+//    public int createProduct(Product p) {
+//        int count = 0;
+//        String query = "INSERT INTO Products (Model, FullName, IsDeleted, Price, BrandID, CategoryID) "
+//                + "VALUES (?, ?, ?, ?, "
+//                + "(SELECT BrandID FROM Brands WHERE Name = ?), "
+//                + "(SELECT CategoryID FROM Categories WHERE Name = ?))";
+//
+//        try {
+//            PreparedStatement ps = connector.prepareStatement(query);
+//            ps.setString(1, p.getModel());
+//            ps.setString(2, p.getFullName());
 //            ps.setInt(3, p.getDeleted());
-            ps.setLong(3, p.getPrice());
-            ps.setString(4, p.getBrandName());
-            ps.setString(5, p.getCategoryName());
-
-            count = ps.executeUpdate();
-        } catch (SQLException ex) { // In lỗi ra console
-            // In lỗi ra console
-            Logger.getLogger(ProductDAO.class.getName()).log(Level.SEVERE, null, ex);
+//            ps.setLong(3, p.getPrice());
+//            ps.setString(4, p.getBrandName());
+//            ps.setString(5, p.getCategoryName());
+//
+//            count = ps.executeUpdate();
+//        } catch (SQLException ex) { // In lỗi ra console
+//            // In lỗi ra console
+//            Logger.getLogger(ProductDAO.class.getName()).log(Level.SEVERE, null, ex);
+//        }
+//        return count;
+//    }
+    public int createProduct(Product product) {
+        int effectRow = 0;
+        String sql = "INSERT INTO Products (BrandID, CategoryID, Model, FullName, Description, Price, Image, Image1, Image2, Image3) "
+                    + "VALUES ? , ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        try {
+            PreparedStatement ps = connector.prepareStatement(sql);
+            ps.setInt(1, product.getBrandId());  
+            ps.setInt(2, product.getCategoryId()); 
+            ps.setString(3, product.getModel());       
+            ps.setString(4, product.getFullName());     // Tên sản phẩm
+            ps.setString(5, product.getDescription());  // Mô tả sản phẩm
+            ps.setLong(6, product.getPrice());          // Giá sản phẩm
+            ps.setString(7, product.getImage());        // Hình ảnh chính
+            ps.setString(8, product.getImage1());       // Hình ảnh phụ 1
+            ps.setString(9, product.getImage2());       // Hình ảnh phụ 2
+            ps.setString(10, product.getImage3());      // Hình ảnh phụ 3
+            effectRow = ps.executeUpdate();
+        } catch (SQLException e) {
+            System.out.println(e);
         }
-        return count;
+        return effectRow;
+    }
+    
+    public void addProductAttributes(Product product) {
+        String query = "INSERT INTO AttributeDetails (AttributeID, ProductID, AttributeInfor) "
+                     + "VALUES (?, ?, ?)";
+        
+        try (PreparedStatement ps = connector.prepareStatement(query)) {
+            for (AttributeDetail attribute : product.getAttributeDetails()) {
+                ps.setInt(1, attribute.getAttributeId());      
+                ps.setInt(2, product.getProductId());          
+                ps.setString(3, attribute.getAttributeInfor());
+                ps.addBatch();
+            }
+            ps.executeBatch(); 
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
     public int updateProduct(Product p) {
@@ -361,7 +445,7 @@ public class ProductDAO {
 
             try ( ResultSet rs = ps.executeQuery()) {
                 while (rs.next()) {
-                    list.add(new Product(
+                    Product p = new Product(
                             rs.getInt("ProductID"),
                             rs.getString("CategoryName"),
                             rs.getString("BrandName"),
@@ -369,14 +453,120 @@ public class ProductDAO {
                             rs.getLong("Price"),
                             rs.getInt("Stock"),
                             rs.getInt("isDeleted")
-                    ));
+                    );
+                    p.setImage(rs.getString("Image"));
+                    list.add(p);
                 }
 
             }
         } catch (SQLException ex) {
             Logger.getLogger(ProductDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
-
         return list;
+    }
+
+    public List<Map<String, Object>> getSalesData(String period) throws SQLException {
+        String query = "SELECT FORMAT(OrderedDate, 'yyyy-MM-dd') AS date, SUM(Quantity) AS total "
+                + "FROM Orders JOIN OrderDetails ON Orders.OrderID = OrderDetails.OrderID "
+                + "WHERE OrderedDate >= DATEADD(" + period + ", -1, GETDATE()) "
+                + "GROUP BY FORMAT(OrderedDate, 'yyyy-MM-dd') ORDER BY date";
+        return executeQuery(query);
+    }
+
+    public List<Map<String, Object>> getTopSellingProducts() throws SQLException {
+        String query = "SELECT TOP 10 Products.FullName, SUM(OrderDetails.Quantity) AS totalSold "
+                + "FROM OrderDetails JOIN Products ON OrderDetails.ProductID = Products.ProductID "
+                + "GROUP BY Products.FullName ORDER BY totalSold DESC";
+        return executeQuery(query);
+    }
+
+    public List<Map<String, Object>> getLowStockProducts() throws SQLException {
+        String query = "SELECT FullName, Stock FROM Products WHERE Stock < 10 ORDER BY Stock ASC";
+        return executeQuery(query);
+    }
+
+    public List<Map<String, Object>> getCategorySales() throws SQLException {
+        String query = "SELECT Categories.Name, SUM(OrderDetails.Quantity) AS totalSold "
+                + "FROM OrderDetails JOIN Products ON OrderDetails.ProductID = Products.ProductID "
+                + "JOIN Categories ON Products.CategoryID = Categories.CategoryID "
+                + "GROUP BY Categories.Name ORDER BY totalSold DESC";
+        return executeQuery(query);
+    }
+
+    private List<Map<String, Object>> executeQuery(String query) throws SQLException {
+        List<Map<String, Object>> data = new ArrayList<>();
+        try (
+                 Statement stmt = connector.createStatement();  ResultSet rs = stmt.executeQuery(query)) {
+            while (rs.next()) {
+                Map<String, Object> record = new HashMap<>();
+                ResultSetMetaData metaData = rs.getMetaData();
+                for (int i = 1; i <= metaData.getColumnCount(); i++) {
+                    record.put(metaData.getColumnName(i), rs.getObject(i));
+                }
+                data.add(record);
+            }
+        }
+        return data;
+    }
+
+    public Map<String, Object> getDashboardStats() throws SQLException {
+        Map<String, Object> stats = new HashMap<>();
+        String query
+                = "SELECT "
+                + "    (SELECT COUNT(*) FROM Customers) AS totalCustomers, "
+                + "    (SELECT COUNT(*) FROM Products) AS totalProducts, "
+                + "    (SELECT SUM(Stock) FROM Products) AS totalInventory, "
+                + "    (SELECT COUNT(*) FROM Orders) AS totalOrders";
+
+        try ( Statement stmt = connector.createStatement();  ResultSet rs = stmt.executeQuery(query)) {
+            if (rs.next()) {
+                stats.put("totalCustomers", rs.getInt("totalCustomers"));
+                stats.put("totalProducts", rs.getInt("totalProducts"));
+                stats.put("totalInventory", rs.getInt("totalInventory"));
+                stats.put("totalOrders", rs.getInt("totalOrders"));
+            }
+        }
+        return stats;
+    }
+
+    public List<Map<String, Object>> getWeeklySales(String category) throws SQLException {
+        List<Map<String, Object>> sales = new ArrayList<>();
+        String query
+                = "SELECT p.FullName, SUM(od.Quantity) AS totalSold "
+                + "FROM OrderDetails od "
+                + "JOIN Products p ON od.ProductID = p.ProductID "
+                + "JOIN Categories c ON p.CategoryID = c.CategoryID "
+                + "WHERE c.Name = ? AND od.OrderID IN ( "
+                + "    SELECT OrderID FROM Orders WHERE OrderedDate >= DATEADD(DAY, -7, GETDATE()) "
+                + ") "
+                + "GROUP BY p.FullName ORDER BY totalSold DESC";
+
+        try ( PreparedStatement stmt = connector.prepareStatement(query)) {
+            stmt.setString(1, category);
+            ResultSet rs = stmt.executeQuery();
+            while (rs.next()) {
+                Map<String, Object> data = new HashMap<>();
+                data.put("productName", rs.getString("FullName"));
+                data.put("totalSold", rs.getInt("totalSold"));
+                sales.add(data);
+            }
+        }
+        return sales;
+    }
+
+    public List<Map<String, Object>> getNewCustomers() throws SQLException {
+        List<Map<String, Object>> customers = new ArrayList<>();
+        String query
+                = "SELECT TOP 2 FullName, Email FROM Customers ORDER BY CreatedDate DESC";
+
+        try ( Statement stmt = connector.createStatement();  ResultSet rs = stmt.executeQuery(query)) {
+            while (rs.next()) {
+                Map<String, Object> customer = new HashMap<>();
+                customer.put("name", rs.getString("FullName"));
+                customer.put("email", rs.getString("Email"));
+                customers.add(customer);
+            }
+        }
+        return customers;
     }
 }

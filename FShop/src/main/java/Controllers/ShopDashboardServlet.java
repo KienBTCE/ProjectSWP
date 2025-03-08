@@ -4,24 +4,24 @@
  */
 package Controllers;
 
-import DAOs.AddressDAO;
-import Models.Address;
-import Models.Customer;
+import DAOs.ProductDAO;
+import com.google.gson.Gson;
+import jakarta.servlet.RequestDispatcher;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
-import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import jakarta.servlet.http.HttpSession;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  *
- * @author nhutb
+ * @author ThyLTKCE181577
  */
-@WebServlet(name = "AddAddressServlet", urlPatterns = {"/AddAddress"})
-public class AddAddressServlet extends HttpServlet {
+public class ShopDashboardServlet extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -40,10 +40,10 @@ public class AddAddressServlet extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet AddAddressServlet</title>");
+            out.println("<title>Servlet ShopDashboardServlet</title>");
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet AddAddressServlet at " + request.getContextPath() + "</h1>");
+            out.println("<h1>Servlet ShopDashboardServlet at " + request.getContextPath() + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }
@@ -61,7 +61,28 @@ public class AddAddressServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        try {
+            ProductDAO productDAO = new ProductDAO();
+            // Lấy dữ liệu từ DAO
+            Map<String, Object> stats = productDAO.getDashboardStats();
+            List<Map<String, Object>> weeklySalesPhone = productDAO.getWeeklySales("Phone");
+            List<Map<String, Object>> weeklySalesLaptop = productDAO.getWeeklySales("Laptop");
+            List<Map<String, Object>> topProducts = productDAO.getTopSellingProducts();
+            List<Map<String, Object>> newCustomers = productDAO.getNewCustomers();
+
+            // Đưa dữ liệu vào request để truyền sang JSP
+            request.setAttribute("stats", stats);
+            request.setAttribute("weeklySalesPhone", weeklySalesPhone);
+            request.setAttribute("weeklySalesLaptop", weeklySalesLaptop);
+            request.setAttribute("topProducts", topProducts);
+            request.setAttribute("newCustomers", newCustomers);
+
+            // Chuyển hướng đến JSP
+            RequestDispatcher dispatcher = request.getRequestDispatcher("ShopManagerDashboardView.jsp");
+            dispatcher.forward(request, response);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     /**
@@ -75,32 +96,7 @@ public class AddAddressServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        HttpSession session = request.getSession();
-        Customer cus = (Customer) session.getAttribute("customer");
-
-        if (cus != null) {
-            String url = request.getParameter("currentAddressPage");
-            System.out.println("Context: " + url);
-            AddressDAO add = new AddressDAO();
-            String province = request.getParameter("province");
-            String district = request.getParameter("district");
-            String ward = request.getParameter("ward");
-            String address = request.getParameter("address");
-            String addressDetails = address + ", " + ward + ", " + district + ", " + province;
-            if (request.getParameter("isDefault") != null) {
-                int id = add.addAddress(new Address(cus.getId(), 1, addressDetails));
-                add.disableDefaultAddress(id, cus.getId());
-                session.setAttribute("message", "Add Address Successfully");
-            } else {
-                add.addAddress(new Address(cus.getId(), 0, addressDetails));
-                session.setAttribute("message", "Add Address Successfully");
-            }
-            if (url.equalsIgnoreCase("addressPage")) {
-                response.sendRedirect("ViewShippingAddress");
-            } else if (url.equalsIgnoreCase("forOrder")) {
-                response.sendRedirect("ViewShippingAddress?action=forOrder");
-            }
-        }
+        processRequest(request, response);
     }
 
     /**

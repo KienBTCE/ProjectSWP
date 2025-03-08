@@ -70,8 +70,8 @@ public class ViewProductServlet extends HttpServlet {
                 }
 
             }
+            
             String price = request.getParameter("price");
-
             if (price != null) {
                 ArrayList<String> priceFilters = new ArrayList<>();
 
@@ -225,7 +225,7 @@ public class ViewProductServlet extends HttpServlet {
 
             try {
                 request.setAttribute("products", products);
-                request.getRequestDispatcher("ProductListView.jsp").forward(request, response);
+                request.getRequestDispatcher("HomeView.jsp").forward(request, response);
             } catch (NullPointerException e) {
                 System.out.println(e);
             }

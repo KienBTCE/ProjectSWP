@@ -77,16 +77,27 @@ public class ImportStockServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 //        processRequest(request, response);
+        String status = request.getParameter("status");
+        if (status != null) {
+            System.out.println("OOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO");
+            selectedProducts = null;
+            detailList.clear();
+            s = null;
+            sum = 0L;
 
-        try {
-            request.setAttribute("supplier", s);
-            request.setAttribute("suppliers", sd.getAllActivatedSuppliers());
-            request.setAttribute("products", pd.getAllProducts());
-            request.setAttribute("selectedProducts", detailList);
-            request.getRequestDispatcher("ImportStockView.jsp").forward(request, response);
-        } catch (NullPointerException e) {
-            System.out.println(e);
+            response.sendRedirect("ImportOrder");
+        } else {
+            try {
+                request.setAttribute("supplier", s);
+                request.setAttribute("suppliers", sd.getAllActivatedSuppliers());
+                request.setAttribute("products", pd.getAllProducts());
+                request.setAttribute("selectedProducts", detailList);
+                request.getRequestDispatcher("ImportStockView.jsp").forward(request, response);
+            } catch (NullPointerException e) {
+                System.out.println(e);
+            }
         }
+
     }
 
     /**
