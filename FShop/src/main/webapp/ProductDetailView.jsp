@@ -14,6 +14,7 @@
         <!-- Google Font (optional) -->
         <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&display=swap" rel="stylesheet">
         <!-- Custom CSS -->
+        <link rel="stylesheet" href="./assets/css/popup.css"/>
         <style>
             body {
                 font-family: 'Montserrat', sans-serif;
@@ -270,8 +271,11 @@
                                     </button>
                                 </form>
                                 <!-- Buy Now form -->
-                                <form action="BuyNow?productID=${product.productId}" method="POST" class="d-inline">
+                                <form action="order" method="POST" class="d-inline">
                                     <input type="hidden" name="quantity" id="quantityInputHiddenBuyNow" value="1">
+                                    <input type="text" name="orderUrl" id="" value="buyNow" hidden>
+                                    <input type="text" name="productSelected" value="${product.productId}" hidden>
+                                    <input type="text" name="buyProductAction" value="checkout" hidden>
                                     <button type="submit" class="btn btn-buy-now">
                                         Buy Now
                                     </button>

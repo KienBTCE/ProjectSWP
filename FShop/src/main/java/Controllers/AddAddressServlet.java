@@ -88,11 +88,11 @@ public class AddAddressServlet extends HttpServlet {
                 int id = add.addAddress(new Address(cus.getId(), 1, addressDetails));
                 add.disableDefaultAddress(id, cus.getId());
                 session.setAttribute("message", "Add Address Successfully");
-                response.sendRedirect("ViewShippingAddress");
+                response.sendRedirect("ViewShippingAddress?action=forOrder");
             } else {
                 add.addAddress(new Address(cus.getId(), 0, addressDetails));
                 session.setAttribute("message", "Add Address Successfully");
-                response.sendRedirect("ViewShippingAddress");
+                response.sendRedirect("ViewShippingAddress?action=forOrder");
             }
         }
     }

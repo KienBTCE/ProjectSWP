@@ -44,6 +44,7 @@
                                         <th class="th" style="width: 5%;"></th>
                                     </tr>
                                     <form id="cartSelected" action="order" method="post">
+                                        <input type="text" name="orderUrl" value="Cart" hidden>
                                         <c:forEach items="${sessionScope.cartList}" var="p">
                                             <c:if test="${p.getQuantity() > 0}">
                                                 <tr>

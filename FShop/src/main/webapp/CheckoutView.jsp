@@ -81,7 +81,7 @@
                                     <textarea rows="2" cols="50" style="
                                               width: 70%; border: black solid 1px;" name="address" type="text" class="form-control" value="" placeholder="" readonly>${shipAddress}</textarea>
                                 </div>
-                                <a href="url">Change address</a>
+                                <a href="ViewShippingAddress?action=forOrder">Change address</a>
                                 <!--                                <form> 
                                                                     <div class="form-group">
                                                                         <div class="control-label">Street Address *</div>
@@ -161,7 +161,7 @@
                         <path d="M0 1L385 0.999966" stroke="#CACDD8" />
                         </svg>
 
-                        <p> ${numOfItems} Items in Cart</p>
+                        <p> ${numOfItems} Items </p>
                         <c:forEach items="${sessionScope.cartSelected}" var="p">
                             <div style="display: flex; column-gap: 20px;">
                                 <div><img

@@ -76,7 +76,6 @@ public class UpdateImportOrderServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 //        processRequest(request, response);
-<<<<<<< HEAD
         if (request.getParameter("id") != null) {
             importId = Integer.parseInt(request.getParameter("id"));
             io = ioD.getImportOrderByID(Integer.parseInt(request.getParameter("id")));
@@ -93,7 +92,6 @@ public class UpdateImportOrderServlet extends HttpServlet {
                 System.out.println(e);
             }
         } else if (request.getParameter("importStockId") != null) {
-=======
 //        if (request.getParameter("id") != null) {
 //            importId = Integer.parseInt(request.getParameter("id"));
 //            io = ioD.getImportOrderByID(Integer.parseInt(request.getParameter("id")));
@@ -110,7 +108,6 @@ public class UpdateImportOrderServlet extends HttpServlet {
 //                System.out.println(e);
 //            }
 //        } else if (request.getParameter("importStockId") != null) {
->>>>>>> e970b5f46f0f695d60f087e3866ee8494fd0e869
 //            int count = ioD.importStock(Integer.parseInt(request.getParameter("importStockId")), iodD.calculateTotalPrice(importId));
 //            if (count != -1) {
 //                response.sendRedirect("ImportOrder?id=" + importId);
@@ -118,11 +115,8 @@ public class UpdateImportOrderServlet extends HttpServlet {
 //                HttpSession session = request.getSession();
 //                session.setAttribute("error", "There are no any product is imported");
 //            }
-<<<<<<< HEAD
         }
-=======
-//        }
->>>>>>> e970b5f46f0f695d60f087e3866ee8494fd0e869
+
     }
 
     /**
