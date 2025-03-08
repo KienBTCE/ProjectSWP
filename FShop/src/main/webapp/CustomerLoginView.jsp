@@ -194,6 +194,11 @@
 
                             <button class="summit" type="submit">Sign In</button>
                             <a class="forgotpass" href="SendMailServlet">Forgot Your Password?</a>
+                            <div style="display: flex; align-items: center; text-align: center;">
+                                <hr style="flex: 1; border: none; border-top: 1px solid #ccc; margin: 0;">
+                                <span style="padding: 0 10px; color: #666; font-weight: bold;">OR</span>
+                                <hr style="flex: 1; border: none; border-top: 1px solid #ccc; margin: 0;">
+                            </div>
                             <br>
                             <a style="width: 100%" class="btn btn-danger" href="https://accounts.google.com/o/oauth2/auth?scope=email%20profile%20openid&redirect_uri=http://localhost:8080/GoogleLogin&response_type=code&client_id=1041129117035-jujhcv76iq77j9a3t75g3m451ku5b1lb.apps.googleusercontent.com&approval_prompt=force">
                                 <img src="./assets/imgs/icon/google.png" alt="Google" width="30px" height="30px"/> Login With Google Account
