@@ -63,7 +63,13 @@ public class RequestToDeleteAccountServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        System.out.println("Request to delete account received");
+        HttpSession session = request.getSession();
+        Customer cus = (Customer) session.getAttribute("customer");
+
+        String otp = generateOTP();
+        session.setAttribute("otp", otp);
+
+        sendOTPEmail(cus.getEmail(), otp, cus.getFullName());
 
         // Tạo phản hồi JSON
         response.setContentType("application/json");
@@ -71,7 +77,7 @@ public class RequestToDeleteAccountServlet extends HttpServlet {
 
         // Giả sử phản hồi thành công, gửi JSON về client
         try ( PrintWriter out = response.getWriter()) {
-            out.write("{\"status\": \"success\", \"message\": \"Account deletion modal triggered\"}");
+            out.write("{\"status\": \"success\"}");
             out.flush();
         }
     }
@@ -88,25 +94,42 @@ public class RequestToDeleteAccountServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         String password = request.getParameter("confirmPassword");
+        String confirmOTP = request.getParameter("OTP");
 
         HttpSession session = request.getSession();
         CustomerDAO cusDAO = new CustomerDAO();
         Customer cus = (Customer) session.getAttribute("customer");
 
-        if (cusDAO.cofirmPassword(cus.getId(), password) > 0) {
-            if (cusDAO.requestToDeleteAccount(cus.getId()) > 0) {
-                response.sendRedirect("/Logout");
+        if (password != null) {
+            if (cusDAO.cofirmPassword(cus.getId(), password) > 0) {
+                if (cusDAO.requestToDeleteAccount(cus.getId()) > 0) {
+                    response.sendRedirect("/Logout");
+                } else {
+                    session.setAttribute("message", "Delete is not suscess!");
+                    response.sendRedirect("/viewCustomerProfile");
+                }
             } else {
-                session.setAttribute("message", "Delete is not suscess!");
-                request.setAttribute("profilePage", "CustomerProfile.jsp");
-                request.getRequestDispatcher("ProfileManagementView.jsp").forward(request, response);
+                session.setAttribute("message", "Your cofirm password is not correct!");
+                response.sendRedirect("/viewCustomerProfile");
             }
-        } else {
-            session.setAttribute("message", "Your cofirm password is not correct!");
-            request.setAttribute("profilePage", "CustomerProfile.jsp");
-            request.getRequestDispatcher("ProfileManagementView.jsp").forward(request, response);
         }
-
+        
+        if(confirmOTP != null){
+            String OTP = (String) session.getAttribute("otp");
+            if (confirmOTP.equals(OTP)) {
+                if (cusDAO.requestToDeleteAccount(cus.getId()) > 0) {
+                    response.sendRedirect("/Logout");
+                } else {
+                    session.setAttribute("message", "Delete was not successful!");
+                    response.sendRedirect("/viewCustomerProfile");
+                }
+            } else {
+                session.setAttribute("message", "Your confirm OTP is incorrect!");
+                response.sendRedirect("/viewCustomerProfile");
+            }
+            
+        }
+        processRequest(request, response);
     }
 
     private String generateOTP() {

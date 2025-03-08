@@ -175,6 +175,20 @@ public class CustomerDAO {
         }
         return 0;
     }
+    
+    public int checkGoogleEmailExisted(String email) {
+        try {
+            PreparedStatement pr = connector.prepareStatement("SELECT * FROM Customers WHERE Email = ? AND IsDeleted = 0;");
+            pr.setString(1, email);
+            ResultSet rs = pr.executeQuery();
+            if (rs.next()) {
+                return 1;
+            }
+        } catch (SQLException e) {
+            System.out.println(e + " ");
+        }
+        return 0;
+    }
 
     public int addNewCustomer(Customer ctm) {
         try {

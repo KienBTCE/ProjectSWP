@@ -165,7 +165,9 @@
                                     <div class="droppeddown-menu">
                                         <a href="#" class="menu-item load-content" data-url="CustomerProfileView.jsp">My profile</a>
                                         <a href="ViewShippingAddress?profilePage=AddressView.jsp" class="menu-item">Address</a>
-                                        <a href="#" class="menu-item load-content" data-url="ChangeCustomerPasswordView.jsp">Change password</a>
+                                        <c:if test="${empty sessionScope.customer.getGoogleId()}">
+                                            <a href="#" class="menu-item load-content" data-url="ChangeCustomerPasswordView.jsp">Change password</a>
+                                        </c:if>
                                         <a href="#" class="menu-item text-danger" onclick="openDeleteAccountModal()">Request To Delete Account</a>
 
 
@@ -182,6 +184,7 @@
                 </div>
             </main>
 
+            <div id="loadingScreen" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background-color:rgba(255, 255, 255, 0.8); justify-content:center; align-items:center; font-size:24px; color:#007bff; z-index:1050;">Loading...</div>
             <div class="modal fade" id="confirmDeleteAccount" tabindex="-1" aria-labelledby="confirmDeleteAccountLabel" aria-hidden="true">
                 <div class="modal-dialog">
                     <div class="modal-content">
@@ -202,20 +205,20 @@
                                 </div>
                                 <div class="modal-footer">
                                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                                    <button type="submit" class="btn btn-danger">Delete Account</button>
+                                    <button type="submit" class="btn btn-danger" id="deleteButton">Delete Account</button>
                                 </div>
                             </form>
                         </c:if>
                         <c:if test="${not empty sessionScope.customer.googleId}">
                             <p>Are you sure you want to delete your account? Please enter OTP. Please check your email.</p>
-                            <form id="deleteAccountForm" method="POST" action="requestToDeleteGoogleAccount">
+                            <form id="deleteAccountForm" method="POST" action="requestToDeleteAccount" onsubmit="showButtonLoading(this)">
                                 <div class="mb-3">
                                     <label for="confirmPassword" class="form-label">Enter OTP:</label>
                                     <input type="text" class="form-control" id="OTP" name="OTP" required>
                                 </div>
                                 <div class="modal-footer">
                                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                                    <button type="submit" class="btn btn-danger">Delete Account</button>
+                                    <button type="submit" class="btn btn-danger" id="deleteButton">Delete Account</button>
                                 </div>
                             </form>
                         </c:if>
@@ -223,6 +226,7 @@
                 </div>
             </div>
         </div>
+
         <%
             String message = (String) session.getAttribute("message");
             System.out.println("Session message: " + message + request.getRequestURI());
@@ -245,19 +249,24 @@
             function openDeleteAccountModal() {
                 console.log("Calling servlet...");
 
+                const loadingScreen = document.getElementById('loadingScreen');
+                loadingScreen.style.display = 'flex'; // Chỉ hiện khi bắt đầu gọi request
+
                 $.ajax({
-                    url: 'requestToDeleteAccount', // Tên servlet
+                    url: 'requestToDeleteAccount',
                     type: 'GET',
                     success: function (response) {
-                        console.log(response); // Kiểm tra phản hồi
-                        $('#confirmDeleteAccount').modal('show'); // Hiện modal
+                        console.log(response);
+                        loadingScreen.style.display = 'none'; // Ẩn khi thành công
+                        $('#confirmDeleteAccount').modal('show');
                     },
                     error: function (xhr, status, error) {
-                        console.log("Error:", error); // Nếu lỗi
+                        console.log("Error:", error);
+                        loadingScreen.style.display = 'none'; // Ẩn nếu có lỗi
                     }
                 });
             }
-            
+
             function confirmLogout() {
                 if (confirm("Are you sure you want to log out?")) {
                     // Chuyển hướng tới trang logout hoặc gọi API logout
