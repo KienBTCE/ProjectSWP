@@ -91,14 +91,14 @@ public class UpdateImportOrderServlet extends HttpServlet {
             } catch (NullPointerException e) {
                 System.out.println(e);
             }
-        } else if (request.getParameter("importStockId") != null) {
-            int count = ioD.importStock(Integer.parseInt(request.getParameter("importStockId")), iodD.calculateTotalPrice(importId));
-            if (count != -1) {
-                response.sendRedirect("ImportOrder?id=" + importId);
-            } else {
-                HttpSession session = request.getSession();
-                session.setAttribute("error", "There are no any product is imported");
-            }
+//        } else if (request.getParameter("importStockId") != null) {
+//            int count = ioD.importStock(Integer.parseInt(request.getParameter("importStockId")), iodD.calculateTotalPrice(importId));
+//            if (count != -1) {
+//                response.sendRedirect("ImportOrder?id=" + importId);
+//            } else {
+//                HttpSession session = request.getSession();
+//                session.setAttribute("error", "There are no any product is imported");
+//            }
         }
     }
 

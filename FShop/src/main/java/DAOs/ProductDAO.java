@@ -210,9 +210,9 @@ public class ProductDAO {
                         rs.getInt("isDeleted"),
                         rs.getLong("Price"),
                         rs.getString("Image"),
-                         rs.getString("Image1"),
-                         rs.getString("Image2"),
-                         rs.getString("Image3"),
+                        rs.getString("Image1"),
+                        rs.getString("Image2"),
+                        rs.getString("Image3"),
                         rs.getInt("Stock")
                 );
             }
@@ -256,29 +256,67 @@ public class ProductDAO {
         return count;
     }
 
-    public int createProduct(Product p) {
-        int count = 0;
-        String query = "INSERT INTO Products (Model, FullName, IsDeleted, Price, BrandID, CategoryID) "
-                + "VALUES (?, ?, 1, ?, "
-                + "(SELECT BrandID FROM Brands WHERE Name = ?), "
-                + "(SELECT CategoryID FROM Categories WHERE Name = ?))";
-
-        try {
-            PreparedStatement ps = connector.prepareStatement(query);
-
-            ps.setString(1, p.getModel());
-            ps.setString(2, p.getFullName());
+//    public int createProduct(Product p) {
+//        int count = 0;
+//        String query = "INSERT INTO Products (Model, FullName, IsDeleted, Price, BrandID, CategoryID) "
+//                + "VALUES (?, ?, ?, ?, "
+//                + "(SELECT BrandID FROM Brands WHERE Name = ?), "
+//                + "(SELECT CategoryID FROM Categories WHERE Name = ?))";
+//
+//        try {
+//            PreparedStatement ps = connector.prepareStatement(query);
+//            ps.setString(1, p.getModel());
+//            ps.setString(2, p.getFullName());
 //            ps.setInt(3, p.getDeleted());
-            ps.setLong(3, p.getPrice());
-            ps.setString(4, p.getBrandName());
-            ps.setString(5, p.getCategoryName());
-
-            count = ps.executeUpdate();
-        } catch (SQLException ex) { // In lỗi ra console
-            // In lỗi ra console
-            Logger.getLogger(ProductDAO.class.getName()).log(Level.SEVERE, null, ex);
+//            ps.setLong(3, p.getPrice());
+//            ps.setString(4, p.getBrandName());
+//            ps.setString(5, p.getCategoryName());
+//
+//            count = ps.executeUpdate();
+//        } catch (SQLException ex) { // In lỗi ra console
+//            // In lỗi ra console
+//            Logger.getLogger(ProductDAO.class.getName()).log(Level.SEVERE, null, ex);
+//        }
+//        return count;
+//    }
+    public int createProduct(Product product) {
+        int effectRow = 0;
+        String sql = "INSERT INTO Products (BrandID, CategoryID, Model, FullName, Description, Price, Image, Image1, Image2, Image3) "
+                    + "VALUES ? , ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        try {
+            PreparedStatement ps = connector.prepareStatement(sql);
+            ps.setInt(1, product.getBrandId());  
+            ps.setInt(2, product.getCategoryId()); 
+            ps.setString(3, product.getModel());       
+            ps.setString(4, product.getFullName());     // Tên sản phẩm
+            ps.setString(5, product.getDescription());  // Mô tả sản phẩm
+            ps.setLong(6, product.getPrice());          // Giá sản phẩm
+            ps.setString(7, product.getImage());        // Hình ảnh chính
+            ps.setString(8, product.getImage1());       // Hình ảnh phụ 1
+            ps.setString(9, product.getImage2());       // Hình ảnh phụ 2
+            ps.setString(10, product.getImage3());      // Hình ảnh phụ 3
+            effectRow = ps.executeUpdate();
+        } catch (SQLException e) {
+            System.out.println(e);
         }
-        return count;
+        return effectRow;
+    }
+    
+    public void addProductAttributes(Product product) {
+        String query = "INSERT INTO AttributeDetails (AttributeID, ProductID, AttributeInfor) "
+                     + "VALUES (?, ?, ?)";
+        
+        try (PreparedStatement ps = connector.prepareStatement(query)) {
+            for (AttributeDetail attribute : product.getAttributeDetails()) {
+                ps.setInt(1, attribute.getAttributeId());      
+                ps.setInt(2, product.getProductId());          
+                ps.setString(3, attribute.getAttributeInfor());
+                ps.addBatch();
+            }
+            ps.executeBatch(); 
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
     public int updateProduct(Product p) {

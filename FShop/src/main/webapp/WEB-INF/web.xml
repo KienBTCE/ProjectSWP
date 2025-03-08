@@ -17,10 +17,6 @@
         <servlet-class>Controllers.CustomerStatusServlet</servlet-class>
     </servlet>
     <servlet>
-        <servlet-name>CreateProductServlet</servlet-name>
-        <servlet-class>Controllers.CreateProductServlet</servlet-class>
-    </servlet>
-    <servlet>
         <servlet-name>CreateSupplierServlet</servlet-name>
         <servlet-class>Controllers.CreateSupplierServlet</servlet-class>
     </servlet>
@@ -132,6 +128,14 @@
         <servlet-name>DeleteImportOrderServlet</servlet-name>
         <servlet-class>Controllers.DeleteImportOrderServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>CreateProductServlet</servlet-name>
+        <servlet-class>Controllers.CreateProductServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>CreateProductServlet</servlet-name>
+        <url-pattern>/CreateProductServlet</url-pattern>
+    </servlet-mapping>
     <servlet-mapping>
         <servlet-name>default</servlet-name>
         <url-pattern>/assets/*</url-pattern>
@@ -191,10 +195,6 @@
     <servlet-mapping>
         <servlet-name>CustomerStatusServlet</servlet-name>
         <url-pattern>/CustomerStatusServlet</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>CreateProductServlet</servlet-name>
-        <url-pattern>/CreateProductServlet</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>CreateSupplierServlet</servlet-name>
