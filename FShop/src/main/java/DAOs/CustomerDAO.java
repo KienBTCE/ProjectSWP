@@ -198,6 +198,54 @@ public class CustomerDAO {
         return 0;
     }
 
+    public int addNewGoogleCustomer(Customer ctm) {
+        try {
+            PreparedStatement pr = connector.prepareStatement(
+                    "INSERT INTO Customers (FullName, Email, Password, CreatedDate, IsBlock, IsDeleted, Avatar)"
+                    + "VALUES (?, ?, '', GETDATE(), 0, 0, '');"
+            );
+            pr.setString(1, ctm.getFullName());
+            pr.setString(2, ctm.getEmail());
+
+            int rs = pr.executeUpdate();
+            return rs;
+        } catch (SQLException e) {
+            System.out.println("Lỗi khi thêm khách hàng: " + e.getMessage());
+        }
+        return 0;
+    }
+
+    public Customer getGoogleCustomer(String email) {
+        String sql = "SELECT * FROM Customers WHERE Email = ? AND IsBlock = 0 AND IsDeleted = 0";
+        try ( PreparedStatement ps = connector.prepareStatement(sql)) {
+            ps.setString(1, email);
+
+            try ( ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    return new Customer(
+                            rs.getInt("CustomerID"),
+                            rs.getString("FullName"),
+                            null,
+                            rs.getString("Birthday"),
+                            rs.getString("Gender"),
+                            rs.getString("PhoneNumber"),
+                            rs.getString("Email"),
+                            rs.getString("CreatedDate"),
+                            rs.getInt("IsBlock"),
+                            rs.getInt("IsDeleted"),
+                            rs.getString("Avatar")
+                    );
+                }
+            }
+        } catch (SQLException e) {
+            System.err.println(e.getMessage());
+        } catch (Exception e) {
+            System.err.println(e.getMessage());
+        }
+
+        return null; // Không tìm thấy khách hàng
+    }
+
     public int updateCustomerProfile(Customer cus) {
         try {
             PreparedStatement pr = connector.prepareStatement(
