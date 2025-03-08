@@ -92,13 +92,19 @@ public class UpdateAddressServlet extends HttpServlet {
                 String ward = request.getParameter("ward");
                 String address = request.getParameter("address");
                 String addressDetails = address + ", " + ward + ", " + district + ", " + province;
-                if (request.getParameter("isDefault") != null) {
-                    add.updateAddress(new Address(id, cus.getId(), 1, addressDetails));
-                    add.disableDefaultAddress(id, cus.getId());
-                    session.setAttribute("message", "Update Address Successfully");
+                Address addObj = add.getAddressByID(id);
+                if (addObj.getIsDefault() == 1) {
+                    addObj.setAddressDetails(addressDetails);
+                    add.updateAddress(addObj);
                 } else {
-                    add.updateAddress(new Address(id, cus.getId(), 0, addressDetails));
-                    session.setAttribute("message", "Update Address Successfully");
+                    if (request.getParameter("isDefault") != null) {
+                        add.updateAddress(new Address(id, cus.getId(), 1, addressDetails));
+                        add.disableDefaultAddress(id, cus.getId());
+                        session.setAttribute("message", "Update Address Successfully");
+                    } else {
+                        add.updateAddress(new Address(id, cus.getId(), 0, addressDetails));
+                        session.setAttribute("message", "Update Address Successfully");
+                    }
                 }
             }
 
