@@ -211,7 +211,7 @@
                         </c:if>
                         <c:if test="${not empty sessionScope.customer.googleId}">
                             <p>Are you sure you want to delete your account? Please enter OTP. Please check your email.</p>
-                            <form id="deleteAccountForm" method="POST" action="requestToDeleteAccount" onsubmit="showButtonLoading(this)">
+                            <form id="deleteAccountForm" method="POST" action="requestToDeleteAccount">
                                 <div class="mb-3">
                                     <label for="confirmPassword" class="form-label">Enter OTP:</label>
                                     <input type="text" class="form-control" id="OTP" name="OTP" required>

@@ -66,6 +66,19 @@ public class RequestToDeleteAccountServlet extends HttpServlet {
         HttpSession session = request.getSession();
         Customer cus = (Customer) session.getAttribute("customer");
 
+        if (cus == null || cus.getGoogleId() == null || cus.getGoogleId().trim().isEmpty()) {
+            // Tạo phản hồi JSON
+            response.setContentType("application/json");
+            response.setCharacterEncoding("UTF-8");
+
+            // Giả sử phản hồi thành công, gửi JSON về client
+            try ( PrintWriter out = response.getWriter()) {
+                out.write("{\"status\": \"success\"}");
+                out.flush();
+            }
+            return;
+        }
+
         String otp = generateOTP();
         session.setAttribute("otp", otp);
 
@@ -113,8 +126,8 @@ public class RequestToDeleteAccountServlet extends HttpServlet {
                 response.sendRedirect("/viewCustomerProfile");
             }
         }
-        
-        if(confirmOTP != null){
+
+        if (confirmOTP != null) {
             String OTP = (String) session.getAttribute("otp");
             if (confirmOTP.equals(OTP)) {
                 if (cusDAO.requestToDeleteAccount(cus.getId()) > 0) {
@@ -127,7 +140,7 @@ public class RequestToDeleteAccountServlet extends HttpServlet {
                 session.setAttribute("message", "Your confirm OTP is incorrect!");
                 response.sendRedirect("/viewCustomerProfile");
             }
-            
+
         }
         processRequest(request, response);
     }
