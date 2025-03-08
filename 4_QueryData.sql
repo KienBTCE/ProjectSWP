@@ -181,3 +181,5 @@ DELETE ImportOrderDetails WHERE ProductID = 3 AND IOID = 5
 DELETE ImportOrderDetails WHERE ProductID = 3 AND IOID = 5
 
 DELETE ImportOrders WHERE IOID in (13, 14, 15, 16)
+
+SELECT * FROM ImportOrders WHERE ImportDate BETWEEN '2025-03-06 00:00:00' AND '2025-03-06 23:59:59'

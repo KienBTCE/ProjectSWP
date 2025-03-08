@@ -132,6 +132,18 @@
         <servlet-name>DeleteImportOrderServlet</servlet-name>
         <servlet-class>Controllers.DeleteImportOrderServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>ProductStatisticServlet</servlet-name>
+        <servlet-class>Controllers.ProductStatisticServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>ShopDashboardServlet</servlet-name>
+        <servlet-class>Controllers.ShopDashboardServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>SearchSupplierServlet</servlet-name>
+        <servlet-class>Controllers.SearchSupplierServlet</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>default</servlet-name>
         <url-pattern>/assets/*</url-pattern>
@@ -267,6 +279,18 @@
     <servlet-mapping>
         <servlet-name>DeleteImportOrderServlet</servlet-name>
         <url-pattern>/DeleteImportOrder</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ProductStatisticServlet</servlet-name>
+        <url-pattern>/ProductStatisticServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ShopDashboardServlet</servlet-name>
+        <url-pattern>/ShopDashboardServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>SearchSupplierServlet</servlet-name>
+        <url-pattern>/SearchSupplier</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>30</session-timeout>
