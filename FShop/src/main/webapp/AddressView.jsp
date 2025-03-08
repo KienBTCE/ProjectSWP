@@ -43,14 +43,20 @@
 
     <body style="font-family: Arial, sans-serif; ">
         <%
+            String action = "";
             if (request.getParameter("action") != null) {
-                String action = request.getParameter("action");
+                action = request.getParameter("action");
                 if (action.equalsIgnoreCase("forOrder")) {
         %>
         <jsp:include page="header.jsp"></jsp:include>
             <br>
-            <a href="CheckoutView.jsp">Back to checkout</a>
             <div class="container">
+                <div style="display: flex; justify-content: space-between; align-items: center;"> 
+                    <a class="btn btn-primary" href="order">Back to checkout</a>
+                    <p>Please choose other address by setting as default.</p>
+                </div>
+                <br>
+
             <%
                     }
                 }
@@ -136,6 +142,18 @@
                                     </div>
                                     <c:if test="${ad.getIsDefault() == 0}">
                                         <form style="padding: 3px" method="POST" action="UpdateAddress?action=setAsDefault&id=${ad.getAddressID()}">
+                                            <%
+                                                if (!action.equalsIgnoreCase("") && action.equalsIgnoreCase("forOrder")) {
+                                            %>
+                                            <input type="type" name="currentAddressPage" value="forOrder" hidden>
+                                            <%
+                                            } else {
+
+                                            %>
+                                            <input type="type" name="currentAddressPage" value="addressPage" hidden>
+                                            <%                                                }
+                                            %>
+
                                             <button class="btn btn-default" type="submit"
                                                     style="background: #f5f5f5; padding: 5px 5px; cursor: pointer; border: none; margin-left: 5px;"
                                                     >Set as default</button>
@@ -151,7 +169,7 @@
             </div>
             <%
                 if (request.getParameter("action") != null) {
-                    String action = request.getParameter("action");
+                    action = request.getParameter("action");
                     if (action.equalsIgnoreCase("forOrder")) {
             %>
         </div>
@@ -182,10 +200,21 @@
         <div class="addoverlay" id="addoverlay" onclick=""></div>
 
         <div class="add" id="add">
+
             <div class="" style="display: flex; ">
                 <h4 class="title" id="popupLabel">Add Address</h4>
             </div>
             <form method="POST" action="AddAddress" id="formAddress">
+                <%
+                    if (!action.equalsIgnoreCase("") && action.equalsIgnoreCase("forOrder")) {
+                %>
+                <input type="type" name="currentAddressPage" value="forOrder" hidden>
+                <%
+                } else {
+                %>
+                <input type="type" name="currentAddressPage" value="addressPage" hidden>
+                <%                                                }
+                %>
                 <div class="mb-3">
                     <label for="city" class="form-label">Province</label>
                     <select class="form-select form-select-sm mb-3" name="province" id="city" aria-label=".form-select-sm" required>
@@ -220,8 +249,7 @@
                 </c:if>
                 <c:if test="${!sessionScope.addressList.isEmpty()}">
                     <div class="mb-3 form-check form-switch">
-                        <input type="hidden" name="isDefault" value="1">
-                        <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault">
+                        <input class="form-check-input" name="isDefault" type="checkbox" role="switch" id="flexSwitchCheckDefault">
                         <label class="form-check-label" for="flexSwitchCheckDefault" id="defaultSwitch">Set as default</label>
                     </div>
                 </c:if>

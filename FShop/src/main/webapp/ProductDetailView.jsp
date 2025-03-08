@@ -223,7 +223,7 @@
                         <!-- Product info section -->
                         <div class="col-md-6 product-info">
                             <h1>${product.fullName}</h1>
-                           
+
                             <!-- Price -->
                             <div class="price">
                                 ${product.getPriceFormatted()}
@@ -299,8 +299,26 @@
         <div class="popup" id="updatePopup" style="display: flex;">
             <div class="popup-content">
                 <h4>${sessionScope.message}</h4>
-                <div class="text-center mt-3">
-                    <button class="btn btn-primary" onclick="closePopup()">OK</button>
+                <div style="display: flex; justify-content: center;">
+                    <c:choose>
+                        <c:when test="${sessionScope.message.contains('add your address')}">
+                            <div>
+                                <a class="btn btn-success" href="ViewShippingAddress">OK</a>
+                                <a class="btn btn-danger text-white" onclick="closePopup()">Cancel</a>
+                            </div>
+                        </c:when>
+                        <c:when test="${sessionScope.message.contains('add your phone number')}">
+                            <div>
+                                <a class="btn btn-success" href="viewCustomerProfile">OK</a>
+                                <a class="btn btn-danger text-white" onclick="closePopup()">Cancel</a>
+                            </div>
+                        </c:when>
+                        <c:otherwise>  
+                            <button class="btn btn-primary" onclick="closePopup()">OK</button>
+                        </c:otherwise>
+                    </c:choose>
+
+
                 </div>
             </div>
         </div>
@@ -313,48 +331,48 @@
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
         <script>
-                        // Swap main and sub images
-                        function swapImage(img) {
-                            const mainImg = document.getElementById("mainImage");
-                            const tempSrc = mainImg.src;
-                            mainImg.src = img.src;
-                            img.src = tempSrc;
-                        }
+                                // Swap main and sub images
+                                function swapImage(img) {
+                                    const mainImg = document.getElementById("mainImage");
+                                    const tempSrc = mainImg.src;
+                                    mainImg.src = img.src;
+                                    img.src = tempSrc;
+                                }
 
-                        // Increase/decrease quantity
-                        function increaseQuantity() {
-                            const quantityInput = document.getElementById('quantity');
-                            const maxQuantity = parseInt(quantityInput.max);
-                            let currentVal = parseInt(quantityInput.value);
-                            if (currentVal < maxQuantity) {
-                                quantityInput.value = currentVal + 1;
-                            }
-                            // Sync with hidden inputs
-                            document.getElementById("quantityInputHidden").value = quantityInput.value;
-                            document.getElementById("quantityInputHiddenBuyNow").value = quantityInput.value;
-                        }
+                                // Increase/decrease quantity
+                                function increaseQuantity() {
+                                    const quantityInput = document.getElementById('quantity');
+                                    const maxQuantity = parseInt(quantityInput.max);
+                                    let currentVal = parseInt(quantityInput.value);
+                                    if (currentVal < maxQuantity) {
+                                        quantityInput.value = currentVal + 1;
+                                    }
+                                    // Sync with hidden inputs
+                                    document.getElementById("quantityInputHidden").value = quantityInput.value;
+                                    document.getElementById("quantityInputHiddenBuyNow").value = quantityInput.value;
+                                }
 
-                        function decreaseQuantity() {
-                            const quantityInput = document.getElementById('quantity');
-                            let currentVal = parseInt(quantityInput.value);
-                            if (currentVal > 1) {
-                                quantityInput.value = currentVal - 1;
-                            }
-                            // Sync with hidden inputs
-                            document.getElementById("quantityInputHidden").value = quantityInput.value;
-                            document.getElementById("quantityInputHiddenBuyNow").value = quantityInput.value;
-                        }
+                                function decreaseQuantity() {
+                                    const quantityInput = document.getElementById('quantity');
+                                    let currentVal = parseInt(quantityInput.value);
+                                    if (currentVal > 1) {
+                                        quantityInput.value = currentVal - 1;
+                                    }
+                                    // Sync with hidden inputs
+                                    document.getElementById("quantityInputHidden").value = quantityInput.value;
+                                    document.getElementById("quantityInputHiddenBuyNow").value = quantityInput.value;
+                                }
 
-                        // Close popup
-                        function closePopup() {
-                            document.getElementById("updatePopup").style.display = "none";
-                        }
+                                // Close popup
+                                function closePopup() {
+                                    document.getElementById("updatePopup").style.display = "none";
+                                }
 
-                        // When user manually changes the quantity input
-                        document.getElementById("quantity")?.addEventListener("input", function () {
-                            document.getElementById("quantityInputHidden").value = this.value;
-                            document.getElementById("quantityInputHiddenBuyNow").value = this.value;
-                        });
+                                // When user manually changes the quantity input
+                                document.getElementById("quantity")?.addEventListener("input", function () {
+                                    document.getElementById("quantityInputHidden").value = this.value;
+                                    document.getElementById("quantityInputHiddenBuyNow").value = this.value;
+                                });
         </script>
     </body>
 </html>
