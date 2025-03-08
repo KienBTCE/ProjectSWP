@@ -92,14 +92,26 @@ public class UpdateCustomerProfileServlet extends HttpServlet {
         String day = request.getParameter("day");
         String month = request.getParameter("month");
         String year = request.getParameter("year");
-        System.out.println("Day " + day);
 
-        cus.setFullName(fullname);
-        cus.setPhoneNumber(phoneNumber);
-        cus.setGender(gender);
-        String monthStr = Integer.parseInt(month) < 10 ? "0" + month : month;
-        String dayStr = Integer.parseInt(day) < 10 ? "0" + day : day;
-        cus.setBirthday(year + "-" + monthStr + "-" + dayStr);
+        if (!fullname.equals("")) {
+            cus.setFullName(fullname);
+        }
+        if (!phoneNumber.equals("")) {
+            cus.setPhoneNumber(phoneNumber);
+        }
+        if (gender != null && !gender.equals("")) {
+            cus.setGender(gender);
+        }
+
+        try {
+            String monthStr = Integer.parseInt(month) < 10 ? "0" + month : month;
+            String dayStr = Integer.parseInt(day) < 10 ? "0" + day : day;
+            int yearStr = Integer.parseInt(year);
+            cus.setBirthday(yearStr + "-" + monthStr + "-" + dayStr);
+        } catch (NumberFormatException e) {
+
+        }
+
         int rs = cusDAO.updateCustomerProfile(cus);
         if (rs == 0) {
             session.setAttribute("message", "Update customer fail!");
@@ -123,7 +135,7 @@ public class UpdateCustomerProfileServlet extends HttpServlet {
         }
 
         request.setAttribute("profilePage", "CustomerProfileView.jsp");
-        request.getRequestDispatcher("ProfileManagementView.jsp").forward(request, response);
+        response.sendRedirect("/viewCustomerProfile");
     }
 
     /**

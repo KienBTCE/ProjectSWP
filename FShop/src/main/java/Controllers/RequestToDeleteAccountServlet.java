@@ -6,6 +6,8 @@ package Controllers;
 
 import DAOs.CustomerDAO;
 import Models.Customer;
+import Models.Email;
+import Models.EmailUtils;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -14,6 +16,7 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
+import java.security.SecureRandom;
 
 /**
  *
@@ -60,7 +63,17 @@ public class RequestToDeleteAccountServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        System.out.println("Request to delete account received");
+
+        // Tạo phản hồi JSON
+        response.setContentType("application/json");
+        response.setCharacterEncoding("UTF-8");
+
+        // Giả sử phản hồi thành công, gửi JSON về client
+        try ( PrintWriter out = response.getWriter()) {
+            out.write("{\"status\": \"success\", \"message\": \"Account deletion modal triggered\"}");
+            out.flush();
+        }
     }
 
     /**
@@ -94,6 +107,39 @@ public class RequestToDeleteAccountServlet extends HttpServlet {
             request.getRequestDispatcher("ProfileManagementView.jsp").forward(request, response);
         }
 
+    }
+
+    private String generateOTP() {
+        SecureRandom random = new SecureRandom();
+        int otp = 100000 + random.nextInt(900000); // Generates a 6-digit number
+        return String.valueOf(otp);
+    }
+
+    private void sendOTPEmail(String recipientEmail, String otp, String fullName) {
+        try {
+            Email email = new Email();
+            email.setFrom("kieuthy2004@gmail.com"); // Sender email
+            email.setFromPassword("xkkc ohwn aesf arqm"); // App Password for email
+            email.setTo(recipientEmail);
+            email.setSubject("Email Verification OTP");
+
+            StringBuilder sb = new StringBuilder();
+            sb.append("Dear ").append(fullName).append(",<br><br>");
+            sb.append(". Please use the OTP below to verify your email:<br>");
+            sb.append("<h2>").append(otp).append("</h2>");
+            sb.append("This OTP is valid for 5 minutes.<br>");
+            sb.append("If you did not request this, please ignore this email.<br><br>");
+            sb.append("Best Regards,<br>");
+            sb.append("<b>FShop Team</b>");
+
+            email.setContent(sb.toString());
+
+            // Send the email
+            EmailUtils.send(email);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     /**
