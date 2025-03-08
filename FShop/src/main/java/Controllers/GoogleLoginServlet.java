@@ -47,19 +47,25 @@ public class GoogleLoginServlet extends HttpServlet {
             if (acc != null) {
                 Customer cus = new Customer(0, acc.getName(), null, null, null, null, acc.getEmail(), null, acc.getId(), 0, 0, null);
                 CustomerDAO cusDAO = new CustomerDAO();
-                if (cusDAO.checkEmailExisted(acc.getEmail()) == 0) {
+                if (cusDAO.checkGoogleEmailExisted(acc.getEmail()) == 0) {
                     if (cusDAO.addNewGoogleCustomer(cus) == 1) {
                         cus = cusDAO.getGoogleCustomer(acc.getEmail(), acc.getId());
                     }
                 } else {
                     cus = cusDAO.getGoogleCustomer(acc.getEmail(), acc.getId());
                 }
-                if (cus.getIsBlock() == 0) {
-                    session.setAttribute("customer", cus);
-                    response.sendRedirect("/");
-                    return;
-                } else{
-                    session.setAttribute("message", "Your account has been locked!");
+                if (cus != null) {
+                    if (cus.getIsBlock() == 0) {
+                        session.setAttribute("customer", cus);
+                        response.sendRedirect("/");
+                        return;
+                    } else {
+                        session.setAttribute("message", "Your account has been locked!");
+                        response.sendRedirect("/customerLogin");
+                        return;
+                    }
+                } else {
+                    session.setAttribute("message", "Failed to retrieve your account information.");
                     response.sendRedirect("/customerLogin");
                     return;
                 }
