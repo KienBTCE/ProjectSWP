@@ -38,6 +38,38 @@ public class BrandDAO {
 
     }
 
+    public int getBrandIdByName(String brandName) {
+        int brandId = -1;
+        String query = "SELECT BrandID FROM Brands WHERE Name = ?";
+        try {
+            PreparedStatement ps = connector.prepareStatement(query);
+            ps.setString(1, brandName);
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                brandId = rs.getInt("BrandID");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return brandId;
+    }
+
+    public List<Brand> getAllBrand() {
+        List<Brand> list = new ArrayList<>();
+        String query = "SELECT * FROM Brands";
+        try {
+            PreparedStatement ps = connector.prepareStatement(query);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                list.add(new Brand(rs.getInt(1), rs.getString(2)));
+            }
+        } catch (SQLException e) {
+            System.out.println(e);
+        }
+        return list;
+
+    }
+
     public int createBrand(Brand s) {
 
         String query = "INSERT INTO Brands (Name) VALUES (?)";

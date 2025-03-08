@@ -16,6 +16,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.Part;
 import java.io.File;
 import java.nio.file.Paths;
+import java.sql.Date;
 
 /**
  *
@@ -30,6 +31,7 @@ public class AddEmployeeServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        
     }
 
     @Override
@@ -40,18 +42,20 @@ public class AddEmployeeServlet extends HttpServlet {
             int roleId = Integer.parseInt(request.getParameter("txtRoleId"));
             String name = request.getParameter("txtName");
             String password = request.getParameter("txtPass");
-            java.sql.Date birthday = java.sql.Date.valueOf(request.getParameter("txtBirthday"));
+            Date birthday = Date.valueOf(request.getParameter("txtBirthday"));
             String phone = request.getParameter("txtPhoneNumber");
             String email = request.getParameter("txtEmail");
             String gender = request.getParameter("txtGender");
-            java.sql.Date createdDate = java.sql.Date.valueOf(request.getParameter("txtCreatedDate"));
+            Date createdDate = Date.valueOf(request.getParameter("txtCreatedDate"));
             int status = Integer.parseInt(request.getParameter("txtStatus"));
-            String avatar = request.getParameter("currentAvatar");
+            // **Lấy đường dẫn Avatar
             Part part = request.getPart("txtAvatar");
             String fileName = Paths.get(part.getSubmittedFileName()).getFileName().toString();
+            String avatar = request.getParameter("currentAvatar");
             
-
-            // **1. Kiểm tra email đã tồn tại chưa**
+            
+            
+            // **Kiểm tra email đã tồn tại chưa**
             if (empDAO.isEmailExists(email)) {
                 request.setAttribute("errorMsg", "Email đã tồn tại! Vui lòng chọn email khác.");
                 request.setAttribute("txtRoleId", roleId);
@@ -95,9 +99,9 @@ public class AddEmployeeServlet extends HttpServlet {
                 avatar = fileName;
             }
             if (avatar == null || avatar.isEmpty()) {
-                avatar = request.getParameter("currentAvatar");
+                avatar = request.getParameter("default.png");
             }
-            request.setAttribute("currentAvatar", avatar);
+            request.getParameter("currentAvatar");
 
             Employee emp = new Employee(name, birthday, password, phone, email, gender, createdDate, status, avatar, roleId);
             int result = empDAO.AddEmployee(emp);
