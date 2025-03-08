@@ -135,6 +135,45 @@ public class ProductDAO {
 
         return list;
     }
+    
+    public ArrayList<Product> filterProductsByPrice(ArrayList<String> filters) {
+        ArrayList<Product> list = null;
+
+        String query = "SELECT * FROM Products P JOIN Brands B ON P.BrandID = B.BrandID WHERE B.Name IN (SELECT Name FROM Brands WHERE ";
+
+        for (String filter : filters) {
+            query += filter;
+        }
+
+        query += ") AND P.IsDeleted = 0";
+
+//        System.out.println("QUERY " + query);
+        try {
+            PreparedStatement ps = connector.prepareStatement(query);
+            ResultSet rs = ps.executeQuery();
+            list = new ArrayList<>();
+            while (rs.next()) {
+                list.add(new Product(
+                        rs.getInt("ProductID"),
+                        rs.getInt("BrandID"),
+                        rs.getInt("CategoryID"),
+                        rs.getString("Model"),
+                        rs.getString("FullName"),
+                        rs.getString("Description"),
+                        rs.getInt("IsDeleted"),
+                        rs.getLong("Price"),
+                        rs.getString("Image"),
+                        rs.getInt("Quantity"),
+                        rs.getInt("Stock")
+                ));
+            }
+            return list;
+        } catch (SQLException e) {
+            System.out.println(e);
+        }
+
+        return list;
+    }
 
     public ArrayList<String> getAllBrandByCategory(String category) {
         ArrayList<String> list = null;
@@ -368,7 +407,7 @@ public class ProductDAO {
 
             try ( ResultSet rs = ps.executeQuery()) {
                 while (rs.next()) {
-                    list.add(new Product(
+                    Product p = new Product(
                             rs.getInt("ProductID"),
                             rs.getString("CategoryName"),
                             rs.getString("BrandName"),
@@ -376,7 +415,9 @@ public class ProductDAO {
                             rs.getLong("Price"),
                             rs.getInt("Stock"),
                             rs.getInt("isDeleted")
-                    ));
+                    );
+                    p.setImage(rs.getString("Image"));
+                    list.add(p);
                 }
 
             }

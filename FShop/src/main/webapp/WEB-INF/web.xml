@@ -77,7 +77,7 @@
         <servlet-class>Controllers.ProductListServlet</servlet-class>
     </servlet>
     <servlet>
-        <servlet-name>ProductListView</servlet-name>
+        <servlet-name>ViewProductServlet</servlet-name>
         <servlet-class>Controllers.ViewProductServlet</servlet-class>
     </servlet>
     <servlet>
@@ -144,12 +144,16 @@
         <servlet-name>SearchSupplierServlet</servlet-name>
         <servlet-class>Controllers.SearchSupplierServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>SearchProductServlet</servlet-name>
+        <servlet-class>Controllers.SearchProductServlet</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>default</servlet-name>
         <url-pattern>/assets/*</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
-        <servlet-name>ProductListView</servlet-name>
+        <servlet-name>ViewProductServlet</servlet-name>
         <url-pattern>/</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
@@ -291,6 +295,10 @@
     <servlet-mapping>
         <servlet-name>SearchSupplierServlet</servlet-name>
         <url-pattern>/SearchSupplier</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>SearchProductServlet</servlet-name>
+        <url-pattern>/SearchProduct</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>30</session-timeout>
