@@ -53,9 +53,8 @@
             <div class="container">
                 <div style="display: flex; justify-content: space-between; align-items: center;"> 
                     <a class="btn btn-primary" href="order">Back to checkout</a>
-                    <p>Please choose other address by setting as default.</p>
+                    <p style="margin-top: 20px">Please choose other address by setting as default.</p>
                 </div>
-                <br>
 
             <%
                     }
@@ -249,6 +248,7 @@
                 </c:if>
                 <c:if test="${!sessionScope.addressList.isEmpty()}">
                     <div class="mb-3 form-check form-switch">
+                        
                         <input class="form-check-input" name="isDefault" type="checkbox" role="switch" id="flexSwitchCheckDefault">
                         <label class="form-check-label" for="flexSwitchCheckDefault" id="defaultSwitch">Set as default</label>
                     </div>
