@@ -41,19 +41,28 @@ public class GoogleLoginServlet extends HttpServlet {
         GoogleLogin gg = new GoogleLogin();
 
         String accessToken = gg.getToken(code);
+        System.out.println("ACCESS: " + accessToken);
         if (accessToken != null && !accessToken.equalsIgnoreCase("")) {
             GoogleAccount acc = gg.getUserInfo(accessToken);
             if (acc != null) {
-                Customer cus = new Customer(0, acc.getName(), null, null, null, null, acc.getEmail(), null, 0, 0, null);
+                Customer cus = new Customer(0, acc.getName(), null, null, null, null, acc.getEmail(), null, acc.getId(), 0, 0, null);
                 CustomerDAO cusDAO = new CustomerDAO();
                 if (cusDAO.checkEmailExisted(acc.getEmail()) == 0) {
                     if (cusDAO.addNewGoogleCustomer(cus) == 1) {
-                        cus = cusDAO.getGoogleCustomer(acc.getEmail());
+                        cus = cusDAO.getGoogleCustomer(acc.getEmail(), acc.getId());
                     }
                 } else {
-                    cus = cusDAO.getGoogleCustomer(acc.getEmail());
+                    cus = cusDAO.getGoogleCustomer(acc.getEmail(), acc.getId());
                 }
-                session.setAttribute("customer", cus);
+                if (cus.getIsBlock() == 0) {
+                    session.setAttribute("customer", cus);
+                    response.sendRedirect("/");
+                    return;
+                } else{
+                    session.setAttribute("message", "Your account has been locked!");
+                    response.sendRedirect("/customerLogin");
+                    return;
+                }
             }
         }
         response.sendRedirect("/");
