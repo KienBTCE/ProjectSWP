@@ -49,7 +49,6 @@ WHERE ProductID IN (1, 2, 5, 9);
 
 -----------------------------------------------------------------------
 -- Tạo bảng tạm để lưu OrderID mới
-CREATE TABLE #InsertedOrders (OrderID INT);
 
 -- Thêm nhiều đơn hàng theo tháng/năm
 INSERT INTO Orders (CustomerID, FullName, [Address], PhoneNumber, OrderedDate, DeliveredDate, Status, TotalAmount)
