@@ -60,11 +60,17 @@ public class DeleteAddressServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         HttpSession session = request.getSession();
+        String url = request.getParameter("currentAddressPage");
+        System.out.println("Context: " + url);
         AddressDAO add = new AddressDAO();
         int id = Integer.parseInt(request.getParameter("id"));
         add.deleteAddress(id);
         session.setAttribute("message", "Delete Success");
-        response.sendRedirect("ViewShippingAddress");
+        if (url.equalsIgnoreCase("addressPage")) {
+            response.sendRedirect("ViewShippingAddress");
+        } else if (url.equalsIgnoreCase("forOrder")) {
+            response.sendRedirect("ViewShippingAddress?action=forOrder");
+        }
     }
 
     /**

@@ -114,7 +114,7 @@ public class UpdateCustomerProfileServlet extends HttpServlet {
         }
         if (img != null && img.getSize() > 0) {
             cus.setAvatar(cus.getId() + ".jpg");
-            img.write("D:\\HocDeKi05\\SWP391\\test\\ProjectSWP\\FShop\\src\\main\\webapp\\assets\\imgs\\CustomerAvatar\\" + cus.getId() + ".jpg");
+            img.write("E:\\HocTap\\Ky5\\ProjectSWP\\FShop\\src\\main\\webapp\\assets\\imgs\\CustomerAvatar\\" + cus.getId() + ".jpg");
             try {
                 Thread.sleep(2500); // 2.5 giây
             } catch (InterruptedException e) {
