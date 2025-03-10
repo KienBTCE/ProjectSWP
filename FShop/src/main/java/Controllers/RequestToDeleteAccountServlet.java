@@ -5,6 +5,7 @@
 package Controllers;
 
 import DAOs.CustomerDAO;
+import DAOs.OrderDAO;
 import Models.Customer;
 import Models.Email;
 import Models.EmailUtils;
@@ -66,12 +67,23 @@ public class RequestToDeleteAccountServlet extends HttpServlet {
         HttpSession session = request.getSession();
         Customer cus = (Customer) session.getAttribute("customer");
 
-        if (cus == null || cus.getGoogleId() == null || cus.getGoogleId().trim().isEmpty()) {
-            // Tạo phản hồi JSON
+        OrderDAO o = new OrderDAO();
+        int orderCount = o.checkHaveOrders(cus.getId());
+        System.out.println("Order count: " + orderCount);
+        if (orderCount != 0) {
+            session.setAttribute("message", "You have pending orders. Account cannot be deleted.");
             response.setContentType("application/json");
             response.setCharacterEncoding("UTF-8");
+            try ( PrintWriter out = response.getWriter()) {
+                out.write("{\"status\": \"fail\", \"message\": \"You have pending orders. Account cannot be deleted.\"}");
+                out.flush();
+            }
+            return;
+        }
 
-            // Giả sử phản hồi thành công, gửi JSON về client
+        if (cus.getGoogleId() == null || cus.getGoogleId().trim().isEmpty()) {
+            response.setContentType("application/json");
+            response.setCharacterEncoding("UTF-8");
             try ( PrintWriter out = response.getWriter()) {
                 out.write("{\"status\": \"success\"}");
                 out.flush();
@@ -82,16 +94,21 @@ public class RequestToDeleteAccountServlet extends HttpServlet {
         String otp = generateOTP();
         session.setAttribute("otp", otp);
 
-        sendOTPEmail(cus.getEmail(), otp, cus.getFullName());
-
-        // Tạo phản hồi JSON
-        response.setContentType("application/json");
-        response.setCharacterEncoding("UTF-8");
-
-        // Giả sử phản hồi thành công, gửi JSON về client
-        try ( PrintWriter out = response.getWriter()) {
-            out.write("{\"status\": \"success\"}");
-            out.flush();
+        try {
+            sendOTPEmail(cus.getEmail(), otp, cus.getFullName());
+            response.setContentType("application/json");
+            response.setCharacterEncoding("UTF-8");
+            try ( PrintWriter out = response.getWriter()) {
+                out.write("{\"status\": \"success\"}");
+                out.flush();
+            }
+        } catch (Exception e) {
+            response.setContentType("application/json");
+            response.setCharacterEncoding("UTF-8");
+            try ( PrintWriter out = response.getWriter()) {
+                out.write("{\"status\": \"fail\", \"message\": \"Failed to send OTP email.\"}");
+                out.flush();
+            }
         }
     }
 
@@ -187,5 +204,9 @@ public class RequestToDeleteAccountServlet extends HttpServlet {
     public String getServletInfo() {
         return "Short description";
     }// </editor-fold>
+
+    private OrderDAO OrderDAO() {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
 
 }
