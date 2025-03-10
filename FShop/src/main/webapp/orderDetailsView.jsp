@@ -24,7 +24,7 @@
     <body>
 
         <div class="main-layout">
-            <!-- Sidebar giữ nguyên thiết kế -->
+            
             <jsp:include page="sidebarOrderManager.jsp" />
 
             <!-- Nội dung chính -->
@@ -74,6 +74,7 @@
                                             <option value="2" <c:if test="${data.status == 2}">selected</c:if>>Packaging</option>
                                             <option value="3" <c:if test="${data.status == 3}">selected</c:if>>Waiting For Delivery</option>
                                             <option value="4" <c:if test="${data.status == 4}">selected</c:if>>Delivered</option>
+                                            <option value="5" <c:if test="${data.status == 5}">selected</c:if>>Cancel</option>
                                             </select>
                                         </div>
                                         <button type="submit" class="btn btn-success"><i class="fa-solid fa-pen"></i> Update</button>

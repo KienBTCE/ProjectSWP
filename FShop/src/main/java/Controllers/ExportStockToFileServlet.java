@@ -23,22 +23,13 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
  *
  * @author HP
  */
+
 public class ExportStockToFileServlet extends HttpServlet {
 
-    /**
-     * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
-     * methods.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         try ( PrintWriter out = response.getWriter()) {
-            /* TODO output your page here. You may use following sample code. */
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
@@ -51,34 +42,27 @@ public class ExportStockToFileServlet extends HttpServlet {
         }
     }
 
-    // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
-    /**
-     * Handles the HTTP <code>GET</code> method.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        StockDAO stockDAO = new StockDAO();
+        List <Stock> list = stockDAO.GetAll();
+        if(list != null){
+            request.setAttribute("dataStock", list);
+            request.getRequestDispatcher("excelStock.jsp").forward(request, response);
+        }else {
+          response.sendRedirect(request.getContextPath() + "/ExportStockToFileServlet");
+                }
+     
     }
 
-    /**
-     * Handles the HTTP <code>POST</code> method.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        response.setContentType("application/vnd.ms-excel");
-        response.setHeader("Content-Disposition", "attachment; filename=data.xls");
+
+        response.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
+        response.setHeader("Content-Disposition", "attachment; filename=data.xlsx");
+
         XSSFWorkbook wb = new XSSFWorkbook();
         XSSFSheet sheet = wb.createSheet("list");
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
@@ -87,108 +71,102 @@ public class ExportStockToFileServlet extends HttpServlet {
 
         int rowNo = 0;
         XSSFRow row = sheet.createRow(rowNo++);
-        int celNUm = 0;
-        XSSFCell cell = row.createCell(celNUm++);
+        int cellNum = 0;
+        XSSFCell cell = row.createCell(cellNum++);
         cell.setCellValue("IOID");
 
-        cell = row.createCell(celNUm++);
+        cell = row.createCell(cellNum++);
         cell.setCellValue("Employee Name");
 
-        cell = row.createCell(celNUm++);
+        cell = row.createCell(cellNum++);
         cell.setCellValue("Supplier Name");
 
-        cell = row.createCell(celNUm++);
+        cell = row.createCell(cellNum++);
         cell.setCellValue("Import Date");
 
-        cell = row.createCell(celNUm++);
-        cell.setCellValue("Total Cost:");
+        cell = row.createCell(cellNum++);
+        cell.setCellValue("Total Cost");
 
-        cell = row.createCell(celNUm++);
+        cell = row.createCell(cellNum++);
         cell.setCellValue("LastModify");
 
-        cell = row.createCell(celNUm++);
+        cell = row.createCell(cellNum++);
         cell.setCellValue("Product ID");
 
-        cell = row.createCell(celNUm++);
+        cell = row.createCell(cellNum++);
         cell.setCellValue("Product Name");
 
-        cell = row.createCell(celNUm++);
+        cell = row.createCell(cellNum++);
         cell.setCellValue("Brand Name");
 
-        cell = row.createCell(celNUm++);
+        cell = row.createCell(cellNum++);
         cell.setCellValue("Category Name");
 
-        cell = row.createCell(celNUm++);
+        cell = row.createCell(cellNum++);
         cell.setCellValue("Quantity");
 
-        cell = row.createCell(celNUm++);
+        cell = row.createCell(cellNum++);
         cell.setCellValue("Import Price");
 
-        cell = row.createCell(celNUm++);
+        cell = row.createCell(cellNum++);
         cell.setCellValue("Retail Price");
 
-        cell = row.createCell(celNUm++);
+        cell = row.createCell(cellNum++);
         cell.setCellValue("Profit Margin");
 
-        for (Stock no : list) {
-            celNUm = 0;
+        for (Stock stock : list) {
+            cellNum = 0;
             row = sheet.createRow(rowNo++);
 
-            cell = row.createCell(celNUm++);
-            cell.setCellValue(no.getIOID());
+            cell = row.createCell(cellNum++);
+            cell.setCellValue(stock.getIOID());
 
-            cell = row.createCell(celNUm++);
-            cell.setCellValue(no.getEmployeeName());
+            cell = row.createCell(cellNum++);
+            cell.setCellValue(stock.getEmployeeName());
 
-            cell = row.createCell(celNUm++);
-            cell.setCellValue(no.getSupplierName());
+            cell = row.createCell(cellNum++);
+            cell.setCellValue(stock.getSupplierName());
 
-            cell = row.createCell(celNUm++);
-            cell.setCellValue(sdf.format(no.getImportDate()));
+            cell = row.createCell(cellNum++);
+            cell.setCellValue(sdf.format(stock.getImportDate()));
 
-            cell = row.createCell(celNUm++);
-            cell.setCellValue(no.getTotalCost());
+            cell = row.createCell(cellNum++);
+            cell.setCellValue(stock.getTotalCost());
 
-            cell = row.createCell(celNUm++);
-            cell.setCellValue(sdf.format(no.getLastModify()));
+            cell = row.createCell(cellNum++);
+            cell.setCellValue(sdf.format(stock.getLastModify()));
 
-            cell = row.createCell(celNUm++);
-            cell.setCellValue(no.getProductID());
+            cell = row.createCell(cellNum++);
+            cell.setCellValue(stock.getProductID());
 
-            cell = row.createCell(celNUm++);
-            cell.setCellValue(no.getProductName());
+            cell = row.createCell(cellNum++);
+            cell.setCellValue(stock.getProductName());
 
-            cell = row.createCell(celNUm++);
-            cell.setCellValue(no.getBrandName());
+            cell = row.createCell(cellNum++);
+            cell.setCellValue(stock.getBrandName());
 
-            cell = row.createCell(celNUm++);
-            cell.setCellValue(no.getCategoryName());
+            cell = row.createCell(cellNum++);
+            cell.setCellValue(stock.getCategoryName());
 
-            cell = row.createCell(celNUm++);
-            cell.setCellValue(no.getQuantity());
+            cell = row.createCell(cellNum++);
+            cell.setCellValue(stock.getQuantity());
 
-            cell = row.createCell(celNUm++);
-            cell.setCellValue(no.getImportPrice());
+            cell = row.createCell(cellNum++);
+            cell.setCellValue(stock.getImportPrice());
 
-            cell = row.createCell(celNUm++);
-            cell.setCellValue(no.getRetailPrice());
+            cell = row.createCell(cellNum++);
+            cell.setCellValue(stock.getRetailPrice());
 
-            cell = row.createCell(celNUm++);
-            cell.setCellValue(no.getProfitMargin());
+            cell = row.createCell(cellNum++);
+            cell.setCellValue(stock.getProfitMargin());
         }
 
         wb.write(response.getOutputStream());
         wb.close();
     }
 
-    /**
-     * Returns a short description of the servlet.
-     *
-     * @return a String containing servlet description
-     */
     @Override
     public String getServletInfo() {
         return "Short description";
-    }// </editor-fold>
-
+    }
 }

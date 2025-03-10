@@ -116,6 +116,10 @@
         <servlet-name>RegisterOTPServlet</servlet-name>
         <servlet-class>Controllers.RegisterOTPServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>notificationServlet</servlet-name>
+        <servlet-class>Controllers.notificationServlet</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>default</servlet-name>
         <url-pattern>/assets/*</url-pattern>
@@ -235,6 +239,10 @@
     <servlet-mapping>
         <servlet-name>RegisterOTPServlet</servlet-name>
         <url-pattern>/RegisterOTPServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>notificationServlet</servlet-name>
+        <url-pattern>/notificationServlet</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>30</session-timeout>

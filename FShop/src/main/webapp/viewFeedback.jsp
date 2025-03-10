@@ -49,7 +49,15 @@
                             </c:forEach>
                         </div>
                     </div>
-                    <p>${!rate.isRead ? "This feedback was hidden for some reason." : rate.comment }</p>
+                    <c:choose>
+                        <c:when test="${rate.isDeleted == true}">
+                            This feedback was hidden for some reason.
+                        </c:when>
+                        <c:otherwise>
+                            ${rate.comment}
+                        </c:otherwise>
+                    </c:choose>
+
                 </div>
 
                 <c:forEach var="reply" items="${dataReplies}">
@@ -69,25 +77,26 @@
             </c:forEach>
 
             <c:if test="${isOk}">
-                <form method="POST" action="CommentServlet">
+                <form id="reviewForm" method="POST" action="CommentServlet">
                     <input type="hidden" name="productId" value="${productId}">
                     <input type="hidden" name="customerId" value="${customerId}">
 
                     <label for="star" class="rating-label">Share your experience in scaling:</label>
 
                     <div class="star-rating">
-                        <input type="radio" name="star" value="5" id="star5"><label for="star5" class="fa fa-star"></label>
-                        <input type="radio" name="star" value="4" id="star4"><label for="star4" class="fa fa-star"></label>
-                        <input type="radio" name="star" value="3" id="star3"><label for="star3" class="fa fa-star"></label>
-                        <input type="radio" name="star" value="2" id="star2"><label for="star2" class="fa fa-star"></label>
-                        <input type="radio" name="star" value="1" id="star1"><label for="star1" class="fa fa-star"></label>
+                        <input required type="radio" name="star" value="5" id="star5"><label for="star5" class="fa fa-star" ></label>
+                        <input required type="radio" name="star" value="4" id="star4"><label for="star4" class="fa fa-star" ></label>
+                        <input required type="radio" name="star" value="3" id="star3"><label for="star3" class="fa fa-star" ></label>
+                        <input required type="radio" name="star" value="2" id="star2"><label for="star2" class="fa fa-star" ></label>
+                        <input required type="radio" name="star" value="1" id="star1"><label for="star1" class="fa fa-star" ></label>
                     </div>
 
-                    <textarea name="comment" placeholder="Write your review..."></textarea>
+                    <textarea required name="comment" placeholder="Write your review..."></textarea>
                     <button type="submit">Submit Review</button>
                 </form>
             </c:if>
 
         </div>
+
     </body>
 </html>

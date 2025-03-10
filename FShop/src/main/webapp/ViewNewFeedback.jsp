@@ -205,7 +205,7 @@
 
                     btn.setAttribute("onclick", "toggleVisibility(" + rateID + ", " + newStatus + ")");
                 } else {
-                    console.error("Lỗi từ server:", xhr.status, xhr.responseText);
+                    console.error("error form server:", xhr.status, xhr.responseText);
                 }
             };
 

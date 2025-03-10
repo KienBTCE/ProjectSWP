@@ -138,7 +138,6 @@ public class OrderDAO {
         }
     }
 
-
     public void addQuantityAfterCancel(int productID, int quantity) {
         try {
             PreparedStatement pr = connector.prepareStatement("Update Products set Quantity = quantity + ? where ProductID=?");
@@ -151,7 +150,6 @@ public class OrderDAO {
 
     public void updateOrder(int orderID, int status) {
 
-
         String query = "Update Orders SET Orders.Status= ? WHERE Orders.OrderID=?";
         try {
             PreparedStatement pre = connector.prepareStatement(query);
@@ -163,42 +161,34 @@ public class OrderDAO {
             Logger.getLogger(OrderDAO.class.getName()).log(Level.SEVERE, null, e);
         }
 
-//    public static void main(String[] args) {
-//        OrderDAO o = new OrderDAO();
-//        o.addOrderDetail(1, 1, 3, 34000000);
-//    }
-//<<<<<<< HEAD
     }
 
-    public void deleteOrder(int orderID) {
+    public void deleteOrder(int month) {
 
-        String query = "Update Orders SET Orders.Status= 6 WHERE Orders.OrderID=?";
+        String query = "DECLARE @CurrentUTC DATETIME = GETUTCDATE();\n"
+                + "DECLARE @ThresholdUTC DATETIME = DATEADD(MONTH, -?, @CurrentUTC);\n"
+                + "\n"
+                + "\n"
+                + "DELETE FROM OrderDetails \n"
+                + "WHERE OrderID IN (\n"
+                + "    SELECT OrderID FROM Orders \n"
+                + "    WHERE [Status] = '5' AND OrderedDate < @ThresholdUTC\n"
+                + ");\n"
+                + "\n"
+                + "\n"
+                + "DELETE FROM Orders \n"
+                + "WHERE [Status] = '5' AND OrderedDate < @ThresholdUTC;";
         try {
             PreparedStatement pre = connector.prepareStatement(query);
 
-            pre.setInt(1, orderID);
+            pre.setInt(1, month);
             pre.executeUpdate();
+
         } catch (Exception e) {
             Logger.getLogger(OrderDAO.class.getName()).log(Level.SEVERE, null, e);
         }
     }
-//=======
-//    }
 
-//    public void DeleteOrder(String orderID) {
-//
-//        String query = "Update Orders SET Orders.Status= 6 WHERE Orders.OrderID=?";
-//        try {
-//            PreparedStatement pre = connector.prepareStatement(query);
-//
-//            pre.setString(1, orderID);
-//            pre.executeUpdate();
-//        } catch (Exception e) {
-//            Logger.getLogger(OrderDAO.class.getName()).log(Level.SEVERE, null, e);
-//        }
-//
-//    }
-//>>>>>>> e29642a491e61163dac269a3d9e0bc78f00dd8ef
     public List<Order> getAllOrderOfCustomer(int customerID) {
         List<Order> list = new ArrayList<>();
         try {
@@ -222,10 +212,9 @@ public class OrderDAO {
                 + "PhoneNumber LIKE ? ";
         try {
             PreparedStatement pre = connector.prepareStatement(query);
-            
+
             pre.setString(1, "%" + searchQuery + "%");
             pre.setString(2, "%" + searchQuery + "%");
-        
 
             ResultSet rs = pre.executeQuery();
             while (rs.next()) {
@@ -288,4 +277,33 @@ public class OrderDAO {
 //        }
         o.updateOrder(2, 2);
     }
+
+    public List<Order> getOrdersToDelete(int month) {
+        List<Order> list = new ArrayList<>();
+        String sql = "SELECT * FROM Orders "
+                + "WHERE [Status] = '5' "
+                + "AND OrderedDate < DATEADD(MONTH, -?, GETUTCDATE())";
+        try {
+            PreparedStatement pre = connector.prepareStatement(sql);
+            pre.setInt(1, month);
+            ResultSet rs = pre.executeQuery();
+            while (rs.next()) {
+                Order o = new Order(
+                        rs.getInt("OrderID"),
+                        rs.getInt("CustomerID"),
+                        rs.getString("FullName"),
+                        rs.getString("PhoneNumber"),
+                        rs.getString("Address"),
+                        rs.getInt("TotalAmount"),
+                        rs.getString("OrderedDate"),
+                        rs.getInt("Status")
+                );
+                list.add(o);
+            }
+        } catch (SQLException e) {
+            Logger.getLogger(OrderDAO.class.getName()).log(Level.SEVERE, null, e);
+        }
+        return list;
+    }
+
 }

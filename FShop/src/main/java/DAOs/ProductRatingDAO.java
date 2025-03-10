@@ -51,6 +51,24 @@ public class ProductRatingDAO {
         return list;
     }
 
+    public int getProductIdbyRateID(int rateID){
+    String querry ="SELECT ProductID FROM ProductRatings  Where RateID =?";
+    int productID= 0;    
+    String proString ="";
+    try {
+            PreparedStatement pre = connector.prepareStatement(querry);
+            pre.setInt(1,rateID);
+            ResultSet rs = pre.executeQuery();
+            if(rs.next()){
+            productID = rs.getInt("ProductID");
+            proString = rs.getString("ProductID");
+            }
+            
+        } catch (Exception e) {     
+            e.printStackTrace();
+        }
+    return productID;
+    }
     public ProductRating getProductRating(int rateID) {
         ProductRating pro = new ProductRating();
         String query = "select * from ProductRatings WHERE RateID =?";
@@ -76,7 +94,24 @@ public class ProductRatingDAO {
         System.out.println(pro.getProductID());
         return pro;
     }
-
+ public String getProductID(int rateID) {
+        ProductRating pro = new ProductRating();
+        String query = "select ProductID from ProductRatings WHERE RateID =?";
+        String s="";
+        try {
+            PreparedStatement pre = connector.prepareStatement(query);
+            pre.setInt(1, rateID);
+            ResultSet rs = pre.executeQuery();
+            if(rs.next()) {
+              s = rs.getString("ProductID");
+                      
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        System.out.println(pro.getProductID());
+        return s;
+    }
     public List<ProductRating> getNewFeedback() {
         List<ProductRating> list = new ArrayList<>();
         String query = "SELECT P.* ,C.FullName FROM ProductRatings AS P JOIN Customers AS C ON C.CustomerID = P.CustomerID  ORDER BY P.CreatedDate DESC";
