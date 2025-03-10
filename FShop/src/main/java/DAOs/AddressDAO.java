@@ -41,6 +41,20 @@ public class AddressDAO {
         return null;
     }
 
+    public Address getAddressByID(int id) {
+        try {
+            PreparedStatement pr = connector.prepareStatement("SELECT * FROM Addresses Where AddressID = ?");
+            pr.setInt(1, id);
+            ResultSet rs = pr.executeQuery();
+            if (rs.next()) {
+                return new Address(rs.getInt(1), rs.getInt(2), rs.getInt(4), rs.getString(3));
+            }
+        } catch (SQLException e) {
+            System.out.println(e + " ");
+        }
+        return null;
+    }
+
     public List<Address> getAddress(int customerID) {
         List<Address> list = new ArrayList<>();
         try {

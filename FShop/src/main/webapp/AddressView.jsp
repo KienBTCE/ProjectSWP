@@ -51,11 +51,10 @@
         <jsp:include page="header.jsp"></jsp:include>
             <br>
             <div class="container">
-                <div style="display: flex; justify-content: space-between; align-items: center;"> 
+                <div style=" justify-content: space-between; align-items: center;"> 
                     <a class="btn btn-primary" href="order">Back to checkout</a>
-                    <p>Please choose other address by setting as default.</p>
+                    <p style="margin-top: 20px">Please choose other address by setting as default.</p>
                 </div>
-                <br>
 
             <%
                     }
@@ -135,8 +134,21 @@
                                                 data-address="${address}"
                                                 onclick="openPopupFromButton(this)">Update</button>
                                         <c:if test="${ad.getIsDefault() == 0}">
-                                            <a href="DeleteAddress?id=${ad.getAddressID()}" class="btn btn-delete"
+                                            <%
+                                                if (!action.equalsIgnoreCase("") && action.equalsIgnoreCase("forOrder")) {
+                                            %>
+                                             <a href="DeleteAddress?id=${ad.getAddressID()}&currentAddressPage=forOrder" class="btn btn-delete"
                                                style="color: red; background: none; padding: 5px 5px; cursor: pointer; border: none; margin-left: 5px;">Delete</a>
+                                            <input type="type" name="currentAddressPage" value="forOrder" hidden>
+                                            <%
+                                            } else {
+
+                                            %>
+                                            <a href="DeleteAddress?id=${ad.getAddressID()}&currentAddressPage=addressPage" class="btn btn-delete"
+                                               style="color: red; background: none; padding: 5px 5px; cursor: pointer; border: none; margin-left: 5px;">Delete</a>
+                                            <%                                                }
+                                            %>
+                                           
                                         </c:if>
 
                                     </div>
@@ -249,6 +261,7 @@
                 </c:if>
                 <c:if test="${!sessionScope.addressList.isEmpty()}">
                     <div class="mb-3 form-check form-switch">
+
                         <input class="form-check-input" name="isDefault" type="checkbox" role="switch" id="flexSwitchCheckDefault">
                         <label class="form-check-label" for="flexSwitchCheckDefault" id="defaultSwitch">Set as default</label>
                     </div>

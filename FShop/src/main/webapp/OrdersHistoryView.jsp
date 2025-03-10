@@ -63,7 +63,7 @@
             <br>
         </div>
         <div id="all" class="order-list active">
-            <c:if test="${sessionScope.orderList != null}">
+            <c:if test="${sessionScope.orderList != null && !sessionScope.orderList.isEmpty()}">
                 <c:forEach items="${sessionScope.orderList}" var="o">
                     <div style="background-color: white; width: 100%; border-radius: 10px; box-shadow: 2px 2px 2px 2px lightgray;">
                         <div style="text-align: right; padding: 15px; border-bottom: 0.5px solid rgb(226, 214, 214); color:rgb(238,84,61); width: 95%; margin: 0 auto">
@@ -109,7 +109,7 @@
                     </div>
                 </c:forEach>
             </c:if>
-            <c:if test="${sessionScope.orderList == null}">
+            <c:if test="${sessionScope.orderList.isEmpty()}">
                 <div style="background: white; height: 400px; text-align: center; padding: 130px; box-shadow: 2px 2px 2px 2px lightgray; border-radius: 10px ;">
                     <img style="border-radius: 50%;" width="70px" src="./assets/imgs/icon/no-order.png" alt="alt"/>
                     <br>
