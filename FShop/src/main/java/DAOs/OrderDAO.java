@@ -217,7 +217,7 @@ public class OrderDAO {
     
     public int checkHaveOrders(int id) {
         String query = "SELECT * FROM Orders WHERE "
-                + "OrderID = ? AND Status != 4 AND Status != 5";
+                + "CustomerID = ? AND Status != 4 AND Status != 5";
         try {
             PreparedStatement pre = connector.prepareStatement(query);
             pre.setInt(1, id);
