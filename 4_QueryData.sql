@@ -186,3 +186,25 @@ SELECT * FROM ImportOrders WHERE ImportDate BETWEEN '06-03 00:00:00' AND '2025-0
 
 SELECT sp.ProductID, c.Name AS CategoryName, b.Name AS BrandName, sp.FullName, sp.Price, sp.Image, sp.Stock, sp.isDeleted, sp.Description, sp.Model FROM Products sp JOIN Categories c ON sp.CategoryID = c.CategoryID JOIN Brands b ON sp.BrandID = b.BrandID WHERE sp.FullName LIKE '%apple%'
 select * from Products
+
+SELECT SUM(Stock) AS TotalStock
+FROM Products;
+
+
+SELECT 
+    p.FullName AS ProductName,
+    COALESCE(SUM(od.Quantity), 0) AS SoldQuantity,   
+    ROUND((COALESCE(SUM(od.Quantity), 0) * 100.0) / p.Stock, 3) AS SoldPercentage
+FROM 
+    Products p
+LEFT JOIN 
+    OrderDetails od ON p.ProductID = od.ProductID
+GROUP BY 
+    p.ProductID, p.FullName, p.Stock
+ORDER BY 
+    SoldPercentage DESC;
+
+
+
+SELECT * FROM Products
+SELECT * FROM OrderDetails
