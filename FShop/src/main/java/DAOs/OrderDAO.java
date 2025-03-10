@@ -214,6 +214,23 @@ public class OrderDAO {
         }
         return list;
     }
+    
+    public int checkHaveOrders(int id) {
+        String query = "SELECT * FROM Orders WHERE "
+                + "OrderID = ? AND Status != 4 AND Status != 5";
+        try {
+            PreparedStatement pre = connector.prepareStatement(query);
+            pre.setInt(1, id);
+
+            ResultSet rs = pre.executeQuery();
+            if(rs.next()){
+                return 1;
+            }
+        } catch (Exception e) {
+            return 1;
+        }
+        return 0;
+    }
 
     public List<Order> searchOrders(String searchQuery) {
         List<Order> list = new ArrayList<>();
