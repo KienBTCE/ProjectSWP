@@ -84,6 +84,7 @@ public class OrderDetailDAO {
                 + "          AND pr.ProductID = ?\n"
                 + ");";
 
+
         try {
             PreparedStatement pre = connector.prepareStatement(query);
             pre.setInt(1, productID);

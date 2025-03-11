@@ -65,6 +65,7 @@ public class CommentServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
+
 //
 //        try {
 //            String detailID = request.getParameter("productId");
@@ -99,6 +100,7 @@ public class CommentServlet extends HttpServlet {
 //            System.out.println(e);
 //        }
 
+
     }
 
     /**
@@ -112,6 +114,7 @@ public class CommentServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+
 //        HttpSession session = request.getSession();
 //        Customer cus = (Customer) session.getAttribute("customer");
 //        int customerId = cus.getId();
@@ -124,6 +127,7 @@ public class CommentServlet extends HttpServlet {
 //        pDAO.addProductRating(customerId, productId, star, comment);
 //
 //        response.sendRedirect("CommentServlet?productId=" + productId);
+
     }
 
     /**

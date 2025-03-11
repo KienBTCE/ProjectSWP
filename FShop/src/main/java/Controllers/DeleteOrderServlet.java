@@ -111,7 +111,6 @@ public class DeleteOrderServlet extends HttpServlet {
         
         
 
-
     }
 
     private void sendCancellationEmail(Customer customer, String orderID, List<OrderDetail> orderItems) {

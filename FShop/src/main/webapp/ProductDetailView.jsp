@@ -544,23 +544,7 @@
                                         document.getElementById("quantityInputHidden").value = this.value;
                                         document.getElementById("quantityInputHiddenBuyNow").value = this.value;
                                     });
-//                                    function toggleFeedback() {
-//                                        const container = document.getElementById("feedbackContainer");
-//
-//                                        if (container.innerHTML.trim() !== "") {
-//                                            container.innerHTML = ""; // N?u có n?i dung thì xóa ?? ?n feedback
-//                                            container.style.display = "none";
-//                                        } else {
-//                                            const productId = "${product.productId}";
-//                                            fetch("ProductDetailServlet?productId=" + productId)
-//                                                    .then(response => response.text())
-//                                                    .then(html => {
-//                                                        container.innerHTML = html;
-//                                                        container.style.display = "block"; // ??m b?o hi?n th? feedback sau khi t?i xong
-//                                                    })
-//                                                    .catch(error => console.error("Error loading feedback:", error));
-//                                        }
-//                                    }
+
 
 
         </script>
