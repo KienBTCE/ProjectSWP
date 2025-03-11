@@ -211,7 +211,7 @@
                         </c:if>
                         <c:if test="${not empty sessionScope.customer.googleId}">
                             <p>Are you sure you want to delete your account? Please enter OTP. Please check your email.</p>
-                            <form id="deleteAccountForm" method="POST" action="requestToDeleteAccount" onsubmit="showButtonLoading(this)">
+                            <form id="deleteAccountForm" method="POST" action="requestToDeleteAccount">
                                 <div class="mb-3">
                                     <label for="confirmPassword" class="form-label">Enter OTP:</label>
                                     <input type="text" class="form-control" id="OTP" name="OTP" required>
@@ -250,22 +250,28 @@
                 console.log("Calling servlet...");
 
                 const loadingScreen = document.getElementById('loadingScreen');
-                loadingScreen.style.display = 'flex'; // Chỉ hiện khi bắt đầu gọi request
+                loadingScreen.style.display = 'flex';
 
                 $.ajax({
                     url: 'requestToDeleteAccount',
                     type: 'GET',
                     success: function (response) {
                         console.log(response);
-                        loadingScreen.style.display = 'none'; // Ẩn khi thành công
-                        $('#confirmDeleteAccount').modal('show');
+                        loadingScreen.style.display = 'none';
+                        if (response.status === 'success') {
+                            $('#confirmDeleteAccount').modal('show');
+                        } else {
+                            loadingScreen.style.display = 'none';
+                            window.location.reload();
+                        }
                     },
                     error: function (xhr, status, error) {
+                        loadingScreen.style.display = 'none';
                         console.log("Error:", error);
-                        loadingScreen.style.display = 'none'; // Ẩn nếu có lỗi
                     }
                 });
             }
+
 
             function confirmLogout() {
                 if (confirm("Are you sure you want to log out?")) {

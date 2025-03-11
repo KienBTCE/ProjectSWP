@@ -104,12 +104,29 @@ public class UpdateCustomerProfileServlet extends HttpServlet {
         }
 
         try {
-            String monthStr = Integer.parseInt(month) < 10 ? "0" + month : month;
-            String dayStr = Integer.parseInt(day) < 10 ? "0" + day : day;
-            int yearStr = Integer.parseInt(year);
-            cus.setBirthday(yearStr + "-" + monthStr + "-" + dayStr);
-        } catch (NumberFormatException e) {
+            int dayInt = Integer.parseInt(day.trim());
+            int monthInt = Integer.parseInt(month.trim());
+            int yearInt = Integer.parseInt(year.trim());
 
+            String dayStr = dayInt < 10 ? "0" + dayInt : String.valueOf(dayInt);
+            String monthStr = monthInt < 10 ? "0" + monthInt : String.valueOf(monthInt);
+
+            cus.setBirthday(yearInt + "-" + monthStr + "-" + dayStr);
+        } catch (NumberFormatException | NullPointerException e) {
+            e.printStackTrace();
+            session.setAttribute("message", "Invalid date format!");
+
+            response.sendRedirect("/viewCustomerProfile");
+            return;
+        }
+        if (img != null && img.getSize() > 0) {
+            cus.setAvatar(cus.getId() + ".jpg");
+            img.write("E:\\HocTap\\Ky5\\ProjectSWP\\FShop\\src\\main\\webapp\\assets\\imgs\\CustomerAvatar\\" + cus.getId() + ".jpg");
+            try {
+                Thread.sleep(2500); // 2.5 giây
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
         }
 
         int rs = cusDAO.updateCustomerProfile(cus);
@@ -117,24 +134,9 @@ public class UpdateCustomerProfileServlet extends HttpServlet {
             session.setAttribute("message", "Update customer fail!");
         } else {
             session.setAttribute("customer", cus);
-            session.setAttribute("message", "Update customer susscessfull!");
+            session.setAttribute("message", "Update customer successful!");
         }
 
-        //String filename = img.getSubmittedFileName();
-        //cusDAO.updateAvatar(cus.getId() + ".jpg", cus.getId());
-        if (img != null && img.getSize() > 0) {
-            cus.setAvatar(cus.getId() + ".jpg");
-            for (Part part : request.getParts()) {
-                part.write("E:\\HocTap\\Ky5\\ProjectSWP\\FShop\\src\\main\\webapp\\assets\\imgs\\CustomerAvatar\\" + cus.getId() + ".jpg");
-            }
-            try {
-                Thread.sleep(2500); // 15 giây = 15000 mili giây
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-        }
-
-        request.setAttribute("profilePage", "CustomerProfileView.jsp");
         response.sendRedirect("/viewCustomerProfile");
     }
 
