@@ -75,7 +75,7 @@
             <h6><a href="#">Order Management</a></h6>
             <a href="ViewListNewFeedbackServlet">Feedback</a>
             <a href="ViewOrderListServlet">Order</a>
-           
+            <a href="DeleteOrder.jsp">Delete</a>
         </div>
     </body>
 </html>

@@ -10,6 +10,7 @@ import DAOs.OrderDetailDAO;
 import Models.Customer;
 import Models.Email;
 import Models.EmailUtils;
+import Models.Order;
 import Models.OrderDetail;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -62,7 +63,26 @@ public class DeleteOrderServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+    String monthStr = request.getParameter("delete");
+    int month = 0;
+    try {
+        month = Integer.parseInt(monthStr);
+    } catch (NumberFormatException e) {
+
+        month = 6;
+    }
+    
+
+    OrderDAO orderDAO = new OrderDAO();
+    List<Order> ordersToDelete = orderDAO.getOrdersToDelete(month);
+    
+
+    request.setAttribute("ordersToDelete", ordersToDelete);
+    request.setAttribute("deleteMonth", month);
+    
+
+  request.getRequestDispatcher("PreviewDeleteOrder.jsp").forward(request, response);
+
     }
 
     /**
@@ -76,19 +96,21 @@ public class DeleteOrderServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        String orderID = request.getParameter("orderID");
-        OrderDAO oDAO = new OrderDAO();
-        int orderIdInt = Integer.parseInt(orderID);
-        Customer customer = oDAO.getCustomerByOrderId(orderIdInt);
-        oDAO.deleteOrder(Integer.parseInt(orderID));
-        OrderDetailDAO odDAO = new OrderDetailDAO();
-        List<OrderDetail> list = odDAO.getOrderDetail(orderID);
-        for (OrderDetail o : list) {
-            oDAO.plusQuantityAfterCancel(o.getProductID(), o.getQuantity());
+        //new code
+        try {
+              OrderDAO oDAO = new OrderDAO();
+        String month = request.getParameter("delete");
+        oDAO.deleteOrder(Integer.parseInt(month));
+        } catch (NumberFormatException e) {
+            System.out.println(e);
         }
-        System.out.println("Received Order ID: " + orderID);
-        sendCancellationEmail(customer, orderID, list);
-        response.sendRedirect(request.getContextPath() + "/ViewOrderListServlet");
+      
+        
+        
+        
+        
+        
+
 
     }
 
