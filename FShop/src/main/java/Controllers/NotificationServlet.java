@@ -66,19 +66,7 @@ public class NotificationServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-//        HttpSession session = request.getSession();
-//        Customer cus = (Customer) session.getAttribute("customer");
-//        
-//        int customerID = cus.getId();
-//        
-//        RatingRepliesDAO rrDAO = new RatingRepliesDAO();
-//        
-//        List<RatingReplies>list  =rrDAO.getCustomerReplies(customerID);
-//        
-//        if(list!=null){
-//            request.setAttribute("unreadReply", list);
-//        }
-//        request.getRequestDispatcher("header.jsp").forward(request, response);
+
         HttpSession session = request.getSession();
         Customer cus = (Customer) session.getAttribute("customer");
 
@@ -110,10 +98,6 @@ public class NotificationServlet extends HttpServlet {
             return;
         }
 
-//        if(list != null){
-//            request.setAttribute("unreadReply", list);
-//        }
-//        request.getRequestDispatcher("header.jsp").forward(request, response);
     }
 
     /**
