@@ -21,8 +21,8 @@ public class DBContext {
             String dbURL = "jdbc:sqlserver://localhost:1433;"
                     + "databaseName=FSHOP;"
 
-                    + "user=;" // Enter your user SQL Server
-                    + "password=;" // Enter your password SQL Server
+                    + "user=sa;" // Enter your user SQL Server
+                    + "password=admin;" // Enter your password SQL Server
 
                     + "encrypt=true;trustServerCertificate=true";
 
