@@ -85,7 +85,6 @@ public class UpdateAddressServlet extends HttpServlet {
             if (request.getParameter("action") != null && request.getParameter("action").equals("setAsDefault")) {
                 add.setAsDefault(id);
                 add.disableDefaultAddress(id, cus.getId());
-                session.setAttribute("message", "Update Address Successfully");
             } else {
                 String province = request.getParameter("province");
                 String district = request.getParameter("district");
@@ -100,14 +99,12 @@ public class UpdateAddressServlet extends HttpServlet {
                     if (request.getParameter("isDefault") != null) {
                         add.updateAddress(new Address(id, cus.getId(), 1, addressDetails));
                         add.disableDefaultAddress(id, cus.getId());
-                        session.setAttribute("message", "Update Address Successfully");
                     } else {
                         add.updateAddress(new Address(id, cus.getId(), 0, addressDetails));
-                        session.setAttribute("message", "Update Address Successfully");
                     }
                 }
             }
-
+            session.setAttribute("message", "Update Address Successfully");
             if (url.equalsIgnoreCase("addressPage")) {
                 response.sendRedirect("ViewShippingAddress");
             } else if (url.equalsIgnoreCase("forOrder")) {
