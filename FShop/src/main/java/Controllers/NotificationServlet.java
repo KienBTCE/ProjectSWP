@@ -26,7 +26,7 @@ import java.util.Map;
  *
  * @author HP
  */
-public class NotificationServlet extends HttpServlet {
+public class notificationServlet extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
