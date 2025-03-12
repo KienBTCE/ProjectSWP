@@ -76,7 +76,8 @@ public class UpdateOrderServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        String status = request.getParameter("update");
+        try {
+            String status = request.getParameter("update");
         String orderID = request.getParameter("orderID");
         OrderDAO oDAO = new OrderDAO();
 
@@ -104,7 +105,11 @@ public class UpdateOrderServlet extends HttpServlet {
 
             // Redirect to order list view
             response.sendRedirect(request.getContextPath() + "/ViewOrderListServlet");
+        } } catch (NumberFormatException e) {
+                System.out.println(e);
         }
+        
+        
     }
 
     private void sendOrderConfirmationEmail(Customer customer, String orderID, int orderStatus, List<OrderDetail> orderItems) {

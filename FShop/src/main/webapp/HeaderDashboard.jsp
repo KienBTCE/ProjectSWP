@@ -23,7 +23,7 @@
                 background: #FFFFFF;
                 box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.3);
                 border-radius: 10px;
-                height: 85px;
+                height: 60px;
             }
 
             .icon {
