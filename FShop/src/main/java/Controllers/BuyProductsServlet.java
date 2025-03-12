@@ -226,6 +226,10 @@ public class BuyProductsServlet extends HttpServlet {
                 //gui mail xac nhan don hang thanh cong
                 sendOrderConfirmationEmail(cus, o, cartSelected, totalAmount);
                 request.getRequestDispatcher("ConfirmView.jsp").forward(request, response);
+                session.removeAttribute("order");
+                session.removeAttribute("cartSelected");
+                session.removeAttribute("shipAddress");
+                session.removeAttribute("numOfItems");
             }
         } else {
             response.sendRedirect("customerLogin");
