@@ -186,7 +186,11 @@ CREATE TABLE ImportOrderDetails (
 );
 
 CREATE TABLE ProductRatings (
+<<<<<<< HEAD
     RateID INT IDENTITY(1,1) PRIMARY KEY,
+=======
+    RateID INT PRIMARY KEY IDENTITY(1,1),
+>>>>>>> thanhtu
     CustomerID INT,
     ProductID INT,
 	OrderID INT,
@@ -201,7 +205,11 @@ CREATE TABLE ProductRatings (
 );
 
 CREATE TABLE RatingReplies (
+<<<<<<< HEAD
     ReplyID INT IDENTITY (1,1) PRIMARY KEY,
+=======
+    ReplyID INT PRIMARY KEY IDENTITY(1,1),
+>>>>>>> thanhtu
     EmployeeID INT,
     RateID INT,
     Answer NVARCHAR(300),
