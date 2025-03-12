@@ -37,10 +37,6 @@
         <servlet-class>Controllers.ProductDetailServlet</servlet-class>
     </servlet>
     <servlet>
-        <servlet-name>ExportStockToFileServlet</servlet-name>
-        <servlet-class>Controllers.ExportStockToFileServlet</servlet-class>
-    </servlet>
-    <servlet>
         <servlet-name>VerifyOTPServlet</servlet-name>
         <servlet-class>Controllers.VerifyOTPServlet</servlet-class>
     </servlet>
@@ -152,6 +148,10 @@
         <servlet-name>NotificationServlet</servlet-name>
         <servlet-class>Controllers.NotificationServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>ExportStockToFileServlet</servlet-name>
+        <servlet-class>Controllers.ExportStockToFileServlet</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>CreateProductServlet</servlet-name>
         <url-pattern>/CreateProductServlet</url-pattern>
@@ -237,10 +237,6 @@
         <url-pattern>/ProductDetailServlet</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
-        <servlet-name>ExportStockToFileServlet</servlet-name>
-        <url-pattern>/ExportStockToFileServlet</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
         <servlet-name>VerifyOTPServlet</servlet-name>
         <url-pattern>/VerifyOTPServlet</url-pattern>
     </servlet-mapping>
@@ -307,6 +303,10 @@
     <servlet-mapping>
         <servlet-name>NotificationServlet</servlet-name>
         <url-pattern>/NotificationServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ExportStockToFileServlet</servlet-name>
+        <url-pattern>/ExportStock</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>30</session-timeout>

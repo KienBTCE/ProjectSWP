@@ -296,7 +296,7 @@
                             <div class="d-flex w-100 justify-content-between">
                                 <h6 class="mb-1">New reply From Fshop</h6>
                                 <small class="${reply.isRead ? 'text-muted' : 'text-danger'}">
-           
+                                   ${reply.isRead ? "Viewed" : "Not viewed yet"}
                                 </small>
                             </div>
                             <p class="mb-1">${reply.answer}</p>

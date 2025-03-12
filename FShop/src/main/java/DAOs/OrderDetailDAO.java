@@ -68,27 +68,35 @@ public class OrderDetailDAO {
 
     public List<Integer> getCustomerByProductID(int productID) {
         List<Integer> list = new ArrayList<>();
-        String query = "SELECT DISTINCT c.CustomerID\n"
+        String query = "DECLARE @ProductID INT = ?;\n"
+                + "SELECT DISTINCT c.CustomerID\n"
                 + "FROM Customers AS c\n"
                 + "WHERE EXISTS (\n"
                 + "    SELECT 1\n"
                 + "    FROM Orders AS o\n"
                 + "    JOIN OrderDetails AS od ON od.OrderID = o.OrderID\n"
-                + "    WHERE od.ProductID = ? AND o.Status = 4 AND o.CustomerID = c.CustomerID\n"
+                + "    WHERE od.ProductID = @ProductID \n"
+                + "          AND o.Status = 4 \n"
+                + "          AND o.CustomerID = c.CustomerID\n"
                 + ")\n"
-                + "AND NOT EXISTS (\n"
-                + "    SELECT 1\n"
+                + "AND (\n"
+                + "    SELECT COUNT(*)\n"
+                + "    FROM Orders AS o\n"
+                + "    JOIN OrderDetails AS od ON od.OrderID = o.OrderID\n"
+                + "    WHERE od.ProductID = @ProductID \n"
+                + "          AND o.Status = 4 \n"
+                + "          AND o.CustomerID = c.CustomerID\n"
+                + ") > (\n"
+                + "    SELECT COUNT(*)\n"
                 + "    FROM ProductRatings AS pr\n"
-                + "    JOIN Orders AS o ON pr.OrderID = o.OrderID\n"
                 + "    WHERE pr.CustomerID = c.CustomerID \n"
-                + "          AND pr.ProductID = ?\n"
+                + "          AND pr.ProductID = @ProductID\n"
                 + ");";
-
 
         try {
             PreparedStatement pre = connector.prepareStatement(query);
             pre.setInt(1, productID);
-            pre.setInt(2, productID);
+
             ResultSet rs = pre.executeQuery();
 
             while (rs.next()) {

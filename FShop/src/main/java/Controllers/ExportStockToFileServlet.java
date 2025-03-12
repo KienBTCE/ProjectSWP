@@ -2,6 +2,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
  */
+
 package Controllers;
 
 import DAOs.StockDAO;
@@ -23,28 +24,43 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
  *
  * @author HP
  */
-
 public class ExportStockToFileServlet extends HttpServlet {
-
+   
+    /** 
+     * Processes requests for both HTTP <code>GET</code> and <code>POST</code> methods.
+     * @param request servlet request
+     * @param response servlet response
+     * @throws ServletException if a servlet-specific error occurs
+     * @throws IOException if an I/O error occurs
+     */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
+    throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        try ( PrintWriter out = response.getWriter()) {
+        try (PrintWriter out = response.getWriter()) {
+            /* TODO output your page here. You may use following sample code. */
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet ExportStockToFileServlet</title>");
+            out.println("<title>Servlet ExportStockToFileServlet</title>");  
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet ExportStockToFileServlet at " + request.getContextPath() + "</h1>");
+            out.println("<h1>Servlet ExportStockToFileServlet at " + request.getContextPath () + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }
-    }
+    } 
 
+    // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
+    /** 
+     * Handles the HTTP <code>GET</code> method.
+     * @param request servlet request
+     * @param response servlet response
+     * @throws ServletException if a servlet-specific error occurs
+     * @throws IOException if an I/O error occurs
+     */
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
+    throws ServletException, IOException {
         StockDAO stockDAO = new StockDAO();
         List <Stock> list = stockDAO.GetAll();
         if(list != null){
@@ -53,18 +69,23 @@ public class ExportStockToFileServlet extends HttpServlet {
         }else {
           response.sendRedirect(request.getContextPath() + "/ExportStockToFileServlet");
                 }
-     
-    }
+    } 
 
+    /** 
+     * Handles the HTTP <code>POST</code> method.
+     * @param request servlet request
+     * @param response servlet response
+     * @throws ServletException if a servlet-specific error occurs
+     * @throws IOException if an I/O error occurs
+     */
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-
-        response.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
+    throws ServletException, IOException {
+         response.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
         response.setHeader("Content-Disposition", "attachment; filename=data.xlsx");
 
-        XSSFWorkbook wb = new XSSFWorkbook();
-        XSSFSheet sheet = wb.createSheet("list");
+        XSSFWorkbook b = new XSSFWorkbook();
+        XSSFSheet sheet = b.createSheet("list");
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         StockDAO stockDAO = new StockDAO();
         List<Stock> list = stockDAO.GetAll();
@@ -86,9 +107,6 @@ public class ExportStockToFileServlet extends HttpServlet {
 
         cell = row.createCell(cellNum++);
         cell.setCellValue("Total Cost");
-
-        cell = row.createCell(cellNum++);
-        cell.setCellValue("LastModify");
 
         cell = row.createCell(cellNum++);
         cell.setCellValue("Product ID");
@@ -134,9 +152,6 @@ public class ExportStockToFileServlet extends HttpServlet {
             cell.setCellValue(stock.getTotalCost());
 
             cell = row.createCell(cellNum++);
-            cell.setCellValue(sdf.format(stock.getLastModify()));
-
-            cell = row.createCell(cellNum++);
             cell.setCellValue(stock.getProductID());
 
             cell = row.createCell(cellNum++);
@@ -161,12 +176,17 @@ public class ExportStockToFileServlet extends HttpServlet {
             cell.setCellValue(stock.getProfitMargin());
         }
 
-        wb.write(response.getOutputStream());
-        wb.close();
+        b.write(response.getOutputStream());
+        b.close();
     }
 
+    /** 
+     * Returns a short description of the servlet.
+     * @return a String containing servlet description
+     */
     @Override
     public String getServletInfo() {
         return "Short description";
-    }
+    }// </editor-fold>
+
 }

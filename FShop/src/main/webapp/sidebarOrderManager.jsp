@@ -73,11 +73,23 @@
     <body>
         <div class="sidebar">
             <img src="assets/imgs/Dashboard/Group 1521.svg" class="logo-side-bar">
-            <h6><a href="#">Order Management</a></h6>
+            <h6><a href="ViewOrderListServlet">Order Management</a></h6>
             <a href="ViewListNewFeedbackServlet">Feedback</a>
-            <a href="ViewOrderListServlet">Order</a>
             <a href="DeleteOrder.jsp">Delete</a>
-
+            <a style="margin-top: auto; color: red;" href="" onclick="confirmLogout()"><i class="bi bi-box-arrow-right"></i> Logout</a>
         </div>
+          <script>
+            function confirmLogout() {
+                if (confirm("Are you sure you want to log out?")) {
+                    fetch('<%= request.getContextPath()%>/Logout', {
+                        method: 'GET'
+                    }).then(response => {
+                        if (response.redirected) {
+                            window.location.href = response.url;
+                        }
+                    }).catch(error => console.error('Logout failed:', error));
+                }
+            }
+        </script>
     </body>
 </html>
