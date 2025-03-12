@@ -139,14 +139,18 @@
                                     <c:if test="${status.index >= (i * 4 - 4) && status.index < (i * 4)}">
                                         <a class="frame-represent" href="ProductDetailServlet?id=${p.getProductId()}">
                                             <img src="assets/imgs/Products/${p.getImage()}" width="150px" height="150px" alt="alt"/>
-                                            <div class="star-rating">
-                                                <span class="star">★</span>
-                                                <span class="star">★</span>
-                                                <span class="star">★</span>
-                                                <span class="star">★</span>
-                                                <span class="star">☆</span>
-                                                <span class="count">Reviews(4)</span>
+                                            <div class="d-flex align-items-center">
+                                                <h3 class="mb-0 me-2">${star}</h3>
+                                                <div class="star-rating">
+                                                    <c:forEach begin="1" end="${star}" var="i">
+                                                        <i class="fas fa-star"></i> 
+                                                    </c:forEach>
+                                                    <c:forEach begin="${star + 1}" end="5" var="i">
+                                                        <i class="far fa-star"></i> 
+                                                    </c:forEach>
+                                                </div>
                                             </div>
+
                                             <h6>${p.getFullName()}</h6>
                                             <p>${p.getPriceFormatted()}</p>
                                         </a>

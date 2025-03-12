@@ -17,8 +17,10 @@ import java.util.List;
  * @author HP
  */
 public class RatingRepliesDAO {
-     DBContext db = new DBContext();
+
+    DBContext db = new DBContext();
     Connection connector = db.getConnection();
+
     public List<RatingReplies> getAllRatingRepliesByProduct(int productId) {
         List<RatingReplies> list = new ArrayList<>();
         String query = "SELECT rr.* FROM RatingReplies rr JOIN ProductRatings pr ON rr.RateID = pr.RateID WHERE pr.ProductID = ?";
@@ -54,4 +56,45 @@ public class RatingRepliesDAO {
             e.printStackTrace();
         }
     }
+
+    public List<RatingReplies> getCustomerReplies(int customerID) {
+        List<RatingReplies> list = new ArrayList<>();
+//        String query = "SELECT r.* FROM RatingReplies r JOIN ProductRatings pr ON r.rateID = pr.rateID WHERE pr.customerID = ? AND r.isRead = 0";
+        String query = "SELECT rr.* FROM RatingReplies rr \n"
+                + "JOIN ProductRatings pr ON rr.RateID = pr.RateID\n"
+                + "WHERE pr.CustomerID =?";
+        try (
+                 PreparedStatement stmt = connector.prepareStatement(query)) {
+            stmt.setInt(1, customerID);
+            ResultSet rs = stmt.executeQuery();
+
+            while (rs.next()) {
+                list.add(new RatingReplies(rs.getInt("ReplyID"),
+                        rs.getInt("EmployeeID"),
+                        rs.getInt("RateID"),
+                        rs.getString("Answer"),
+                        rs.getBoolean("IsRead")));
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return list;
+    }
+
+    public boolean markReplyAsRead(int ReplyID) {
+        String query = "UPDATE RatingReplies SET IsRead = 1 WHERE ReplyID = ?";
+
+        try (
+                 PreparedStatement stmt = connector.prepareStatement(query)) {
+
+            stmt.setInt(1, ReplyID);
+            return stmt.executeUpdate() > 0;
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return false;
+
+    }
+
 }

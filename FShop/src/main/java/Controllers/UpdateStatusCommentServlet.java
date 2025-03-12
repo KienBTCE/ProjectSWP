@@ -72,7 +72,7 @@ public class UpdateStatusCommentServlet extends HttpServlet {
             throws ServletException, IOException {
         
         int rateID = Integer.parseInt(request.getParameter("rateID"));
-        int isRead = Integer.parseInt(request.getParameter("isRead"));
+        int isRead = Integer.parseInt(request.getParameter("isDeleted"));
     
         ProductRatingDAO prDAO = new ProductRatingDAO();
         prDAO.updateStatusComment(rateID, isRead);

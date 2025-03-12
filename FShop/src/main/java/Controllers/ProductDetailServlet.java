@@ -5,14 +5,21 @@
 package Controllers;
 
 import DAOs.AttributeDAO;
+import DAOs.OrderDetailDAO;
 import DAOs.ProductDAO;
+import DAOs.ProductRatingDAO;
+import DAOs.RatingRepliesDAO;
 import Models.AttributeDetail;
+import Models.Customer;
+import Models.ProductRating;
+import Models.RatingReplies;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -67,11 +74,31 @@ public class ProductDetailServlet extends HttpServlet {
         AttributeDAO ad = new AttributeDAO();
         String detailID = request.getParameter("id");
 
+        ProductRatingDAO prRateDAO = new ProductRatingDAO();
+
+        RatingRepliesDAO rrDAO = new RatingRepliesDAO();
+        
+        OrderDetailDAO odDAO = new OrderDetailDAO();
         if (detailID != null) {
+            HttpSession session = request.getSession();
+            Customer cus = (Customer) session.getAttribute("customer");
             int id = Integer.parseInt(detailID);
+            boolean isOk = false;
+            float star = prRateDAO.getStarAverage(id);
             Models.Product product = pr.getProductByID(id);
+             List<Integer> list = odDAO.getCustomerByProductID(id);
             List<AttributeDetail> attributes = ad.getAttributesByProductID(id);
+            List<ProductRating> listPro = prRateDAO.getAllProductRating(id);
+            List<RatingReplies> listReplies = rrDAO.getAllRatingRepliesByProduct(id);
+            if (cus != null) {
+                isOk = list.contains(cus.getId());
+            }
             try {
+
+                request.setAttribute("isOk", isOk);
+                request.setAttribute("dataRating", listPro);
+                request.setAttribute("dataReplies", listReplies);
+                request.setAttribute("star", star);
                 request.setAttribute("product", product);
                 request.setAttribute("attributes", attributes);
                 System.out.println("Attributes forwarded: " + attributes.size()); // Debug
@@ -101,7 +128,18 @@ public class ProductDetailServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        HttpSession session = request.getSession();
+        Customer cus = (Customer) session.getAttribute("customer");
+        int customerId = cus.getId();
+
+        int productId = Integer.parseInt(request.getParameter("productId"));
+        int star = Integer.parseInt(request.getParameter("star"));
+        String comment = request.getParameter("comment");
+
+        ProductRatingDAO pDAO = new ProductRatingDAO();
+        pDAO.addProductRating(customerId, productId, star, comment);
+
+        response.sendRedirect("ProductDetailServlet?id=" + productId);
     }
 
     /**

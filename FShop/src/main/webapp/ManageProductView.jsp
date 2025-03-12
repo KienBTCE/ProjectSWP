@@ -24,7 +24,7 @@
 
             .sidebar {
                 width: 250px;
-                height: 97vh;
+                height: auto;
                 background: #FFFFFF;
                 color: black;
                 padding-top: 20px;
@@ -118,11 +118,12 @@
                 padding: 5px 10px;
             }
             .btn-delete {
-                background-color: red;
-                color: white;
                 border: none;
                 display: inline-block;
                 padding: 5px 10px;
+                max-width: 80px;
+                width: 80px;
+                align-items: center;
             }
             .btn-edit {
                 background-color: #007bff;
@@ -216,7 +217,7 @@
                                 <td>
                                     <a href="UpdateProductServlet?id=${s.getProductId()}" class="btn btn-edit" style="">Update</a>
                                     <a href="ProductListServlet?${s.getDeleted() == 1 ? 'restore' : 'delete'}=${s.getProductId()}" 
-                                       class="btn ${s.getDeleted() == 1 ? 'btn-success' : 'btn-danger'}" 
+                                       class="btn btn-delete ${s.getDeleted() == 1 ? 'btn-success' : 'btn-danger'}" 
                                        onclick="return confirm('Are you sure?');">
                                         ${s.getDeleted() == 1 ? 'Activate' : 'Delete'}
                                     </a>

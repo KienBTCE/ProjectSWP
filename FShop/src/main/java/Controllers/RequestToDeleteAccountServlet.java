@@ -67,18 +67,10 @@ public class RequestToDeleteAccountServlet extends HttpServlet {
         HttpSession session = request.getSession();
         Customer cus = (Customer) session.getAttribute("customer");
 
-        if (cus == null) {
-            response.setContentType("application/json");
-            response.setCharacterEncoding("UTF-8");
-            try ( PrintWriter out = response.getWriter()) {
-                out.write("{\"status\": \"fail\", \"message\": \"Customer not logged in.\"}");
-                out.flush();
-            }
-            return;
-        }
-
         OrderDAO o = new OrderDAO();
-        if (o.checkHaveOrders(cus.getId()) == 1) {
+        int orderCount = o.checkHaveOrders(cus.getId());
+        System.out.println("Order count: " + orderCount);
+        if (orderCount != 0) {
             session.setAttribute("message", "You have pending orders. Account cannot be deleted.");
             response.setContentType("application/json");
             response.setCharacterEncoding("UTF-8");
