@@ -30,31 +30,71 @@
         <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
         <style>
             body {
-                font-family: 'Poppins', sans-serif;
-                background: #f4f7fc;
+                display: flex;
             }
+
             .sidebar {
                 width: 250px;
-                background: linear-gradient(white, #6a11cb, #2575fc);
-                color: white;
-                padding: 20px;
-                min-height: 100vh;
-                box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.1);
+                height: 700px;
+                background: #FFFFFF;
+                color: black;
+                padding-top: 20px;
+                box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.3);
+                transform: translateZ(0);
+                position: relative;
+                z-index: 10;
+                border-radius: 10px;
+                margin-top: 10px;
             }
+
             .sidebar a {
-                color: white;
+                color: #7A7D90;
                 text-decoration: none;
-                display: block;
                 padding: 10px;
-                border-radius: 5px;
+                display: block;
             }
+
             .sidebar a:hover {
-                background: rgba(255, 255, 255, 0.2);
+                background: #7D69FF;
+                color: white;
+                width: 90%;
+                font-weight: bold;
+
+                border-top-right-radius: 10px;
+                border-bottom-right-radius: 10px;
+                border-top-left-radius: 0;
+                border-bottom-left-radius: 0;
+
             }
+
             .content {
-                padding: 20px;
                 flex-grow: 1;
+                padding: 12px;
             }
+
+            .header {
+                display: flex;
+                justify-content: right;
+                align-items: center;
+                padding: 10px;
+                background: #FFFFFF;
+                box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.3);
+                border-radius: 10px;
+                height: 85px;
+            }
+
+            .icon {
+                width: 40px;
+                height: 40px;
+                border-radius: 50%;
+                object-fit: cover;
+            }
+
+            .logo-side-bar {
+                margin-left: 5%;
+                margin-bottom: 3%;
+            }
+
             .card {
                 background: linear-gradient(135deg, #ff9a9e, #fad0c4);
                 color: white;
@@ -81,21 +121,22 @@
         </style>
     </head>
     <body>
-        <div class="d-flex">
-            <div class="sidebar">
-                <h3><img src="assets/imgs/Dashboard/Group 1521.svg" class="logo-side-bar"></h3>
-                <a href="ShopDashboardServlet"><i class="fas fa-store"></i> Shop Management</a>
-                <a href="CustomerListServlet"><i class="fas fa-users"></i> Customer Management</a>
-                <a href="ProductListServlet"><i class="fas fa-box"></i> Product Management</a>
-                <a href="ProductStatisticServlet"><i class="fas fa-chart-bar"></i> Product Statistic</a>
-            </div>
-            <div class="content">
-                <div class="container text-center">
-                    <div class="row g-4">
-                        <div class="col-md-4" data-aos="fade-up">
-                            <div class="card p-3">
-                                <h5>Total Customers</h5>
-                                <h3><%= stats.get("totalCustomers")%> Customers</h3>
+        <div class="sidebar">
+            <img src="assets/imgs/Dashboard/Group 1521.svg" class="logo-side-bar">
+            <h6><a href="ShopDashboardServlet">Shop Management</a></h6>
+            <a href="CustomerListServlet">Customer Management</a>
+            <a href="ProductListServlet">Product Management</a>
+            <a href="ProductStatisticServlet">Product Statistic</a>
+        </div>
+        <div class="content">
+            <jsp:include page="HeaderDashboard.jsp"></jsp:include>
+                <div class="content">
+                    <div class="container text-center">
+                        <div class="row g-4">
+                            <div class="col-md-4" data-aos="fade-up">
+                                <div class="card p-3">
+                                    <h5>Total Customers</h5>
+                                    <h3><%= stats.get("totalCustomers")%> Customers</h3>
                             </div>
                         </div>
                         <div class="col-md-4" data-aos="fade-up" data-aos-delay="200">
