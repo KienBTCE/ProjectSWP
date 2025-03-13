@@ -103,21 +103,22 @@ public class UpdateCustomerProfileServlet extends HttpServlet {
             cus.setGender(gender);
         }
 
-        try {
-            int dayInt = Integer.parseInt(day.trim());
-            int monthInt = Integer.parseInt(month.trim());
-            int yearInt = Integer.parseInt(year.trim());
+        if (day.equalsIgnoreCase("Day") && month.equalsIgnoreCase("Month") && year.equalsIgnoreCase("Year")) {
+            try {
 
-            String dayStr = dayInt < 10 ? "0" + dayInt : String.valueOf(dayInt);
-            String monthStr = monthInt < 10 ? "0" + monthInt : String.valueOf(monthInt);
+                int dayInt = Integer.parseInt(day.trim());
+                int monthInt = Integer.parseInt(month.trim());
+                int yearInt = Integer.parseInt(year.trim());
 
-            cus.setBirthday(yearInt + "-" + monthStr + "-" + dayStr);
-        } catch (NumberFormatException | NullPointerException e) {
-            e.printStackTrace();
-            session.setAttribute("message", "Invalid date format!");
+                String dayStr = dayInt < 10 ? "0" + dayInt : String.valueOf(dayInt);
+                String monthStr = monthInt < 10 ? "0" + monthInt : String.valueOf(monthInt);
 
-            response.sendRedirect("/viewCustomerProfile");
-            return;
+                cus.setBirthday(yearInt + "-" + monthStr + "-" + dayStr);
+
+            } catch (NumberFormatException | NullPointerException e) {
+                e.printStackTrace();
+                session.setAttribute("message", "Invalid date format!");
+            }
         }
         if (img != null && img.getSize() > 0) {
             cus.setAvatar(cus.getId() + ".jpg");
