@@ -6,8 +6,10 @@ package Controllers;
 
 import DAOs.CartDAO;
 import DAOs.ProductDAO;
+import DAOs.ProductRatingDAO;
 import Models.Customer;
 import Models.Product;
+import Models.ProductRating;
 import java.io.IOException;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
@@ -15,6 +17,8 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  *
@@ -123,7 +127,21 @@ public class ViewProductServlet extends HttpServlet {
                     }
                 }
 
+                ProductRatingDAO prDAO = new ProductRatingDAO();
+                ArrayList<ProductRating> stars = new ArrayList<>();
+            for (Product p : products) {
+               ProductRating star = prDAO.getStarAVG(p.getProductId());
+                System.out.println(star);
+                
+                stars.add(star);
+
+            }
+                Map<Object, Object> dataMap = new HashMap<>();
+                dataMap.put("stars", stars);
+                dataMap.put("products", products);
+
                 ArrayList<String> brands = pd.getAllBrandByCategory("Laptop");
+                request.setAttribute("dataMap", dataMap);
                 request.setAttribute("products", products);
                 request.setAttribute("brands", brands);
                 request.setAttribute("numberRow", numberRow);
@@ -210,7 +228,20 @@ public class ViewProductServlet extends HttpServlet {
                     }
                 }
 
+                ProductRatingDAO prDAO = new ProductRatingDAO();
+                ArrayList<String> stars = new ArrayList<>();
+                for (Product p : products) {
+                    float star = prDAO.getStarAverage(p.getProductId());
+                    System.out.println(star);
+                    stars.add(String.valueOf(star));
+
+                }
+
                 ArrayList<String> brands = pd.getAllBrandByCategory("Smartphone");
+                Map<String, Object> dataMap = new HashMap<>();
+                dataMap.put("stars", stars);
+                dataMap.put("products", products);
+                request.setAttribute("dataMap", dataMap);
                 request.setAttribute("products", products);
                 request.setAttribute("brands", brands);
                 request.setAttribute("numberRow", numberRow);
@@ -222,8 +253,21 @@ public class ViewProductServlet extends HttpServlet {
             }
         } else {
             products = pd.getAllProducts();
+            
+            ProductRatingDAO prDAO = new ProductRatingDAO();
+            ArrayList<ProductRating> stars = new ArrayList<>();
+            for (Product p : products) {
+               ProductRating star = prDAO.getStarAVG(p.getProductId());
+                System.out.println(star);
+                
+                stars.add(star);
 
+            }
             try {
+                Map<Object, Object> dataMap = new HashMap<>();
+                dataMap.put("stars", stars);
+                dataMap.put("products", products);
+                request.setAttribute("dataMap", dataMap);
                 request.setAttribute("products", products);
                 request.getRequestDispatcher("HomeView.jsp").forward(request, response);
             } catch (NullPointerException e) {

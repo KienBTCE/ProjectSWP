@@ -89,12 +89,14 @@
                 <h6><a href="#">Order Management</a></h6>
                 <a href="ViewListNewFeedbackServlet">Feedback</a>
                 <a href="ViewOrderListServlet">Order</a>
+                <a href="DeleteOrder.jsp">Delete</a>
             </c:if>
             <c:if test="${sessionScope.employee.getRoleId() == 4}">
                 <h6><a href="ImportStatistic">Warehouse Management</a></h6>
                 <a href="ImportOrder">Import Order</a>
                 <a href="Supplier">Supplier</a>
                 <a href="#">Product Management</a>
+                <a href="ExportStock">Export Stock</a>
             </c:if>
             <a style="margin-top: auto; color: red;" href="" onclick="confirmLogout()"><i class="bi bi-box-arrow-right"></i> Logout</a>
         </div>

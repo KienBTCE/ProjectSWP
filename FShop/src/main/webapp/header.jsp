@@ -92,7 +92,7 @@
                 flex-basis: 50%;
             }
             .nav-infor-content:nth-child(3){
-                flex-basis: 400px;
+                flex-basis: 100px;
             }
             .nav-infor-content:nth-child(3) *{
                 margin-left: 5px
@@ -123,9 +123,6 @@
                 width: 100%; /* Để thanh tìm kiếm rộng bằng danh mục */
                 margin-top: 12px;
             }
-            #searchIcon{
-                cursor: pointer;
-            }
             nav.navbar-custom .nav-icons .btn-notif {
                 background: none;
                 border: none;
@@ -133,23 +130,23 @@
                 cursor: pointer;
             }
             .btn-notif {
-                background: none !important; 
-                border: none !important; 
-                padding: 5px; 
-                cursor: pointer; 
+                background: none !important;
+                border: none !important;
+                padding: 5px;
+                cursor: pointer;
                 display: flex;
                 align-items: center;
                 justify-content: center;
             }
 
             .btn-notif i {
-                font-size: 20px; 
-                color: #333; 
-                transition: color 0.3s ease-in-out; 
+                font-size: 20px;
+                color: #333;
+                transition: color 0.3s ease-in-out;
             }
 
             .btn-notif:hover i {
-                color: #d10000; 
+                color: #d10000;
             }
 
 
@@ -207,12 +204,9 @@
                                 <a href="#">Accessories</a>
                             </li>
                         </ul>
-                        <!--<input type="text" id="searchInput" class="form-control search-box" placeholder="Find by name ..." value="${searchValue}">-->
+                        <input type="text" id="searchInput" class="form-control search-box" placeholder="Find by name ..." value="${searchValue}">
                     </div>
                     <div class="nav-infor-content col-md-4">
-                        <a><i class="ti-search" style="font-size: 150%; color: black;" id="searchIcon"></i></a>
-                        <input style="display: flex; align-items: center; margin: 0" type="text" id="searchInput" class="form-control search-box" placeholder="Find by name ..." value="">
-                        <div style="display: flex; align-items: center" onclick="">
                         <button type="button" class="btn-notif" data-bs-toggle="modal" data-bs-target="#notificationModal">
                             <i class="ti-bell"></i>
                         </button>
@@ -268,38 +262,14 @@
         <script src="assets/js/bootstrap.min.js"></script>
 
         <script>
-            document.addEventListener("DOMContentLoaded", function () {
-                // Hàm xử lý tìm kiếm
-                function searchProduct() {
-                    let searchValue = document.getElementById("searchInput").value.trim();
+            document.getElementById("searchInput").addEventListener("keypress", function (event) {
+                if (event.key === "Enter") {
+                    event.preventDefault();
+                    let searchValue = this.value.trim();
                     if (searchValue !== "") {
                         window.location.href = "SearchProduct?name=" + encodeURIComponent(searchValue);
                     }
                 }
-
-                // Khi nhấn Enter trong input
-                document.getElementById("searchInput").addEventListener("keypress", function (event) {
-                    if (event.key === "Enter") {
-                        event.preventDefault();
-                        searchProduct();
-                    }
-                });
-
-                // Khi nhấn vào icon tìm kiếm
-                document.getElementById("searchIcon").addEventListener("click", function () {
-                    searchProduct();
-                });
-            });
-
-            document.addEventListener("DOMContentLoaded", function () {
-                // Hàm lấy giá trị của tham số từ URL
-                function getParameterByName(name) {
-                    let urlParams = new URLSearchParams(window.location.search);
-                    return urlParams.get(name) || "";
-                }
-
-                // Lấy giá trị của tham số "name" và đặt vào input
-                document.getElementById("searchInput").value = getParameterByName("name");
             });
         </script>
         <script src="assets/js/bootstrap.bundle.min.js"></script>
@@ -316,22 +286,22 @@
 
                                 if (data.replies && Array.isArray(data.replies) && data.replies.length > 0) {
                                     data.replies.forEach((reply, index) => {
-                                        let productId = data.productId[index] || "";
+                                        let product = data.product[index] || "";
+                                        console.log("Product data:", product.fullName);
 
                                         // Tạo thẻ <a> để hiển thị thông báo
                                         const aElem = document.createElement('a');
-                                        aElem.href = "ProductDetailServlet?id=" + productId;
+                                        aElem.href = "ProductDetailServlet?id=" + product.productId;
                                         aElem.classList.add('list-group-item', 'list-group-item-action');
                                         aElem.innerHTML = `
                             <div class="d-flex w-100 justify-content-between">
-                                <h6 class="mb-1">New reply From Fshop</h6>
+                                <h6 class="mb-1">New reply on ` +product.fullName+`</h6>
                                 <small class="${reply.isRead ? 'text-muted' : 'text-danger'}">
-           
+            ${!reply.isRead ? "Viewed" : "Not viewed yet"}
                                 </small>
                             </div>
                             <p class="mb-1">${reply.answer}</p>
                         `;
- <!--${reply.isRead ? "Viewed" : "Not viewed yet"}-->
 
                                         aElem.addEventListener('click', function (event) {
                                             event.preventDefault();
@@ -342,7 +312,7 @@
                                                 body: "repliesID=" + reply.replyID
                                             }).then(response => response.text())
                                                     .then(() => {
-                                                        window.location.href = "ProductDetailServlet?id=" + productId;
+                                                        window.location.href = "ProductDetailServlet?id=" + product.productId;
                                                     })
                                                     .catch(error => console.error("Error updating reply status:", error));
                                         });

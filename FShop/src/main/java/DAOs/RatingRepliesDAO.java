@@ -62,7 +62,7 @@ public class RatingRepliesDAO {
 //        String query = "SELECT r.* FROM RatingReplies r JOIN ProductRatings pr ON r.rateID = pr.rateID WHERE pr.customerID = ? AND r.isRead = 0";
         String query = "SELECT rr.* FROM RatingReplies rr \n"
                 + "JOIN ProductRatings pr ON rr.RateID = pr.RateID\n"
-                + "WHERE pr.CustomerID =?";
+                + "WHERE pr.CustomerID =? ORDER BY pr.CreatedDate DESC";
         try (
                  PreparedStatement stmt = connector.prepareStatement(query)) {
             stmt.setInt(1, customerID);
