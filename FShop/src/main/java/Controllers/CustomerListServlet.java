@@ -1,9 +1,11 @@
 package Controllers;
 
 import DAOs.CustomerDAO;
+import DAOs.OrderDAO;
 import Models.Customer;
 import Models.Email;
 import Models.EmailUtils;
+import Models.Order;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -13,6 +15,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import java.net.URLEncoder;
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  *
@@ -101,14 +104,16 @@ public class CustomerListServlet extends HttpServlet {
         if (detailID != null) {
             int id = Integer.parseInt(detailID);
             Customer customer = pr.getCustomerById(id);
-            try {
-                request.setAttribute("customer", customer);
-                request.getRequestDispatcher("CustomerDetailView.jsp").forward(request, response);
-            } catch (NullPointerException e) {
-                System.out.println(e);
-            }
+            // Giả sử bạn có OrderDAO để lấy lịch sử mua hàng
+            OrderDAO orderDAO = new OrderDAO();
+            List<Order> orders = orderDAO.getAllOrderOfCustomer(id);
+            request.setAttribute("customer", customer);
+            request.setAttribute("purchaseHistory", orders);
+
+            request.getRequestDispatcher("CustomerDetailView.jsp").forward(request, response);
             return;
         }
+
         if (keyword != null && !keyword.trim().isEmpty()) {
             customers = (ArrayList<Customer>) pr.searchCustomerByName(keyword);
         } else {

@@ -133,23 +133,23 @@
                 cursor: pointer;
             }
             .btn-notif {
-                background: none !important; 
-                border: none !important; 
-                padding: 5px; 
-                cursor: pointer; 
+                background: none !important;
+                border: none !important;
+                padding: 5px;
+                cursor: pointer;
                 display: flex;
                 align-items: center;
                 justify-content: center;
             }
 
             .btn-notif i {
-                font-size: 20px; 
-                color: #333; 
-                transition: color 0.3s ease-in-out; 
+                font-size: 20px;
+                color: #333;
+                transition: color 0.3s ease-in-out;
             }
 
             .btn-notif:hover i {
-                color: #d10000; 
+                color: #d10000;
             }
 
 
@@ -213,38 +213,38 @@
                         <a><i class="ti-search" style="font-size: 150%; color: black;" id="searchIcon"></i></a>
                         <input style="display: flex; align-items: center; margin: 0" type="text" id="searchInput" class="form-control search-box" placeholder="Find by name ..." value="">
                         <div style="display: flex; align-items: center" onclick="">
-                        <button type="button" class="btn-notif" data-bs-toggle="modal" data-bs-target="#notificationModal">
-                            <i class="ti-bell"></i>
-                        </button>
-                        <!--<i class="ti-search" style="font-size: 150%; color: black;"></i>-->
-                        <div style="display: flex; align-items: center">
-                            <c:if test="${sessionScope.customer == null}">
-                                <a href="cart"><i class="ti-shopping-cart" style="font-size: 150%; color: black;"></i></a>
-                                </c:if>
-                                <c:if test="${sessionScope.customer != null}">
-                                <a href="cart"><i class="ti-shopping-cart" style="font-size: 150%; color: black;"></i></a>
-                                <p>${sessionScope.numOfProCartOfCus}</p>
-                            </c:if>
-                        </div>
-                        <div style="display: flex; align-items: center; font-size: 12px">
-                            <c:if test="${sessionScope.customer != null}">
-                                <a href="viewCustomerProfile">
-                                    <c:if test="${sessionScope.customer.getAvatar().equals('') == true}">
-                                        <img width="30px" src="assets/imgs/icon/user (3).png" alt="default">
-                                    </c:if>   
-                                    <c:if test="${sessionScope.customer.getAvatar().equals('') == false}">
-                                        <img style="border-radius: 50%;" width="40px" height="40px" src="assets/imgs/CustomerAvatar/${sessionScope.customer.getAvatar()}" alt="default">
+                            <button type="button" class="btn-notif" data-bs-toggle="modal" data-bs-target="#notificationModal">
+                                <i class="ti-bell"></i>
+                            </button>
+                            <!--<i class="ti-search" style="font-size: 150%; color: black;"></i>-->
+                            <div style="display: flex; align-items: center">
+                                <c:if test="${sessionScope.customer == null}">
+                                    <a href="cart"><i class="ti-shopping-cart" style="font-size: 150%; color: black;"></i></a>
                                     </c:if>
-                                </a>
-                            </c:if>
-                            <c:if test="${sessionScope.customer == null}">
-                                <a class="btn btn-primary text-white" href="customerLogin">Login
-                                </a>
-                            </c:if>
+                                    <c:if test="${sessionScope.customer != null}">
+                                    <a href="cart"><i class="ti-shopping-cart" style="font-size: 150%; color: black;"></i></a>
+                                    <p>${sessionScope.numOfProCartOfCus}</p>
+                                </c:if>
+                            </div>
+                            <div style="display: flex; align-items: center; font-size: 12px">
+                                <c:if test="${sessionScope.customer != null}">
+                                    <a href="viewCustomerProfile">
+                                        <c:if test="${sessionScope.customer.getAvatar().equals('') == true}">
+                                            <img width="30px" src="assets/imgs/icon/user (3).png" alt="default">
+                                        </c:if>   
+                                        <c:if test="${sessionScope.customer.getAvatar().equals('') == false}">
+                                            <img style="border-radius: 50%;" width="40px" height="40px" src="assets/imgs/CustomerAvatar/${sessionScope.customer.getAvatar()}" alt="default">
+                                        </c:if>
+                                    </a>
+                                </c:if>
+                                <c:if test="${sessionScope.customer == null}">
+                                    <a class="btn btn-primary text-white" href="customerLogin">Login
+                                    </a>
+                                </c:if>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
         </nav>
         <div class="modal fade" id="notificationModal" tabindex="-1" aria-labelledby="notificationModalLabel" aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered">
@@ -284,13 +284,11 @@
                         searchProduct();
                     }
                 });
-
                 // Khi nhấn vào icon tìm kiếm
                 document.getElementById("searchIcon").addEventListener("click", function () {
                     searchProduct();
                 });
             });
-
             document.addEventListener("DOMContentLoaded", function () {
                 // Hàm lấy giá trị của tham số từ URL
                 function getParameterByName(name) {
@@ -300,65 +298,61 @@
 
                 // Lấy giá trị của tham số "name" và đặt vào input
                 document.getElementById("searchInput").value = getParameterByName("name");
-            });
-        </script>
-        <script src="assets/js/bootstrap.bundle.min.js"></script>
-        <script>
-            document.addEventListener("DOMContentLoaded", function () {
-                const notifBtn = document.querySelector('.btn-notif');
-                notifBtn.addEventListener('click', function () {
-                    fetch('NotificationServlet?ajax=true')
-                            .then(response => response.json())
-                            .then(data => {
-                                console.log("Received data:", data); // Kiểm tra JSON trong console
-                                const notificationList = document.getElementById("notificationList");
-                                notificationList.innerHTML = "";
-
-                                if (data.replies && Array.isArray(data.replies) && data.replies.length > 0) {
-                                    data.replies.forEach((reply, index) => {
-                                        let productId = data.productId[index] || "";
-
-                                        // Tạo thẻ <a> để hiển thị thông báo
-                                        const aElem = document.createElement('a');
-                                        aElem.href = "ProductDetailServlet?id=" + productId;
-                                        aElem.classList.add('list-group-item', 'list-group-item-action');
-                                        aElem.innerHTML = `
-                            <div class="d-flex w-100 justify-content-between">
-                                <h6 class="mb-1">New reply From Fshop</h6>
-                                <small class="${reply.isRead ? 'text-muted' : 'text-danger'}">
-           
-                                </small>
-                            </div>
-                            <p class="mb-1">${reply.answer}</p>
-                        `;
- <!--${reply.isRead ? "Viewed" : "Not viewed yet"}-->
-
-                                        aElem.addEventListener('click', function (event) {
-                                            event.preventDefault();
-
-                                            fetch("NotificationServlet", {
-                                                method: "POST",
-                                                headers: {"Content-Type": "application/x-www-form-urlencoded"},
-                                                body: "repliesID=" + reply.replyID
-                                            }).then(response => response.text())
-                                                    .then(() => {
-                                                        window.location.href = "ProductDetailServlet?id=" + productId;
-                                                    })
-                                                    .catch(error => console.error("Error updating reply status:", error));
-                                        });
-
-                                        notificationList.appendChild(aElem);
-                                    });
-                                } else {
-                                    notificationList.innerHTML = '<p class="text-muted">No new comments.</p>';
-                                }
-                            })
-                            .catch(error => {
-                                console.error('Error fetching unread replies:', error);
-                                document.getElementById("notificationList").innerHTML = '<p class="text-muted">Error loading data</p>';
                             });
+        </script>
+                            <script  src="assets/js/bootstrap.bun dl e.min.js"></script>
+        <script>
+                                    document.addEventListener("DOMCo ntentLoaded",  function () {
+                                            const notifBtn  =  document.querySelector('.btn-notif');
+                                    notifBtn.addEventListener('click',  funct ion  () {
+                    fetch('NotificationServlet?ajax=true') 
+                                            .then(response  =>  response.json())                             .then(d at a  =>  {
+                                            console.log("Received data:",  data);  // Kiểm tra JSON trong console
+                                            const notificationList  =  document.getEle mentById("notific ationList");
+                                    notification List.innerHTML  =  "";
+                                    if  (data.replies &&  Array.isA rray(da ta. replies) &&  data.replies.length >  0) {
+                                            data.replies.forEach(( reply,  index)  =>  {
+                                            let productId  =  data.productId[index] ||  "";
+                            // Tạo thẻ <a> để hiển  th ị thông báo
+                            const aElem  =  document.createElement('a');
+                            aElem.href  =  "ProductDetailServlet?id=" +  productId;
+                            aElem.classList.add('list-group-item',  'list-group-item-action');
+                            aElem.innerHTML  =  `
+    <div class="d-flex w-100 justify-content-between">
+        <h6 class="mb-1">New reply From Fshop</h6>
+        <small class="${reply.isRead ? 'text-muted' : 'text-danger'}">
+           
+        </small>
+    </div>
+    <p class="mb-1">${reply.answer}</p>
+            `;<!--${reply.isRead ? "Viewed" : "Not viewed yet"}-->
+                    
+        aElem.addEventListener('click', function (event) {
+                    event.preventDefault();
+
+                    fetch("NotificationServlet", {
+                        method: "POST",
+                        headers: {"Content-Type": "application/x-www-form-urlencoded"},
+                        body: "repliesID=" + reply.replyID
+                    }).then(response => response.text())
+                            .then(() => {
+                                window.location.href = "ProductDetailServlet?id=" + productId;
+                            })
+                            .catch(error => console.error("Error updating reply status:", error));
                 });
+
+                notificationList.appendChild(aElem);
             });
+        } else {
+            notificationList.innerHTML = '<p class="text-muted">No new comments.</p>';
+        }
+    })
+    .catch(error => {
+        console.error('Error fetching unread replies:', error);
+        document.getElementById("notificationList").innerHTML = '<p class="text-muted">Error loading data</p>';
+    });
+});
+});
 
         </script>
     </body>
