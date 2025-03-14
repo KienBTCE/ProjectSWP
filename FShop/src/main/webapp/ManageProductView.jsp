@@ -180,6 +180,11 @@
                     🔍
                 </button>
             </form>
+            <c:if test="${not empty message}">
+                <div class="alert alert-info" role="alert">
+                    ${message}
+                </div>
+            </c:if>
             <a href="CreateProductServlet" class="btn btn-detail" style="background-color: #BDF3BD">Create</a>
             <div class="table-container">
                 <table class="table table-hover">
