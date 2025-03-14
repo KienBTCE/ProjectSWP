@@ -16,6 +16,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -293,6 +294,101 @@ public class ImportOrderDAO {
         }
 
         return list;
+    }
+
+    // =========================================================================
+    // 1. Thống kê tổng số đơn nhập theo ngày/tháng/năm
+    public Map<String, Integer> getImportOrdersCountByDate() {
+
+        String sql = "SELECT \n"
+                + "    CAST(I.ImportDate AS DATE) AS ImportDate, \n"
+                + "    SUM(D.Quantity) AS TotalQuantity\n"
+                + "FROM ImportOrders I\n"
+                + "JOIN ImportOrderDetails D ON I.IOID = D.IOID\n"
+                + "WHERE CAST(I.ImportDate AS DATE) IN (\n"
+                + "    SELECT DISTINCT TOP 5 CAST(ImportDate AS DATE)\n"
+                + "    FROM ImportOrders\n"
+                + "    ORDER BY CAST(ImportDate AS DATE) DESC\n"
+                + ")\n"
+                + "GROUP BY CAST(I.ImportDate AS DATE)\n"
+                + "ORDER BY ImportDate DESC";
+
+        Map<String, Integer> result = new LinkedHashMap<>();
+        try {
+            PreparedStatement ps = connector.prepareStatement(sql);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                result.put(rs.getString("ImportDate"),
+                        rs.getInt("TotalQuantity"));
+            }
+        } catch (SQLException e) {
+            System.out.println(e);
+        }
+        return result;
+    }
+
+    public Map<String, Integer> getImportOrdersCountByMonth() {
+
+        String sql = "SELECT TOP 3 FORMAT(I.ImportDate, 'yyyy-MM') AS ImportMonth, SUM(D.Quantity) AS TotalQuantity\n"
+                + "FROM ImportOrders I\n"
+                + "JOIN ImportOrderDetails D ON I.IOID = D.IOID\n"
+                + "GROUP BY FORMAT(I.ImportDate, 'yyyy-MM')\n"
+                + "ORDER BY ImportMonth DESC";
+
+        Map<String, Integer> result = new LinkedHashMap<>();
+        try {
+            PreparedStatement ps = connector.prepareStatement(sql);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                result.put(rs.getString("ImportMonth"),
+                        rs.getInt("TotalQuantity"));
+            }
+        } catch (SQLException e) {
+            System.out.println(e);
+        }
+        return result;
+    }
+
+    // 3. Thống kê tổng số đơn nhập theo nhà cung cấp
+    public Map<String, Integer> getOrdersBySupplier() {
+        String sql = "SELECT TOP 5 s.SupplierID, s.Name AS SupplierName, COUNT(io.IOID) AS OrderCount\n"
+                + "FROM ImportOrders io\n"
+                + "JOIN Suppliers s ON io.SupplierID = s.SupplierID\n"
+                + "GROUP BY s.SupplierID, s.Name\n"
+                + "ORDER BY OrderCount DESC";
+
+        Map<String, Integer> result = new LinkedHashMap<>();
+        try {
+            PreparedStatement ps = connector.prepareStatement(sql);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                result.put(rs.getString("SupplierName"), rs.getInt("OrderCount"));
+            }
+        } catch (SQLException e) {
+            System.out.println(e);
+        }
+        return result;
+    }
+
+    // 4. Thống kê top sản phẩm nhập nhiều nhất
+    public Map<String, Integer> getTopImportedProducts() throws SQLException {
+        String sql = "SELECT TOP 5 D.ProductID, P.Model, SUM(D.Quantity) AS TotalQuantity\n"
+                + "FROM ImportOrderDetails D\n"
+                + "JOIN Products P ON D.ProductID = P.ProductID\n"
+                + "GROUP BY D.ProductID, P.Model\n"
+                + "ORDER BY TotalQuantity DESC";
+
+        Map<String, Integer> result = new LinkedHashMap<>();
+        try {
+            PreparedStatement ps = connector.prepareStatement(sql);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                result.put(rs.getString("Model"), rs.getInt("TotalQuantity"));
+            }
+        } catch (SQLException e) {
+            System.out.println(e);
+        }
+        return result;
     }
 
 }

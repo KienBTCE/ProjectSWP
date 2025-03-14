@@ -37,7 +37,7 @@
                 padding: 15px;
                 border-radius: 10px;
                 box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
-                width: 35%;
+                width: 40%;
             }
             canvas {
                 max-height: 300px;
@@ -47,32 +47,46 @@
             }
             body {
                 display: flex;
-                background-color: white;
-                font-family: 'Poppins', sans-serif;
-                background: #f4f7fc;
             }
 
             .sidebar {
                 width: 250px;
-                background: linear-gradient(white, #6a11cb, #2575fc);
-                color: white;
-                padding: 20px;
-                min-height: 100vh;
-                box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.1);
+                height: 700px;
+                background: #FFFFFF;
+                color: black;
+                padding-top: 20px;
+                box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.3);
+                transform: translateZ(0);
+                position: relative;
+                z-index: 10;
+                border-radius: 10px;
+                margin-top: 10px;
             }
+
             .sidebar a {
-                color: white;
+                color: #7A7D90;
                 text-decoration: none;
-                display: block;
                 padding: 10px;
-                border-radius: 5px;
+                display: block;
             }
+
             .sidebar a:hover {
-                background: rgba(255, 255, 255, 0.2);
+                background: #7D69FF;
+                color: white;
+                width: 90%;
+                font-weight: bold;
+
+                border-top-right-radius: 10px;
+                border-bottom-right-radius: 10px;
+                border-top-left-radius: 0;
+                border-bottom-left-radius: 0;
+
             }
+
             .content {
                 flex-grow: 1;
                 padding: 12px;
+                margin-left: 250px;
             }
 
             .header {
@@ -207,14 +221,8 @@
         </style>
     </head>
     <body>
-        <div class="sidebar">
-            <h3><img src="assets/imgs/Dashboard/Group 1521.svg" class="logo-side-bar"></h3>
-            <a href="ShopDashboardServlet"><i class="fas fa-store"></i> Shop Management</a>
-            <a href="CustomerListServlet"><i class="fas fa-users"></i> Customer Management</a>
-            <a href="ProductListServlet"><i class="fas fa-box"></i> Product Management</a>
-            <a href="ProductStatisticServlet"><i class="fas fa-chart-bar"></i> Product Statistic</a>
-        </div>
-        <div class="content">
+        <jsp:include page="SidebarDashboard.jsp"></jsp:include>
+            <div class="content">
             <jsp:include page="HeaderDashboard.jsp"></jsp:include>
             <div class ="container">
                 <div class="chart-box">

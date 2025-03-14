@@ -70,7 +70,7 @@ public class ViewProductServlet extends HttpServlet {
                 }
 
             }
-            
+
             String price = request.getParameter("price");
             if (price != null) {
                 ArrayList<String> priceFilters = new ArrayList<>();
