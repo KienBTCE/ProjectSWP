@@ -59,6 +59,7 @@
             .content {
                 flex-grow: 1;
                 padding: 12px;
+                margin-left: 250px;
             }
 
             .header {
@@ -170,21 +171,20 @@
         </style>
     </head>
     <body>
-        <div class="sidebar">
-            <img src="assets/imgs/Dashboard/Group 1521.svg" class="logo-side-bar">
-            <h6><a href="ShopDashboardServlet">Shop Management</a></h6>
-            <a href="CustomerListServlet">Customer Management</a>
-            <a href="ProductListServlet">Product Management</a>
-            <a href="ProductStatisticServlet">Product Statistic</a>
-        </div>
-        <div class="content">
+        <jsp:include page="SidebarDashboard.jsp"></jsp:include>
+            <div class="content">
             <jsp:include page="HeaderDashboard.jsp"></jsp:include>
-            <form action="ProductListServlet" method="get" class="search-container">
-                <input type="text" name="txt" value="${param.txt}" placeholder="Search by name..." class="search-input">
+                <form action="ProductListServlet" method="get" class="search-container">
+                    <input type="text" name="txt" value="${param.txt}" placeholder="Search by name..." class="search-input">
                 <button type="submit" class="search-button">
                     🔍
                 </button>
             </form>
+            <c:if test="${not empty message}">
+                <div class="alert alert-info" role="alert">
+                    ${message}
+                </div>
+            </c:if>
             <a href="CreateProductServlet" class="btn btn-detail" style="background-color: #BDF3BD">Create</a>
             <div class="table-container">
                 <table class="table table-hover">
