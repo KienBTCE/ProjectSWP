@@ -13,7 +13,8 @@
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>JSP Page</title>
         <!--<link rel="stylesheet" href="assets/css/bootstrap.css"/>-->
-         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
 
         <!-- Font Awesome for icons -->
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -34,7 +35,7 @@
                 /*justify-content: space-around;*/
             }
             .frame-represent{
-                 display: flex;
+                display: flex;
                 flex-direction: column;
                 width: 234px;
                 height: 346px;
@@ -98,6 +99,22 @@
                 display: flex;
                 flex-direction: column;
             } .star-rating {
+                display: flex;
+                align-items: center;
+                color: #ffcc00;
+            }
+
+            .title-content a{
+                text-decoration: none;
+                color: black;
+                font-weight: bold;
+            }
+            .title-content a:hover{
+                color: black;
+                opacity: 0.7;
+                text-decoration: none;
+            }
+               .star-rating {
                 display: flex;
                 align-items: center;
                 color: #ffcc00;
@@ -183,6 +200,7 @@
                                                     </c:choose>
                                                 </c:forEach>
                                             </div>
+
                                             <h6>${p.getFullName()}</h6>
                                             <p>${p.getPriceFormatted()}</p>
                                         </a>

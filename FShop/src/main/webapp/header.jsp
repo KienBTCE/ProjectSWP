@@ -276,6 +276,10 @@
                         window.location.href = "SearchProduct?name=" + encodeURIComponent(searchValue);
                     }
                 }
+<<<<<<< HEAD
+=======
+
+>>>>>>> a79f7a3 (Fix UI + star + laptop phone)
                 // Khi nhấn Enter trong input
                 document.getElementById("searchInput").addEventListener("keypress", function (event) {
                     if (event.key === "Enter") {
@@ -422,6 +426,7 @@
     });
 });
 });
+
 
 
         </script>

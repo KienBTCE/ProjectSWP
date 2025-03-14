@@ -63,21 +63,6 @@
                 transition: 0.3s;
             }
 
-            .star-rating {
-                display: flex;
-                align-items: center;
-                font-size: 24px;
-                color: #ffcc00;
-            }
-            .star-rating .star {
-                margin-right: 5px;
-            }
-            .star-rating .count {
-                margin-left: 10px;
-                font-size: 16px;
-                color: #555;
-            }
-
             .title-content a{
                 text-decoration: none;
                 color: black;
@@ -136,9 +121,9 @@
                                             </c:otherwise>
                                         </c:choose>
                                     </c:forEach>
-                                </div>
-                                <h6>${p.getFullName()}</h6>
-                                <p>${p.getPriceFormatted()}</p>
+                                                 </div>
+                                    <h6>${p.getFullName()}</h6>
+                                    <p>${p.getPriceFormatted()}</p>
                             </a>
                         </c:if>
                     </c:forEach>
@@ -167,8 +152,10 @@
                                         </c:choose>
                                     </c:forEach>
                                 </div>
-                                <h6>${p.getFullName()}</h6>
-                                <p>${p.getPriceFormatted()}</p>
+
+                                    <h6>${p.getFullName()}</h6>
+                                    <p>${p.getPriceFormatted()}</p>
+
                             </a>
                         </c:if>
                     </c:forEach>
@@ -196,9 +183,8 @@
                                             </c:otherwise>
                                         </c:choose>
                                     </c:forEach>
-                                </div>
-                                <h6>${p.getFullName()}</h6>
-                                <p>${p.getPriceFormatted()}</p>
+                                    <h6>${p.getFullName()}</h6>
+                                    <p>${p.getPriceFormatted()}</p>
                             </a>
                         </c:if>
                     </c:forEach>

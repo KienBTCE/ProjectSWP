@@ -229,22 +229,23 @@ public class ViewProductServlet extends HttpServlet {
                     }
                 }
 
-                ProductRatingDAO prDAO = new ProductRatingDAO();
+
+              ProductRatingDAO prDAO = new ProductRatingDAO();
                 ArrayList<ProductRating> stars = new ArrayList<>();
-                for (Product p : products) {
-                    ProductRating star = prDAO.getStarAVG(p.getProductId());
-                    System.out.println("STAR LAPTOP: ________________________________________________________");
-                    System.out.println(star);
+            for (Product p : products) {
+               ProductRating star = prDAO.getStarAVG(p.getProductId());
+                System.out.println(star);
+                
+                stars.add(star);
 
-                    stars.add(star);
+            }
+              
 
-                }
-                Map<Object, Object> dataMap = new HashMap<>();
+                ArrayList<String> brands = pd.getAllBrandByCategory("Smartphone");
+               Map<Object, Object> dataMap = new HashMap<>();
                 dataMap.put("stars", stars);
                 dataMap.put("products", products);
 
-                ArrayList<String> brands = pd.getAllBrandByCategory("Smartphone");
-               
                 request.setAttribute("dataMap", dataMap);
                 request.setAttribute("products", products);
                 request.setAttribute("brands", brands);
