@@ -92,7 +92,7 @@
                 flex-basis: 50%;
             }
             .nav-infor-content:nth-child(3){
-                flex-basis: 100px;
+                flex-basis: 400px;
             }
             .nav-infor-content:nth-child(3) *{
                 margin-left: 5px
@@ -122,6 +122,9 @@
             .search-box {
                 width: 100%; /* Để thanh tìm kiếm rộng bằng danh mục */
                 margin-top: 12px;
+            }
+            #searchIcon{
+                cursor: pointer;
             }
             nav.navbar-custom .nav-icons .btn-notif {
                 background: none;
@@ -204,41 +207,44 @@
                                 <a href="#">Accessories</a>
                             </li>
                         </ul>
-                        <input type="text" id="searchInput" class="form-control search-box" placeholder="Find by name ..." value="${searchValue}">
+                        <!--<input type="text" id="searchInput" class="form-control search-box" placeholder="Find by name ..." value="${searchValue}">-->
                     </div>
                     <div class="nav-infor-content col-md-4">
-                        <button type="button" class="btn-notif" data-bs-toggle="modal" data-bs-target="#notificationModal">
-                            <i class="ti-bell"></i>
-                        </button>
-                        <!--<i class="ti-search" style="font-size: 150%; color: black;"></i>-->
-                        <div style="display: flex; align-items: center">
-                            <c:if test="${sessionScope.customer == null}">
-                                <a href="cart"><i class="ti-shopping-cart" style="font-size: 150%; color: black;"></i></a>
-                                </c:if>
-                                <c:if test="${sessionScope.customer != null}">
-                                <a href="cart"><i class="ti-shopping-cart" style="font-size: 150%; color: black;"></i></a>
-                                <p>${sessionScope.numOfProCartOfCus}</p>
-                            </c:if>
-                        </div>
-                        <div style="display: flex; align-items: center; font-size: 12px">
-                            <c:if test="${sessionScope.customer != null}">
-                                <a href="viewCustomerProfile">
-                                    <c:if test="${sessionScope.customer.getAvatar().equals('') == true}">
-                                        <img width="30px" src="assets/imgs/icon/user (3).png" alt="default">
-                                    </c:if>   
-                                    <c:if test="${sessionScope.customer.getAvatar().equals('') == false}">
-                                        <img style="border-radius: 50%;" width="40px" height="40px" src="assets/imgs/CustomerAvatar/${sessionScope.customer.getAvatar()}" alt="default">
+                        <a><i class="ti-search" style="font-size: 150%; color: black;" id="searchIcon"></i></a>
+                        <input style="display: flex; align-items: center; margin: 0" type="text" id="searchInput" class="form-control search-box" placeholder="Find by name ..." value="">
+                        <div style="display: flex; align-items: center" onclick="">
+                            <button type="button" class="btn-notif" data-bs-toggle="modal" data-bs-target="#notificationModal">
+                                <i class="ti-bell"></i>
+                            </button>
+                            <!--<i class="ti-search" style="font-size: 150%; color: black;"></i>-->
+                            <div style="display: flex; align-items: center">
+                                <c:if test="${sessionScope.customer == null}">
+                                    <a href="cart"><i class="ti-shopping-cart" style="font-size: 150%; color: black;"></i></a>
                                     </c:if>
-                                </a>
-                            </c:if>
-                            <c:if test="${sessionScope.customer == null}">
-                                <a class="btn btn-primary text-white" href="customerLogin">Login
-                                </a>
-                            </c:if>
+                                    <c:if test="${sessionScope.customer != null}">
+                                    <a href="cart"><i class="ti-shopping-cart" style="font-size: 150%; color: black;"></i></a>
+                                    <p>${sessionScope.numOfProCartOfCus}</p>
+                                </c:if>
+                            </div>
+                            <div style="display: flex; align-items: center; font-size: 12px">
+                                <c:if test="${sessionScope.customer != null}">
+                                    <a href="viewCustomerProfile">
+                                        <c:if test="${sessionScope.customer.getAvatar().equals('') == true}">
+                                            <img width="30px" src="assets/imgs/icon/user (3).png" alt="default">
+                                        </c:if>   
+                                        <c:if test="${sessionScope.customer.getAvatar().equals('') == false}">
+                                            <img style="border-radius: 50%;" width="40px" height="40px" src="assets/imgs/CustomerAvatar/${sessionScope.customer.getAvatar()}" alt="default">
+                                        </c:if>
+                                    </a>
+                                </c:if>
+                                <c:if test="${sessionScope.customer == null}">
+                                    <a class="btn btn-primary text-white" href="customerLogin">Login
+                                    </a>
+                                </c:if>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
         </nav>
         <div class="modal fade" id="notificationModal" tabindex="-1" aria-labelledby="notificationModalLabel" aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered">
@@ -262,14 +268,38 @@
         <script src="assets/js/bootstrap.min.js"></script>
 
         <script>
-            document.getElementById("searchInput").addEventListener("keypress", function (event) {
-                if (event.key === "Enter") {
-                    event.preventDefault();
-                    let searchValue = this.value.trim();
+            document.addEventListener("DOMContentLoaded", function () {
+                // Hàm xử lý tìm kiếm
+                function searchProduct() {
+                    let searchValue = document.getElementById("searchInput").value.trim();
                     if (searchValue !== "") {
                         window.location.href = "SearchProduct?name=" + encodeURIComponent(searchValue);
                     }
                 }
+
+                // Khi nhấn Enter trong input
+                document.getElementById("searchInput").addEventListener("keypress", function (event) {
+                    if (event.key === "Enter") {
+                        event.preventDefault();
+                        searchProduct();
+                    }
+                });
+
+                // Khi nhấn vào icon tìm kiếm
+                document.getElementById("searchIcon").addEventListener("click", function () {
+                    searchProduct();
+                });
+            });
+
+            document.addEventListener("DOMContentLoaded", function () {
+                // Hàm lấy giá trị của tham số từ URL
+                function getParameterByName(name) {
+                    let urlParams = new URLSearchParams(window.location.search);
+                    return urlParams.get(name) || "";
+                }
+
+                // Lấy giá trị của tham số "name" và đặt vào input
+                document.getElementById("searchInput").value = getParameterByName("name");
             });
         </script>
         <script src="assets/js/bootstrap.bundle.min.js"></script>
@@ -295,7 +325,7 @@
                                         aElem.classList.add('list-group-item', 'list-group-item-action');
                                         aElem.innerHTML = `
                             <div class="d-flex w-100 justify-content-between">
-                                <h6 class="mb-1">New reply on ` +product.fullName+`</h6>
+                                <h6 class="mb-1">New reply on ` + product.fullName + `</h6>
                                 <small class="${reply.isRead ? 'text-muted' : 'text-danger'}">
             ${!reply.isRead ? "Viewed" : "Not viewed yet"}
                                 </small>
@@ -329,6 +359,7 @@
                             });
                 });
             });
+
 
         </script>
     </body>
