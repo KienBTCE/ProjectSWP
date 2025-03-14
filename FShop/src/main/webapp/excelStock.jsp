@@ -14,7 +14,7 @@
     </head>
     <body>
         <h1>Hello World!</h1>
-        <form action="<%= request.getContextPath() %>/ExportStockToFileServlet" method="POST">
+        <form action="ExportStock" method="POST">
             <button type="submit">Export to Excel</button>
         </form>
         <c:forEach items="${dataStock}" var="stock">

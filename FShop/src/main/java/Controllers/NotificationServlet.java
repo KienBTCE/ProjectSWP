@@ -8,6 +8,7 @@ import DAOs.ProductRatingDAO;
 import DAOs.RatingRepliesDAO;
 import Models.Customer;
 import Models.ProductRating;
+import Models.Product;
 import Models.RatingReplies;
 import com.google.gson.Gson;
 import java.io.IOException;
@@ -26,7 +27,7 @@ import java.util.Map;
  *
  * @author HP
  */
-public class notificationServlet extends HttpServlet {
+public class NotificationServlet extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -66,19 +67,7 @@ public class notificationServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-//        HttpSession session = request.getSession();
-//        Customer cus = (Customer) session.getAttribute("customer");
-//        
-//        int customerID = cus.getId();
-//        
-//        RatingRepliesDAO rrDAO = new RatingRepliesDAO();
-//        
-//        List<RatingReplies>list  =rrDAO.getCustomerReplies(customerID);
-//        
-//        if(list!=null){
-//            request.setAttribute("unreadReply", list);
-//        }
-//        request.getRequestDispatcher("header.jsp").forward(request, response);
+
         HttpSession session = request.getSession();
         Customer cus = (Customer) session.getAttribute("customer");
 
@@ -94,14 +83,14 @@ public class notificationServlet extends HttpServlet {
         ProductRatingDAO pdDAO = new ProductRatingDAO();
 
         List<RatingReplies> list = rrDAO.getCustomerReplies(customerID);
-        List<String> listpd = new ArrayList<>();
+        List<Product> listpd = new ArrayList<>();
         for (RatingReplies r : list) {
-            String p = pdDAO.getProductID(r.getRateID());
+            Product p = pdDAO.getProductID(r.getRateID());
             listpd.add(p);
         }
-        Map<String, Object> dataMap = new HashMap<>();
+        Map<Object, Object> dataMap = new HashMap<>();
         dataMap.put("replies", list);        // Danh sách RatingReplies
-        dataMap.put("productId", listpd);
+        dataMap.put("product", listpd);
         // Nếu có yêu cầu AJAX (chuyển sang JSON)
         if (request.getParameter("ajax") != null && request.getParameter("ajax").equals("true")) {
             response.setContentType("application/json");
@@ -110,10 +99,6 @@ public class notificationServlet extends HttpServlet {
             return;
         }
 
-//        if(list != null){
-//            request.setAttribute("unreadReply", list);
-//        }
-//        request.getRequestDispatcher("header.jsp").forward(request, response);
     }
 
     /**
