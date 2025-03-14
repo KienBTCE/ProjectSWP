@@ -12,7 +12,7 @@
         <title>JSP Page</title>
         <style>
             body {
-                display: flex;
+                display: flex;             
             }
 
             .header {

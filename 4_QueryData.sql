@@ -187,6 +187,214 @@ SELECT * FROM ImportOrders WHERE ImportDate BETWEEN '06-03 00:00:00' AND '2025-0
 SELECT sp.ProductID, c.Name AS CategoryName, b.Name AS BrandName, sp.FullName, sp.Price, sp.Image, sp.Stock, sp.isDeleted, sp.Description, sp.Model FROM Products sp JOIN Categories c ON sp.CategoryID = c.CategoryID JOIN Brands b ON sp.BrandID = b.BrandID WHERE sp.FullName LIKE '%apple%'
 select * from Products
 
+SELECT SUM(Stock) AS TotalStock
+FROM Products;
+
+
+SELECT 
+    p.FullName AS ProductName,
+    COALESCE(SUM(od.Quantity), 0) AS SoldQuantity,   
+    ROUND((COALESCE(SUM(od.Quantity), 0) * 100.0) / p.Stock, 3) AS SoldPercentage
+FROM 
+    Products p
+LEFT JOIN 
+    OrderDetails od ON p.ProductID = od.ProductID
+GROUP BY 
+    p.ProductID, p.FullName, p.Stock
+ORDER BY 
+    SoldPercentage DESC;
+
+
+
+SELECT * FROM Products
+SELECT * FROM OrderDetails
+SELECT * FROM OrderStatus
+
+SELECT 
+    c.FullName AS CustomerName,
+    c.Email AS CustomerEmail,
+    COUNT(o.OrderID) AS SuccessfulOrders
+FROM 
+    Customers c
+LEFT JOIN 
+    Orders o ON c.CustomerID = o.CustomerID
+JOIN 
+    OrderStatus os ON o.Status = os.ID
+WHERE 
+    os.[Status] = 'Waiting for acceptance'  
+GROUP BY 
+    c.CustomerID, c.FullName, c.Email
+ORDER BY 
+    SuccessfulOrders DESC;
+
+
+SELECT p.Model AS Model, p.Stock AS StockQuantity
+FROM Products p
+WHERE p.CategoryID = 2 ;
+SELECT * FROM Products
+SELECT * FROM ImportOrders
+SELECT * FROM Categories;
+SELECT * FROM Orders
+SELECT * FROM OrderDetails
+
+SELECT 
+    MONTH(o.OrderedDate) AS Month,
+    SUM(od.Quantity * od.Price) AS Revenue
+FROM 
+    Products p
+JOIN 
+    OrderDetails od ON p.ProductID = od.ProductID
+JOIN 
+    Orders o ON od.OrderID = o.OrderID
+WHERE 
+    p.CategoryID = 2
+  
+GROUP BY 
+    p.Model,  MONTH(o.OrderedDate)
+ORDER BY 
+    Month Asc
+
+	SELECT 
+    p.ProductID, 
+    p.FullName AS ProductName,
+    p.Model,
+    p.Description,
+    p.Stock AS StockQuantity,
+    c.Name AS CategoryName,
+    b.Name AS BrandName,
+    s.Name AS SupplierName,
+    i.ImportDate AS LastImportDate,
+    iod.Quantity AS ImportedQuantity,
+    p.Price AS ProductPrice
+FROM 
+    Products p
+JOIN 
+    Categories c ON p.CategoryID = c.CategoryID
+JOIN 
+    Brands b ON p.BrandID = b.BrandID
+LEFT JOIN 
+    ImportOrderDetails iod ON p.ProductID = iod.ProductID
+LEFT JOIN 
+    ImportOrders i ON iod.IOID = i.IOID
+LEFT JOIN 
+    Suppliers s ON i.SupplierID = s.SupplierID
+	WHERE c.CategoryID = 1
+ORDER BY 
+    p.ProductID;
+
+
+
+
+SELECT 
+ c.Name AS CategoryName,
+ 	 b.Name AS BrandName,
+     p.Model,
+
+    p.FullName AS ProductName,
+    p.Stock AS StockQuantity,  
+
+    s.Name AS SupplierName,
+    i.ImportDate AS LastImportDate,
+    iod.Quantity AS ImportedQuantity,
+    iod.ImportPrice AS ProductImportPrice 
+FROM 
+    Products p
+JOIN 
+    Categories c ON p.CategoryID = c.CategoryID
+JOIN 
+    Brands b ON p.BrandID = b.BrandID
+LEFT JOIN 
+    ImportOrderDetails iod ON p.ProductID = iod.ProductID
+LEFT JOIN 
+    ImportOrders i ON iod.IOID = i.IOID
+LEFT JOIN 
+    Suppliers s ON i.SupplierID = s.SupplierID
+ORDER BY 
+    c.CategoryID;
+
+SELECT 
+    CONVERT(DATE, o.OrderedDate) AS OrderDate,
+    SUM(od.Quantity * od.Price) AS TotalRevenue
+FROM 
+    Orders o
+JOIN 
+    OrderDetails od ON o.OrderID = od.OrderID
+
+GROUP BY 
+    CONVERT(DATE, o.OrderedDate)
+ORDER BY 
+    OrderDate DESC;
+
+SELECT 
+    YEAR(o.OrderedDate) AS OrderYear,
+    MONTH(o.OrderedDate) AS OrderMonth,
+    SUM(od.Quantity * od.Price) AS TotalRevenue
+FROM 
+    Orders o
+JOIN 
+    OrderDetails od ON o.OrderID = od.OrderID
+
+GROUP BY 
+    YEAR(o.OrderedDate), MONTH(o.OrderedDate)
+ORDER BY 
+    OrderYear DESC, OrderMonth DESC;
+
+
+	SELECT 
+    YEAR(o.OrderedDate) AS OrderYear,
+    SUM(od.Quantity * od.Price) AS TotalRevenue
+FROM 
+    Orders o
+JOIN 
+    OrderDetails od ON o.OrderID = od.OrderID
+GROUP BY 
+    YEAR(o.OrderedDate)
+ORDER BY 
+    OrderYear DESC;
+
+	-- Revenue Statistic by Day
+SELECT 
+    CONVERT(DATE, o.OrderedDate) AS OrderDate, 
+    COUNT(DISTINCT o.OrderID) AS TotalOrders,
+    SUM(od.Quantity * od.Price) AS TotalRevenue,
+    SUM(od.Quantity) AS TotalProductsSold
+FROM 
+    Orders o
+JOIN 
+    OrderDetails od ON o.OrderID = od.OrderID
+GROUP BY 
+    CONVERT(DATE, o.OrderedDate)
+ORDER BY 
+    OrderDate DESC;
+	SELECT 
+    YEAR(o.OrderedDate) AS OrderYear,
+    MONTH(o.OrderedDate) AS OrderMonth,
+    COUNT(DISTINCT o.OrderID) AS TotalOrders,
+    SUM(od.Quantity * od.Price) AS TotalRevenue,
+    SUM(od.Quantity) AS TotalProductsSold
+FROM 
+    Orders o
+JOIN 
+    OrderDetails od ON o.OrderID = od.OrderID
+
+GROUP BY 
+    YEAR(o.OrderedDate), MONTH(o.OrderedDate)
+
+	SELECT 
+    YEAR(o.OrderedDate) AS OrderYear,
+    COUNT(DISTINCT o.OrderID) AS TotalOrders,
+    SUM(od.Quantity * od.Price) AS TotalRevenue,
+    SUM(od.Quantity) AS TotalProductsSold
+FROM 
+    Orders o
+JOIN 
+    OrderDetails od ON o.OrderID = od.OrderID
+
+GROUP BY 
+    YEAR(o.OrderedDate)
+ORDER BY 
+    OrderYear DESC;
+
 SELECT TOP 5 * FROM ImportOrders I JOIN ImportOrderDetails D ON I.IOID = D.IOID
 
 SELECT 
@@ -246,3 +454,4 @@ FROM ImportOrders io
 JOIN ImportOrderDetails iod ON io.IOID = iod.IOID
 GROUP BY FORMAT(io.ImportDate, 'yyyy-MM')
 ORDER BY ImportMonth DESC;
+

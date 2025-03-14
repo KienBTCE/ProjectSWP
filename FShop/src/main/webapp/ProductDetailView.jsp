@@ -16,9 +16,6 @@
 
         <!-- Google Font (optional) -->
         <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&display=swap" rel="stylesheet">
-        <!-- Custom CSS -->
-
-
         <link rel="stylesheet" href="./assets/css/popup.css"/>
         <style>
             body {
