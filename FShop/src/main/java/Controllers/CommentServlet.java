@@ -65,33 +65,42 @@ public class CommentServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
-//        String productIdParam = request.getParameter("productId");
-//        int productId = (productIdParam != null) ? Integer.parseInt(productIdParam) : 1;
-//        using when merge code
-        int productId = 1;
-        boolean isOk = false; //Kiem tra xem da mua chua
-        ProductRatingDAO pDAO = new ProductRatingDAO();
-        List<ProductRating> listPro = pDAO.getAllProductRating(productId);
 
-        RatingRepliesDAO rrDAO = new RatingRepliesDAO();
-        List<RatingReplies> listReplies = rrDAO.getAllRatingRepliesByProduct(productId);
-        HttpSession session = request.getSession();
-        Customer cus = (Customer) session.getAttribute("customer");
+//
+//        try {
+//            String detailID = request.getParameter("productId");
+//            ProductRatingDAO pDAO = new ProductRatingDAO();
+//            int productId = Integer.parseInt(detailID);
+//
+//            boolean isOk = false; //Kiem tra xem da mua chua
+//
+//            List<ProductRating> listPro = pDAO.getAllProductRating(productId);
+//
+//            RatingRepliesDAO rrDAO = new RatingRepliesDAO();
+//            List<RatingReplies> listReplies = rrDAO.getAllRatingRepliesByProduct(productId);
+//            HttpSession session = request.getSession();
+//            Customer cus = (Customer) session.getAttribute("customer");
+//
+//            OrderDetailDAO odDAO = new OrderDetailDAO();
+//            List<Integer> list = odDAO.getCustomerByProductID(productId);
+//
+//            if (cus != null) {
+//                isOk = list.contains(cus.getId());
+//            }
+//            request.setAttribute("productId", productId);
+//            request.setAttribute("isOk", isOk);
+//            request.setAttribute("dataRating", listPro);
+//            request.setAttribute("dataReplies", listReplies);
+//            for(ProductRating p : listPro){
+//                System.out.println(p.isIsDeleted());
+//                System.out.println(p.getComment());
+//            }
+//            request.getRequestDispatcher("viewFeedback.jsp").forward(request, response);
+//        } catch (NumberFormatException e) {
+//            System.out.println(e);
+//        }
 
-        OrderDetailDAO odDAO = new OrderDetailDAO();
-        List<Integer> list = odDAO.getCustomerByProductID(productId);
 
-        if (cus != null) {
-            isOk = list.contains(cus.getId());
-        }
-
-    
-
-        request.setAttribute("isOk", isOk);
-        request.setAttribute("dataRating", listPro);
-        request.setAttribute("dataReplies", listReplies);
-
-        request.getRequestDispatcher("viewFeedback.jsp").forward(request, response);
     }
 
     /**
@@ -105,15 +114,20 @@ public class CommentServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        int customerId = Integer.parseInt(request.getParameter("customerId"));
-        int productId = Integer.parseInt(request.getParameter("productId"));
-        int star = Integer.parseInt(request.getParameter("star"));
-        String comment = request.getParameter("comment");
 
-        ProductRatingDAO pDAO = new ProductRatingDAO();
-        pDAO.addProductRating(customerId, productId, star, comment);
+//        HttpSession session = request.getSession();
+//        Customer cus = (Customer) session.getAttribute("customer");
+//        int customerId = cus.getId();
+//        
+//        int productId = Integer.parseInt(request.getParameter("productId"));
+//        int star = Integer.parseInt(request.getParameter("star"));
+//        String comment = request.getParameter("comment");
+//
+//        ProductRatingDAO pDAO = new ProductRatingDAO();
+//        pDAO.addProductRating(customerId, productId, star, comment);
+//
+//        response.sendRedirect("CommentServlet?productId=" + productId);
 
-        response.sendRedirect("CommentServlet?productId=" + productId);
     }
 
     /**

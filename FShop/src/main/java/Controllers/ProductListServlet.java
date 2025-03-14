@@ -10,6 +10,8 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -57,6 +59,12 @@ public class ProductListServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        HttpSession session = request.getSession();
+        String message = (String) session.getAttribute("message");
+        if (message != null) {
+            request.setAttribute("message", message);
+            session.removeAttribute("message"); // Xóa sau khi dùng xong
+        }
 
         ProductDAO pr = new ProductDAO();
         ArrayList<Product> products = null;
@@ -67,16 +75,29 @@ public class ProductListServlet extends HttpServlet {
         String keyword = request.getParameter("txt");
         if (deleteID != null) {
             int id = Integer.parseInt(deleteID);
+            Product product = pr.getProductByID(id);
             pr.deleteProduct(id);
+            if (product != null) {
+                session.setAttribute("message", product.getFullName() + " has been deleted from website");
+            } else {
+                session.setAttribute("message", "Product not found");
+            }
             response.sendRedirect("ProductListServlet");
             return;
         }
         if (restoreID != null) {
             int id = Integer.parseInt(restoreID);
+            Product product = pr.getProductByID(id);
             pr.restoreProduct(id);
+            if (product != null) {
+                session.setAttribute("message", product.getFullName() + " has been activated on website");
+            } else {
+                session.setAttribute("message", "Product not found");
+            }
             response.sendRedirect("ProductListServlet");
             return;
         }
+
         if (detailID != null) {
             int id = Integer.parseInt(detailID);
             Product product = pr.getProductByID(id);

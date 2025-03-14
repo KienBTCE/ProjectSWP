@@ -24,7 +24,7 @@
 
             .sidebar {
                 width: 250px;
-                height: 97vh;
+                height: auto;
                 background: #FFFFFF;
                 color: black;
                 padding-top: 20px;
@@ -59,6 +59,7 @@
             .content {
                 flex-grow: 1;
                 padding: 12px;
+                margin-left: 250px;
             }
 
             .header {
@@ -118,11 +119,12 @@
                 padding: 5px 10px;
             }
             .btn-delete {
-                background-color: red;
-                color: white;
                 border: none;
                 display: inline-block;
                 padding: 5px 10px;
+                max-width: 80px;
+                width: 80px;
+                align-items: center;
             }
             .btn-edit {
                 background-color: #007bff;
@@ -169,21 +171,20 @@
         </style>
     </head>
     <body>
-        <div class="sidebar">
-            <img src="assets/imgs/Dashboard/Group 1521.svg" class="logo-side-bar">
-            <h6><a href="ShopDashboardServlet">Shop Management</a></h6>
-            <a href="CustomerListServlet">Customer Management</a>
-            <a href="ProductListServlet">Product Management</a>
-            <a href="ProductStatisticServlet">Product Statistic</a>
-        </div>
-        <div class="content">
+        <jsp:include page="SidebarDashboard.jsp"></jsp:include>
+            <div class="content">
             <jsp:include page="HeaderDashboard.jsp"></jsp:include>
-            <form action="ProductListServlet" method="get" class="search-container">
-                <input type="text" name="txt" value="${param.txt}" placeholder="Search by name..." class="search-input">
+                <form action="ProductListServlet" method="get" class="search-container">
+                    <input type="text" name="txt" value="${param.txt}" placeholder="Search by name..." class="search-input">
                 <button type="submit" class="search-button">
                     🔍
                 </button>
             </form>
+            <c:if test="${not empty message}">
+                <div class="alert alert-info" role="alert">
+                    ${message}
+                </div>
+            </c:if>
             <a href="CreateProductServlet" class="btn btn-detail" style="background-color: #BDF3BD">Create</a>
             <div class="table-container">
                 <table class="table table-hover">
@@ -216,7 +217,7 @@
                                 <td>
                                     <a href="UpdateProductServlet?id=${s.getProductId()}" class="btn btn-edit" style="">Update</a>
                                     <a href="ProductListServlet?${s.getDeleted() == 1 ? 'restore' : 'delete'}=${s.getProductId()}" 
-                                       class="btn ${s.getDeleted() == 1 ? 'btn-success' : 'btn-danger'}" 
+                                       class="btn btn-delete ${s.getDeleted() == 1 ? 'btn-success' : 'btn-danger'}" 
                                        onclick="return confirm('Are you sure?');">
                                         ${s.getDeleted() == 1 ? 'Activate' : 'Delete'}
                                     </a>

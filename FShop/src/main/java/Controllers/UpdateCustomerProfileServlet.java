@@ -93,6 +93,7 @@ public class UpdateCustomerProfileServlet extends HttpServlet {
         String month = request.getParameter("month");
         String year = request.getParameter("year");
 
+        System.out.println(day + "   " + month + "       " + year);
         if (!fullname.equals("")) {
             cus.setFullName(fullname);
         }
@@ -103,22 +104,35 @@ public class UpdateCustomerProfileServlet extends HttpServlet {
             cus.setGender(gender);
         }
 
-        try {
-            int dayInt = Integer.parseInt(day.trim());
-            int monthInt = Integer.parseInt(month.trim());
-            int yearInt = Integer.parseInt(year.trim());
+        if (!(day.equalsIgnoreCase("Day") && month.equalsIgnoreCase("Month") && year.equalsIgnoreCase("Year"))) {
+            if (day.equalsIgnoreCase("Day") || month.equalsIgnoreCase("Month") || year.equalsIgnoreCase("Year")) {
+                session.setAttribute("message", "Please select a complete and valid date!");
+                response.sendRedirect("/viewCustomerProfile");
+                return;
+            }
 
-            String dayStr = dayInt < 10 ? "0" + dayInt : String.valueOf(dayInt);
-            String monthStr = monthInt < 10 ? "0" + monthInt : String.valueOf(monthInt);
+            try {
+                int dayInt = Integer.parseInt(day.trim());
+                int monthInt = Integer.parseInt(month.trim());
+                int yearInt = Integer.parseInt(year.trim());
 
-            cus.setBirthday(yearInt + "-" + monthStr + "-" + dayStr);
-        } catch (NumberFormatException | NullPointerException e) {
-            e.printStackTrace();
-            session.setAttribute("message", "Invalid date format!");
+                if (dayInt < 1 || dayInt > 31 || monthInt < 1 || monthInt > 12 || yearInt < 1900 || yearInt > 2100) {
+                    session.setAttribute("message", "Invalid date value!");
+                    response.sendRedirect("/viewCustomerProfile");
+                    return;
+                }
 
-            response.sendRedirect("/viewCustomerProfile");
-            return;
+                String dayStr = dayInt < 10 ? "0" + dayInt : String.valueOf(dayInt);
+                String monthStr = monthInt < 10 ? "0" + monthInt : String.valueOf(monthInt);
+
+                cus.setBirthday(yearInt + "-" + monthStr + "-" + dayStr);
+            } catch (NumberFormatException e) {
+                session.setAttribute("message", "Invalid date format!");
+                response.sendRedirect("/viewCustomerProfile");
+                return;
+            }
         }
+        
         if (img != null && img.getSize() > 0) {
             cus.setAvatar(cus.getId() + ".jpg");
             img.write("E:\\HocTap\\Ky5\\ProjectSWP\\FShop\\src\\main\\webapp\\assets\\imgs\\CustomerAvatar\\" + cus.getId() + ".jpg");

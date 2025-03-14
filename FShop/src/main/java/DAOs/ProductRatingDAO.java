@@ -5,6 +5,7 @@
 package DAOs;
 
 import DB.DBContext;
+import Models.Product;
 import Models.ProductRating;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -51,6 +52,40 @@ public class ProductRatingDAO {
         return list;
     }
 
+    public float getStarAverage(int productId) {
+        float star = 0;
+        String query = "SELECT COALESCE(SUM(Star) / COUNT(Star), 0) AS avs FROM ProductRatings as p  where p.ProductID =?";
+        try {
+            PreparedStatement pre = connector.prepareStatement(query);
+            pre.setInt(1, productId);
+            ResultSet rs = pre.executeQuery();
+            if (rs.next()) {
+                star = rs.getFloat("avs");
+            }
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+        return star;
+    }
+
+    public ProductRating getStarAVG(int productId) {
+        int star = 0;
+        ProductRating p = new ProductRating();
+        String query = "SELECT COALESCE(SUM(Star) / COUNT(Star), 0) AS avs FROM ProductRatings as p  where p.ProductID =?";
+        try {
+            PreparedStatement pre = connector.prepareStatement(query);
+            pre.setInt(1, productId);
+            ResultSet rs = pre.executeQuery();
+            if (rs.next()) {
+                star = rs.getInt("avs");
+                p.setStar(star);
+            }
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+        return p;
+    }
+
     public ProductRating getProductRating(int rateID) {
         ProductRating pro = new ProductRating();
         String query = "select * from ProductRatings WHERE RateID =?";
@@ -58,17 +93,17 @@ public class ProductRatingDAO {
             PreparedStatement pre = connector.prepareStatement(query);
             pre.setInt(1, rateID);
             ResultSet rs = pre.executeQuery();
-            if(rs.next()) {
-              
-                        pro.setRateID(rs.getInt("RateID"));
-                        pro.setCustomerID(rs.getInt("CustomerID"));
-                        pro.setProductID(rs.getInt("ProductID"));
-                        pro.setOrderID(rs.getInt("OrderID"));
-                        pro.setCreatedDate(rs.getDate("CreatedDate"));
-                        pro.setStar(rs.getInt("Star"));
-                        pro.setComment(rs.getString("Comment"));
-                        pro.setIsDeleted(rs.getBoolean("isDeleted"));
-                        pro.setIsRead(rs.getBoolean("isRead"));
+            if (rs.next()) {
+
+                pro.setRateID(rs.getInt("RateID"));
+                pro.setCustomerID(rs.getInt("CustomerID"));
+                pro.setProductID(rs.getInt("ProductID"));
+                pro.setOrderID(rs.getInt("OrderID"));
+                pro.setCreatedDate(rs.getDate("CreatedDate"));
+                pro.setStar(rs.getInt("Star"));
+                pro.setComment(rs.getString("Comment"));
+                pro.setIsDeleted(rs.getBoolean("isDeleted"));
+                pro.setIsRead(rs.getBoolean("isRead"));
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -141,4 +176,23 @@ public class ProductRatingDAO {
         }
     }
 
+    public Product getProductID(int rateID) {
+        Product p = new Product();
+        String query = "select FullName , ProductID from Products where ProductID =(select ProductID from ProductRatings WHERE RateID =?)";
+
+        try {
+            PreparedStatement pre = connector.prepareStatement(query);
+            pre.setInt(1, rateID);
+            ResultSet rs = pre.executeQuery();
+            if (rs.next()) {
+                p.setFullName(rs.getString("FullName"));
+                p.setProductId(rs.getInt("ProductID"));
+
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return p;
+    }
 }

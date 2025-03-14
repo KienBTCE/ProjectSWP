@@ -22,6 +22,10 @@ public class ProductRating {
     private boolean isRead;
     private String fullName;
 
+    public ProductRating(int star) {
+        this.star = star;
+    }
+
     public ProductRating(int rateID, int customerID, int productID, int orderID, Date createdDate, int star, String comment, boolean isDeleted, boolean isRead, String fullName) {
         this.rateID = rateID;
         this.customerID = customerID;

@@ -65,7 +65,9 @@ public class ViewOrderListServlet extends HttpServlet {
         } else {
             list = oDAO.getOrderList();
         }
-
+        for(Order o : list){
+            System.out.println(o.getStatus());
+        }
         request.setAttribute("data", list);
         request.setAttribute("searchQuery", searchQuery);
         request.getRequestDispatcher("orderListView.jsp").forward(request, response);

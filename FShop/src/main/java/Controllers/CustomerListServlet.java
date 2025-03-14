@@ -10,6 +10,8 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 
 /**
@@ -56,6 +58,13 @@ public class CustomerListServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        HttpSession session = request.getSession();
+        // Lấy thông báo từ session (nếu có) và remove luôn để không lặp lại
+        String message = (String) session.getAttribute("message");
+        if (message != null) {
+            request.setAttribute("message", message);
+            session.removeAttribute("message");
+        }
 
         CustomerDAO pr = new CustomerDAO();
         ArrayList<Customer> customers;
@@ -72,6 +81,8 @@ public class CustomerListServlet extends HttpServlet {
             if (customer != null) {
                 pr.blockCustomer(id);
                 sendStatusChangeNotificationEmail(customer, true); // true -> Blocked
+                // Set thông báo vào session
+                session.setAttribute("message", "Customer " + customer.getFullName() + " has been blocked");
             }
             response.sendRedirect("CustomerListServlet");
             return;
@@ -82,6 +93,7 @@ public class CustomerListServlet extends HttpServlet {
             if (customer != null) {
                 pr.restoreCustomer(id);
                 sendStatusChangeNotificationEmail(customer, false); // false -> Activated
+                session.setAttribute("message", "Customer " + customer.getFullName() + " has been activated");
             }
             response.sendRedirect("CustomerListServlet");
             return;
@@ -95,6 +107,7 @@ public class CustomerListServlet extends HttpServlet {
             } catch (NullPointerException e) {
                 System.out.println(e);
             }
+            return;
         }
         if (keyword != null && !keyword.trim().isEmpty()) {
             customers = (ArrayList<Customer>) pr.searchCustomerByName(keyword);

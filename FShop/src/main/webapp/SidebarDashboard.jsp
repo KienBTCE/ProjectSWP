@@ -12,6 +12,7 @@
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>F Shop</title>
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
         <style>
@@ -22,7 +23,7 @@
 
             .sidebar {
                 width: 250px;
-                height: 97vh;
+                height: 100%;
                 background: #FFFFFF;
                 color: black;
                 padding-top: 20px;
@@ -83,21 +84,36 @@
             </c:if>
 
             <c:if test="${sessionScope.employee.getRoleId() == 2}">
-                <h6><a href="ShopDashboardServlet">Shop Management</a></h6>
-                <a href="CustomerListServlet">Customer Management</a>
-                <a href="ProductListServlet">Product Management</a>
-                <a href="ProductStatisticServlet">Product Statistic</a>
+                <h6>
+                    <a href="ShopDashboardServlet">
+                        <i class="fas fa-store"></i> Shop Management
+                    </a>
+                </h6>
+                <a href="CustomerListServlet">
+                    <i class="fas fa-users"></i> Customer Management
+                </a>
+                <a href="ProductListServlet">
+                    <i class="fas fa-box-open"></i> Product Management
+                </a>
+                <a href="ProductStatisticServlet">
+                    <i class="fas fa-chart-bar"></i> Product Statistic
+                </a>
             </c:if>
+
             <c:if test="${sessionScope.employee.getRoleId() == 3}">
                 <h6><a href="#">Order Management</a></h6>
                 <a href="ViewListNewFeedbackServlet">Feedback</a>
                 <a href="ViewOrderListServlet">Order</a>
+                <a href="DeleteOrder.jsp">Delete</a>
             </c:if>
             <c:if test="${sessionScope.employee.getRoleId() == 4}">
-                <h6><a href="Warehouse">Warehouse Management</a></h6>
+                <h6><a href="ImportStatistic">Warehouse Management</a></h6>
                 <a href="ImportOrder">Import Order</a>
                 <a href="Supplier">Supplier</a>
                 <a href="#">Product Management</a>
+                <form action="ExportStock" method="POST">
+                    <button type="submit">Export to Excel</button>
+                </form>
             </c:if>
             <a style="margin-top: auto; color: red;" href="" onclick="confirmLogout()"><i class="bi bi-box-arrow-right"></i> Logout</a>
         </div>

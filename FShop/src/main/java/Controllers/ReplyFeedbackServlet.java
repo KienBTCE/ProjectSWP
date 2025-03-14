@@ -74,12 +74,12 @@ public class ReplyFeedbackServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        HttpSession session = request.getSession();
-        Employee em = (Employee) session.getAttribute("employee");
+//        HttpSession session = request.getSession();
+//        Employee em = (Employee) session.getAttribute("employee");
         int rateID = Integer.parseInt(request.getParameter("rateID"));
-//        int emID = em.getEmployeeId();
-        ProductRatingDAO prDAO = new ProductRatingDAO();
         int emID = 1;
+        ProductRatingDAO prDAO = new ProductRatingDAO();
+//        int emID = 1;
         String answer = request.getParameter("Answer");
         RatingRepliesDAO rrDAO = new RatingRepliesDAO();
         if (rateID > 0  ) {
