@@ -12,6 +12,11 @@
     Map<String, Object> stats = (Map<String, Object>) request.getAttribute("stats");
     List<Map<String, Object>> weeklySalesPhone = (List<Map<String, Object>>) request.getAttribute("weeklySalesPhone");
     List<Map<String, Object>> weeklySalesLaptop = (List<Map<String, Object>>) request.getAttribute("weeklySalesLaptop");
+    List<Map<String, Object>> weeklySalesMouse = (List<Map<String, Object>>) request.getAttribute("weeklySalesMouse");
+
+    List<Map<String, Object>> weeklySalesHeadphone = (List<Map<String, Object>>) request.getAttribute("weeklySalesHeadphone");
+    List<Map<String, Object>> weeklySalesCharger = (List<Map<String, Object>>) request.getAttribute("weeklySalesCharger");
+    List<Map<String, Object>> weeklySalesChargingCable = (List<Map<String, Object>>) request.getAttribute("weeklySalesChargingCable");
     List<Map<String, Object>> newCustomers = (List<Map<String, Object>>) request.getAttribute("newCustomers");
 %>
 <!DOCTYPE html>
@@ -70,6 +75,7 @@
             .content {
                 flex-grow: 1;
                 padding: 12px;
+                margin-left: 125px;
             }
 
             .header {
@@ -112,7 +118,7 @@
                 gap: 20px;
             }
             .chart-box {
-                width: 45%;
+                width: 32%;
                 background: white;
                 padding: 15px;
                 border-radius: 10px;
@@ -121,14 +127,8 @@
         </style>
     </head>
     <body>
-        <div class="sidebar">
-            <img src="assets/imgs/Dashboard/Group 1521.svg" class="logo-side-bar">
-            <h6><a href="ShopDashboardServlet">Shop Management</a></h6>
-            <a href="CustomerListServlet">Customer Management</a>
-            <a href="ProductListServlet">Product Management</a>
-            <a href="ProductStatisticServlet">Product Statistic</a>
-        </div>
-        <div class="content">
+        <jsp:include page="SidebarDashboard.jsp"></jsp:include>
+            <div class="content">
             <jsp:include page="HeaderDashboard.jsp"></jsp:include>
                 <div class="content">
                     <div class="container text-center">
@@ -160,6 +160,19 @@
                     <div class="chart-box" data-aos="fade-up" data-aos-delay="200">
                         <canvas id="weeklySalesLaptopChart"></canvas>
                     </div>
+                    <div class="chart-box" data-aos="fade-up" data-aos-delay="400">
+                        <canvas id="weeklySalesMouseChart"></canvas>
+                    </div>
+
+                    <div class="chart-box" data-aos="fade-up">
+                        <canvas id="weeklySalesHeadphoneChart"></canvas>
+                    </div>
+                    <div class="chart-box" data-aos="fade-up" data-aos-delay="200">
+                        <canvas id="weeklySalesChargerChart"></canvas>
+                    </div>
+                    <div class="chart-box" data-aos="fade-up" data-aos-delay="400">
+                        <canvas id="weeklySalesChargingCableChart"></canvas>
+                    </div>
                 </div>
                 <div class="mt-4" data-aos="fade-up">
                     <h4>New Customers</h4>
@@ -177,6 +190,11 @@
             AOS.init();
             const weeklySalesPhone = JSON.parse('<%= new Gson().toJson(weeklySalesPhone)%>');
             const weeklySalesLaptop = JSON.parse('<%= new Gson().toJson(weeklySalesLaptop)%>');
+            const weeklySalesMouse = JSON.parse('<%= new Gson().toJson(weeklySalesMouse)%>');
+
+            const weeklySalesHeadphone = JSON.parse('<%= new Gson().toJson(weeklySalesHeadphone)%>');
+            const weeklySalesCharger = JSON.parse('<%= new Gson().toJson(weeklySalesCharger)%>');
+            const weeklySalesChargingCable = JSON.parse('<%= new Gson().toJson(weeklySalesChargingCable)%>');
             function renderChart(canvasId, label, labels, values) {
                 new Chart(document.getElementById(canvasId), {
                     type: 'bar',
@@ -186,6 +204,10 @@
             }
             renderChart('weeklySalesPhoneChart', 'Weekly Sales - Phones', weeklySalesPhone.map(d => d.productName), weeklySalesPhone.map(d => d.totalSold));
             renderChart('weeklySalesLaptopChart', 'Weekly Sales - Laptops', weeklySalesLaptop.map(d => d.productName), weeklySalesLaptop.map(d => d.totalSold));
+            renderChart('weeklySalesMouseChart', 'Weekly Sales - Mouses', weeklySalesMouse.map(d => d.productName), weeklySalesMouse.map(d => d.totalSold));
+            renderChart('weeklySalesHeadphoneChart', 'Weekly Sales - Headphones', weeklySalesHeadphoneChart.map(d => d.productName), weeklySalesHeadphoneChart.map(d => d.totalSold));
+            renderChart('weeklySalesChargerChart', 'Weekly Sales - Laptops', weeklySalesChargerChart.map(d => d.productName), weeklySalesChargerChart.map(d => d.totalSold));
+            renderChart('weeklySalesChargingCableChart', 'Weekly Sales - Mouses', weeklySalesChargingCableChart.map(d => d.productName), weeklySalesChargingCableChart.map(d => d.totalSold));
         </script>
     </body>
 </html>

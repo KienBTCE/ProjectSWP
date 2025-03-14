@@ -135,7 +135,7 @@ public class ProductDAO {
 
         return list;
     }
-    
+
     public ArrayList<Product> filterProductsByPrice(ArrayList<String> filters) {
         ArrayList<Product> list = null;
 
@@ -328,12 +328,12 @@ public class ProductDAO {
     public int createProduct(Product product) {
         int effectRow = 0;
         String sql = "INSERT INTO Products (BrandID, CategoryID, Model, FullName, Description, Price, Image, Image1, Image2, Image3) "
-                    + "VALUES ? , ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+                + "VALUES ? , ?, ?, ?, ?, ?, ?, ?, ?, ?)";
         try {
             PreparedStatement ps = connector.prepareStatement(sql);
-            ps.setInt(1, product.getBrandId());  
-            ps.setInt(2, product.getCategoryId()); 
-            ps.setString(3, product.getModel());       
+            ps.setInt(1, product.getBrandId());
+            ps.setInt(2, product.getCategoryId());
+            ps.setString(3, product.getModel());
             ps.setString(4, product.getFullName());     // Tên sản phẩm
             ps.setString(5, product.getDescription());  // Mô tả sản phẩm
             ps.setLong(6, product.getPrice());          // Giá sản phẩm
@@ -347,19 +347,19 @@ public class ProductDAO {
         }
         return effectRow;
     }
-    
+
     public void addProductAttributes(Product product) {
         String query = "INSERT INTO AttributeDetails (AttributeID, ProductID, AttributeInfor) "
-                     + "VALUES (?, ?, ?)";
-        
-        try (PreparedStatement ps = connector.prepareStatement(query)) {
+                + "VALUES (?, ?, ?)";
+
+        try ( PreparedStatement ps = connector.prepareStatement(query)) {
             for (AttributeDetail attribute : product.getAttributeDetails()) {
-                ps.setInt(1, attribute.getAttributeId());      
-                ps.setInt(2, product.getProductId());          
+                ps.setInt(1, attribute.getAttributeId());
+                ps.setInt(2, product.getProductId());
                 ps.setString(3, attribute.getAttributeInfor());
                 ps.addBatch();
             }
-            ps.executeBatch(); 
+            ps.executeBatch();
         } catch (SQLException e) {
             e.printStackTrace();
         }
