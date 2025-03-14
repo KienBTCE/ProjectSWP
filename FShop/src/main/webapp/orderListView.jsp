@@ -18,42 +18,81 @@
 
         <!-- CSS bổ sung -->
         <style>
+            /* Cố định Header */
             .fixed-header {
                 position: fixed;
                 top: 0;
-                left: 0;
-                width: 100%;
-                z-index: 1000;
+                left: 250px; /* Điều chỉnh để tránh che sidebar */
+                width: calc(100% - 250px); /* Chiều rộng trừ đi sidebar */
+                background-color: white;
+                z-index: 1050;
+                padding: 10px 20px;
+                box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
             }
-            /* Điều chỉnh margin-top để nội dung không bị che */
-            .main-layout {
-                margin-top: 70px; /* Giá trị này cần phù hợp với chiều cao của header */
-            }
-            /* Sidebar được đặt chồng lên header với z-index cao hơn */
+
+            /* Cố định Sidebar */
             .sidebar-container {
-                position: relative;
-                z-index: 1100; /* Z-index cao hơn header */
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 250px;
+                height: 100vh;
+                background-color: white;
+                z-index: 1100;
+                padding-top: 60px; /* Tạo khoảng cách tránh bị header che */
             }
+
+            /* Điều chỉnh khoảng cách để tránh che nội dung */
+            .main-layout {
+                display: flex;
+            }
+
+            .content {
+                flex-grow: 1;
+                margin-left: 250px; /* Khoảng cách để không bị chồng lên sidebar */
+                margin-top: 80px; /* Để tránh bị header che */
+                padding: 20px;
+            }
+
+            /* Căn chỉnh layout header */
+            .header-container {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                gap: 20px;
+            }
+
+            /* Căn chỉnh phần tìm kiếm */
+            .search-container {
+                display: flex;
+                align-items: center;
+                gap: 10px;
+                flex-grow: 1; /* Giúp phần tìm kiếm chiếm không gian linh hoạt */
+                max-width: 600px;
+            }
+
+            .search-container input {
+                flex: 1;
+            }
+
+            /* Đưa tiêu đề về phía bên phải */
+            .header-title {
+                white-space: nowrap;
+                font-size: 1.5rem;
+                font-weight: bold;
+            }
+
+
         </style>
     </head>
     <body>
-        <!-- Header luôn nằm ở trên cùng -->
-        <div class="fixed-header">
-            <jsp:include page="HeaderDashboard.jsp"></jsp:include>
+        <div class="sidebar-container">
+            <jsp:include page="SidebarDashboard.jsp"></jsp:include>
             </div>
 
             <div class="main-layout">
-                <!-- Gói sidebar trong một div mới với z-index cao hơn -->
-                <div class="sidebar-container">
-                <jsp:include page="sidebarOrderManager.jsp" />
-                <%--<jsp:include page="SidebarDashboard.jsp"></jsp:include>--%>
-                </div>
-
-                <!-- Nội dung chính -->
-                <div class="content">
-                    <header>
-                        <h2><i class="fa-solid fa-box"></i> Order List</h2>
-                        <!-- Search Bar -->
+                <div class="fixed-header">
+                    <div class="header-container">
                         <form action="ViewOrderListServlet" method="GET" class="search-container">
                             <input type="text" name="search" id="searchInput" value="${searchQuery}" 
                                placeholder="Search by Name, Phone..." class="form-control">
@@ -61,9 +100,15 @@
                             <i class="fa fa-search"></i>
                         </button>
                     </form>
-                </header>
 
-                <div class="order-container">
+                    <h2 class="header-title"><i class="fa-solid fa-box"></i> Order List</h2>
+                    <jsp:include page="HeaderDashboard.jsp"></jsp:include>
+
+                    </div>
+                </div>
+
+                <div class="content">
+                    <div class="order-container">
                     <c:forEach items="${data}" var="order">
                         <div class="order-card">
                             <div class="order-header">
@@ -118,5 +163,6 @@
                 </div>
             </div>
         </div>
+
     </body>
 </html>

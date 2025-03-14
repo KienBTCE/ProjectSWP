@@ -86,9 +86,10 @@
                 <a href="ProductStatisticServlet">Product Statistic</a>
             </c:if>
             <c:if test="${sessionScope.employee.getRoleId() == 3}">
-                <h6><a href="#">Order Management</a></h6>
-                <a href="ViewListNewFeedbackServlet">Feedback</a>
+                <h6>Order Management</a></h6>
                 <a href="ViewOrderListServlet">Order</a>
+                <a href="ViewListNewFeedbackServlet">Feedback</a>
+                <a href="DeleteOrder.jsp">Delete</a>
             </c:if>
             <c:if test="${sessionScope.employee.getRoleId() == 4}">
                 <h6><a href="Warehouse">Warehouse Management</a></h6>

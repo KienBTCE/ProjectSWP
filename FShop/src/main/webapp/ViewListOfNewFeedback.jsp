@@ -70,7 +70,7 @@
     <body>
         <!-- Sidebar được cố định ở góc trái -->
         <div class="sidebar-container">
-            <jsp:include page="sidebarOrderManager.jsp" />  
+             <jsp:include page="SidebarDashboard.jsp"></jsp:include>
         </div>
 
         <!-- Header được cố định ở góc phải -->

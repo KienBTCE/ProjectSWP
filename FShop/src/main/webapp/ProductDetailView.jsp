@@ -511,6 +511,141 @@
             }
 
 
+            .feedback-container {
+                background-color: #fff;
+                border-radius: 10px;
+                box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+                padding: 25px;
+                margin-top: 40px;
+                max-width: 800px;
+                width: 100%;
+                margin-left: auto;
+                margin-right: auto;
+            }
+
+
+            .feedback-title {
+                font-size: 1.5rem;
+                font-weight: 700;
+                margin-bottom: 20px;
+                text-align: center;
+                color: #333;
+            }
+
+
+            .review-card {
+                background: #f9f9f9;
+                border: 1px solid #ddd;
+                border-radius: 8px;
+                padding: 20px;
+                margin-bottom: 15px;
+                transition: all 0.3s ease;
+            }
+
+            .review-card:hover {
+                box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            }
+
+            .profile {
+                display: flex;
+                align-items: center;
+                margin-bottom: 10px;
+            }
+
+            .profile img {
+                width: 50px;
+                height: 50px;
+                border-radius: 50%;
+                margin-right: 10px;
+            }
+
+
+            .star-icon {
+                font-size: 20px;
+                color: #ffcc00;
+                margin-bottom: 10px;
+            }
+
+
+            .review-card p {
+                font-size: 1rem;
+                color: #555;
+            }
+
+
+            .reply-container {
+                background: #f1f1f1;
+                border-left: 3px solid #007bff;
+                padding: 10px;
+                margin-top: 10px;
+                border-radius: 5px;
+                font-size: 0.9rem;
+                color: #555;
+            }
+
+
+            #reviewForm {
+                background: #fff;
+                border: 1px solid #ddd;
+                border-radius: 8px;
+                padding: 20px;
+                margin-top: 30px;
+            }
+
+            .rating-label {
+                font-weight: 600;
+                display: block;
+                margin-bottom: 10px;
+            }
+
+            .star-rating {
+                display: flex;
+                justify-content: center;
+                margin-bottom: 10px;
+            }
+
+            .star-rating input {
+                display: none;
+            }
+
+            .star-rating label {
+                font-size: 1.5rem;
+                color: #ccc;
+                cursor: pointer;
+                margin-right: 5px;
+                transition: color 0.2s ease;
+            }
+
+            .star-rating input:checked ~ label,
+            .star-rating label:hover,
+            .star-rating label:hover ~ label {
+                color: #ffcc00;
+            }
+
+            textarea {
+                width: 100%;
+                height: 100px;
+                padding: 10px;
+                border-radius: 5px;
+                border: 1px solid #ccc;
+                margin-top: 10px;
+            }
+
+            button {
+                background-color: #007bff;
+                color: white;
+                padding: 10px 15px;
+                border: none;
+                border-radius: 5px;
+                cursor: pointer;
+                margin-top: 10px;
+                width: 100%;
+            }
+
+            button:hover {
+                background-color: #0056b3;
+            }
+
         </style>
     </head>
     <body>
@@ -556,12 +691,13 @@
                                 <div class="d-flex align-items-center">
                                     <h3 class="mb-0 me-2">${star}</h3>
                                     <div class="star-rating">
-                                        <c:forEach begin="1" end="${star}" var="i">
-                                            <i class="fas fa-star"></i> 
-                                        </c:forEach>
                                         <c:forEach begin="${star + 1}" end="5" var="i">
                                             <i class="far fa-star"></i> 
                                         </c:forEach>
+                                        <c:forEach begin="1" end="${star}" var="i">
+                                            <i class="fas fa-star"></i> 
+                                        </c:forEach>
+
                                     </div>
                                 </div>
 
@@ -641,8 +777,8 @@
 
                 </div>
             </div>
-            <div class="container">
-
+            <div class="feedback-container">
+                <h3 class="feedback-title">Customer Reviews</h3>
 
                 <c:forEach var="rate" items="${dataRating}">
                     <div class="review-card">
@@ -665,8 +801,9 @@
                                 </c:choose>
                             </c:forEach>
                         </div>
-                        <p>${rate.isDeleted ? "This feedback was hidden for some reason." : rate.comment}</p>
+                        <p>${rate.isDeleted ? "\"This feedback was hidden for some reason.\"" : rate.comment}</p>
                     </div>
+
                     <c:forEach var="reply" items="${dataReplies}">
                         <c:if test="${reply.rateID == rate.rateID}">
                             <div class="reply-container">
@@ -680,7 +817,6 @@
                     <form id="reviewForm" method="POST" action="ProductDetailServlet">
                         <input type="hidden" name="productId" value="${product.productId}">
                         <input type="hidden" name="customerId" value="${customerId}">
-
                         <label class="rating-label">Share your experience:</label>
                         <div class="star-rating">
                             <input required type="radio" name="star" value="5" id="star5"><label for="star5" class="fa fa-star"></label>
@@ -689,12 +825,12 @@
                             <input required type="radio" name="star" value="2" id="star2"><label for="star2" class="fa fa-star"></label>
                             <input required type="radio" name="star" value="1" id="star1"><label for="star1" class="fa fa-star"></label>
                         </div>
-
                         <textarea required name="comment" placeholder="Write your review..."></textarea>
                         <button type="submit">Submit Review</button>
                     </form>
                 </c:if>
             </div>
+
             <!-- Popup Notification (if needed) -->
             <%
                 String message = (String) session.getAttribute("message");

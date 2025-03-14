@@ -68,30 +68,19 @@ public class OrderDetailDAO {
 
     public List<Integer> getCustomerByProductID(int productID) {
         List<Integer> list = new ArrayList<>();
-        String query = "DECLARE @ProductID INT = ?;\n"
-                + "SELECT DISTINCT c.CustomerID\n"
+        String query = "DECLARE @ProductID INT = ?; \n"
+                + "\n"
+                + "SELECT c.CustomerID\n"
                 + "FROM Customers AS c\n"
-                + "WHERE EXISTS (\n"
-                + "    SELECT 1\n"
-                + "    FROM Orders AS o\n"
-                + "    JOIN OrderDetails AS od ON od.OrderID = o.OrderID\n"
-                + "    WHERE od.ProductID = @ProductID \n"
-                + "          AND o.Status = 4 \n"
-                + "          AND o.CustomerID = c.CustomerID\n"
-                + ")\n"
-                + "AND (\n"
-                + "    SELECT COUNT(*)\n"
-                + "    FROM Orders AS o\n"
-                + "    JOIN OrderDetails AS od ON od.OrderID = o.OrderID\n"
-                + "    WHERE od.ProductID = @ProductID \n"
-                + "          AND o.Status = 4 \n"
-                + "          AND o.CustomerID = c.CustomerID\n"
-                + ") > (\n"
-                + "    SELECT COUNT(*)\n"
-                + "    FROM ProductRatings AS pr\n"
-                + "    WHERE pr.CustomerID = c.CustomerID \n"
-                + "          AND pr.ProductID = @ProductID\n"
-                + ");";
+                + "JOIN Orders AS o ON o.CustomerID = c.CustomerID\n"
+                + "JOIN OrderDetails AS od ON od.OrderID = o.OrderID\n"
+                + "LEFT JOIN ProductRatings AS pr \n"
+                + "    ON pr.CustomerID = c.CustomerID \n"
+                + "    AND pr.ProductID = @ProductID\n"
+                + "WHERE od.ProductID = @ProductID\n"
+                + "      AND o.Status = 4\n"
+                + "GROUP BY c.CustomerID\n"
+                + "HAVING COUNT(od.OrderID) > COUNT(pr.RateID);";
 
         try {
             PreparedStatement pre = connector.prepareStatement(query);

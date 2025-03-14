@@ -130,23 +130,23 @@
                 cursor: pointer;
             }
             .btn-notif {
-                background: none !important; 
-                border: none !important; 
-                padding: 5px; 
-                cursor: pointer; 
+                background: none !important;
+                border: none !important;
+                padding: 5px;
+                cursor: pointer;
                 display: flex;
                 align-items: center;
                 justify-content: center;
             }
 
             .btn-notif i {
-                font-size: 20px; 
-                color: #333; 
-                transition: color 0.3s ease-in-out; 
+                font-size: 20px;
+                color: #333;
+                transition: color 0.3s ease-in-out;
             }
 
             .btn-notif:hover i {
-                color: #d10000; 
+                color: #d10000;
             }
 
 
@@ -286,22 +286,22 @@
 
                                 if (data.replies && Array.isArray(data.replies) && data.replies.length > 0) {
                                     data.replies.forEach((reply, index) => {
-                                        let productId = data.productId[index] || "";
+                                        let product = data.product[index] || "";
+                                        console.log("Product data:", product.fullName);
 
                                         // Tạo thẻ <a> để hiển thị thông báo
                                         const aElem = document.createElement('a');
-                                        aElem.href = "ProductDetailServlet?id=" + productId;
+                                        aElem.href = "ProductDetailServlet?id=" + product.productId;
                                         aElem.classList.add('list-group-item', 'list-group-item-action');
                                         aElem.innerHTML = `
                             <div class="d-flex w-100 justify-content-between">
-                                <h6 class="mb-1">New reply From Fshop</h6>
+                                <h6 class="mb-1">New reply on ` +product.fullName+`</h6>
                                 <small class="${reply.isRead ? 'text-muted' : 'text-danger'}">
-                                   ${reply.isRead ? "Viewed" : "Not viewed yet"}
+            ${!reply.isRead ? "Viewed" : "Not viewed yet"}
                                 </small>
                             </div>
                             <p class="mb-1">${reply.answer}</p>
                         `;
- <!--${reply.isRead ? "Viewed" : "Not viewed yet"}-->
 
                                         aElem.addEventListener('click', function (event) {
                                             event.preventDefault();
@@ -312,7 +312,7 @@
                                                 body: "repliesID=" + reply.replyID
                                             }).then(response => response.text())
                                                     .then(() => {
-                                                        window.location.href = "ProductDetailServlet?id=" + productId;
+                                                        window.location.href = "ProductDetailServlet?id=" + product.productId;
                                                     })
                                                     .catch(error => console.error("Error updating reply status:", error));
                                         });

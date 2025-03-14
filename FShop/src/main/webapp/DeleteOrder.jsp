@@ -119,7 +119,7 @@
     <body>
         <!-- Sidebar cố định bên trái -->
         <div class="sidebar-container">
-            <jsp:include page="sidebarOrderManager.jsp" />  
+            <jsp:include page="SidebarDashboard.jsp"></jsp:include>
         </div>
 
         <!-- Header cố định bên phải -->

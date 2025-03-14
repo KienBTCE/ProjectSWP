@@ -95,7 +95,7 @@
         <jsp:include page="HeaderDashboard.jsp"></jsp:include>
 
             <!-- Sidebar -->
-        <jsp:include page="sidebarOrderManager.jsp" />
+         <jsp:include page="SidebarDashboard.jsp"></jsp:include>
 
         <div class="main-content">
             <h2 class="text-center mb-4">Customer Reviews</h2>
