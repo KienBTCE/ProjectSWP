@@ -108,7 +108,9 @@
                 <a href="ImportOrder">Import Order</a>
                 <a href="Supplier">Supplier</a>
                 <a href="#">Product Management</a>
-                <a href="ExportStock">Export Stock</a>
+                <form action="ExportStock" method="POST">
+                    <button type="submit">Export to Excel</button>
+                </form>
             </c:if>
             <a style="margin-top: auto; color: red;" href="" onclick="confirmLogout()"><i class="bi bi-box-arrow-right"></i> Logout</a>
         </div>

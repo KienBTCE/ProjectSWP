@@ -242,7 +242,7 @@
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>ExportStockToFileServlet</servlet-name>
-        <url-pattern>/ExportStockToFileServlet</url-pattern>
+        <url-pattern>/ExportStock</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>VerifyOTPServlet</servlet-name>
