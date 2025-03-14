@@ -148,6 +148,10 @@
         <servlet-name>SearchProductServlet</servlet-name>
         <servlet-class>Controllers.SearchProductServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>ImportStatisticServlet</servlet-name>
+        <servlet-class>Controllers.ImportStatisticServlet</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>CreateProductServlet</servlet-name>
         <url-pattern>/CreateProductServlet</url-pattern>
@@ -299,6 +303,10 @@
     <servlet-mapping>
         <servlet-name>SearchProductServlet</servlet-name>
         <url-pattern>/SearchProduct</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ImportStatisticServlet</servlet-name>
+        <url-pattern>/ImportStatistic</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>30</session-timeout>

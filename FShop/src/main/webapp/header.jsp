@@ -92,7 +92,7 @@
                 flex-basis: 50%;
             }
             .nav-infor-content:nth-child(3){
-                flex-basis: 100px;
+                flex-basis: 400px;
             }
             .nav-infor-content:nth-child(3) *{
                 margin-left: 5px
@@ -122,6 +122,9 @@
             .search-box {
                 width: 100%; /* Để thanh tìm kiếm rộng bằng danh mục */
                 margin-top: 12px;
+            }
+            #searchIcon{
+                cursor: pointer;
             }
 
 
@@ -179,11 +182,12 @@
                                 <a href="#">Accessories</a>
                             </li>
                         </ul>
-                        <input type="text" id="searchInput" class="form-control search-box" placeholder="Find by name ..." value="${searchValue}">
+                        <!--<input type="text" id="searchInput" class="form-control search-box" placeholder="Find by name ..." value="${searchValue}">-->
                     </div>
                     <div class="nav-infor-content col-md-4">
-                        <!--<i class="ti-search" style="font-size: 150%; color: black;"></i>-->
-                        <div style="display: flex; align-items: center">
+                        <a><i class="ti-search" style="font-size: 150%; color: black;" id="searchIcon"></i></a>
+                        <input style="display: flex; align-items: center; margin: 0" type="text" id="searchInput" class="form-control search-box" placeholder="Find by name ..." value="">
+                        <div style="display: flex; align-items: center" onclick="">
                             <c:if test="${sessionScope.customer == null}">
                                 <a href="cart"><i class="ti-shopping-cart" style="font-size: 150%; color: black;"></i></a>
                                 </c:if>
@@ -216,14 +220,38 @@
         <script src="assets/js/bootstrap.min.js"></script>
 
         <script>
-            document.getElementById("searchInput").addEventListener("keypress", function (event) {
-                if (event.key === "Enter") {
-                    event.preventDefault();
-                    let searchValue = this.value.trim();
+            document.addEventListener("DOMContentLoaded", function () {
+                // Hàm xử lý tìm kiếm
+                function searchProduct() {
+                    let searchValue = document.getElementById("searchInput").value.trim();
                     if (searchValue !== "") {
                         window.location.href = "SearchProduct?name=" + encodeURIComponent(searchValue);
                     }
                 }
+
+                // Khi nhấn Enter trong input
+                document.getElementById("searchInput").addEventListener("keypress", function (event) {
+                    if (event.key === "Enter") {
+                        event.preventDefault();
+                        searchProduct();
+                    }
+                });
+
+                // Khi nhấn vào icon tìm kiếm
+                document.getElementById("searchIcon").addEventListener("click", function () {
+                    searchProduct();
+                });
+            });
+
+            document.addEventListener("DOMContentLoaded", function () {
+                // Hàm lấy giá trị của tham số từ URL
+                function getParameterByName(name) {
+                    let urlParams = new URLSearchParams(window.location.search);
+                    return urlParams.get(name) || "";
+                }
+
+                // Lấy giá trị của tham số "name" và đặt vào input
+                document.getElementById("searchInput").value = getParameterByName("name");
             });
         </script>
     </body>
