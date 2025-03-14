@@ -4,8 +4,8 @@
  */
 package Controllers;
 
-import DAOs.StatisticDAO;
-import Models.Statistic;
+import DAOs.InventoryStatisticDAO;
+import Models.InventoryStatistic;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -18,7 +18,7 @@ import java.util.ArrayList;
  *
  * @author NguyenPVT-CE181835
  */
-public class StatisticManagementServlet extends HttpServlet {
+public class SearchInventoryServlet extends HttpServlet {
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -28,39 +28,43 @@ public class StatisticManagementServlet extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet StatisticManagementServlet</title>");
+            out.println("<title>Servlet SearchInventoryServlet</title>");
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet StatisticManagementServlet at " + request.getContextPath() + "</h1>");
+            out.println("<h1>Servlet SearchInventoryServlet at " + request.getContextPath() + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }
     }
 
+    // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
+    /**
+     * Handles the HTTP <code>GET</code> method.
+     *
+     * @param request servlet request
+     * @param response servlet response
+     * @throws ServletException if a servlet-specific error occurs
+     * @throws IOException if an I/O error occurs
+     */
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-
-        StatisticDAO statisticDAO = new StatisticDAO();
-        ArrayList<Statistic> listP = statisticDAO.getTopProduct();
-        ArrayList<Statistic> listC = statisticDAO.getTopCustomer();
-        ArrayList<Statistic> listInventoryPhone = statisticDAO.getInventoryforSmartPhone();
-        ArrayList<Statistic> listInventoryLaptop = statisticDAO.getInventoryforLaptop();
-        ArrayList<Statistic> listRevenuePhone = statisticDAO.getRevenuePhone();
-        ArrayList<Statistic> listRevenueLaptop = statisticDAO.getRevenueLaptop();
-        request.setAttribute("listP", listP);
-        request.setAttribute("listC", listC);
-        request.setAttribute("listInventoryPhone", listInventoryPhone);
-        request.setAttribute("listInventoryLaptop", listInventoryLaptop);
-        request.setAttribute("listRevenuePhone", listRevenuePhone);
-        request.setAttribute("listRevenueLaptop", listRevenueLaptop);
-        request.getRequestDispatcher("StatisticManagementView.jsp").forward(request, response);
+        InventoryStatisticDAO inventoryDAO = new InventoryStatisticDAO();
+        ArrayList<InventoryStatistic> listI;
+        String query = request.getParameter("query");
+        if (query == null || query.trim().isEmpty()) {
+            listI = inventoryDAO.getAllInventory();
+        } else {
+            listI = inventoryDAO.searchInventory(query);
+        }
+        request.setAttribute("listI", listI);
+        request.setAttribute("searchQuery", query);
+        request.getRequestDispatcher("InventoryStatisticView.jsp").forward(request, response);
     }
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-
+        processRequest(request, response);
     }
-
 }

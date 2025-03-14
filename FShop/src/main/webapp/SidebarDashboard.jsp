@@ -17,7 +17,7 @@
         <style>
             body {
                 display: flex;
-                padding: 12px;
+
             }
 
             .sidebar {
@@ -69,16 +69,19 @@
                 margin-left: 5%;
                 margin-bottom: 3%;
             }
+
+
         </style>
     </head>
     <body>
         <div class="sidebar">
             <img src="assets/imgs/Dashboard/Group 1521.svg" class="logo-side-bar">
             <c:if test="${sessionScope.employee.getRoleId() == 1}">
-                <h6><a href="#">Admin</a></h6>
-                <a href="Employee">Employee Management</a>
-                <a href="#">Statistic Management</a>
+                <h6 style="margin-left: 60px;  color: #7A7D90;">Admin</h6>
+                <a href="StatisticManagementServlet">Statistic Management</a>
+                <a href="Employee">Employee Management</a>              
             </c:if>
+
             <c:if test="${sessionScope.employee.getRoleId() == 2}">
                 <h6><a href="ShopDashboardServlet">Shop Management</a></h6>
                 <a href="CustomerListServlet">Customer Management</a>
@@ -99,6 +102,12 @@
             <a style="margin-top: auto; color: red;" href="" onclick="confirmLogout()"><i class="bi bi-box-arrow-right"></i> Logout</a>
         </div>
         <script>
+
+            function toggleDropdown() {
+                var dropdownMenu = event.target.nextElementSibling;
+                dropdownMenu.style.display = (dropdownMenu.style.display === "block") ? "none" : "block";
+            }
+
             function confirmLogout() {
                 if (confirm("Are you sure you want to log out?")) {
                     fetch('<%= request.getContextPath()%>/Logout', {
