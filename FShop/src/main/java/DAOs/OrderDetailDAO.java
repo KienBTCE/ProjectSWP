@@ -65,28 +65,40 @@ public class OrderDetailDAO {
         }
         return list;
     }
- public List<Integer> getCustomerByProductID(int productID) {
+
+    public List<Integer> getCustomerByProductID(int productID) {
         List<Integer> list = new ArrayList<>();
-        String query = "SELECT DISTINCT c.CustomerID FROM Orders AS o " +
-                     "JOIN Customers AS c ON c.CustomerID = o.CustomerID " +
-                     "JOIN OrderDetails AS od ON od.OrderID = o.OrderID " +
-                     "WHERE od.ProductID = ? AND o.Status = 5"; // Chỉ lấy đơn hàng hoàn tất
+        String query = "SELECT DISTINCT c.CustomerID\n"
+                + "FROM Customers AS c\n"
+                + "WHERE EXISTS (\n"
+                + "    SELECT 1\n"
+                + "    FROM Orders AS o\n"
+                + "    JOIN OrderDetails AS od ON od.OrderID = o.OrderID\n"
+                + "    WHERE od.ProductID = ? AND o.Status = 4 AND o.CustomerID = c.CustomerID\n"
+                + ")\n"
+                + "AND NOT EXISTS (\n"
+                + "    SELECT 1\n"
+                + "    FROM ProductRatings AS pr\n"
+                + "    JOIN Orders AS o ON pr.OrderID = o.OrderID\n"
+                + "    WHERE pr.CustomerID = c.CustomerID \n"
+                + "          AND pr.ProductID = ?\n"
+                + ");";
+
 
         try {
             PreparedStatement pre = connector.prepareStatement(query);
-            pre.setInt(1, productID); // Gán tham số ProductID vào câu SQL
+            pre.setInt(1, productID);
+            pre.setInt(2, productID);
             ResultSet rs = pre.executeQuery();
-            
+
             while (rs.next()) {
-                list.add(rs.getInt("CustomerID")); 
-            }
+                list.add(rs.getInt("CustomerID"));
+            };
         } catch (SQLException e) {
             e.printStackTrace();
         }
         return list;
     }
-
-    
 
     public static void main(String[] args) {
         OrderDetailDAO od = new OrderDetailDAO();

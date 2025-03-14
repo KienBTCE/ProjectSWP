@@ -122,7 +122,7 @@ public class UpdateEmployeeProfileServlet extends HttpServlet {
             session.setAttribute("empromess", "Update profile success!");
         }
 
-        request.getRequestDispatcher("EmployeeProfileView.jsp").forward(request, response);
+        response.sendRedirect("/ViewEmployeeProfile");
     }
 
     /**

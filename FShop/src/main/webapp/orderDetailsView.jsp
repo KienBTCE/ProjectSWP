@@ -24,7 +24,7 @@
     <body>
 
         <div class="main-layout">
-            <!-- Sidebar giữ nguyên thiết kế -->
+            
             <jsp:include page="sidebarOrderManager.jsp" />
 
             <!-- Nội dung chính -->
@@ -74,18 +74,19 @@
                                             <option value="2" <c:if test="${data.status == 2}">selected</c:if>>Packaging</option>
                                             <option value="3" <c:if test="${data.status == 3}">selected</c:if>>Waiting For Delivery</option>
                                             <option value="4" <c:if test="${data.status == 4}">selected</c:if>>Delivered</option>
+                                            <option value="5" <c:if test="${data.status == 5}">selected</c:if>>Cancel</option>
                                             </select>
                                         </div>
                                         <button type="submit" class="btn btn-success"><i class="fa-solid fa-pen"></i> Update</button>
                                     </form>
 
                                     <!-- Delete Form -->
-                                    <form id="deleteForm" action="DeleteOrderServlet" method="POST">
+<!--                                    <form id="deleteForm" action="DeleteOrderServlet" method="POST">
                                         <input type="hidden" name="orderID" value="${data.orderID}" />
                                     <button type="button" onclick="confirmDelete();" class="btn btn-danger">
                                         <i class="fa-solid fa-trash"></i> Delete
                                     </button>
-                                </form>
+                                </form>-->
                             </div>
                         </div>
                     </div>
@@ -113,6 +114,5 @@
                 document.getElementById("confirmationModal").style.display = "none";
             };
         </script>
-
     </body>
 </html>
