@@ -276,7 +276,6 @@
                         window.location.href = "SearchProduct?name=" + encodeURIComponent(searchValue);
                     }
                 }
-
                 // Khi nhấn Enter trong input
                 document.getElementById("searchInput").addEventListener("keypress", function (event) {
                     if (event.key === "Enter") {
@@ -284,9 +283,79 @@
                         searchProduct();
                     }
                 });
+
                 // Khi nhấn vào icon tìm kiếm
                 document.getElementById("searchIcon").addEventListener("click", function () {
                     searchProduct();
+                });
+            });
+
+            document.addEventListener("DOMContentLoaded", function () {
+                // Hàm lấy giá trị của tham số từ URL
+                function getParameterByName(name) {
+                    let urlParams = new URLSearchParams(window.location.search);
+                    return urlParams.get(name) || "";
+                }
+
+                // Lấy giá trị của tham số "name" và đặt vào input
+                document.getElementById("searchInput").value = getParameterByName("name");
+            });
+        </script>
+        <script src="assets/js/bootstrap.bundle.min.js"></script>
+        <script>
+            document.addEventListener("DOMContentLoaded", function () {
+                const notifBtn = document.querySelector('.btn-notif');
+                notifBtn.addEventListener('click', function () {
+                    fetch('NotificationServlet?ajax=true')
+                            .then(response => response.json())
+                            .then(data => {
+                                console.log("Received data:", data); // Kiểm tra JSON trong console
+                                const notificationList = document.getElementById("notificationList");
+                                notificationList.innerHTML = "";
+
+                                if (data.replies && Array.isArray(data.replies) && data.replies.length > 0) {
+                                    data.replies.forEach((reply, index) => {
+                                        let product = data.product[index] || "";
+                                        console.log("Product data:", product.fullName);
+
+                                        // Tạo thẻ <a> để hiển thị thông báo
+                                        const aElem = document.createElement('a');
+                                        aElem.href = "ProductDetailServlet?id=" + product.productId;
+                                        aElem.classList.add('list-group-item', 'list-group-item-action');
+                                        aElem.innerHTML = `
+                            <div class="d-flex w-100 justify-content-between">
+                                <h6 class="mb-1">New reply on ` + product.fullName + `</h6>
+                                <small class="${reply.isRead ? 'text-muted' : 'text-danger'}">
+            ${!reply.isRead ? "Viewed" : "Not viewed yet"}
+                                </small>
+                            </div>
+                            <p class="mb-1">${reply.answer}</p>
+                        `;
+
+                                        aElem.addEventListener('click', function (event) {
+                                            event.preventDefault();
+
+                                            fetch("NotificationServlet", {
+                                                method: "POST",
+                                                headers: {"Content-Type": "application/x-www-form-urlencoded"},
+                                                body: "repliesID=" + reply.replyID
+                                            }).then(response => response.text())
+                                                    .then(() => {
+                                                        window.location.href = "ProductDetailServlet?id=" + product.productId;
+                                                    })
+                                                    .catch(error => console.error("Error updating reply status:", error));
+                                        });
+
+                                        notificationList.appendChild(aElem);
+                                    });
+                                } else {
+                                    notificationList.innerHTML = '<p class="text-muted">No new comments.</p>';
+                                }
+                            })
+                            .catch(error => {
+                                console.error('Error fetching unread replies:', error);
+                                document.getElementById("notificationList").innerHTML = '<p class="text-muted">Error loading data</p>';
+                            });
                 });
             });
             document.addEventListener("DOMContentLoaded", function () {
@@ -353,6 +422,7 @@
     });
 });
 });
+
 
         </script>
     </body>

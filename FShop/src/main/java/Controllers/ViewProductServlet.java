@@ -129,13 +129,14 @@ public class ViewProductServlet extends HttpServlet {
 
                 ProductRatingDAO prDAO = new ProductRatingDAO();
                 ArrayList<ProductRating> stars = new ArrayList<>();
-            for (Product p : products) {
-               ProductRating star = prDAO.getStarAVG(p.getProductId());
-                System.out.println(star);
-                
-                stars.add(star);
+                for (Product p : products) {
+                    ProductRating star = prDAO.getStarAVG(p.getProductId());
+                    System.out.println("STAR LAPTOP: ________________________________________________________");
+                    System.out.println(star);
 
-            }
+                    stars.add(star);
+
+                }
                 Map<Object, Object> dataMap = new HashMap<>();
                 dataMap.put("stars", stars);
                 dataMap.put("products", products);
@@ -229,18 +230,21 @@ public class ViewProductServlet extends HttpServlet {
                 }
 
                 ProductRatingDAO prDAO = new ProductRatingDAO();
-                ArrayList<String> stars = new ArrayList<>();
+                ArrayList<ProductRating> stars = new ArrayList<>();
                 for (Product p : products) {
-                    float star = prDAO.getStarAverage(p.getProductId());
+                    ProductRating star = prDAO.getStarAVG(p.getProductId());
+                    System.out.println("STAR LAPTOP: ________________________________________________________");
                     System.out.println(star);
-                    stars.add(String.valueOf(star));
+
+                    stars.add(star);
 
                 }
-
-                ArrayList<String> brands = pd.getAllBrandByCategory("Smartphone");
-                Map<String, Object> dataMap = new HashMap<>();
+                Map<Object, Object> dataMap = new HashMap<>();
                 dataMap.put("stars", stars);
                 dataMap.put("products", products);
+
+                ArrayList<String> brands = pd.getAllBrandByCategory("Smartphone");
+               
                 request.setAttribute("dataMap", dataMap);
                 request.setAttribute("products", products);
                 request.setAttribute("brands", brands);
@@ -253,13 +257,13 @@ public class ViewProductServlet extends HttpServlet {
             }
         } else {
             products = pd.getAllProducts();
-            
+
             ProductRatingDAO prDAO = new ProductRatingDAO();
             ArrayList<ProductRating> stars = new ArrayList<>();
             for (Product p : products) {
-               ProductRating star = prDAO.getStarAVG(p.getProductId());
+                ProductRating star = prDAO.getStarAVG(p.getProductId());
                 System.out.println(star);
-                
+
                 stars.add(star);
 
             }
