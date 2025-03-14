@@ -22,7 +22,7 @@ public class CreateProductServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-         String categoryName = request.getParameter("categoryName");
+         String categoryName = request.getParameter("name");
 
         if (categoryName != null && !categoryName.isEmpty()) {
             CategoryDAO categoryDAO = new CategoryDAO();

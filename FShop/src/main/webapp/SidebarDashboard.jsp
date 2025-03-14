@@ -18,7 +18,7 @@
         <style>
             body {
                 display: flex;
-                padding: 12px;
+
             }
 
             .sidebar {
@@ -70,16 +70,19 @@
                 margin-left: 5%;
                 margin-bottom: 3%;
             }
+
+
         </style>
     </head>
     <body>
         <div class="sidebar">
             <img src="assets/imgs/Dashboard/Group 1521.svg" class="logo-side-bar">
             <c:if test="${sessionScope.employee.getRoleId() == 1}">
-                <h6><a href="#">Admin</a></h6>
-                <a href="Employee">Employee Management</a>
-                <a href="#">Statistic Management</a>
+                <h6 style="margin-left: 60px;  color: #7A7D90;">Admin</h6>
+                <a href="StatisticManagementServlet">Statistic Management</a>
+                <a href="Employee">Employee Management</a>              
             </c:if>
+
             <c:if test="${sessionScope.employee.getRoleId() == 2}">
                 <h6>
                     <a href="ShopDashboardServlet">
@@ -101,16 +104,26 @@
                 <h6><a href="#">Order Management</a></h6>
                 <a href="ViewListNewFeedbackServlet">Feedback</a>
                 <a href="ViewOrderListServlet">Order</a>
+                <a href="DeleteOrder.jsp">Delete</a>
             </c:if>
             <c:if test="${sessionScope.employee.getRoleId() == 4}">
                 <h6><a href="ImportStatistic">Warehouse Management</a></h6>
                 <a href="ImportOrder">Import Order</a>
                 <a href="Supplier">Supplier</a>
                 <a href="#">Product Management</a>
+                <form action="ExportStock" method="POST">
+                    <button type="submit">Export to Excel</button>
+                </form>
             </c:if>
             <a style="margin-top: auto; color: red;" href="" onclick="confirmLogout()"><i class="bi bi-box-arrow-right"></i> Logout</a>
         </div>
         <script>
+
+            function toggleDropdown() {
+                var dropdownMenu = event.target.nextElementSibling;
+                dropdownMenu.style.display = (dropdownMenu.style.display === "block") ? "none" : "block";
+            }
+
             function confirmLogout() {
                 if (confirm("Are you sure you want to log out?")) {
                     fetch('<%= request.getContextPath()%>/Logout', {

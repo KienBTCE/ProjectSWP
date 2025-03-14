@@ -31,6 +31,23 @@ public class Stock {
     public Stock() {
     }
 
+    public Stock(int IOID, String employeeName, String supplierName, Timestamp importDate, long totalCost, String productName, int quantity, long importPrice, int productID, String brandName, String categoryName, long retailPrice, long profitMargin) {
+        this.IOID = IOID;
+        this.employeeName = employeeName;
+        this.supplierName = supplierName;
+        this.importDate = importDate;
+        this.totalCost = totalCost;
+        this.productName = productName;
+        this.quantity = quantity;
+        this.importPrice = importPrice;
+        this.productID = productID;
+        this.brandName = brandName;
+        this.categoryName = categoryName;
+        this.retailPrice = retailPrice;
+        this.profitMargin = profitMargin;
+    }
+
+    
     public Stock(int IOID, String employeeName, String supplierName, Timestamp importDate, long totalCost, Timestamp pastModify, String productName, int quantity, long importPrice, int productID, String brandName, String categoryName, long retailPrice, long profitMargin) {
         this.IOID = IOID;
         this.employeeName = employeeName;
