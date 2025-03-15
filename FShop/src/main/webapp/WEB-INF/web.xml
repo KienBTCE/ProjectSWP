@@ -168,7 +168,6 @@
         <servlet-name>SearchInventoryServlet</servlet-name>
         <url-pattern>/SearchInventoryServlet</url-pattern>
     </servlet-mapping>
-    <servlet>
         <servlet-name>ImportStatisticServlet</servlet-name>
         <servlet-class>Controllers.ImportStatisticServlet</servlet-class>
     </servlet>
