@@ -122,6 +122,61 @@ INSERT INTO Products (ProductID, BrandID, CategoryID, Model, FullName, [Descript
 (19, 11, 1, 'MSI-GS66', 'MSI GS66 Stealth', 'Slim gaming laptop with Intel i7 and RTX 3070', 'msi-gs66.jpg', 44999000, 1, 50),
 (20, 5, 1, 'Asus-Zephyrus-G14', 'Asus Zephyrus G14', 'Powerful gaming laptop with AMD Ryzen 9 and RTX 3060', 'asus-zephyrus-g14.jpg', 35999000, 0, 30);
 
+-- Insert Products for Headphone, Charger, and Charging Cable
+SET IDENTITY_INSERT Products ON;
+
+-- Headphones
+INSERT INTO Products (ProductID, BrandID, CategoryID, Model, FullName, [Description], [Image], Price, IsDeleted, Stock) VALUES 
+(11, 3, 4, 'Sony-WH-1000XM5', 'Sony WH-1000XM5', 'Premium noise-canceling wireless headphones', 'sony-wh-1000xm5.jpg', 8490000, 0, 30),
+(12, 5, 4, 'Xiaomi-FlipBuds-Pro', 'Xiaomi FlipBuds Pro', 'True wireless earbuds with ANC', 'xiaomi-flipbuds-pro.jpg', 2990000, 0, 50),
+(13, 14, 4, 'LG-Tone-Free-FP9', 'LG Tone Free FP9', 'Wireless earbuds with UV cleaning case', 'lg-tone-free-fp9.jpg', 3290000, 0, 40),
+(14, 4, 4, 'Huawei-FreeBuds-Pro-2', 'Huawei FreeBuds Pro 2', 'High-quality sound with dynamic drivers', 'huawei-freebuds-pro-2.jpg', 3990000, 0, 35),
+(15, 10, 4, 'Acer-Predator-Galea-350', 'Acer Predator Galea 350', 'Gaming headset with surround sound', 'acer-predator-galea-350.jpg', 2590000, 0, 20);
+
+-- Chargers
+INSERT INTO Products (ProductID, BrandID, CategoryID, Model, FullName, [Description], [Image], Price, IsDeleted, Stock) VALUES 
+(16, 1, 5, 'Apple-20W-USB-C', 'Apple 20W USB-C Charger', 'Fast charging for iPhone and iPad', 'apple-20w-usb-c.jpg', 590000, 0, 100),
+(17, 2, 5, 'Samsung-25W-USB-C', 'Samsung 25W USB-C Charger', 'Super Fast Charging adapter', 'samsung-25w-usb-c.jpg', 690000, 0, 80),
+(18, 5, 5, 'Xiaomi-67W-SuperCharge', 'Xiaomi 67W Super Charge', 'High-speed charging adapter', 'xiaomi-67w.jpg', 890000, 0, 70),
+(19, 4, 5, 'Huawei-40W-SuperCharge', 'Huawei 40W Super Charge', 'Fast charging technology', 'huawei-40w.jpg', 790000, 0, 60),
+(20, 9, 5, 'Lenovo-65W-Charger', 'Lenovo 65W Laptop Charger', 'Fast charging for Lenovo laptops', 'lenovo-65w.jpg', 1290000, 0, 50);
+
+-- Charging Cables
+INSERT INTO Products (ProductID, BrandID, CategoryID, Model, FullName, [Description], [Image], Price, IsDeleted, Stock) VALUES 
+(21, 1, 6, 'Apple-USB-C-Lightning', 'Apple USB-C to Lightning Cable', 'Official Apple charging cable', 'apple-usb-c-lightning.jpg', 490000, 0, 200),
+(22, 2, 6, 'Samsung-USB-C-Cable', 'Samsung USB-C Cable 1m', 'Durable and fast-charging', 'samsung-usb-c.jpg', 290000, 0, 180),
+(23, 5, 6, 'Xiaomi-Braided-USB-C', 'Xiaomi Braided USB-C Cable', 'Reinforced and tangle-free', 'xiaomi-braided-usb-c.jpg', 390000, 0, 160),
+(24, 4, 6, 'Huawei-SuperCharge-Cable', 'Huawei SuperCharge USB-C Cable', 'Supports high-speed charging', 'huawei-supercharge.jpg', 450000, 0, 140),
+(25, 9, 6, 'Lenovo-Thunderbolt-4', 'Lenovo Thunderbolt 4 Cable', 'High-speed data and charging', 'lenovo-thunderbolt-4.jpg', 990000, 0, 120);
+
+SET IDENTITY_INSERT Products OFF;
+
+-- Insert AttributeDetails for Headphone
+INSERT INTO AttributeDetails (AttributeID, ProductID, AttributeInfor)
+VALUES
+(23, 11, 'Over-ear'), (24, 11, 'Active Noise Cancelling'), (25, 11, 'Bluetooth 5.2'), (26, 11, '30 hours'), (27, 11, '3 hours'),
+(23, 12, 'In-ear'), (24, 12, 'Hybrid ANC'), (25, 12, 'Bluetooth 5.2'), (26, 12, '7 hours (earbuds), 28 hours (case)'), (27, 12, '1.5 hours'),
+(23, 13, 'In-ear'), (24, 13, 'Adaptive ANC'), (25, 13, 'Bluetooth 5.2'), (26, 13, '10 hours (earbuds), 24 hours (case)'), (27, 13, '2 hours'),
+(23, 14, 'In-ear'), (24, 14, 'Active Noise Cancelling'), (25, 14, 'Bluetooth 5.3'), (26, 14, '6 hours (earbuds), 30 hours (case)'), (27, 14, '1 hour'),
+(23, 15, 'Over-ear'), (24, 15, '7.1 Surround Sound'), (25, 15, 'Wired, USB & 3.5mm'), (26, 15, 'N/A'), (27, 15, 'N/A');
+
+-- Insert AttributeDetails for Chargers
+INSERT INTO AttributeDetails (AttributeID, ProductID, AttributeInfor)
+VALUES
+(28, 16, 'USB-C'), (29, 16, '20W'), (30, 16, 'PD Fast Charging'),
+(28, 17, 'USB-C'), (29, 17, '25W'), (30, 17, 'Super Fast Charging'),
+(28, 18, 'USB-C'), (29, 18, '67W'), (30, 18, 'Quick Charge 4+'),
+(28, 19, 'USB-C'), (29, 19, '40W'), (30, 19, 'SuperCharge'),
+(28, 20, 'USB-C, DC'), (29, 20, '65W'), (30, 20, 'Laptop Fast Charging');
+
+-- Insert AttributeDetails for Charging Cables
+INSERT INTO AttributeDetails (AttributeID, ProductID, AttributeInfor)
+VALUES
+(31, 21, 'USB-C to Lightning'), (32, 21, '1m'), (33, 21, 'Braided Nylon'),
+(31, 22, 'USB-C to USB-C'), (32, 22, '1m'), (33, 22, 'Rubber'),
+(31, 23, 'USB-C to USB-C'), (32, 23, '1.5m'), (33, 23, 'Braided Nylon'),
+(31, 24, 'USB-C to USB-C'), (32, 24, '1m'), (33, 24, 'Fast-Charge Certified'),
+(31, 25, 'Thunderbolt 4'), (32, 25, '1.2m'), (33, 25, 'High-Speed Data Transfer');
 
 SET IDENTITY_INSERT Products OFF;
 
@@ -311,7 +366,6 @@ VALUES
 (12, 12, 2, 35000000);
 
 
-
 -- Insert Employees
 SET IDENTITY_INSERT Employees ON;
 
@@ -328,7 +382,6 @@ INSERT INTO Carts (CustomerID, ProductID, Quantity)
 VALUES 
 (1, 1, 1),
 (1, 2, 5);
-
 
 
 -- Insert Addresses

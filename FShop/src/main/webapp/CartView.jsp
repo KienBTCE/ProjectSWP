@@ -72,8 +72,8 @@
                                                             onchange="updateQuantity(${p.getProductID()}, this.value)">
                                                     </td>
                                                     <td class="th">
-                                                        <h6>
-                                                            <fmt:formatNumber value="${p.getPrice() * p.getQuantity()}" type="currency" />
+                                                        <h6 id="price-${p.getProductID()}">
+                                                            <fmt:formatNumber value="${p.getPrice()}" type="currency" />
                                                         </h6>
                                                     </td>
                                                     <td class="th">
@@ -180,7 +180,7 @@
                                     <div >
                                         <div class="totalPrice">
                                             <p>Subtotal</p>
-                                            <p><fmt:formatNumber value="${total}" type="currency" /></p>
+                                            <p><span id="subTotal">0 đ</span></p>
                                         </div>
                                         <!--                            <div class="totalPrice">
                                                                         <p>Shipping</p>
@@ -188,7 +188,7 @@
                                                                     </div>-->
                                         <div class="totalPrice">
                                             <p>Order Total</p>
-                                            <h4><fmt:formatNumber value="${total}" type="currency" /></h4>
+                                            <h4><span id="totalAmount">0 đ</span></h4>
                                         </div>
                                     </div>
                                     <div class="btnSummary">
@@ -306,6 +306,30 @@
         </main>
         <jsp:include page="footer.jsp"></jsp:include>
         <script>
+            function formatCurrency(amount) {
+                return new Intl.NumberFormat('vi-VN').format(amount) + ' đ';
+            }
+
+
+            function updateTotal() {
+                let total = 0;
+                document.querySelectorAll("input[name='cartSelected']:checked").forEach((checkbox) => {
+                    let productId = checkbox.value;
+                    let price = parseFloat(document.getElementById("price-" + productId).innerText.replace(/\D/g, ''));
+                    let quantity = parseInt(document.getElementById("quantity-" + productId).value);
+                    total += price * quantity;
+                });
+                document.getElementById("totalAmount").innerText = formatCurrency(total);
+                document.getElementById("subTotal").innerText = formatCurrency(total);
+            }
+
+            document.querySelectorAll("input[name='cartSelected']").forEach((checkbox) => {
+                checkbox.addEventListener("change", updateTotal);
+            });
+
+            document.querySelectorAll("input[name='quantity']").forEach((input) => {
+                input.addEventListener("change", updateTotal);
+            });
             function showUpdatePopup() {
                 document.getElementById("updatePopup").style.display = "flex";
             }

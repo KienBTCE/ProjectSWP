@@ -4,7 +4,8 @@
  */
 package Controllers;
 
-import DAOs.ProductRatingDAO;
+import DAOs.ImportOrderDAO;
+import com.google.gson.Gson;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -14,9 +15,9 @@ import jakarta.servlet.http.HttpServletResponse;
 
 /**
  *
- * @author HP
+ * @author KienBTCE180180
  */
-public class UpdateStatusCommentServlet extends HttpServlet {
+public class ImportStatisticServlet extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -29,19 +30,19 @@ public class UpdateStatusCommentServlet extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        response.setContentType("text/html;charset=UTF-8");
-        try ( PrintWriter out = response.getWriter()) {
-            /* TODO output your page here. You may use following sample code. */
-            out.println("<!DOCTYPE html>");
-            out.println("<html>");
-            out.println("<head>");
-            out.println("<title>Servlet UpdateStatusCommentServlet</title>");
-            out.println("</head>");
-            out.println("<body>");
-            out.println("<h1>Servlet UpdateStatusCommentServlet at " + request.getContextPath() + "</h1>");
-            out.println("</body>");
-            out.println("</html>");
-        }
+//        response.setContentType("text/html;charset=UTF-8");
+//        try (PrintWriter out = response.getWriter()) {
+//            /* TODO output your page here. You may use following sample code. */
+//            out.println("<!DOCTYPE html>");
+//            out.println("<html>");
+//            out.println("<head>");
+//            out.println("<title>Servlet ImportStatisticServlet</title>");  
+//            out.println("</head>");
+//            out.println("<body>");
+//            out.println("<h1>Servlet ImportStatisticServlet at " + request.getContextPath () + "</h1>");
+//            out.println("</body>");
+//            out.println("</html>");
+//        }
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
@@ -56,7 +57,26 @@ public class UpdateStatusCommentServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+//        processRequest(request, response);
+        ImportOrderDAO statsDAO = new ImportOrderDAO();
+
+        try {
+            String orderCountByDayJson = new Gson().toJson(statsDAO.getImportOrdersCountByDate());
+            request.setAttribute("orderCountByDayJson", orderCountByDayJson);
+
+            String orderCountByMonthJson = new Gson().toJson(statsDAO.getImportOrdersCountByMonth());
+            request.setAttribute("orderCountByMonthJson", orderCountByMonthJson);
+
+            String ordersBySupplierJson = new Gson().toJson(statsDAO.getOrdersBySupplier());
+            request.setAttribute("ordersBySupplierJson", ordersBySupplierJson);
+
+            String topImportedProductsJson = new Gson().toJson(statsDAO.getTopImportedProducts());
+            request.setAttribute("topImportedProductsJson",topImportedProductsJson);
+
+            request.getRequestDispatcher("ImportStatisticView.jsp").forward(request, response);
+        } catch (Exception e) {
+            response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Lỗi khi lấy dữ liệu thống kê");
+        }
     }
 
     /**
@@ -70,13 +90,7 @@ public class UpdateStatusCommentServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        
-        int rateID = Integer.parseInt(request.getParameter("rateID"));
-        int isRead = Integer.parseInt(request.getParameter("isDeleted"));
-    
-        ProductRatingDAO prDAO = new ProductRatingDAO();
-        prDAO.updateStatusComment(rateID, isRead);
-    
+        processRequest(request, response);
     }
 
     /**

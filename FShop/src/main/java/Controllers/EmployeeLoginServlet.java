@@ -87,7 +87,7 @@ public class EmployeeLoginServlet extends HttpServlet {
                     response.sendRedirect("/Employee");//Link qua Admin
                 } else if(em.getRoleId() == 2){
                     //session.setAttribute("message", "Shop Managers");
-                    response.sendRedirect("/ProductListServlet");//Link qua Shop Manager
+                    response.sendRedirect("/ShopDashboardServlet");//Link qua Shop Manager
                 } else if(em.getRoleId() == 3){
                     response.sendRedirect("/ViewOrderListServlet");//Link qua Order Manager
                 } else if(em.getRoleId() == 4){

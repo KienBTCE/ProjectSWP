@@ -65,28 +65,37 @@ public class OrderDetailDAO {
         }
         return list;
     }
- public List<Integer> getCustomerByProductID(int productID) {
+
+    public List<Integer> getCustomerByProductID(int productID) {
         List<Integer> list = new ArrayList<>();
-        String query = "SELECT DISTINCT c.CustomerID FROM Orders AS o " +
-                     "JOIN Customers AS c ON c.CustomerID = o.CustomerID " +
-                     "JOIN OrderDetails AS od ON od.OrderID = o.OrderID " +
-                     "WHERE od.ProductID = ? AND o.Status = 5"; // Chỉ lấy đơn hàng hoàn tất
+        String query = "DECLARE @ProductID INT = ?; \n"
+                + "\n"
+                + "SELECT c.CustomerID\n"
+                + "FROM Customers AS c\n"
+                + "JOIN Orders AS o ON o.CustomerID = c.CustomerID\n"
+                + "JOIN OrderDetails AS od ON od.OrderID = o.OrderID\n"
+                + "LEFT JOIN ProductRatings AS pr \n"
+                + "    ON pr.CustomerID = c.CustomerID \n"
+                + "    AND pr.ProductID = @ProductID\n"
+                + "WHERE od.ProductID = @ProductID\n"
+                + "      AND o.Status = 4\n"
+                + "GROUP BY c.CustomerID\n"
+                + "HAVING COUNT(od.OrderID) > COUNT(pr.RateID);";
 
         try {
             PreparedStatement pre = connector.prepareStatement(query);
-            pre.setInt(1, productID); // Gán tham số ProductID vào câu SQL
+            pre.setInt(1, productID);
+
             ResultSet rs = pre.executeQuery();
-            
+
             while (rs.next()) {
-                list.add(rs.getInt("CustomerID")); 
-            }
+                list.add(rs.getInt("CustomerID"));
+            };
         } catch (SQLException e) {
             e.printStackTrace();
         }
         return list;
     }
-
-    
 
     public static void main(String[] args) {
         OrderDetailDAO od = new OrderDetailDAO();

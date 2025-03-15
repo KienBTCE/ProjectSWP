@@ -366,7 +366,6 @@ GROUP BY
     CONVERT(DATE, o.OrderedDate)
 ORDER BY 
     OrderDate DESC;
-	---------------
 	SELECT 
     YEAR(o.OrderedDate) AS OrderYear,
     MONTH(o.OrderedDate) AS OrderMonth,
@@ -381,8 +380,6 @@ JOIN
 GROUP BY 
     YEAR(o.OrderedDate), MONTH(o.OrderedDate)
 
-
-	-------------------------
 	SELECT 
     YEAR(o.OrderedDate) AS OrderYear,
     COUNT(DISTINCT o.OrderID) AS TotalOrders,
@@ -397,3 +394,64 @@ GROUP BY
     YEAR(o.OrderedDate)
 ORDER BY 
     OrderYear DESC;
+
+SELECT TOP 5 * FROM ImportOrders I JOIN ImportOrderDetails D ON I.IOID = D.IOID
+
+SELECT 
+    CAST(I.ImportDate AS DATE) AS ImportDate, 
+    SUM(D.Quantity) AS TotalQuantity
+FROM ImportOrders I
+JOIN ImportOrderDetails D ON I.IOID = D.IOID
+WHERE CAST(I.ImportDate AS DATE) IN (
+    SELECT DISTINCT TOP 5 CAST(ImportDate AS DATE)
+    FROM ImportOrders
+    ORDER BY CAST(ImportDate AS DATE) DESC
+)
+GROUP BY CAST(I.ImportDate AS DATE)
+ORDER BY ImportDate DESC;
+
+
+SELECT TOP 3 FORMAT(I.ImportDate, 'yyyy-MM') AS ImportMonth, SUM(D.Quantity) AS TotalQuantity
+FROM ImportOrders I
+JOIN ImportOrderDetails D ON I.IOID = D.IOID
+GROUP BY FORMAT(I.ImportDate, 'yyyy-MM')
+ORDER BY ImportMonth DESC;
+
+SELECT TOP 5 s.SupplierID, s.Name AS SupplierName, COUNT(io.IOID) AS OrderCount
+FROM ImportOrders io
+JOIN Suppliers s ON io.SupplierID = s.SupplierID
+GROUP BY s.SupplierID, s.Name
+ORDER BY OrderCount DESC;
+
+
+
+SELECT TOP 5 D.ProductID, P.Model, SUM(D.Quantity) AS TotalQuantity
+FROM ImportOrderDetails D
+JOIN Products P ON D.ProductID = P.ProductID
+GROUP BY D.ProductID, P.Model
+ORDER BY TotalQuantity DESC;
+
+
+
+SELECT io.import_date, SUM(iod.quantity * iod.price) AS total_amount
+FROM ImportOrders io
+JOIN ImportOrderDetails iod ON io.id = iod.import_order_id
+GROUP BY io.import_date
+ORDER BY io.import_date DESC;
+
+SELECT 
+    CONVERT(DATE, io.ImportDate) AS ImportDay,
+    SUM(iod.Quantity * iod.ImportPrice) AS TotalAmount
+FROM ImportOrders io
+JOIN ImportOrderDetails iod ON io.IOID = iod.IOID
+GROUP BY CONVERT(DATE, io.ImportDate)
+ORDER BY ImportDay DESC;
+
+SELECT 
+    FORMAT(io.ImportDate, 'yyyy-MM') AS ImportMonth,
+    SUM(iod.Quantity * iod.ImportPrice) AS TotalAmount
+FROM ImportOrders io
+JOIN ImportOrderDetails iod ON io.IOID = iod.IOID
+GROUP BY FORMAT(io.ImportDate, 'yyyy-MM')
+ORDER BY ImportMonth DESC;
+

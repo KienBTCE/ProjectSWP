@@ -25,6 +25,7 @@ public class RatingReplies {
         this.answer = answer;
         this.isRead = isRead;
     }
+    
     public int getReplyID() {
         return replyID;
     }
