@@ -147,10 +147,11 @@
                         </thead>
                         <tbody id="supplierTable">
                         <c:set var="i" value="${importOrder}"/>
+                        <c:set var="e" value="${employee}"/>
                         <tr>
                             <td>${i.getIoid()}</td>
-                            <td>(later)</td>
-                            <td>(later)</td>
+                            <td>${i.getEmployeeId()}</td>
+                            <td>${e.getFullname()}</td>
                             <td>${i.getImportDate()}</td>
                             <td>${i.getSupplier().getName()}</td>
                             <td>${i.getPriceFormatted()}</td>

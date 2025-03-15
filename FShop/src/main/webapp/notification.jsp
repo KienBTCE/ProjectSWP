@@ -20,7 +20,7 @@
 
       <div class="modal-body">
         
-        <div class="list-group">
+<!--        <div class="list-group">
             <c:forEach items="${unreadReply}" var="rep">
                 <a href="replyDetail.jsp?replyID=${rep.replyID}" class="list-group-item list-group-item-action">
                     <div class="d-flex w-100 justify-content-between">
@@ -33,7 +33,7 @@
             <c:if test="${empty unreadReply}">
                 <p class="text-muted">Không có reply mới.</p>
             </c:if>
-        </div>
+        </div>-->
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>

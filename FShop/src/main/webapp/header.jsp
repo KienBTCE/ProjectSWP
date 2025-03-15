@@ -204,7 +204,7 @@
                                 <a href="Smartphone">Smartphone</a>
                             </li>
                             <li>
-                                <a href="#">Accessories</a>
+                                <a href="Accessory">Accessories</a>
                             </li>
                         </ul>
                         <!--<input type="text" id="searchInput" class="form-control search-box" placeholder="Find by name ..." value="${searchValue}">-->

@@ -91,10 +91,11 @@
                 <a href="ViewOrderListServlet">Order</a>
             </c:if>
             <c:if test="${sessionScope.employee.getRoleId() == 4}">
-                <h6><a href="ImportStatistic">Warehouse Management</a></h6>
+                <h6><a href="Warehouse">Warehouse Management</a></h6>
                 <a href="ImportOrder">Import Order</a>
                 <a href="Supplier">Supplier</a>
                 <a href="#">Product Management</a>
+                <a href="ImportStatistic">Statistic Management</a>
             </c:if>
             <a style="margin-top: auto; color: red;" href="" onclick="confirmLogout()"><i class="bi bi-box-arrow-right"></i> Logout</a>
         </div>

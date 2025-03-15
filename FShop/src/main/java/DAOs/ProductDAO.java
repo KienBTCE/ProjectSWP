@@ -65,7 +65,7 @@ public class ProductDAO {
     public ArrayList<Product> getAllProductsByCategory(String category) {
         ArrayList<Product> list = new ArrayList<>();
 
-        String query = "SELECT * FROM Products P JOIN Categories C ON P.CategoryID = C.CategoryID WHERE C.Name = ? AND P.IsDeleted = 0";
+        String query = "SELECT *, B.Name AS BrandName FROM Products P JOIN Categories C ON P.CategoryID = C.CategoryID JOIN Brands B ON B.BrandID = P.BrandID WHERE C.Name = ? AND P.IsDeleted = 0";
 
         try {
             PreparedStatement ps = connector.prepareStatement(query);
@@ -74,7 +74,7 @@ public class ProductDAO {
             ResultSet rs = ps.executeQuery();
 
             while (rs.next()) {
-                list.add(new Product(
+                Product p = new Product(
                         rs.getInt("ProductID"),
                         rs.getInt("BrandID"),
                         rs.getInt("CategoryID"),
@@ -86,7 +86,9 @@ public class ProductDAO {
                         rs.getString("Image"),
                         rs.getInt("Quantity"),
                         rs.getInt("Stock")
-                ));
+                );
+                p.setBrandName(rs.getString("BrandName"));
+                list.add(p);
             }
             return list;
         } catch (SQLException e) {
