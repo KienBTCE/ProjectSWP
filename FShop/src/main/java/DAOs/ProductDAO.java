@@ -17,7 +17,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.jar.Attributes.Name;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -571,4 +570,29 @@ public class ProductDAO {
         }
         return customers;
     }
+
+    public List<Map<String, Object>> getNewProducts() throws SQLException {
+        List<Map<String, Object>> products = new ArrayList<>();
+        String query
+                = "SELECT TOP 10 p.ProductID, p.FullName, c.Name AS Category, p.Price, io.ImportDate "
+                + "FROM Products p "
+                + "JOIN ImportOrderDetails iod ON p.ProductID = iod.ProductID "
+                + "JOIN ImportOrders io ON iod.IOID = io.IOID "
+                + "JOIN Categories c ON p.CategoryID = c.CategoryID "
+                + "ORDER BY io.ImportDate DESC";
+
+        try ( PreparedStatement ps = connector.prepareStatement(query);  ResultSet rs = ps.executeQuery()) {
+            while (rs.next()) {
+                Map<String, Object> product = new HashMap<>();
+                product.put("id", rs.getInt("ProductID"));
+                product.put("name", rs.getString("FullName"));
+                product.put("category", rs.getString("Category"));
+                product.put("price", rs.getLong("Price"));
+                product.put("added_date", rs.getTimestamp("ImportDate"));
+                products.add(product);
+            }
+        }
+        return products;
+    }
+
 }
