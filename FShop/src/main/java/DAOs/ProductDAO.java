@@ -17,7 +17,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.jar.Attributes.Name;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -135,7 +134,7 @@ public class ProductDAO {
 
         return list;
     }
-    
+
     public ArrayList<Product> filterProductsByPrice(ArrayList<String> filters) {
         ArrayList<Product> list = null;
 
@@ -302,64 +301,72 @@ public class ProductDAO {
         return count;
     }
 
-//    public int createProduct(Product p) {
-//        int count = 0;
-//        String query = "INSERT INTO Products (Model, FullName, IsDeleted, Price, BrandID, CategoryID) "
-//                + "VALUES (?, ?, ?, ?, "
-//                + "(SELECT BrandID FROM Brands WHERE Name = ?), "
-//                + "(SELECT CategoryID FROM Categories WHERE Name = ?))";
-//
-//        try {
-//            PreparedStatement ps = connector.prepareStatement(query);
-//            ps.setString(1, p.getModel());
-//            ps.setString(2, p.getFullName());
-//            ps.setInt(3, p.getDeleted());
-//            ps.setLong(3, p.getPrice());
-//            ps.setString(4, p.getBrandName());
-//            ps.setString(5, p.getCategoryName());
-//
-//            count = ps.executeUpdate();
-//        } catch (SQLException ex) { // In lỗi ra console
-//            // In lỗi ra console
-//            Logger.getLogger(ProductDAO.class.getName()).log(Level.SEVERE, null, ex);
-//        }
-//        return count;
-//    }
-    public int createProduct(Product product) {
-        int effectRow = 0;
-        String sql = "INSERT INTO Products (BrandID, CategoryID, Model, FullName, Description, Price, Image, Image1, Image2, Image3) "
-                    + "VALUES ? , ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+   public int createProduct(Product product) {
+    int productId = 0;  // Khởi tạo productId với giá trị mặc định là 0 (nếu không lấy được ID)
+    String sql = "INSERT INTO Products (BrandID, CategoryID, Model, FullName, Description, IsDeleted, Price, Image, Image1, Image2, Image3) "
+               + "VALUES ((SELECT BrandID FROM Brands WHERE Name = ?), "
+               + "(SELECT CategoryID FROM Categories WHERE Name = ?), ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+
+    try (PreparedStatement ps = connector.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {  // Sử dụng Statement.RETURN_GENERATED_KEYS để lấy khóa tự động
+        // Thiết lập các tham số cho câu lệnh SQL
+        ps.setString(1, product.getBrandName());
+        ps.setString(2, product.getCategoryName());
+        ps.setString(3, product.getModel());
+        ps.setString(4, product.getFullName());
+        ps.setString(5, product.getDescription());
+        ps.setInt(6, product.getDeleted());
+        ps.setLong(7, product.getPrice());
+        ps.setString(8, product.getImage());
+        ps.setString(9, product.getImage1());
+        ps.setString(10, product.getImage2());
+        ps.setString(11, product.getImage3());
+
+        // Thực thi câu lệnh INSERT
+        int rowsAffected = ps.executeUpdate();  // Trả về số dòng bị ảnh hưởng
+        if (rowsAffected > 0) {
+            // Nếu có sản phẩm được thêm vào, lấy khóa tự động sinh ra (ProductID)
+            try (ResultSet rs = ps.getGeneratedKeys()) {
+                if (rs.next()) {
+                    productId = rs.getInt(1);  // Lấy ProductID (khóa tự động sinh ra)
+                }
+            }
+        }
+    } catch (SQLException e) {
+        e.printStackTrace();  // In ra lỗi nếu có
+    }
+
+    return productId;  // Trả về ProductID (nếu thành công) hoặc 0 nếu không có ID
+}
+
+    public int addAttributeDetail(AttributeDetail attributeDetail) {
+        int result = 0;
+        String sql = "INSERT INTO AttributeDetails (AttributeID, ProductID, AttributeInfor) VALUES (?, ?, ?)";
+
         try {
             PreparedStatement ps = connector.prepareStatement(sql);
-            ps.setInt(1, product.getBrandId());  
-            ps.setInt(2, product.getCategoryId()); 
-            ps.setString(3, product.getModel());       
-            ps.setString(4, product.getFullName());     // Tên sản phẩm
-            ps.setString(5, product.getDescription());  // Mô tả sản phẩm
-            ps.setLong(6, product.getPrice());          // Giá sản phẩm
-            ps.setString(7, product.getImage());        // Hình ảnh chính
-            ps.setString(8, product.getImage1());       // Hình ảnh phụ 1
-            ps.setString(9, product.getImage2());       // Hình ảnh phụ 2
-            ps.setString(10, product.getImage3());      // Hình ảnh phụ 3
-            effectRow = ps.executeUpdate();
+
+            ps.setInt(1, attributeDetail.getAttributeId());
+            ps.setInt(2, attributeDetail.getProductId());
+            ps.setString(3, attributeDetail.getAttributeInfor());
+            result = ps.executeUpdate();
         } catch (SQLException e) {
-            System.out.println(e);
+            e.printStackTrace();
         }
-        return effectRow;
+        return result;
     }
-    
+
     public void addProductAttributes(Product product) {
         String query = "INSERT INTO AttributeDetails (AttributeID, ProductID, AttributeInfor) "
-                     + "VALUES (?, ?, ?)";
-        
-        try (PreparedStatement ps = connector.prepareStatement(query)) {
+                + "VALUES (?, ?, ?)";
+
+        try ( PreparedStatement ps = connector.prepareStatement(query)) {
             for (AttributeDetail attribute : product.getAttributeDetails()) {
-                ps.setInt(1, attribute.getAttributeId());      
-                ps.setInt(2, product.getProductId());          
+                ps.setInt(1, attribute.getAttributeId());
+                ps.setInt(2, product.getProductId());
                 ps.setString(3, attribute.getAttributeInfor());
                 ps.addBatch();
             }
-            ps.executeBatch(); 
+            ps.executeBatch();
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -568,5 +575,11 @@ public class ProductDAO {
             }
         }
         return customers;
+    }
+    
+    public static void main(String[] args) {
+        ProductDAO pD = new ProductDAO();
+           pD.addAttributeDetail(new AttributeDetail(49, pD.getGeneratedProductId(), "hellooooollllllllll", null)); 
+        
     }
 }

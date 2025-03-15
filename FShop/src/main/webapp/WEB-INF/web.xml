@@ -168,6 +168,14 @@
         <servlet-name>SearchInventoryServlet</servlet-name>
         <url-pattern>/SearchInventoryServlet</url-pattern>
     </servlet-mapping>
+    <servlet>
+        <servlet-name>ImportStatisticServlet</servlet-name>
+        <servlet-class>Controllers.ImportStatisticServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>NotificationServlet</servlet-name>
+        <servlet-class>Controllers.NotificationServlet</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>CreateProductServlet</servlet-name>
         <url-pattern>/CreateProductServlet</url-pattern>
@@ -266,7 +274,7 @@
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>ExportStockToFileServlet</servlet-name>
-        <url-pattern>/ExportStockToFileServlet</url-pattern>
+        <url-pattern>/ExportStock</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>VerifyOTPServlet</servlet-name>
@@ -331,6 +339,14 @@
     <servlet-mapping>
         <servlet-name>SearchProductServlet</servlet-name>
         <url-pattern>/SearchProduct</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ImportStatisticServlet</servlet-name>
+        <url-pattern>/ImportStatistic</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>NotificationServlet</servlet-name>
+        <url-pattern>/NotificationServlet</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>30</session-timeout>

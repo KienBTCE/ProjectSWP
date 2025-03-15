@@ -25,6 +25,14 @@ public class AttributeDetail {
         this.attributeName = attributeName;
     }
 
+    public AttributeDetail(int attributeId, int productId, String attributeInfor) {
+        this.attributeId = attributeId;
+        this.productId = productId;
+        this.attributeInfor = attributeInfor;
+    }
+    
+    
+
     public int getAttributeId() {
         return attributeId;
     }
