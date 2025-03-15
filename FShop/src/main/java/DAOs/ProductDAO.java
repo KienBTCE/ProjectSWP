@@ -577,9 +577,4 @@ public class ProductDAO {
         return customers;
     }
     
-    public static void main(String[] args) {
-        ProductDAO pD = new ProductDAO();
-           pD.addAttributeDetail(new AttributeDetail(49, pD.getGeneratedProductId(), "hellooooollllllllll", null)); 
-        
-    }
 }
