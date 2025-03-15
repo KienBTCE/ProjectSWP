@@ -168,7 +168,7 @@
 
                                     <div class="mb-3 d-flex">
                                         <label class="form-label value">Created Date</label>
-                                        <input type="date" class="form-control" name="txtCreatedDate" value="${txtCreatedDate != null ? txtCreatedDate : employee.createdDate}" required />
+                                        <input type="date" class="form-control" name="txtCreatedDate" value="${txtCreatedDate != null ? txtCreatedDate : employee.createdDate}" readonly />
                                     </div>
 
                                     <div class="mb-3 d-flex">

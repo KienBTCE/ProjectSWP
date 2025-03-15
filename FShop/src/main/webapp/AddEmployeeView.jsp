@@ -138,11 +138,6 @@
                                     </div>
 
                                     <div class="mb-3 d-flex">
-                                        <label class="form-label value">Birthday</label>
-                                        <input type="date" class="form-control" name="txtBirthday" value="${txtBirthday != null ? txtBirthday : ''}" required>
-                                    </div>
-
-                                    <div class="mb-3 d-flex">
                                         <label class="form-label value">Phone</label>
                                         <input type="text" class="form-control" name="txtPhoneNumber" value="${txtPhoneNumber != null ? txtPhoneNumber : ''}" required>
                                     </div>
@@ -153,16 +148,8 @@
                                     </div>
 
                                     <div class="mb-3 d-flex">
-                                        <label class="form-label value" value>Gender</label>
-                                        <select class="form-select" name="txtGender" required>
-                                            <option value="Male" ${txtGender == 'Male' ? 'selected' : ''}>Male</option>
-                                            <option value="Female" ${txtGender == 'Female' ? 'selected' : ''}>Female</option>                                  
-                                        </select>
-                                    </div>
-
-                                    <div class="mb-3 d-flex">
                                         <label class="form-label value">Created Date</label>
-                                        <input type="date" class="form-control" name="txtCreatedDate" value="${txtCreatedDate != null ? txtCreatedDate : ''}" required>
+                                        <input type="date" class="form-control" name="txtCreatedDate" id="createdDate" value="${txtCreatedDate != null ? txtCreatedDate : ''}" readonly>
                                     </div>
 
                                     <div class="mb-3 d-flex">
@@ -197,6 +184,13 @@
                 </div>
             </div>
             <script>
+
+                document.addEventListener("DOMContentLoaded", function () {
+                    let today = new Date();
+                    let formattedDate = today.toISOString().split('T')[0];
+                    document.getElementById("createdDate").value = formattedDate; 
+                });
+
                 function previewImage(event) {
                     var output = document.getElementById('avatarPreview');
                     if (event.target.files.length > 0) {
@@ -208,7 +202,6 @@
                     }
                 }
 
-                // Function to show popup
                 function showPopup(message, type) {
                     var popup = document.getElementById("popup");
                     var overlay = document.getElementById("overlay");
@@ -236,7 +229,6 @@
                     }, 2000);
                 }
 
-                // Example: Show success or fail message
                 <c:if test="${not empty popupSuccessMsg}">
                 window.onload = function () {
                     showPopup("${popupSuccessMsg}", 'success');
