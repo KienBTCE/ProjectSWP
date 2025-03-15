@@ -4,6 +4,7 @@
  */
 package Controllers;
 
+import DAOs.EmployeeDAO;
 import DAOs.ImportOrderDAO;
 import DAOs.ProductDAO;
 import DAOs.SupplierDAO;
@@ -49,6 +50,7 @@ public class ViewImportOrderServlet extends HttpServlet {
 
         ImportOrderDAO importD = new ImportOrderDAO();
         SupplierDAO sd = new SupplierDAO();
+        EmployeeDAO ed = new EmployeeDAO();
         ArrayList<ImportOrder> importOrders;
 
         String detailID = request.getParameter("id");
@@ -63,6 +65,8 @@ public class ViewImportOrderServlet extends HttpServlet {
 //            }
             try {
                 request.setAttribute("importOrder", importOrder);
+                request.setAttribute("employee", ed.getEmployeeById(importOrder.getEmployeeId() + ""));
+                System.out.println(ed.getEmployeeById(importOrder.getEmployeeId() + "").getFullname());
                 request.getRequestDispatcher("ImportOrderDetailsView.jsp").forward(request, response);
             } catch (NullPointerException e) {
                 System.out.println(e);

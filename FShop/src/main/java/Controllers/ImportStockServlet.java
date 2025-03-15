@@ -8,6 +8,7 @@ import DAOs.ImportOrderDAO;
 import DAOs.ImportOrderDetailDAO;
 import DAOs.ProductDAO;
 import DAOs.SupplierDAO;
+import Models.Employee;
 import Models.ImportOrder;
 import Models.ImportOrderDetail;
 import Models.Product;
@@ -170,6 +171,9 @@ public class ImportStockServlet extends HttpServlet {
             }
 
             io = new ImportOrder(4, s.getSupplierId(), sum);
+            HttpSession sess = request.getSession();
+            Employee e = (Employee) sess.getAttribute("employee");
+            io.setEmployeeId(e.getEmployeeId());
             int impId = ioD.createImportOrder(io);
             for (ImportOrderDetail proDet : detailList) {
                 proDet.setIoid(impId);
