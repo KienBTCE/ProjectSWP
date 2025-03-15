@@ -4,6 +4,8 @@
  */
 package Controllers;
 
+import DAOs.ImportOrderDAO;
+import DAOs.ImportOrderDetailDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -41,7 +43,11 @@ public class ViewWarehouseServlet extends HttpServlet {
 //            out.println("</body>");
 //            out.println("</html>");
 //        }
+
+        ImportOrderDetailDAO dd = new ImportOrderDetailDAO();
         try {
+            request.setAttribute("details", dd.getImportOrdersToday());
+            System.out.println(dd.getImportOrdersToday().size());
             request.getRequestDispatcher("WarehouseManagerView.jsp").forward(request, response);
         } catch (NullPointerException e) {
             System.out.println(e);

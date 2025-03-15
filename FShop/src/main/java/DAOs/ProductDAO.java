@@ -64,7 +64,7 @@ public class ProductDAO {
     public ArrayList<Product> getAllProductsByCategory(String category) {
         ArrayList<Product> list = new ArrayList<>();
 
-        String query = "SELECT * FROM Products P JOIN Categories C ON P.CategoryID = C.CategoryID WHERE C.Name = ? AND P.IsDeleted = 0";
+        String query = "SELECT *, B.Name AS BrandName FROM Products P JOIN Categories C ON P.CategoryID = C.CategoryID JOIN Brands B ON B.BrandID = P.BrandID WHERE C.Name = ? AND P.IsDeleted = 0";
 
         try {
             PreparedStatement ps = connector.prepareStatement(query);
@@ -73,7 +73,7 @@ public class ProductDAO {
             ResultSet rs = ps.executeQuery();
 
             while (rs.next()) {
-                list.add(new Product(
+                Product p = new Product(
                         rs.getInt("ProductID"),
                         rs.getInt("BrandID"),
                         rs.getInt("CategoryID"),
@@ -85,7 +85,9 @@ public class ProductDAO {
                         rs.getString("Image"),
                         rs.getInt("Quantity"),
                         rs.getInt("Stock")
-                ));
+                );
+                p.setBrandName(rs.getString("BrandName"));
+                list.add(p);
             }
             return list;
         } catch (SQLException e) {
@@ -576,5 +578,29 @@ public class ProductDAO {
         }
         return customers;
     }
-    
+
+    public List<Map<String, Object>> getNewProducts() throws SQLException {
+        List<Map<String, Object>> products = new ArrayList<>();
+        String query
+                = "SELECT TOP 10 p.ProductID, p.FullName, c.Name AS Category, p.Price, io.ImportDate "
+                + "FROM Products p "
+                + "JOIN ImportOrderDetails iod ON p.ProductID = iod.ProductID "
+                + "JOIN ImportOrders io ON iod.IOID = io.IOID "
+                + "JOIN Categories c ON p.CategoryID = c.CategoryID "
+                + "ORDER BY io.ImportDate DESC";
+
+        try ( PreparedStatement ps = connector.prepareStatement(query);  ResultSet rs = ps.executeQuery()) {
+            while (rs.next()) {
+                Map<String, Object> product = new HashMap<>();
+                product.put("id", rs.getInt("ProductID"));
+                product.put("name", rs.getString("FullName"));
+                product.put("category", rs.getString("Category"));
+                product.put("price", rs.getLong("Price"));
+                product.put("added_date", rs.getTimestamp("ImportDate"));
+                products.add(product);
+            }
+        }
+        return products;
+    }
+
 }

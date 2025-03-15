@@ -455,3 +455,16 @@ JOIN ImportOrderDetails iod ON io.IOID = iod.IOID
 GROUP BY FORMAT(io.ImportDate, 'yyyy-MM')
 ORDER BY ImportMonth DESC;
 
+SELECT *, B.Name AS BrandName FROM Products P JOIN Categories C ON P.CategoryID = C.CategoryID JOIN Brands B ON B.BrandID = P.BrandID WHERE C.Name = 'Laptop' AND P.IsDeleted = 0
+
+select * from Employees
+
+SELECT *
+FROM ImportOrderDetails IOD
+JOIN ImportOrders IO ON IOD.IOID = IO.IOID
+JOIN Products P ON IOD.ProductID = P.ProductID
+WHERE CAST(IO.ImportDate AS DATE) = CAST(GETDATE() AS DATE);
+
+select * from ImportOrderDetails
+select * from ImportOrders
+select * from Products

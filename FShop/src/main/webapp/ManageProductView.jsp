@@ -127,12 +127,13 @@
                 align-items: center;
             }
             .btn-edit {
-                background-color: #007bff;
-                color: white;
+                background-color: blue !important;
+                color: white !important;
                 border: none;
                 display: inline-block;
                 padding: 5px 10px;
             }
+
             .search-container {
                 display: flex;
                 align-items: center;

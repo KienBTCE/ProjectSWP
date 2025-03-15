@@ -4,7 +4,12 @@
     Author     : KienBTCE180180
 --%>
 
+<%@page import="java.util.List"%>
+<%@page import="DAOs.SupplierDAO"%>
+<%@page import="Models.Supplier"%>
+<%@page import="java.util.ArrayList"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@ taglib prefix = "c" uri = "http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html>
     <head>
@@ -110,12 +115,46 @@
                 display: flex;
                 justify-content: space-between;
             }
+
+            .table-success {
+                /*font-weight: bold;*/
+            }
+
         </style>
     </head>
     <body>
         <jsp:include page="SidebarDashboard.jsp"></jsp:include>
             <div class="content">
             <jsp:include page="HeaderDashboard.jsp"></jsp:include>
+
+                <div class="table-container">
+                    <div>
+                        <h3>Imported Products Today</h3>
+                    </div>
+
+                    <table class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th>Product ID</th>
+                                <th>Model</th>
+                                <th>Imported Quantity</th>
+                                <th>Imported Price</th>
+                            </tr>
+                        </thead>
+                        <tbody id="supplierTable">
+                        <c:forEach items="${details}" var="d">
+                            <tr>
+                                <td>${d.getProduct().getProductId()}</td>
+                                <td>${d.getProduct().getModel()}</td>
+                                <td>${d.getQuantity()}</td>
+                                <td>${d.getPriceFormatted()}</td>
+                            </tr>
+                        </c:forEach>
+                    </tbody>
+                </table>
+            </div>
+
         </div>
+
     </body>
 </html>

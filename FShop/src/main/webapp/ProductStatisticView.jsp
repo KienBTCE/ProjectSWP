@@ -21,6 +21,7 @@
         <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
         <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
         <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+        
         <style>
             .container {
                 display: flex;
@@ -38,10 +39,22 @@
                 border-radius: 10px;
                 box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
                 width: 40%;
+                min-width: 400px; /* Đảm bảo không bị bó hẹp */
             }
+
             canvas {
                 max-height: 300px;
+                max-width: 100%; /* Đảm bảo không bị tràn */
             }
+
+            .truncate-text {
+                white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis;
+                max-width: 200px; /* Giới hạn chiều dài chữ */
+                display: inline-block;
+            }
+
             h3 {
                 margin-bottom: 10px;
             }
@@ -218,6 +231,7 @@
                 padding: 5px 10px;
             }
 
+
         </style>
     </head>
     <body>
@@ -241,6 +255,7 @@
                     <h3>Sales by Category</h3>
                     <canvas id="categorySalesChart"></canvas>
                 </div>
+                
             </div>
         </div>
 
@@ -266,6 +281,39 @@
                 const colors = ['rgba(255, 99, 132, 0.6)', 'rgba(54, 162, 235, 0.6)', 'rgba(255, 206, 86, 0.6)', 'rgba(75, 192, 192, 0.6)', 'rgba(153, 102, 255, 0.6)', 'rgba(255, 159, 64, 0.6)'];
                 return Array.from({length: count}, (_, i) => colors[i % colors.length]);
             }
+
+            function renderChart(canvasId, type, label, labels, values) {
+                // Giới hạn số ký tự tối đa hiển thị trên biểu đồ
+                const maxLength = 20;
+                const formattedLabels = labels.map(name => name.length > maxLength ? name.substring(0, maxLength) + "..." : name);
+
+                new Chart(document.getElementById(canvasId), {
+                    type: type,
+                    data: {
+                        labels: formattedLabels,
+                        datasets: [{
+                                label: label,
+                                data: values,
+                                backgroundColor: getRandomColors(values.length)
+                            }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        scales: type === 'bar' || type === 'line' ? {y: {beginAtZero: true}} : {},
+                        plugins: {
+                            legend: {display: false},
+                            tooltip: {
+                                callbacks: {
+                                    title: (tooltipItems) => labels[tooltipItems[0].dataIndex] // Hiển thị tên đầy đủ khi hover
+                                }
+                            }
+                        }
+                    }
+                });
+            }
+
+
         </script>
     </body>
 </html>

@@ -107,10 +107,11 @@
                 <a href="DeleteOrder.jsp">Delete</a>
             </c:if>
             <c:if test="${sessionScope.employee.getRoleId() == 4}">
-                <h6><a href="ImportStatistic">Warehouse Management</a></h6>
+                <h6><a href="Warehouse">Warehouse Management</a></h6>
                 <a href="ImportOrder">Import Order</a>
                 <a href="Supplier">Supplier</a>
                 <a href="#">Product Management</a>
+                <a href="ImportStatistic">Statistic Management</a>
                 <form action="ExportStock" method="POST">
                     <button type="submit">Export to Excel</button>
                 </form>
