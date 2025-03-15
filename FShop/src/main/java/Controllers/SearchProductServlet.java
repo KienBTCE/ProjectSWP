@@ -5,6 +5,7 @@
 package Controllers;
 
 import DAOs.ProductDAO;
+import DAOs.ProductRatingDAO;
 import Models.Product;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -13,7 +14,9 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  *
@@ -57,7 +60,18 @@ public class SearchProductServlet extends HttpServlet {
                         numberRow++;
                     }
                 }
+                ProductRatingDAO prDAO = new ProductRatingDAO();
+                ArrayList<String> stars = new ArrayList<>();
+                for (Product p : products) {
+                    float star = prDAO.getStarAverage(p.getProductId());
+                    System.out.println(star);
+                    stars.add(String.valueOf(star));
 
+                }
+
+                ArrayList<String> brands = pd.getAllBrandByCategory("Smartphone");
+                Map<String, Object> dataMap = new HashMap<>();
+                request.setAttribute("dataMap", dataMap);
                 request.setAttribute("products", products);
                 request.setAttribute("numberRow", numberRow);
                 request.getRequestDispatcher("ProductListView.jsp").forward(request, response);

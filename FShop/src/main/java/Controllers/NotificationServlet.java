@@ -8,6 +8,7 @@ import DAOs.ProductRatingDAO;
 import DAOs.RatingRepliesDAO;
 import Models.Customer;
 import Models.ProductRating;
+import Models.Product;
 import Models.RatingReplies;
 import com.google.gson.Gson;
 import java.io.IOException;
@@ -26,7 +27,7 @@ import java.util.Map;
  *
  * @author HP
  */
-public class notificationServlet extends HttpServlet {
+public class NotificationServlet extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -110,10 +111,6 @@ public class notificationServlet extends HttpServlet {
 //            return;
 //        }
 
-//        if(list != null){
-//            request.setAttribute("unreadReply", list);
-//        }
-//        request.getRequestDispatcher("header.jsp").forward(request, response);
     }
 
     /**

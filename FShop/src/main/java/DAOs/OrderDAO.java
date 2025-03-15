@@ -28,7 +28,7 @@ public class OrderDAO {
 
     public List<Order> getOrderList() {
         List<Order> list = new ArrayList<>();
-        String url = "select * from Orders where Orders.Status != 6 ";
+        String url = "select * from Orders where Orders.Status != 6 Order BY Orders.Status  ASC";
         try {
 
             PreparedStatement pre = connector.prepareStatement(url);
@@ -163,11 +163,6 @@ public class OrderDAO {
             Logger.getLogger(OrderDAO.class.getName()).log(Level.SEVERE, null, e);
         }
 
-//    public static void main(String[] args) {
-//        OrderDAO o = new OrderDAO();
-//        o.addOrderDetail(1, 1, 3, 34000000);
-//    }
-//<<<<<<< HEAD
     }
 
       public void deleteOrder(int month) {
@@ -195,23 +190,7 @@ public class OrderDAO {
             Logger.getLogger(OrderDAO.class.getName()).log(Level.SEVERE, null, e);
         }
     }
-//=======
-//    }
 
-//    public void DeleteOrder(String orderID) {
-//
-//        String query = "Update Orders SET Orders.Status= 6 WHERE Orders.OrderID=?";
-//        try {
-//            PreparedStatement pre = connector.prepareStatement(query);
-//
-//            pre.setString(1, orderID);
-//            pre.executeUpdate();
-//        } catch (Exception e) {
-//            Logger.getLogger(OrderDAO.class.getName()).log(Level.SEVERE, null, e);
-//        }
-//
-//    }
-//>>>>>>> e29642a491e61163dac269a3d9e0bc78f00dd8ef
     public List<Order> getAllOrderOfCustomer(int customerID) {
         List<Order> list = new ArrayList<>();
         try {
@@ -249,7 +228,7 @@ public class OrderDAO {
         List<Order> list = new ArrayList<>();
         String query = "SELECT * FROM Orders WHERE "
                 + "FullName LIKE ? OR "
-                + "PhoneNumber LIKE ? ";
+                + "PhoneNumber LIKE ?  Order BY Status ASC";
         try {
             PreparedStatement pre = connector.prepareStatement(query);
 

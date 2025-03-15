@@ -5,6 +5,7 @@
 package DAOs;
 
 import DB.DBContext;
+import Models.Product;
 import Models.ProductRating;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -50,20 +51,39 @@ public class ProductRatingDAO {
         }
         return list;
     }
-    public float getStarAverage(int productId){
-    float  star = 0 ;
-     String query = "SELECT SUM(Star)/COUNT(Star) AS avs FROM ProductRatings as p  where p.ProductID =?";
+
+    public float getStarAverage(int productId) {
+        float star = 0;
+        String query = "SELECT COALESCE(SUM(Star) / COUNT(Star), 0) AS avs FROM ProductRatings as p  where p.ProductID =?";
         try {
             PreparedStatement pre = connector.prepareStatement(query);
             pre.setInt(1, productId);
             ResultSet rs = pre.executeQuery();
             if (rs.next()) {
-            star =rs.getFloat("avs");
+                star = rs.getFloat("avs");
             }
         } catch (Exception e) {
             System.out.println(e);
         }
-    return star;
+        return star;
+    }
+
+    public ProductRating getStarAVG(int productId) {
+        int star = 0;
+        ProductRating p = new ProductRating();
+        String query = "SELECT COALESCE(SUM(Star) / COUNT(Star), 0) AS avs FROM ProductRatings as p  where p.ProductID =?";
+        try {
+            PreparedStatement pre = connector.prepareStatement(query);
+            pre.setInt(1, productId);
+            ResultSet rs = pre.executeQuery();
+            if (rs.next()) {
+                star = rs.getInt("avs");
+                p.setStar(star);
+            }
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+        return p;
     }
 
     public ProductRating getProductRating(int rateID) {
@@ -156,22 +176,23 @@ public class ProductRatingDAO {
         }
     }
 
-    public String getProductID(int rateID) {
-        ProductRating pro = new ProductRating();
-        String query = "select ProductID from ProductRatings WHERE RateID =?";
-        String s = "";
+    public Product getProductID(int rateID) {
+        Product p = new Product();
+        String query = "select FullName , ProductID from Products where ProductID =(select ProductID from ProductRatings WHERE RateID =?)";
+
         try {
             PreparedStatement pre = connector.prepareStatement(query);
             pre.setInt(1, rateID);
             ResultSet rs = pre.executeQuery();
             if (rs.next()) {
-                s = rs.getString("ProductID");
+                p.setFullName(rs.getString("FullName"));
+                p.setProductId(rs.getInt("ProductID"));
 
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
-        System.out.println(pro.getProductID());
-        return s;
+
+        return p;
     }
 }
