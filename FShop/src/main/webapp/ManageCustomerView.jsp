@@ -148,6 +148,7 @@
                 overflow: hidden;
                 border: 2px solid #7D69FF;
                 margin-bottom: 15px;
+                margin-top: 10px;
             }
 
             .search-input {

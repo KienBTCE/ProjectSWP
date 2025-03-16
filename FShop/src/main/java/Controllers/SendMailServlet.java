@@ -5,6 +5,7 @@
 package Controllers;
 
 import DAOs.CustomerDAO;
+import Models.Customer;
 import Models.Email;
 import Models.EmailUtils;
 import java.io.IOException;
@@ -85,8 +86,17 @@ public class SendMailServlet extends HttpServlet {
 
             // Check if the email exists
             CustomerDAO userDAO = new CustomerDAO();
-            if (!userDAO.isEmailExists(emailAddress)) {
+            Customer user = userDAO.getCustomerByEmail(emailAddress);
+            
+            if (user == null) {
                 request.setAttribute("error", "Email does not exist in the system!");
+                request.getRequestDispatcher("ForgotPasswordView.jsp").forward(request, response);
+                return;
+            }
+            
+            // Check if the account is created using Google
+            if (user.getGoogleId() != null && !user.getGoogleId().isEmpty()) {
+                request.setAttribute("error", "This account was created using Google and cannot reset password! Please use 'Login with Google Account'");
                 request.getRequestDispatcher("ForgotPasswordView.jsp").forward(request, response);
                 return;
             }
