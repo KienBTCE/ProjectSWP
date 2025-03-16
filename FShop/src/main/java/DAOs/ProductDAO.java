@@ -648,4 +648,36 @@ public class ProductDAO {
         return products;
     }
 
+    public List<Product> getNewImportedProducts() {
+        List<Product> products = new ArrayList<>();
+        String query = "SELECT p.ProductID, p.FullName, p.Price, p.Stock, p.isDeleted, "
+                + "c.Name AS CategoryName, b.Name AS BrandName "
+                + "FROM Products p "
+                + "JOIN Categories c ON p.CategoryID = c.CategoryID "
+                + "JOIN Brands b ON p.BrandID = b.BrandID "
+                + "WHERE p.ProductID IN (SELECT DISTINCT ProductID FROM ImportOrderDetails "
+                + "JOIN ImportOrders ON ImportOrderDetails.IOID = ImportOrders.IOID "
+                + "WHERE ImportOrders.ImportDate >= DATEADD(DAY, -7, GETDATE()))";
+
+        try ( PreparedStatement ps = connector.prepareStatement(query)) {
+            ResultSet rs = ps.executeQuery();
+
+            while (rs.next()) {
+                Product p = new Product(
+                        rs.getInt("ProductID"),
+                        rs.getString("CategoryName"),
+                        rs.getString("BrandName"),
+                        rs.getString("FullName"),
+                        rs.getLong("Price"),
+                        rs.getInt("Stock"),
+                        rs.getInt("isDeleted")
+                );
+                products.add(p);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return products;
+    }
+
 }

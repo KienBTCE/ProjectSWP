@@ -61,7 +61,7 @@ public class ProductListServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-       HttpSession session = request.getSession();
+        HttpSession session = request.getSession();
         String message = (String) session.getAttribute("message");
         if (message != null) {
             request.setAttribute("message", message);
@@ -82,9 +82,7 @@ public class ProductListServlet extends HttpServlet {
         String restoreID = request.getParameter("restore");
         String keyword = request.getParameter("txt");
         String selectedCategoryID = request.getParameter("categoryId");
-
-        System.out.println("Selected Category ID: " + selectedCategoryID);
-        System.out.println("Keyword: " + keyword);
+        String filterNewImport = request.getParameter("new_import"); // Lọc sản phẩm mới nhập
 
         // Xử lý xóa sản phẩm
         if (deleteID != null) {
@@ -142,10 +140,14 @@ public class ProductListServlet extends HttpServlet {
             // Nếu không có bộ lọc nào, lấy toàn bộ danh sách sản phẩm
             products = pr.getProductList();
         }
-
+// Xử lý lọc sản phẩm mới nhập
+        if ("true".equals(filterNewImport)) {
+            products = (ArrayList<Product>) pr.getNewImportedProducts();
+            System.out.println("Số sản phẩm mới nhập: " + products.size());
+        }
         request.setAttribute("products", products);
         request.getRequestDispatcher("ManageProductView.jsp").forward(request, response);
-    
+
     }
 
     /**
