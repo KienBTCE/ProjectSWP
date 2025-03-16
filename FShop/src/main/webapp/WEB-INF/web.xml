@@ -149,6 +149,26 @@
         <servlet-class>Controllers.SearchProductServlet</servlet-class>
     </servlet>
     <servlet>
+        <servlet-name>InventoryStatisticServlet</servlet-name>
+        <servlet-class>Controllers.InventoryStatisticServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>StatisticManagementServlet</servlet-name>
+        <servlet-class>Controllers.StatisticManagementServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>RevenueStatisticServlet</servlet-name>
+        <servlet-class>Controllers.RevenueStatisticServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>SearchInventoryServlet</servlet-name>
+        <servlet-class>Controllers.SearchInventoryServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>SearchInventoryServlet</servlet-name>
+        <url-pattern>/SearchInventoryServlet</url-pattern>
+    </servlet-mapping>
+    <servlet>
         <servlet-name>ImportStatisticServlet</servlet-name>
         <servlet-class>Controllers.ImportStatisticServlet</servlet-class>
     </servlet>
@@ -159,6 +179,18 @@
     <servlet-mapping>
         <servlet-name>CreateProductServlet</servlet-name>
         <url-pattern>/CreateProductServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>StatisticManagementServlet</servlet-name>
+        <url-pattern>/StatisticManagementServlet</url-pattern>
+    </servlet-mapping>   
+    <servlet-mapping>
+        <servlet-name>InventoryStatisticServlet</servlet-name>
+        <url-pattern>/InventoryStatisticServlet</url-pattern>
+    </servlet-mapping> 
+    <servlet-mapping>
+        <servlet-name>RevenueStatisticServlet</servlet-name>
+        <url-pattern>/RevenueStatisticServlet</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>default</servlet-name>
@@ -242,7 +274,7 @@
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>ExportStockToFileServlet</servlet-name>
-        <url-pattern>/ExportStockToFileServlet</url-pattern>
+        <url-pattern>/ExportStock</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>VerifyOTPServlet</servlet-name>

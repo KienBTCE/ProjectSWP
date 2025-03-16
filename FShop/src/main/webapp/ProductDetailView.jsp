@@ -16,9 +16,6 @@
 
         <!-- Google Font (optional) -->
         <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&display=swap" rel="stylesheet">
-        <!-- Custom CSS -->
-
-
         <link rel="stylesheet" href="./assets/css/popup.css"/>
         <style>
             body {
@@ -277,7 +274,374 @@
             .star-rating i {
                 color: #FFD700;
             }
+            /* ========== Quantity Controls ========== */
+            .quantity-controls {
+                display: inline-flex;
+                align-items: center;
+                border: 1px solid #ced4da;
+                border-radius: 4px;
+                overflow: hidden;
+            }
 
+            .quantity-controls button {
+                background-color: #f8f9fa;
+                border: none;
+                width: 40px;
+                height: 40px;
+                font-size: 1.2rem;
+                color: #495057;
+                cursor: pointer;
+                transition: background-color 0.3s, border-color 0.3s;
+            }
+
+            .quantity-controls button:hover {
+                background-color: #e2e6ea;
+            }
+
+            .quantity-controls input {
+                width: 60px;
+                height: 40px;
+                text-align: center;
+                border: none;
+                font-size: 1rem;
+            }
+
+            /* ========== Action Buttons with Pastel Colors ========== */
+            /* Container ch?a 2 form n?t */
+            .action-buttons {
+                display: flex;
+                gap: 1rem; /* kho?ng c?ch gi?a 2 n?t */
+                margin-top: 1rem;
+            }
+
+            /* ?p d?ng flex cho m?i form: form ??u ti?n (Add to Cart) c? flex:1, form th? hai (Buy Now) c? flex:3 */
+            .action-buttons form {
+                margin: 0;
+            }
+            .action-buttons form:first-child {
+                flex: 1;
+            }
+            .action-buttons form:last-child {
+                flex: 3;
+            }
+
+            /* Cho n?t b?n trong form chi?m to?n b? chi?u r?ng c?a form */
+            .action-buttons form button {
+                display: block;
+                width: 100%;
+            }
+
+            /* N?t Add to Cart: nh?, n?n tr?ng, vi?n ?? v? ch? ?? */
+            button.btn-add-cart {
+                background-color: #ffffff !important;
+                border: 1px solid #d0011b !important;
+                color: #d0011b !important;
+                padding: 12px 20px !important;  /* k?ch th??c nh? h?n */
+                font-size: 14px !important;
+                border-radius: 4px !important;
+                transition: background-color 0.3s ease, transform 0.3s ease !important;
+            }
+            button.btn-add-cart:hover {
+                background-color: #ffe6e6 !important;
+                transform: scale(1.03) !important;
+            }
+
+            /* N?t Buy Now: l?n, n?n ??, ch? tr?ng */
+            button.btn-buy-now {
+                background-color: #d0011b !important;
+                border: none !important;
+                color: #ffffff !important;
+                padding: 12px 20px !important;  /* k?ch th??c l?n h?n */
+                font-size: 16px !important;
+                border-radius: 4px !important;
+                transition: background-color 0.3s ease, transform 0.3s ease !important;
+            }
+            button.btn-buy-now:hover {
+                background-color: #b60015 !important;
+                transform: scale(1.03) !important;
+            }
+
+
+
+
+
+            /* =================== Feedback Section Container =================== */
+            .feedback-section {
+                margin-top: 40px;
+            }
+
+            /* =================== Review Card =================== */
+            .review-card {
+                background: #fff;
+                border: 1px solid #e0e0e0;
+                border-radius: 8px;
+                padding: 20px;
+                margin-bottom: 20px;
+                transition: box-shadow 0.2s ease;
+            }
+            .review-card:hover {
+                box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+            }
+
+            /* Profile Info */
+            .review-card .profile {
+                display: flex;
+                align-items: center;
+                margin-bottom: 15px;
+            }
+            .review-card .profile img {
+                width: 48px;
+                height: 48px;
+                border-radius: 50%;
+                margin-right: 15px;
+                border: 1px solid #ddd;
+            }
+            .review-card h4 {
+                font-size: 1rem;
+                font-weight: 600;
+                margin: 0;
+                color: #333;
+            }
+            .review-card small {
+                color: #888;
+                font-size: 0.85rem;
+            }
+
+            /* Star Rating */
+            .star-icon {
+                margin-bottom: 10px;
+            }
+            .star-icon i {
+                font-size: 1rem;
+                color: #ccc;
+                margin-right: 2px;
+            }
+            .star-icon i.checked {
+                color: #ffcc00;
+            }
+
+            /* Review Text */
+            .review-card p {
+                font-size: 0.95rem;
+                line-height: 1.5;
+                color: #555;
+                margin: 0;
+            }
+
+            /* =================== Reply Container =================== */
+            .reply-container {
+                background: #f7f7f7;
+                border-left: 3px solid #007bff;
+                padding: 15px;
+                margin-top: 15px;
+                border-radius: 4px;
+                font-size: 0.9rem;
+                color: #555;
+            }
+            .reply-container strong {
+                display: block;
+                margin-bottom: 8px;
+                color: #333;
+            }
+
+            /* =================== Review Form =================== */
+            #reviewForm {
+                background: #fff;
+                border: 1px solid #e0e0e0;
+                border-radius: 8px;
+                padding: 20px;
+                margin-top: 30px;
+            }
+            #reviewForm label.rating-label {
+                font-weight: 600;
+                margin-bottom: 10px;
+                display: block;
+                font-size: 1rem;
+                color: #333;
+            }
+
+            /* Star Rating in Form */
+            .star-rating {
+                margin-bottom: 15px;
+            }
+            .star-rating input {
+                display: none;
+            }
+            .star-rating label {
+                font-size: 1.5rem;
+                color: #ccc;
+                cursor: pointer;
+                margin-right: 5px;
+                transition: color 0.2s ease;
+            }
+            .star-rating input:checked ~ label,
+            .star-rating label:hover,
+            .star-rating label:hover ~ label {
+                color: #ffcc00;
+            }
+
+            /* Textarea */
+            #reviewForm textarea {
+                width: 100%;
+                height: 120px;
+                padding: 10px;
+                border: 1px solid #ccc;
+                border-radius: 4px;
+                font-size: 0.95rem;
+                resize: vertical;
+                margin-bottom: 15px;
+            }
+
+            /* Submit Button */
+            #reviewForm button[type="submit"] {
+                background: #007bff;
+                color: #fff;
+                border: none;
+                padding: 10px 20px;
+                border-radius: 4px;
+                font-size: 1rem;
+                cursor: pointer;
+                transition: background 0.3s ease;
+            }
+            #reviewForm button[type="submit"]:hover {
+                background: #0056b3;
+            }
+
+
+            .feedback-container {
+                background-color: #fff;
+                border-radius: 10px;
+                box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+                padding: 25px;
+                margin-top: 40px;
+                max-width: 800px;
+                width: 100%;
+                margin-left: auto;
+                margin-right: auto;
+            }
+
+
+            .feedback-title {
+                font-size: 1.5rem;
+                font-weight: 700;
+                margin-bottom: 20px;
+                text-align: center;
+                color: #333;
+            }
+
+
+            .review-card {
+                background: #f9f9f9;
+                border: 1px solid #ddd;
+                border-radius: 8px;
+                padding: 20px;
+                margin-bottom: 15px;
+                transition: all 0.3s ease;
+            }
+
+            .review-card:hover {
+                box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            }
+
+            .profile {
+                display: flex;
+                align-items: center;
+                margin-bottom: 10px;
+            }
+
+            .profile img {
+                width: 50px;
+                height: 50px;
+                border-radius: 50%;
+                margin-right: 10px;
+            }
+
+
+            .star-icon {
+                font-size: 20px;
+                color: #ffcc00;
+                margin-bottom: 10px;
+            }
+
+
+            .review-card p {
+                font-size: 1rem;
+                color: #555;
+            }
+
+
+            .reply-container {
+                background: #f1f1f1;
+                border-left: 3px solid #007bff;
+                padding: 10px;
+                margin-top: 10px;
+                border-radius: 5px;
+                font-size: 0.9rem;
+                color: #555;
+            }
+
+
+            #reviewForm {
+                background: #fff;
+                border: 1px solid #ddd;
+                border-radius: 8px;
+                padding: 20px;
+                margin-top: 30px;
+            }
+
+            .rating-label {
+                font-weight: 600;
+                display: block;
+                margin-bottom: 10px;
+            }
+
+            .star-rating {
+                display: flex;
+                justify-content: center;
+                margin-bottom: 10px;
+            }
+
+            .star-rating input {
+                display: none;
+            }
+
+            .star-rating label {
+                font-size: 1.5rem;
+                color: #ccc;
+                cursor: pointer;
+                margin-right: 5px;
+                transition: color 0.2s ease;
+            }
+
+            .star-rating input:checked ~ label,
+            .star-rating label:hover,
+            .star-rating label:hover ~ label {
+                color: #ffcc00;
+            }
+
+            textarea {
+                width: 100%;
+                height: 100px;
+                padding: 10px;
+                border-radius: 5px;
+                border: 1px solid #ccc;
+                margin-top: 10px;
+            }
+
+            button {
+                background-color: #007bff;
+                color: white;
+                padding: 10px 15px;
+                border: none;
+                border-radius: 5px;
+                cursor: pointer;
+                margin-top: 10px;
+                width: 100%;
+            }
+
+            button:hover {
+                background-color: #0056b3;
+            }
 
         </style>
     </head>
@@ -324,12 +688,13 @@
                                 <div class="d-flex align-items-center">
                                     <h3 class="mb-0 me-2">${star}</h3>
                                     <div class="star-rating">
-                                        <c:forEach begin="1" end="${star}" var="i">
-                                            <i class="fas fa-star"></i> 
-                                        </c:forEach>
                                         <c:forEach begin="${star + 1}" end="5" var="i">
                                             <i class="far fa-star"></i> 
                                         </c:forEach>
+                                        <c:forEach begin="1" end="${star}" var="i">
+                                            <i class="fas fa-star"></i> 
+                                        </c:forEach>
+
                                     </div>
                                 </div>
 
@@ -360,9 +725,9 @@
                                     <p><strong>Return Policy:</strong> 15 days if defective</p>
                                 </div>
 
-                                <!-- Quantity -->
+                                <!-- Quantity Control -->
                                 <div class="my-3 d-flex align-items-center">
-                                    <strong>Quantity:</strong>
+                                    <label for="quantity" class="me-2 fw-bold">Quantity:</label>
                                     <div class="quantity-controls">
                                         <button type="button" onclick="decreaseQuantity()">-</button>
                                         <input type="number" id="quantity" name="quantity" value="1" min="1" max="${product.stock}">
@@ -370,26 +735,29 @@
                                     </div>
                                 </div>
 
-                                <!-- Buttons: Add to cart / Buy now -->
-                                <div class="action-buttons mb-3">
+                                <!-- Action Buttons -->
+                                <div class="action-buttons">
                                     <!-- Add to Cart form -->
-                                    <form action="AddToCart?productID=${product.productId}" method="POST" class="d-inline">
+                                    <form action="AddToCart?productID=${product.productId}" method="POST">
                                         <input type="hidden" name="quantity" id="quantityInputHidden" value="1">
                                         <button type="submit" class="btn btn-add-cart">
-                                            Add to Cart
+                                            <i class="fas fa-shopping-cart me-1"></i> Add to Cart
                                         </button>
                                     </form>
                                     <!-- Buy Now form -->
-                                    <form action="order" method="POST" class="d-inline">
+                                    <form action="order" method="POST">
                                         <input type="hidden" name="quantity" id="quantityInputHiddenBuyNow" value="1">
-                                        <input type="text" name="orderUrl" id="" value="buyNow" hidden>
-                                        <input type="text" name="productSelected" value="${product.productId}" hidden>
-                                        <input type="text" name="buyProductAction" value="checkout" hidden>
+                                        <input type="hidden" name="orderUrl" value="buyNow">
+                                        <input type="hidden" name="productSelected" value="${product.productId}">
+                                        <input type="hidden" name="buyProductAction" value="checkout">
                                         <button type="submit" class="btn btn-buy-now">
-                                            Buy Now
+                                            <i class="fas fa-bolt me-1"></i> Buy Now
                                         </button>
                                     </form>
                                 </div>
+
+
+
 
                             </div>
                         </div>
@@ -406,8 +774,8 @@
 
                 </div>
             </div>
-            <div class="container">
-
+            <div class="feedback-container">
+                <h3 class="feedback-title">Customer Reviews</h3>
 
                 <c:forEach var="rate" items="${dataRating}">
                     <div class="review-card">
@@ -430,8 +798,9 @@
                                 </c:choose>
                             </c:forEach>
                         </div>
-                        <p>${rate.isDeleted ? "This feedback was hidden for some reason." : rate.comment}</p>
+                        <p>${rate.isDeleted ? "\"This feedback was hidden for some reason.\"" : rate.comment}</p>
                     </div>
+
                     <c:forEach var="reply" items="${dataReplies}">
                         <c:if test="${reply.rateID == rate.rateID}">
                             <div class="reply-container">
@@ -445,7 +814,6 @@
                     <form id="reviewForm" method="POST" action="ProductDetailServlet">
                         <input type="hidden" name="productId" value="${product.productId}">
                         <input type="hidden" name="customerId" value="${customerId}">
-
                         <label class="rating-label">Share your experience:</label>
                         <div class="star-rating">
                             <input required type="radio" name="star" value="5" id="star5"><label for="star5" class="fa fa-star"></label>
@@ -454,12 +822,12 @@
                             <input required type="radio" name="star" value="2" id="star2"><label for="star2" class="fa fa-star"></label>
                             <input required type="radio" name="star" value="1" id="star1"><label for="star1" class="fa fa-star"></label>
                         </div>
-
                         <textarea required name="comment" placeholder="Write your review..."></textarea>
                         <button type="submit">Submit Review</button>
                     </form>
                 </c:if>
             </div>
+
             <!-- Popup Notification (if needed) -->
             <%
                 String message = (String) session.getAttribute("message");
@@ -498,10 +866,10 @@
             %>
         </main>
         <jsp:include page="footer.jsp"></jsp:include>
-            <!-- Bootstrap JS -->
-            <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+        <!-- Bootstrap JS -->
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
-            <script>
+        <script>
                                     // Swap main and sub images
                                     function swapImage(img) {
                                         const mainImg = document.getElementById("mainImage");

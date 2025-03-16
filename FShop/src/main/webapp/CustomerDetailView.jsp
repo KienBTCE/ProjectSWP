@@ -6,154 +6,155 @@
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-
 <!DOCTYPE html>
-<html>
+<html lang="en">
     <head>
         <meta charset="UTF-8">
-        <title>Product Detail</title>
+        <title>Customer Details & Purchase History</title>
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
         <style>
             body {
-                display: flex;
+                background: #e9ecef;
             }
-            .sidebar {
-                width: 250px;
-                height: 97vh;
-                background: #FFFFFF;
-                color: black;
-                padding-top: 20px;
-                box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.3);
-                border-radius: 10px;
-                margin-top: 10px;
+            .card {
+                border-radius: 15px;
+                box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+                margin-bottom: 30px;
             }
-            .sidebar a {
-                color: #7A7D90;
-                text-decoration: none;
-                padding: 10px;
-                display: block;
+            .card-header {
+                background-color: #6f42c1;
+                color: #fff;
+                font-size: 1.25rem;
+                text-align: center;
+                border-top-left-radius: 15px;
+                border-top-right-radius: 15px;
+                padding: 1rem;
             }
-            .sidebar a:hover {
-                background: #7D69FF;
-                color: white;
-                width: 90%;
-                font-weight: bold;
-                border-radius: 10px;
+            .card-body {
+                padding: 1.5rem;
             }
-            .content {
-                flex-grow: 1;
-                padding: 20px;
-                display: flex;
-                flex-direction: column;
-                gap: 20px;
-            }
-            .header {
-                display: flex;
-                justify-content: right;
-                align-items: center;
-                padding: 10px;
-                background: #FFFFFF;
-                box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.3);
-                border-radius: 10px;
-                height: 85px;
-            }
-            .icon {
-                width: 40px;
-                height: 40px;
+            .avatar {
+                width: 150px;
+                height: 150px;
                 border-radius: 50%;
                 object-fit: cover;
+                border: 4px solid #6f42c1;
             }
-            .table-container {
-                background: white;
-                padding: 20px;
-                border-radius: 10px;
-                box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.1);
-                width: 100%; /* Kéo dài bảng ra hết chiều ngang trống */
+            .detail-label {
+                font-weight: 600;
             }
-            .table th {
-                background: #7D69FF;
-                color: white;
-                width: 20%;
-                text-align: left;
+            .table thead {
+                background-color: #6f42c1;
+                color: #fff;
             }
             .btn-back {
-                background-color: #7D69FF;
-                color: white;
+                background-color: #6f42c1;
+                color: #fff;
                 border: none;
-                padding: 10px 20px;
                 border-radius: 5px;
+                padding: 10px 20px;
                 text-decoration: none;
-                margin-top: 20px;
             }
             .btn-back:hover {
-                background-color: #5a4edc;
+                background-color: #593196;
             }
         </style>
     </head>
     <body>
-
-        <div class="content">
-
-            <div class="table-container">
-                <h3>Product Detail</h3>
-                <table class="table table-bordered">
-                    <c:choose>
-                        <c:when test="${customer != null}">
-                            <tr>
-                                <th>Customer ID</th>
-                                <td>${customer.getId()}</td>
-                            </tr>
-                            <tr>
-                                <th>Name</th>
-                                <td>${customer.getFullName()}</td>
-                            </tr>
-                            <tr>
-                                <th>Birthday</th>
-                                <td>${customer.getBirthday()}</td>
-                            </tr>
-                            <tr>
-                                <th>Gender</th>
-                                <td>${customer.getGender()}</td>
-                            </tr>
-                            <tr>
-                                <th>Phone</th>
-                                <td>${customer.getPhoneNumber()}</td>
-                            </tr>
-                            <tr>
-                                <th>Email</th>
-                                <td>${customer.getEmail()}</td>
-                            </tr>
-                            <tr>
-                                <th>Created Date</th>
-                                <td>${customer.getCreateAt()}</td>
-                            </tr>
-                            <tr>
-                                <th>Avatar</th>
-                                <td><img src="assets/imgs/CustomerAvatar/${customer.getAvatar()}" width="150px" height="150px" alt="alt"/></td>
-                            </tr>
-                            <tr>
-                                <th>Email</th>
-                                <td>${customer.getEmail()}</td>
-                            </tr>
-                            <tr>
-                                <th>Status</th>
-                                <td>
+        <div class="container my-4">
+            <!-- Customer Details Card -->
+            <div class="card">
+                <div class="card-header">
+                    Customer Details
+                </div>
+                <div class="card-body">
+                    <div class="row align-items-center">
+                        <div class="col-md-4 text-center">
+                            <img src="assets/imgs/CustomerAvatar/${customer.getAvatar()}" alt="Avatar" class="avatar mb-3">
+                        </div>
+                        <div class="col-md-8">
+                            <div class="row mb-2">
+                                <div class="col-sm-4 detail-label">ID:</div>
+                                <div class="col-sm-8">${customer.getId()}</div>
+                            </div>
+                            <div class="row mb-2">
+                                <div class="col-sm-4 detail-label">Name:</div>
+                                <div class="col-sm-8">${customer.getFullName()}</div>
+                            </div>
+                            <div class="row mb-2">
+                                <div class="col-sm-4 detail-label">Birthday:</div>
+                                <div class="col-sm-8">${customer.getBirthday()}</div>
+                            </div>
+                            <div class="row mb-2">
+                                <div class="col-sm-4 detail-label">Gender:</div>
+                                <div class="col-sm-8">${customer.getGender()}</div>
+                            </div>
+                            <div class="row mb-2">
+                                <div class="col-sm-4 detail-label">Phone:</div>
+                                <div class="col-sm-8">${customer.getPhoneNumber()}</div>
+                            </div>
+                            <div class="row mb-2">
+                                <div class="col-sm-4 detail-label">Email:</div>
+                                <div class="col-sm-8">${customer.getEmail()}</div>
+                            </div>
+                            <div class="row mb-2">
+                                <div class="col-sm-4 detail-label">Created:</div>
+                                <div class="col-sm-8">${customer.getCreateAt()}</div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-4 detail-label">Status:</div>
+                                <div class="col-sm-8">
                                     <span class="badge ${customer.getIsBlock() == 0 ? 'bg-success' : 'bg-danger'}">
                                         ${customer.getIsBlock() == 1 ? 'Deleted' : 'Activate'}
                                     </span>
-                                </td>
-                            </tr>
-                        </c:when>
-                        <c:otherwise>
-                            <tr>
-                                <td colspan="2" class="text-danger text-center">Customer not found!</td>
-                            </tr>
-                        </c:otherwise>
-                    </c:choose>
-                </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Purchase History Card -->
+            <div class="card">
+                <div class="card-header">
+                    Purchase History
+                </div>
+                <div class="card-body">
+                    <c:if test="${not empty purchaseHistory}">
+                        <div class="table-responsive">
+                            <table class="table table-bordered table-hover">
+                                <thead>
+                                    <tr>
+                                        <th>Order ID</th>
+                                        <th>Date</th>
+                                        <th>Total Amount</th>
+                                        <th>Status</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <c:forEach var="order" items="${purchaseHistory}">
+                                        <tr>
+                                            <td>${order.orderID}</td>
+                                            <td>${order.orderDate}</td>
+                                            <td>${order.totalAmount}</td>
+                                            <td>${order.status}</td>
+                                        </tr>
+                                    </c:forEach>
+                                </tbody>
+                            </table>
+                        </div>
+                    </c:if>
+                    <c:if test="${empty purchaseHistory}">
+                        <p class="text-center mb-0">No purchase history available.</p>
+                    </c:if>
+                </div>
+            </div>
+
+            <!-- Back Button -->
+            <div class="text-center">
                 <a href="CustomerListServlet" class="btn-back">Back to List</a>
             </div>
         </div>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     </body>
 </html>

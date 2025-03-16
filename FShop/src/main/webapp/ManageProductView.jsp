@@ -127,12 +127,13 @@
                 align-items: center;
             }
             .btn-edit {
-                background-color: #007bff;
-                color: white;
+                background-color: blue !important;
+                color: white !important;
                 border: none;
                 display: inline-block;
                 padding: 5px 10px;
             }
+
             .search-container {
                 display: flex;
                 align-items: center;
@@ -180,6 +181,11 @@
                     🔍
                 </button>
             </form>
+            <c:if test="${not empty message}">
+                <div class="alert alert-info" role="alert">
+                    ${message}
+                </div>
+            </c:if>
             <a href="CreateProductServlet" class="btn btn-detail" style="background-color: #BDF3BD">Create</a>
             <div class="table-container">
                 <table class="table table-hover">

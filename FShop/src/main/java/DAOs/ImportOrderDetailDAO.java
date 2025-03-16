@@ -111,7 +111,7 @@ public class ImportOrderDetailDAO {
 
         return 0;
     }
-    
+
     public int deleteDetailById(int productId, int importId) {
         String query = "DELETE FROM ImportOrderDetails WHERE ProductID = ? AND IOID = ?";
 
@@ -144,6 +144,35 @@ public class ImportOrderDetailDAO {
         }
 
         return 0;
+    }
+
+    public ArrayList<ImportOrderDetail> getImportOrdersToday() {
+        ArrayList<ImportOrderDetail> list = new ArrayList<>();
+
+        String query = "SELECT *\n"
+                + "FROM ImportOrderDetails IOD\n"
+                + "JOIN ImportOrders IO ON IOD.IOID = IO.IOID\n"
+                + "JOIN Products P ON IOD.ProductID = P.ProductID\n"
+                + "WHERE CAST(IO.ImportDate AS DATE) = CAST(GETDATE() AS DATE)\n"
+                + "ORDER BY P.ProductID ASC";
+
+        try {
+            PreparedStatement ps = connector.prepareStatement(query);
+
+            ResultSet rs = ps.executeQuery();
+            list = new ArrayList<>();
+            while (rs.next()) {
+                Product p = new Product();
+                p.setProductId(rs.getInt("ProductID"));
+                p.setModel(rs.getString("Model"));
+                list.add(new ImportOrderDetail(rs.getInt("IOID"), p, rs.getInt("Quantity"), rs.getLong("ImportPrice")));
+            }
+            return list;
+        } catch (SQLException e) {
+            System.out.println(e);
+        }
+
+        return list;
     }
 
 }

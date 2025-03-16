@@ -11,14 +11,14 @@
         <div class="container mt-4">
             <h3>Create New Product</h3>
 
-            <form action="CreateProductServlet" method="get">
-
+            <form action="CreateProductServlet" method="post" enctype="multipart/form-data">
+                <input type="hidden" name="categoryName" value="${categoryName}" />
                 <!-- Category Selection -->
                 <div class="mb-3">
                     <label class="form-label">Category</label>
-                    <select class="form-select" name="categoryName" id="categoryName" required onchange="this.form.submit()">
+                    <select class="form-select" name="categoryName" id="categoryName" required>
                         <c:forEach var="category" items="${categories}">
-                            <option value="${category}" ${category == categoryName ? 'selected' : ''}>${category}</option>
+                            <option value="CreateProductServlet?name=${category}" ${category == categoryName ? 'selected' : ''}>${category}</option>
                         </c:forEach>
                     </select>
                 </div>
@@ -60,6 +60,7 @@
                                 <div class="mb-2 row align-items-center">
                                     <div class="col-sm-4">
                                         <label class="form-label fw-bold">${attr.attributeName}</label>
+                                       <input type="hidden" name="attributeId" value="${attr.attributeId}" />
                                     </div>
                                     <div class="col-sm-8">
                                         <input type="text" class="form-control" name="attributeInfor_${attr.attributeId}" 
@@ -114,7 +115,14 @@
 
                 <button type="submit" class="btn btn-primary">Create Product</button>
             </form>
-        </div>
-        
+        </div>   
     </body>
+    <script>
+        document.getElementById("categoryName").addEventListener("change", function () {
+            let url = this.value;
+            if (url) {
+                window.location.href = url; 
+            }
+        });
+    </script>
 </html>

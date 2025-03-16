@@ -16,7 +16,11 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>F Shop</title>
-        <link rel="stylesheet" href="assets/css/bootstrap.css"/>
+        <!--<link rel="stylesheet" href="assets/css/bootstrap.css"/>-->
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+
+        <!-- Font Awesome for icons -->
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
         <style>
             .gap-section{
                 margin-bottom: 50px;
@@ -35,6 +39,8 @@
                 /*justify-content: space-around;*/
             }
             .frame-represent{
+                display: flex;
+                flex-direction: column;
                 width: 234px;
                 height: 346px;
                 text-align: center;
@@ -42,6 +48,8 @@
                 background: white;
                 border: 1px solid #F5F5F9;
                 border-radius: 10px;
+                align-items: center;
+                justify-content: center;
 
                 text-decoration: none;
                 color: inherit;
@@ -55,19 +63,20 @@
                 transition: 0.3s;
             }
 
+            .title-content a{
+                text-decoration: none;
+                color: black;
+                font-weight: bold;
+            }
+            .title-content a:hover{
+                color: black;
+                opacity: 0.7;
+                text-decoration: none;
+            }
             .star-rating {
                 display: flex;
                 align-items: center;
-                font-size: 24px;
                 color: #ffcc00;
-            }
-            .star-rating .star {
-                margin-right: 5px;
-            }
-            .star-rating .count {
-                margin-left: 10px;
-                font-size: 16px;
-                color: #555;
             }
 
             .title-content a{
@@ -96,21 +105,25 @@
                     <div class="gap-section section-content">
 
                     <c:set var="count" value="0" scope="page"></c:set>
-                    <c:forEach items="${products}" var="p" varStatus="status">
+                    <c:forEach items="${dataMap.products}" var="p" varStatus="status">
                         <c:if test="${count < 5 and p.getCategoryId() == 1}">
                             <c:set var="count" value="${count + 1}" scope="page"></c:set>
                             <a class="frame-represent" href="ProductDetailServlet?id=${p.getProductId()}">
                                 <img src="assets/imgs/Products/${p.getImage()}" width="150px" height="150px" alt="alt"/>
                                 <div class="star-rating">
-                                    <span class="star">★</span>
-                                    <span class="star">★</span>
-                                    <span class="star">★</span>
-                                    <span class="star">★</span>
-                                    <span class="star">☆</span>
-                                    <span class="count">Reviews(4)</span>
-                                </div>
-                                <h6>${p.getFullName()}</h6>
-                                <p>${p.getPriceFormatted()}</p>
+                                    <c:forEach var="i" begin="1" end="5">
+                                        <c:choose>
+                                            <c:when test="${dataMap.stars != null and dataMap.stars.size() > 0 and i <= dataMap.stars[status.index].getStar()}">
+                                                <i class="fa fa-star"></i>
+                                            </c:when>
+                                            <c:otherwise>
+                                                <i class="fa fa-star text-muted"></i>
+                                            </c:otherwise>
+                                        </c:choose>
+                                    </c:forEach>
+                                                 </div>
+                                    <h6>${p.getFullName()}</h6>
+                                    <p>${p.getPriceFormatted()}</p>
                             </a>
                         </c:if>
                     </c:forEach>
@@ -122,21 +135,27 @@
                 <div class="gap-section section-content">
 
                     <c:set var="count" value="0" scope="page"></c:set>
-                    <c:forEach items="${products}" var="p" varStatus="status">
+                    <c:forEach items="${dataMap.products}" var="p" varStatus="status">
                         <c:if test="${count < 5 and p.getCategoryId() == 2}">
                             <c:set var="count" value="${count + 1}" scope="page"></c:set>
                             <a class="frame-represent" href="ProductDetailServlet?id=${p.getProductId()}">
                                 <img src="assets/imgs/Products/${p.getImage()}" width="150px" height="150px" alt="alt"/>
                                 <div class="star-rating">
-                                    <span class="star">★</span>
-                                    <span class="star">★</span>
-                                    <span class="star">★</span>
-                                    <span class="star">★</span>
-                                    <span class="star">☆</span>
-                                    <span class="count">Reviews(4)</span>
+                                    <c:forEach var="i" begin="1" end="5">
+                                        <c:choose>
+                                            <c:when test="${dataMap.stars != null and dataMap.stars.size() > 0 and i <= dataMap.stars[status.index].getStar()}">
+                                                <i class="fa fa-star"></i>
+                                            </c:when>
+                                            <c:otherwise>
+                                                <i class="fa fa-star text-muted"></i>
+                                            </c:otherwise>
+                                        </c:choose>
+                                    </c:forEach>
                                 </div>
-                                <h6>${p.getFullName()}</h6>
-                                <p>${p.getPriceFormatted()}</p>
+
+                                    <h6>${p.getFullName()}</h6>
+                                    <p>${p.getPriceFormatted()}</p>
+
                             </a>
                         </c:if>
                     </c:forEach>
@@ -148,21 +167,24 @@
                 <div class="gap-section section-content">
 
                     <c:set var="count" value="0" scope="page"></c:set>
-                    <c:forEach items="${products}" var="p" varStatus="status">
+                    <c:forEach items="${dataMap.products}" var="p" varStatus="status">
                         <c:if test="${count < 5 and p.getCategoryId() == 9}">
                             <c:set var="count" value="${count + 1}" scope="page"></c:set>
                             <a class="frame-represent" href="ProductDetailServlet?id=${p.getProductId()}">
                                 <img src="assets/imgs/Products/${p.getImage()}" width="150px" height="150px" alt="alt"/>
                                 <div class="star-rating">
-                                    <span class="star">★</span>
-                                    <span class="star">★</span>
-                                    <span class="star">★</span>
-                                    <span class="star">★</span>
-                                    <span class="star">☆</span>
-                                    <span class="count">Reviews(4)</span>
-                                </div>
-                                <h6>${p.getFullName()}</h6>
-                                <p>${p.getPriceFormatted()}</p>
+                                    <c:forEach var="i" begin="1" end="5">
+                                        <c:choose>
+                                            <c:when test="${dataMap.stars != null and dataMap.stars.size() > 0 and i <= dataMap.stars[status.index].getStar()}">
+                                                <i class="fa fa-star"></i>
+                                            </c:when>
+                                            <c:otherwise>
+                                                <i class="fa fa-star text-muted"></i>
+                                            </c:otherwise>
+                                        </c:choose>
+                                    </c:forEach>
+                                    <h6>${p.getFullName()}</h6>
+                                    <p>${p.getPriceFormatted()}</p>
                             </a>
                         </c:if>
                     </c:forEach>

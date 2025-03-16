@@ -8,6 +8,7 @@ import DAOs.ProductRatingDAO;
 import DAOs.RatingRepliesDAO;
 import Models.Customer;
 import Models.ProductRating;
+import Models.Product;
 import Models.RatingReplies;
 import com.google.gson.Gson;
 import java.io.IOException;
@@ -79,41 +80,37 @@ public class NotificationServlet extends HttpServlet {
 //            request.setAttribute("unreadReply", list);
 //        }
 //        request.getRequestDispatcher("header.jsp").forward(request, response);
-        HttpSession session = request.getSession();
-        Customer cus = (Customer) session.getAttribute("customer");
-
-        if (cus == null) {
-            response.setContentType("application/json");
-            response.getWriter().write("[]");
-            return;
-        }
-
-        int customerID = cus.getId();
-        RatingRepliesDAO rrDAO = new RatingRepliesDAO();
-
-        ProductRatingDAO pdDAO = new ProductRatingDAO();
-
-        List<RatingReplies> list = rrDAO.getCustomerReplies(customerID);
-        List<String> listpd = new ArrayList<>();
-        for (RatingReplies r : list) {
-            String p = pdDAO.getProductID(r.getRateID());
-            listpd.add(p);
-        }
-        Map<String, Object> dataMap = new HashMap<>();
-        dataMap.put("replies", list);        // Danh sách RatingReplies
-        dataMap.put("productId", listpd);
-        // Nếu có yêu cầu AJAX (chuyển sang JSON)
-        if (request.getParameter("ajax") != null && request.getParameter("ajax").equals("true")) {
-            response.setContentType("application/json");
-            String json = new Gson().toJson(dataMap);
-            response.getWriter().write(json);
-            return;
-        }
-
-//        if(list != null){
-//            request.setAttribute("unreadReply", list);
+//        HttpSession session = request.getSession();
+//        Customer cus = (Customer) session.getAttribute("customer");
+//
+//        if (cus == null) {
+//            response.setContentType("application/json");
+//            response.getWriter().write("[]");
+//            return;
 //        }
-//        request.getRequestDispatcher("header.jsp").forward(request, response);
+//
+//        int customerID = cus.getId();
+//        RatingRepliesDAO rrDAO = new RatingRepliesDAO();
+//
+//        ProductRatingDAO pdDAO = new ProductRatingDAO();
+//
+//        List<RatingReplies> list = rrDAO.getCustomerReplies(customerID);
+//        List<String> listpd = new ArrayList<>();
+//        for (RatingReplies r : list) {
+//            String p = pdDAO.getProductID(r.getRateID());
+//            listpd.add(p);
+//        }
+//        Map<String, Object> dataMap = new HashMap<>();
+//        dataMap.put("replies", list);        // Danh sách RatingReplies
+//        dataMap.put("productId", listpd);
+//        // Nếu có yêu cầu AJAX (chuyển sang JSON)
+//        if (request.getParameter("ajax") != null && request.getParameter("ajax").equals("true")) {
+//            response.setContentType("application/json");
+//            String json = new Gson().toJson(dataMap);
+//            response.getWriter().write(json);
+//            return;
+//        }
+
     }
 
     /**
@@ -127,21 +124,21 @@ public class NotificationServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        String repliesIDStr = request.getParameter("repliesID");
-
-        if (repliesIDStr != null) {
-            try {
-                int repliesID = Integer.parseInt(repliesIDStr);
-                RatingRepliesDAO rrDAO = new RatingRepliesDAO();
-                rrDAO.markReplyAsRead(repliesID); 
-
-                response.getWriter().write("Success");
-            } catch (NumberFormatException e) {
-                response.getWriter().write("Invalid ID");
-            }
-        } else {
-            response.getWriter().write("No ID provided");
-        }
+//        String repliesIDStr = request.getParameter("repliesID");
+//
+//        if (repliesIDStr != null) {
+//            try {
+//                int repliesID = Integer.parseInt(repliesIDStr);
+//                RatingRepliesDAO rrDAO = new RatingRepliesDAO();
+//                rrDAO.markReplyAsRead(repliesID); 
+//
+//                response.getWriter().write("Success");
+//            } catch (NumberFormatException e) {
+//                response.getWriter().write("Invalid ID");
+//            }
+//        } else {
+//            response.getWriter().write("No ID provided");
+//        }
     }
 
     /**
