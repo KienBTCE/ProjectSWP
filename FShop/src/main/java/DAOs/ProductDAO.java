@@ -65,8 +65,8 @@ public class ProductDAO {
     public ArrayList<Product> getAllProductsByCategory(String category) {
         ArrayList<Product> list = new ArrayList<>();
 
-        String query = "SELECT *, B.Name AS BrandName FROM Products P JOIN Categories C ON P.CategoryID = C.CategoryID JOIN Brands B ON B.BrandID = P.BrandID WHERE C.Name = ? AND P.IsDeleted = 0";
-
+        String query = "SELECT *, B.Name AS BrandName FROM Products P JOIN Categories C ON P.CategoryID = C.CategoryID JOIN Brands B ON B.BrandID = P.BrandID WHERE C.CategoryID = ? AND P.IsDeleted = 0";
+        
         try {
             PreparedStatement ps = connector.prepareStatement(query);
             ps.setString(1, category);
