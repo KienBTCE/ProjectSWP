@@ -110,7 +110,7 @@
                 <h6><a href="Warehouse">Warehouse Management</a></h6>
                 <a href="ImportOrder">Import Order</a>
                 <a href="Supplier">Supplier</a>
-                <a href="#">Product Management</a>
+                <!--<a href="#">Product Management</a>-->
                 <a href="ImportStatistic">Statistic Management</a>
                 <form action="ExportStock" method="POST">
                     <button type="submit">Export to Excel</button>

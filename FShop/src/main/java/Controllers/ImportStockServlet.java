@@ -80,7 +80,6 @@ public class ImportStockServlet extends HttpServlet {
 //        processRequest(request, response);
         String status = request.getParameter("status");
         if (status != null) {
-            System.out.println("OOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO");
             selectedProducts = null;
             detailList.clear();
             s = null;
@@ -170,9 +169,9 @@ public class ImportStockServlet extends HttpServlet {
                 sum += proDet.getQuantity() * proDet.getImportPrice();
             }
 
-            io = new ImportOrder(4, s.getSupplierId(), sum);
             HttpSession sess = request.getSession();
             Employee e = (Employee) sess.getAttribute("employee");
+            io = new ImportOrder(e.getEmployeeId(), s.getSupplierId(), sum);
             io.setEmployeeId(e.getEmployeeId());
             int impId = ioD.createImportOrder(io);
             for (ImportOrderDetail proDet : detailList) {
