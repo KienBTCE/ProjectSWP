@@ -153,7 +153,7 @@
 
 
                             <h4>${sessionScope.customer.getFullName()}</h4>
-                            <a class="text-center text-danger" href="" onclick="confirmLogout()"><i class="bi bi-box-arrow-right"></i> Logout</a>
+                            <a class="text-center text-danger" href="Logout" onclick="return confirm('Are you sure to logout?')"><i class="bi bi-box-arrow-right"></i> Logout</a>
                         </div>
 
                         <div class="sidebar">

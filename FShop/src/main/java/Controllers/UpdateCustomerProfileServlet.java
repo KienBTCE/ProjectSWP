@@ -132,10 +132,14 @@ public class UpdateCustomerProfileServlet extends HttpServlet {
                 return;
             }
         }
-        
+        String uploadPath = getServletContext().getRealPath("/");
+        uploadPath = uploadPath.replace("target", "src");
+        uploadPath = uploadPath.replace("FShop-1.0-SNAPSHOT", "main");
+        uploadPath += "webapp\\assets\\imgs\\CustomerAvatar\\";
+        System.out.println(uploadPath);
         if (img != null && img.getSize() > 0) {
             cus.setAvatar(cus.getId() + ".jpg");
-            img.write("E:\\HocTap\\Ky5\\ProjectSWP\\FShop\\src\\main\\webapp\\assets\\imgs\\CustomerAvatar\\" + cus.getId() + ".jpg");
+            img.write(uploadPath + cus.getId() + ".jpg");
             try {
                 Thread.sleep(2500); // 2.5 giây
             } catch (InterruptedException e) {

@@ -119,7 +119,7 @@
                     <button type="submit">Export to Excel</button>
                 </form>
             </c:if>
-            <a style="margin-top: auto; color: red;" href="" onclick="confirmLogout()"><i class="bi bi-box-arrow-right"></i> Logout</a>
+            <a style="margin-top: auto; color: red;" href="Logout" onclick="return confirm('Are you sure to logout?')"><i class="bi bi-box-arrow-right"></i> Logout</a>
         </div>
         <script>
 
