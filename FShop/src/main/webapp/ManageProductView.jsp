@@ -175,17 +175,40 @@
         <jsp:include page="SidebarDashboard.jsp"></jsp:include>
             <div class="content">
             <jsp:include page="HeaderDashboard.jsp"></jsp:include>
-                <form action="ProductListServlet" method="get" class="search-container">
-                    <input type="text" name="txt" value="${param.txt}" placeholder="Search by name..." class="search-input">
-                <button type="submit" class="search-button">
-                    🔍
-                </button>
-            </form>
+               <!-- FORM SEARCH -->
+<form action="ProductListServlet" method="get" class="search-container">
+    <input type="text" name="txt" value="${param.txt}" placeholder="Search by name..." class="search-input">
+    <button type="submit" class="search-button">🔍</button>
+</form>
+<!-- FORM FILTER -->
+<form action="ProductListServlet" method="get" class="filter-container">
+    <select name="categoryId" class="form-select" onchange="this.form.submit()">
+        <option value="">All Categories</option>
+        <c:forEach var="cat" items="${categories}">
+            <option value="${cat.categoryId}" ${param.categoryId == cat.categoryId ? 'selected' : ''}>
+                ${cat.name}
+            </option>
+        </c:forEach>
+    </select>
+</form>
+
+
+
+<script>
+function debugForm() {
+    let category = document.querySelector("select[name='categoryId']").value;
+    console.log("Submitting categoryId: " + category);
+    return true;
+}
+</script>
+
+
             <c:if test="${not empty message}">
                 <div class="alert alert-info" role="alert">
                     ${message}
                 </div>
             </c:if>
+
             <a href="CreateProductServlet" class="btn btn-detail" style="background-color: #BDF3BD">Create</a>
             <div class="table-container">
                 <table class="table table-hover">

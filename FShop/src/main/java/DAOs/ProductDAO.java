@@ -6,6 +6,7 @@ package DAOs;
 
 import DB.DBContext;
 import Models.AttributeDetail;
+import Models.Category;
 import Models.Product;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -65,7 +66,7 @@ public class ProductDAO {
         ArrayList<Product> list = new ArrayList<>();
 
         String query = "SELECT *, B.Name AS BrandName FROM Products P JOIN Categories C ON P.CategoryID = C.CategoryID JOIN Brands B ON B.BrandID = P.BrandID WHERE C.CategoryID = ? AND P.IsDeleted = 0";
-        
+
         try {
             PreparedStatement ps = connector.prepareStatement(query);
             ps.setString(1, category);
@@ -303,42 +304,42 @@ public class ProductDAO {
         return count;
     }
 
-   public int createProduct(Product product) {
-    int productId = 0;  // Khởi tạo productId với giá trị mặc định là 0 (nếu không lấy được ID)
-    String sql = "INSERT INTO Products (BrandID, CategoryID, Model, FullName, Description, IsDeleted, Price, Image, Image1, Image2, Image3) "
-               + "VALUES ((SELECT BrandID FROM Brands WHERE Name = ?), "
-               + "(SELECT CategoryID FROM Categories WHERE Name = ?), ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+    public int createProduct(Product product) {
+        int productId = 0;  // Khởi tạo productId với giá trị mặc định là 0 (nếu không lấy được ID)
+        String sql = "INSERT INTO Products (BrandID, CategoryID, Model, FullName, Description, IsDeleted, Price, Image, Image1, Image2, Image3) "
+                + "VALUES ((SELECT BrandID FROM Brands WHERE Name = ?), "
+                + "(SELECT CategoryID FROM Categories WHERE Name = ?), ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
-    try (PreparedStatement ps = connector.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {  // Sử dụng Statement.RETURN_GENERATED_KEYS để lấy khóa tự động
-        // Thiết lập các tham số cho câu lệnh SQL
-        ps.setString(1, product.getBrandName());
-        ps.setString(2, product.getCategoryName());
-        ps.setString(3, product.getModel());
-        ps.setString(4, product.getFullName());
-        ps.setString(5, product.getDescription());
-        ps.setInt(6, product.getDeleted());
-        ps.setLong(7, product.getPrice());
-        ps.setString(8, product.getImage());
-        ps.setString(9, product.getImage1());
-        ps.setString(10, product.getImage2());
-        ps.setString(11, product.getImage3());
+        try ( PreparedStatement ps = connector.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {  // Sử dụng Statement.RETURN_GENERATED_KEYS để lấy khóa tự động
+            // Thiết lập các tham số cho câu lệnh SQL
+            ps.setString(1, product.getBrandName());
+            ps.setString(2, product.getCategoryName());
+            ps.setString(3, product.getModel());
+            ps.setString(4, product.getFullName());
+            ps.setString(5, product.getDescription());
+            ps.setInt(6, product.getDeleted());
+            ps.setLong(7, product.getPrice());
+            ps.setString(8, product.getImage());
+            ps.setString(9, product.getImage1());
+            ps.setString(10, product.getImage2());
+            ps.setString(11, product.getImage3());
 
-        // Thực thi câu lệnh INSERT
-        int rowsAffected = ps.executeUpdate();  // Trả về số dòng bị ảnh hưởng
-        if (rowsAffected > 0) {
-            // Nếu có sản phẩm được thêm vào, lấy khóa tự động sinh ra (ProductID)
-            try (ResultSet rs = ps.getGeneratedKeys()) {
-                if (rs.next()) {
-                    productId = rs.getInt(1);  // Lấy ProductID (khóa tự động sinh ra)
+            // Thực thi câu lệnh INSERT
+            int rowsAffected = ps.executeUpdate();  // Trả về số dòng bị ảnh hưởng
+            if (rowsAffected > 0) {
+                // Nếu có sản phẩm được thêm vào, lấy khóa tự động sinh ra (ProductID)
+                try ( ResultSet rs = ps.getGeneratedKeys()) {
+                    if (rs.next()) {
+                        productId = rs.getInt(1);  // Lấy ProductID (khóa tự động sinh ra)
+                    }
                 }
             }
+        } catch (SQLException e) {
+            e.printStackTrace();  // In ra lỗi nếu có
         }
-    } catch (SQLException e) {
-        e.printStackTrace();  // In ra lỗi nếu có
-    }
 
-    return productId;  // Trả về ProductID (nếu thành công) hoặc 0 nếu không có ID
-}
+        return productId;  // Trả về ProductID (nếu thành công) hoặc 0 nếu không có ID
+    }
 
     public int addAttributeDetail(AttributeDetail attributeDetail) {
         int result = 0;
@@ -599,6 +600,50 @@ public class ProductDAO {
                 product.put("added_date", rs.getTimestamp("ImportDate"));
                 products.add(product);
             }
+        }
+        return products;
+    }
+
+    public List<Category> getAllCategories() {
+        List<Category> categories = new ArrayList<>();
+        String query = "SELECT * FROM Categories";
+        try ( PreparedStatement ps = connector.prepareStatement(query);  ResultSet rs = ps.executeQuery()) {
+            while (rs.next()) {
+                categories.add(new Category(rs.getInt("CategoryID"), rs.getString("Name")));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return categories;
+    }
+
+    public List<Product> getProductsByCategory(int categoryID) {
+        List<Product> products = new ArrayList<>();
+        String query = "SELECT p.ProductID, p.FullName, p.Price, p.Stock, p.isDeleted, "
+                + "c.Name AS CategoryName, b.Name AS BrandName "
+                + "FROM Products p "
+                + "JOIN Categories c ON p.CategoryID = c.CategoryID "
+                + "JOIN Brands b ON p.BrandID = b.BrandID "
+                + "WHERE p.CategoryID = ?";
+
+        try ( PreparedStatement ps = connector.prepareStatement(query)) {
+            ps.setInt(1, categoryID);
+            ResultSet rs = ps.executeQuery();
+
+            while (rs.next()) {
+                Product p = new Product(
+                        rs.getInt("ProductID"),
+                        rs.getString("CategoryName"),
+                        rs.getString("BrandName"),
+                        rs.getString("FullName"),
+                        rs.getLong("Price"),
+                        rs.getInt("Stock"),
+                        rs.getInt("isDeleted")
+                );
+                products.add(p);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
         return products;
     }
