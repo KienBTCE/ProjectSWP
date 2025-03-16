@@ -42,13 +42,10 @@ public class AddEmployeeServlet extends HttpServlet {
             int roleId = Integer.parseInt(request.getParameter("txtRoleId"));
             String name = request.getParameter("txtName");
             String password = request.getParameter("txtPass");
-            Date birthday = Date.valueOf(request.getParameter("txtBirthday"));
             String phone = request.getParameter("txtPhoneNumber");
             String email = request.getParameter("txtEmail");
-            String gender = request.getParameter("txtGender");
             Date createdDate = Date.valueOf(request.getParameter("txtCreatedDate"));
             int status = Integer.parseInt(request.getParameter("txtStatus"));
-            // **Lấy đường dẫn Avatar
             Part part = request.getPart("txtAvatar");
             String fileName = Paths.get(part.getSubmittedFileName()).getFileName().toString();
             String avatar = request.getParameter("currentAvatar");
@@ -61,10 +58,8 @@ public class AddEmployeeServlet extends HttpServlet {
                 request.setAttribute("txtRoleId", roleId);
                 request.setAttribute("txtName", name);
                 request.setAttribute("txtPass", password);
-                request.setAttribute("txtBirthday", birthday);
                 request.setAttribute("txtPhoneNumber", phone);
                 request.setAttribute("txtEmail", email);
-                request.setAttribute("txtGender", gender);
                 request.setAttribute("txtCreatedDate", createdDate);
                 request.setAttribute("txtStatus", status);
                 request.setAttribute("currentAvatar", avatar);
@@ -78,10 +73,8 @@ public class AddEmployeeServlet extends HttpServlet {
                 request.setAttribute("txtRoleId", roleId);
                 request.setAttribute("txtName", name);
                 request.setAttribute("txtPass", password);
-                request.setAttribute("txtBirthday", birthday);
                 request.setAttribute("txtPhoneNumber", phone);
                 request.setAttribute("txtEmail", email);
-                request.setAttribute("txtGender", gender);
                 request.setAttribute("txtCreatedDate", createdDate);
                 request.setAttribute("txtStatus", status);
                 request.setAttribute("currentAvatar", avatar);
@@ -103,7 +96,7 @@ public class AddEmployeeServlet extends HttpServlet {
             }
             request.getParameter("currentAvatar");
 
-            Employee emp = new Employee(name, birthday, password, phone, email, gender, createdDate, status, avatar, roleId);
+            Employee emp = new Employee(name, null, password, phone, email, null, createdDate, status, avatar, roleId);
             int result = empDAO.AddEmployee(emp);
 
             if (result > 0) {

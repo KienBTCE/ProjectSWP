@@ -56,6 +56,22 @@ public class Product {
         this.stock = stock;
     }
 
+    public Product(String categoryName, String brandName, String model, String fullName, String description, int deleted, long price, String image, String image1, String image2, String image3) {
+        this.categoryName = categoryName;
+        this.brandName = brandName;
+        this.model = model;
+        this.fullName = fullName;
+        this.description = description;
+        this.deleted = deleted;
+        this.price = price;
+        this.image = image;
+        this.image1 = image1;
+        this.image2 = image2;
+        this.image3 = image3;
+    }
+    
+    
+
     public Product(int productId, String categoryName, String brandName, String model, String fullName, long price, int stock) {
         this.productId = productId;
         this.categoryName = categoryName;
