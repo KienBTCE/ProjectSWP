@@ -28,7 +28,6 @@ public class StockDAO{
 "    s.[Name] AS SupplierName,\n" +
 "    io.ImportDate,\n" +
 "    io.TotalCost,\n" +
-"    io.LastModify,\n" +
 "    p.ProductID,\n" +
 "    p.FullName AS ProductName,\n" +
 "    b.[Name] AS BrandName,\n" +
@@ -55,8 +54,7 @@ public class StockDAO{
                         rs.getString("EmployeeName"),
                         rs.getString("SupplierName"),
                         rs.getTimestamp("ImportDate"),
-                        rs.getLong("TotalCost"),
-                        rs.getTimestamp("LastModify"),
+                        rs.getLong("TotalCost"), 
                         rs.getString("ProductName"),
                         rs.getInt("Quantity"),
                         rs.getLong("ImportPrice"),

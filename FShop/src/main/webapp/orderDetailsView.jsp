@@ -20,12 +20,34 @@
 
         <!-- Custom CSS -->
         <link rel="stylesheet" href="assets/css/orderDetail.css">
+
+        <!-- CSS bổ sung để điều chỉnh thứ tự chồng -->
+        <style>
+            /* Bọc header với z-index thấp */
+            .header-container {
+                position: relative;
+                z-index: 1000;
+            }
+            /* Bọc sidebar với z-index cao hơn để chồng lên header */
+            .sidebar-container {
+                position: relative;
+                z-index: 2000;
+            }
+            /* Nếu cần thiết, bạn có thể điều chỉnh thêm vị trí hoặc margin để bố trí lại giao diện */
+        </style>
     </head>
     <body>
 
-        <div class="main-layout">
-            
-            <jsp:include page="sidebarOrderManager.jsp" />
+        <div class="header-container">
+          
+            </div>
+
+            <div class="main-layout">
+                <!-- Bọc sidebar vào container có z-index cao hơn -->
+                <div class="sidebar-container">
+                <%--<jsp:include page="sidebarOrderManager.jsp" />--%>
+                 <jsp:include page="SidebarDashboard.jsp"></jsp:include>
+            </div>
 
             <!-- Nội dung chính -->
             <div class="main-content">
@@ -75,24 +97,17 @@
                                             <option value="3" <c:if test="${data.status == 3}">selected</c:if>>Waiting For Delivery</option>
                                             <option value="4" <c:if test="${data.status == 4}">selected</c:if>>Delivered</option>
                                             <option value="5" <c:if test="${data.status == 5}">selected</c:if>>Cancel</option>
-                                            </select>
-                                        </div>
-                                        <button type="submit" class="btn btn-success"><i class="fa-solid fa-pen"></i> Update</button>
-                                    </form>
-
-                                    <!-- Delete Form -->
-<!--                                    <form id="deleteForm" action="DeleteOrderServlet" method="POST">
-                                        <input type="hidden" name="orderID" value="${data.orderID}" />
-                                    <button type="button" onclick="confirmDelete();" class="btn btn-danger">
-                                        <i class="fa-solid fa-trash"></i> Delete
-                                    </button>
-                                </form>-->
+                                        </select>
+                                    </div>
+                                    <button type="submit" class="btn btn-success"><i class="fa-solid fa-pen"></i> Update</button>
+                                </form>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
+
         <!-- Modal Confirm Delete -->
         <div id="confirmationModal" class="modal">
             <div class="modal-content">

@@ -1,6 +1,6 @@
 <%-- 
-    Document   : ProductListView
-    Created on : Mar 8, 2025, 1:10:45 PM
+    Document   : viewLaptop
+    Created on : Dec 12, 2024, 7:20:22 PM
     Author     : KienBTCE180180
 --%>
 
@@ -14,7 +14,11 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>JSP Page</title>
-        <link rel="stylesheet" href="assets/css/bootstrap.css"/>
+        <!--<link rel="stylesheet" href="assets/css/bootstrap.css"/>-->
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+
+        <!-- Font Awesome for icons -->
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
         <style>
             .gap-section{
                 margin-bottom: 50px;
@@ -32,13 +36,17 @@
                 /*justify-content: space-around;*/
             }
             .frame-represent{
+                display: flex;
+                flex-direction: column;
                 width: 234px;
                 height: 346px;
                 text-align: center;
-                margin: 10px;
+                margin: 15px;
                 background: white;
                 border: 1px solid #F5F5F9;
                 border-radius: 10px;
+                align-items: center;
+                justify-content: center;
 
                 text-decoration: none;
                 color: inherit;
@@ -92,6 +100,22 @@
                 display: flex;
                 flex-direction: column;
             }
+            .star-rating {
+                display: flex;
+                align-items: center;
+                color: #ffcc00;
+            }
+
+            .title-content a{
+                text-decoration: none;
+                color: black;
+                font-weight: bold;
+            }
+            .title-content a:hover{
+                color: black;
+                opacity: 0.7;
+                text-decoration: none;
+            }
         </style>
     </head>
     <body>
@@ -104,61 +128,78 @@
                         </div>-->
                     </div>
                     <div class="row">
-                    </div>
-                    <div class="view-content">
+                        <h4 class="title-content">${uri}</h4>
+                </div>
+                <div class="view-content">
 
-                        <!--<div class="filter-table col-md-2">
-                            <h6 style="text-align: center; margin-top: 8px;; font-weight: bold;">Filters</h6>
-                            <div class="section-btn">
-                                <button class="filter-btn"><h6>Clear Filter</h6></button>
-                            </div>
+                    <div class="filter-table col-md-2">
+                        <h6 style="text-align: center; margin-top: 8px;; font-weight: bold;">Filters</h6>
+                        <div class="section-btn">
+                            <button class="filter-btn"><h6>Clear Filter</h6></button>
+                        </div>
 
-                            <form class="filter-form">
+                        <form class="filter-form">
+                            <c:if test="${uri != ''}">
                                 <fieldset>
-                                    <legend style="font-size: 100%; font-weight: bold; cursor: pointer;" onclick="toggleFilter('priceFilter')">
-                                        Price <span id="priceArrow">▼</span>
+                                    <legend style="font-size: 100%; font-weight: bold; cursor: pointer;" onclick="toggleFilter('brandFilter')">
+                                        Brands <span id="brandArrow">▼</span>
                                     </legend>
-                                    <div id="priceFilter" style="display: none">
-                                        <label><input type="checkbox" name="price" value="20-25" <c:if test="${fn:contains(filters, '20-25')}">checked</c:if> >20 - 25 million</label>
+                                    <div id="brandFilter" style="display: none;">
+                                        <c:forEach items="${brands}" var="b">
+                                            <label><input type="checkbox" name="brand" value="${b}" <c:if test="${fn:contains(filters, b)}">checked</c:if> >${b}</label>
+                                            </c:forEach>
+                                    </div>
+                                </fieldset>
+                            </c:if>
+                            <fieldset>
+                                <legend style="font-size: 100%; font-weight: bold; cursor: pointer;" onclick="toggleFilter('priceFilter')">
+                                    Price <span id="priceArrow">▼</span>
+                                </legend>
+                                <div id="priceFilter" style="display: none">
+                                    <label><input type="checkbox" name="price" value="20-25" <c:if test="${fn:contains(filters, '20-25')}">checked</c:if> >20 - 25 million</label>
                                     <label><input type="checkbox" name="price" value="25-30" <c:if test="${fn:contains(filters, '25-30')}">checked</c:if> >25 - 30 million</label>
                                     <label><input type="checkbox" name="price" value="30-over" <c:if test="${fn:contains(filters, '30-over')}">checked</c:if> >Over 30 million</label>
                                     </div>
                                 </fieldset>
+
                             </form>
 
 
-                        </div>-->
+                        </div>
 
                         <div class="show-product row col-md-10">
                             <!--===================================================-->
-                        <c:forEach var="i" begin="1" end="${numberRow}" step="1">
-
-                            <div class="section-content">
-
-                                <c:forEach items="${products}" var="p" varStatus="status">
-                                    <c:if test="${status.index >= (i * 4 - 4) && status.index < (i * 4)}">
+                            <div class="container">
+                                <div class="row">
+                                <c:forEach items="${dataMap.products}" var="p" varStatus="status">
+                                    <div class="col-md-3"> <!-- 4 sản phẩm mỗi dòng -->
                                         <a class="frame-represent" href="ProductDetailServlet?id=${p.getProductId()}">
                                             <img src="assets/imgs/Products/${p.getImage()}" width="150px" height="150px" alt="alt"/>
-                                            <div class="d-flex align-items-center">
-                                                <h3 class="mb-0 me-2">${star}</h3>
-                                                <div class="star-rating">
-                                                    <c:forEach begin="1" end="${star}" var="i">
-                                                        <i class="fas fa-star"></i> 
-                                                    </c:forEach>
-                                                    <c:forEach begin="${star + 1}" end="5" var="i">
-                                                        <i class="far fa-star"></i> 
-                                                    </c:forEach>
-                                                </div>
+                                            <div class="star-rating">
+                                                <c:forEach var="j" begin="1" end="5">
+                                                    <c:choose>
+                                                        <c:when test="${dataMap.stars != null and dataMap.stars.size() > 0 and j <= dataMap.stars[status.index].getStar()}">
+                                                            <i class="fa fa-star"></i>
+                                                        </c:when>
+                                                        <c:otherwise>
+                                                            <i class="fa fa-star text-muted"></i>
+                                                        </c:otherwise>
+                                                    </c:choose>
+                                                </c:forEach>
                                             </div>
-
                                             <h6>${p.getFullName()}</h6>
                                             <p>${p.getPriceFormatted()}</p>
                                         </a>
+                                    </div>
+
+                                    <!-- Xuống dòng sau mỗi 4 sản phẩm -->
+                                    <c:if test="${(status.index + 1) % 4 == 0}">
+                                    </div><div class="row">
                                     </c:if>
                                 </c:forEach>
-
                             </div>
-                        </c:forEach>
+                        </div>
+
                         <!--===================================================-->
                     </div>
                 </div>
@@ -166,8 +207,7 @@
         </main>
         <jsp:include page="footer.jsp"></jsp:include>
         <script>
-            const pathname = window.location.pathname + window.location.search;
-
+            const pathname = window.location.pathname;
             let customPath = pathname;
             let clrBtn = document.querySelector('.filter-btn');
             let clrTxt = clrBtn.querySelector('h6');
@@ -176,10 +216,37 @@
 
             function updateSelectedValues() {
                 customPath = pathname;
+                const selectedBrands = Array.from(document.querySelectorAll('input[name="brand"]:checked')).map(checkbox => checkbox.value);
 
                 const selectedPrices = Array.from(document.querySelectorAll('input[name="price"]:checked')).map(checkbox => checkbox.value);
 
-                if (selectedPrices.length !== 0) {
+                if (selectedBrands.length !== 0 && !customPath.includes("?")) {
+                    customPath += "?brand=";
+                    for (var i = 0; i < selectedBrands.length; i++) {
+                        if (i === 0) {
+                            customPath += selectedBrands[i];
+                        } else {
+                            customPath += "%2C" + selectedBrands[i];
+                        }
+                    }
+
+                    clrBtn.style.border = '2px solid #D10000';
+                    clrTxt.style.color = '#D10000';
+                }
+
+                if (selectedPrices.length !== 0 && !customPath.includes("?")) {
+                    customPath += "?price=";
+                    for (var i = 0; i < selectedPrices.length; i++) {
+                        if (i === 0) {
+                            customPath += selectedPrices[i];
+                        } else {
+                            customPath += "%2C" + selectedPrices[i];
+                        }
+                    }
+
+                    clrBtn.style.border = '2px solid #D10000';
+                    clrTxt.style.color = '#D10000';
+                } else if (selectedPrices.length !== 0) {
                     customPath += "&price=";
                     for (var i = 0; i < selectedPrices.length; i++) {
                         if (i === 0) {
@@ -194,8 +261,10 @@
                 }
 
                 if (customPath !== (window.location.pathname + window.location.search)) {
-//                    window.location.href = customPath;
-                    console.log(customPath);
+                    console.log('cus' + customPath);
+                    console.log('path' + window.location.pathname);
+                    console.log(window.location.search);
+                    window.location.href = customPath;
                 }
             }
 
@@ -227,6 +296,7 @@
                     arrow.innerHTML = "▼";
                 }
             }
+
         </script>
         <script src="assets/js/bootstrap.min.js"></script>
     </body>

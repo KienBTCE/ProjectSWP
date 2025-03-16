@@ -105,39 +105,47 @@ INSERT INTO Products (ProductID, BrandID, CategoryID, Model, FullName, [Descript
 (2, 2, 2, 'Galaxy S23 Ultra', 'Samsung Galaxy S23 Ultra 5G 256GB', 'Latest flagship from Samsung', 'samsung-galaxy-s23-xanh-600x600-1.jpg', 30000000, 1, 50),
 (3, 3, 1, 'Sony Vaio Z900', 'Sony Vaio Z900 Core i7 16GB RAM', 'High-performance laptop', 'vaio-z900.jpg', 20000000, 0, 50),
 (4, 8, 1, 'ASUS-FA706', 'ASUS TUF Gaming A17', 'Durable gaming laptop with high performance', '250-8562-line-laptop.png', 28909000, 1, 50),
-(5, 1, 2, 'iPhone-16-Pro-Max', 'iPhone 16 Pro Max', 'Premium smartphone with advanced camera and powerful performance', 'iphone-16-pro-max-black-thumb-600x600.jpg', 32529000, 0, 50),
+(5, 1, 2, 'iPhone-16-Pro-Max', 'iPhone 16 Pro Max', 'Premium smartphone with advanced camera and powerful performance', 'iphone-16-pro-max-black-thumb-600x600.jpg', 32529000, 0, 30),
 (6, 2, 2, 'Galaxy-S23', 'Samsung Galaxy S23', 'Samsung flagship phone with stunning design and excellent camera', 'samsung-galaxy-s23-xanh-600x600-1.jpg', 25899000, 1, 50),
 (7, 9, 1, 'Legion-Pro-5', 'Lenovo Legion Pro 5', 'High-end gaming laptop with powerful specs and 240Hz display', '0yp3jx9d-1090-lenovo-legion-pro-5-y9000p-2023-core-i9-13900hx-16gb-1tb-rtx-4050-6gb-16-wqxga-240hz-new.jpg', 38909000, 0, 50),
 (8, 8, 1, 'ASUS-TUF-A17', 'ASUS TUF Gaming A17', 'Durable gaming laptop with strong performance and modern design', 'ASUS-TUF-Gaming-A17-FA706-600x600.jpg', 31909000, 1, 50),
 (9, 11, 1, 'MSI-Katana-A15', 'MSI Katana Gaming A15', 'Gaming laptop powered by AMD Ryzen 9 and RTX 4060 GPU', '5e0dkkrb-1411-msi-katana-gaming-a15-ai-b8vf-406ca-amd-ryzen-r9-8945hs-32gb-1tb-rtx-4060-8gb-15-6-144hz-fhd-new.jpg', 33909000, 1, 50),
-(10, 6, 1, 'Dell-G5511', 'Dell Gaming G5511', 'Gaming laptop with strong design and high performance', '45606_dell_gaming_5511_dark_grey_ha3.jpg', 35909000, 0, 50);
+(10, 6, 1, 'Dell-G5511', 'Dell Gaming G5511', 'Gaming laptop with strong design and high performance', '45606_dell_gaming_5511_dark_grey_ha3.jpg', 35909000, 0, 50),
+(11, 4, 2, 'Xperia-1-III', 'Sony Xperia 1 III', 'Sony flagship phone with stunning OLED 4K display', 'sony-xperia-1-iii.jpg', 35999000, 0, 40),
+(12, 5, 2, 'Pixel-6-Pro', 'Google Pixel 6 Pro', 'Google flagship phone with Google Tensor chip', 'google-pixel-6-pro.jpg', 28999000, 0, 60),
+(13, 6, 1, 'HP-Omen-15', 'HP Omen 15', 'Powerful gaming laptop with AMD Ryzen 9', 'hp-omen-15.jpg', 42900000, 0, 35),
+(14, 3, 1, 'Acer-Predator-Helios-300', 'Acer Predator Helios 300', 'Gaming laptop with Intel i7 and RTX 3070', 'acer-predator-helios-300.jpg', 37999000, 1, 20),
+(15, 4, 2, 'Xiaomi-Redmi-Note-11', 'Xiaomi Redmi Note 11', 'Affordable smartphone with great performance', 'xiaomi-redmi-note-11.jpg', 7990000, 0, 100),
+(16, 2, 2, 'Samsung-Galaxy-A53', 'Samsung Galaxy A53', 'Mid-range smartphone with 5G and powerful camera', 'samsung-galaxy-a53.jpg', 18999000, 0, 75),
+(17, 10, 1, 'Razer-Blade-15', 'Razer Blade 15', 'Premium gaming laptop with high performance', 'razer-blade-15.jpg', 47900000, 0, 25),
+(18, 9, 1, 'Alienware-X17', 'Alienware X17', 'High-end gaming laptop with Intel i9 and RTX 3080', 'alienware-x17.jpg', 59999000, 0, 10),
+(19, 11, 1, 'MSI-GS66', 'MSI GS66 Stealth', 'Slim gaming laptop with Intel i7 and RTX 3070', 'msi-gs66.jpg', 44999000, 1, 50),
+(20, 5, 1, 'Asus-Zephyrus-G14', 'Asus Zephyrus G14', 'Powerful gaming laptop with AMD Ryzen 9 and RTX 3060', 'asus-zephyrus-g14.jpg', 35999000, 0, 30);
 
 -- Insert Products for Headphone, Charger, and Charging Cable
-SET IDENTITY_INSERT Products ON;
-
 -- Headphones
 INSERT INTO Products (ProductID, BrandID, CategoryID, Model, FullName, [Description], [Image], Price, IsDeleted, Stock) VALUES 
-(11, 3, 4, 'Sony-WH-1000XM5', 'Sony WH-1000XM5', 'Premium noise-canceling wireless headphones', 'sony-wh-1000xm5.jpg', 8490000, 0, 30),
-(12, 5, 4, 'Xiaomi-FlipBuds-Pro', 'Xiaomi FlipBuds Pro', 'True wireless earbuds with ANC', 'xiaomi-flipbuds-pro.jpg', 2990000, 0, 50),
-(13, 14, 4, 'LG-Tone-Free-FP9', 'LG Tone Free FP9', 'Wireless earbuds with UV cleaning case', 'lg-tone-free-fp9.jpg', 3290000, 0, 40),
-(14, 4, 4, 'Huawei-FreeBuds-Pro-2', 'Huawei FreeBuds Pro 2', 'High-quality sound with dynamic drivers', 'huawei-freebuds-pro-2.jpg', 3990000, 0, 35),
-(15, 10, 4, 'Acer-Predator-Galea-350', 'Acer Predator Galea 350', 'Gaming headset with surround sound', 'acer-predator-galea-350.jpg', 2590000, 0, 20);
+(21, 3, 4, 'Sony-WH-1000XM5', 'Sony WH-1000XM5', 'Premium noise-canceling wireless headphones', 'sony-wh-1000xm5.jpg', 8490000, 0, 30),
+(22, 5, 4, 'Xiaomi-FlipBuds-Pro', 'Xiaomi FlipBuds Pro', 'True wireless earbuds with ANC', 'xiaomi-flipbuds-pro.jpg', 2990000, 0, 50),
+(23, 14, 4, 'LG-Tone-Free-FP9', 'LG Tone Free FP9', 'Wireless earbuds with UV cleaning case', 'lg-tone-free-fp9.jpg', 3290000, 0, 40),
+(24, 4, 4, 'Huawei-FreeBuds-Pro-2', 'Huawei FreeBuds Pro 2', 'High-quality sound with dynamic drivers', 'huawei-freebuds-pro-2.jpg', 3990000, 0, 35),
+(25, 10, 4, 'Acer-Predator-Galea-350', 'Acer Predator Galea 350', 'Gaming headset with surround sound', 'acer-predator-galea-350.jpg', 2590000, 0, 20);
 
 -- Chargers
 INSERT INTO Products (ProductID, BrandID, CategoryID, Model, FullName, [Description], [Image], Price, IsDeleted, Stock) VALUES 
-(16, 1, 5, 'Apple-20W-USB-C', 'Apple 20W USB-C Charger', 'Fast charging for iPhone and iPad', 'apple-20w-usb-c.jpg', 590000, 0, 100),
-(17, 2, 5, 'Samsung-25W-USB-C', 'Samsung 25W USB-C Charger', 'Super Fast Charging adapter', 'samsung-25w-usb-c.jpg', 690000, 0, 80),
-(18, 5, 5, 'Xiaomi-67W-SuperCharge', 'Xiaomi 67W Super Charge', 'High-speed charging adapter', 'xiaomi-67w.jpg', 890000, 0, 70),
-(19, 4, 5, 'Huawei-40W-SuperCharge', 'Huawei 40W Super Charge', 'Fast charging technology', 'huawei-40w.jpg', 790000, 0, 60),
-(20, 9, 5, 'Lenovo-65W-Charger', 'Lenovo 65W Laptop Charger', 'Fast charging for Lenovo laptops', 'lenovo-65w.jpg', 1290000, 0, 50);
+(26, 1, 5, 'Apple-20W-USB-C', 'Apple 20W USB-C Charger', 'Fast charging for iPhone and iPad', 'apple-20w-usb-c.jpg', 590000, 0, 100),
+(27, 2, 5, 'Samsung-25W-USB-C', 'Samsung 25W USB-C Charger', 'Super Fast Charging adapter', 'samsung-25w-usb-c.jpg', 690000, 0, 80),
+(28, 5, 5, 'Xiaomi-67W-SuperCharge', 'Xiaomi 67W Super Charge', 'High-speed charging adapter', 'xiaomi-67w.jpg', 890000, 0, 70),
+(29, 4, 5, 'Huawei-40W-SuperCharge', 'Huawei 40W Super Charge', 'Fast charging technology', 'huawei-40w.jpg', 790000, 0, 60),
+(30, 9, 5, 'Lenovo-65W-Charger', 'Lenovo 65W Laptop Charger', 'Fast charging for Lenovo laptops', 'lenovo-65w.jpg', 1290000, 0, 50);
 
 -- Charging Cables
 INSERT INTO Products (ProductID, BrandID, CategoryID, Model, FullName, [Description], [Image], Price, IsDeleted, Stock) VALUES 
-(21, 1, 6, 'Apple-USB-C-Lightning', 'Apple USB-C to Lightning Cable', 'Official Apple charging cable', 'apple-usb-c-lightning.jpg', 490000, 0, 200),
-(22, 2, 6, 'Samsung-USB-C-Cable', 'Samsung USB-C Cable 1m', 'Durable and fast-charging', 'samsung-usb-c.jpg', 290000, 0, 180),
-(23, 5, 6, 'Xiaomi-Braided-USB-C', 'Xiaomi Braided USB-C Cable', 'Reinforced and tangle-free', 'xiaomi-braided-usb-c.jpg', 390000, 0, 160),
-(24, 4, 6, 'Huawei-SuperCharge-Cable', 'Huawei SuperCharge USB-C Cable', 'Supports high-speed charging', 'huawei-supercharge.jpg', 450000, 0, 140),
-(25, 9, 6, 'Lenovo-Thunderbolt-4', 'Lenovo Thunderbolt 4 Cable', 'High-speed data and charging', 'lenovo-thunderbolt-4.jpg', 990000, 0, 120);
+(31, 1, 6, 'Apple-USB-C-Lightning', 'Apple USB-C to Lightning Cable', 'Official Apple charging cable', 'apple-usb-c-lightning.jpg', 490000, 0, 200),
+(32, 2, 6, 'Samsung-USB-C-Cable', 'Samsung USB-C Cable 1m', 'Durable and fast-charging', 'samsung-usb-c.jpg', 290000, 0, 180),
+(33, 5, 6, 'Xiaomi-Braided-USB-C', 'Xiaomi Braided USB-C Cable', 'Reinforced and tangle-free', 'xiaomi-braided-usb-c.jpg', 390000, 0, 160),
+(34, 4, 6, 'Huawei-SuperCharge-Cable', 'Huawei SuperCharge USB-C Cable', 'Supports high-speed charging', 'huawei-supercharge.jpg', 450000, 0, 140),
+(35, 9, 6, 'Lenovo-Thunderbolt-4', 'Lenovo Thunderbolt 4 Cable', 'High-speed data and charging', 'lenovo-thunderbolt-4.jpg', 990000, 0, 120);
 
 SET IDENTITY_INSERT Products OFF;
 
@@ -300,7 +308,19 @@ VALUES
 -- Insert Customers
 INSERT INTO Customers (FullName, Birthday, [Password], PhoneNumber, Email, Gender, CreatedDate, GoogleID, IsBlock, IsDeleted, Avatar)
 VALUES 
-('Nguyen Van A', '1995-05-15', '6ad14ba9986e3615423dfca256d04e3f', '0901234567', 'nguyenvana@example.com', 'Male', GETDATE(), '', 0, 0, 'avatar1.jpg');
+('Nguyen Van A', '1995-05-15', '6ad14ba9986e3615423dfca256d04e3f', '0901234567', 'nguyenvana@example.com', 'Male', GETDATE(), '', 0, 0, 'avatar1.jpg'),
+('Tran Thi B', '1989-08-20', '8d86fe393e67df6f56ffbdfc8d8754a1', '0909876543', 'tranthib@example.com', 'Female', GETDATE(), '', 0, 0, 'avatar2.jpg'),
+('Le Minh C', '1992-03-25', 'fda82e8f01317cc1ca3b5ed334f317b2', '0912345678', 'leminhc@example.com', 'Male', GETDATE(), '', 0, 0, 'avatar3.jpg'),
+('Pham Thi D', '1994-12-30', 'cc63426e11b8c85a2836f6312e021b47', '0923456789', 'phamthid@example.com', 'Female', GETDATE(), '', 0, 0, 'avatar4.jpg'),
+('Hoang Minh E', '1987-07-10', '1f9d8655e8be12467d0b1fa3c290df6e', '0934567890', 'hoangminhe@example.com', 'Male', GETDATE(), '', 0, 0, 'avatar5.jpg'),
+('Nguyen Thi F', '1990-11-01', '3d229f3e67dbebcf5d6c1b55e3a5b0db', '0945678901', 'nguyenthif@example.com', 'Female', GETDATE(), '', 0, 0, 'avatar6.jpg'),
+('Pham Minh G', '1993-06-12', 'a9c3d0d4073b38cd302fa0547fdab3a0', '0956789012', 'phamminhg@example.com', 'Male', GETDATE(), '', 0, 0, 'avatar7.jpg'),
+('Hoang Thi H', '1988-09-05', '1c43f7b5f88d4cd85e3e26ed9a0491a1', '0967890123', 'hoangthih@example.com', 'Female', GETDATE(), '', 0, 0, 'avatar8.jpg'),
+('Le Thi I', '1991-01-17', '6e4d8f7f604a8f8fda8a527f28d5bb96', '0978901234', 'lethii@example.com', 'Female', GETDATE(), '', 0, 0, 'avatar9.jpg'),
+('Nguyen Minh J', '1992-02-28', 'b63f2f35d2fe823cc7b21cfb97f7f160', '0989012345', 'nguyenminhj@example.com', 'Male', GETDATE(), '', 0, 0, 'avatar10.jpg'),
+('Pham Thi K', '1995-04-18', '4a23d64a37a50d712e2d90b59802100b', '0990123456', 'phamthik@example.com', 'Female', GETDATE(), '', 0, 0, 'avatar11.jpg'),
+('Le Minh L', '1990-10-22', 'e0a0c093ce5d47a3cc99213a2e4c39b8', '0902345678', 'leminhl@example.com', 'Male', GETDATE(), '', 0, 0, 'avatar12.jpg');
+
 
 -- Insert OrderStatus
 INSERT INTO OrderStatus (ID, [Status])
@@ -314,9 +334,35 @@ VALUES
 -- Insert Orders
 INSERT INTO Orders (CustomerID, FullName, [Address], PhoneNumber, OrderedDate, DeliveredDate, Status, TotalAmount)
 VALUES 
-(1, 'Nguyen Van A', '123 Tech Street, District 1, Ho Chi Minh City', '0901234567', GETDATE(), NULL, 1, 50000000);
+(1, 'Nguyen Van A', '123 Tech Street, District 1, Ho Chi Minh City', '0901234567', '2024-01-01', NULL, 1, 50000000),
+(2, 'Tran Thi B', '456 Nguyen Du Street, District 3, Ho Chi Minh City', '0909876543', '2024-02-15', NULL, 1, 75000000),
+(3, 'Le Minh C', '789 Le Lai Street, District 5, Ho Chi Minh City', '0912345678', '2024-03-20', NULL, 2, 25000000),
+(4, 'Pham Thi D', '321 Pham Ngoc Thach, District 1, Ho Chi Minh City', '0923456789', '2024-04-05', NULL, 3, 12000000),
+(5, 'Hoang Minh E', '654 Ha Noi Street, Hai Ba Trung, Hanoi', '0934567890', '2024-05-10', NULL, 1, 30000000),
+(6, 'Nguyen Thi F', '112 Mai Thi Luu, District 3, Ho Chi Minh City', '0945678901', '2024-06-15', NULL, 1, 40000000),
+(7, 'Pham Minh G', '234 Ly Tu Trong, District 1, Ho Chi Minh City', '0956789012', '2024-07-01', NULL, 2, 60000000),
+(8, 'Hoang Thi H', '567 Le Duan, District 5, Ho Chi Minh City', '0967890123', '2024-08-12', NULL, 1, 15000000),
+(9, 'Le Thi I', '678 Bach Dang, District 7, Ho Chi Minh City', '0978901234', '2024-09-08', NULL, 1, 55000000),
+(10, 'Nguyen Minh J', '890 Pham Hung, District 8, Ho Chi Minh City', '0989012345', '2024-10-22', NULL, 3, 20000000),
+(11, 'Pham Thi K', '123 Bui Thi Xuan, District 1, Ho Chi Minh City', '0990123456', '2024-11-18', NULL, 2, 45000000),
+(12, 'Le Minh L', '456 Huynh Tan Phat, District 7, Ho Chi Minh City', '0902345678', '2024-12-05', NULL, 1, 35000000);
 
-INSERT INTO OrderDetails VALUES (1, 1, 3, 50000000);
+
+INSERT INTO OrderDetails (OrderID, ProductID, Quantity, Price)
+VALUES 
+(1, 1, 3, 50000000),
+(2, 2, 5, 75000000),
+(3, 3, 2, 25000000),
+(4, 4, 1, 12000000),
+(5, 5, 2, 30000000),
+(6, 6, 4, 40000000),
+(7, 7, 6, 60000000),
+(8, 8, 1, 15000000),
+(9, 9, 3, 55000000),
+(10, 10, 2, 20000000),
+(11, 11, 5, 45000000),
+(12, 12, 2, 35000000);
+
 
 -- Insert Employees
 SET IDENTITY_INSERT Employees ON;

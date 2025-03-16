@@ -112,11 +112,12 @@
                 justify-content: space-between;
             }
             .btn-add {
-                background-color: #003375;
-                color: white;
+                background-color: lightblue !important;
                 border: none;
-                display: inline-block;
                 padding: 5px 10px;
+                width: 140px;
+                align-items: center;
+                margin-bottom: 10px;
             }
             .btn-delete {
                 border: none;
@@ -127,12 +128,13 @@
                 align-items: center;
             }
             .btn-edit {
-                background-color: #007bff;
-                color: white;
+                background-color: blue !important;
+                color: white !important;
                 border: none;
                 display: inline-block;
                 padding: 5px 10px;
             }
+
             .search-container {
                 display: flex;
                 align-items: center;
@@ -143,6 +145,7 @@
                 overflow: hidden;
                 border: 2px solid #7D69FF;
                 margin-bottom: 15px;
+                margin-top: 10px;
             }
 
             .search-input {
@@ -168,19 +171,93 @@
             .search-button:hover {
                 background: #6454cc;
             }
+            .filter-row {
+                display: flex;
+                align-items: center;
+                gap: 15px;
+                margin-bottom: 5px;
+            }
+
+            .filter-container {
+                margin-right: 10px;
+                display: flex;
+                align-items: center;
+                gap: 10px;
+                margin-bottom: 15px;
+                margin-top: 10px;
+                margin-left: 250px;
+                width: 200px;
+            }
+
+            .form-select {
+                width: 220px;
+                padding: 8px;
+                border-radius: 10px;
+                border: 2px solid #7D69FF;
+            }
+
+            .checkbox-container {
+                display: flex;
+                align-items: center;
+                gap: 8px;
+                font-size: 14px;
+                width: 300px;
+            }
+
+            .checkbox-container input {
+                width: 18px;
+                height: 18px;
+                cursor: pointer;
+            }
         </style>
     </head>
     <body>
         <jsp:include page="SidebarDashboard.jsp"></jsp:include>
             <div class="content">
             <jsp:include page="HeaderDashboard.jsp"></jsp:include>
-                <form action="ProductListServlet" method="get" class="search-container">
-                    <input type="text" name="txt" value="${param.txt}" placeholder="Search by name..." class="search-input">
-                <button type="submit" class="search-button">
-                    🔍
-                </button>
-            </form>
-            <a href="CreateProductServlet" class="btn btn-detail" style="background-color: #BDF3BD">Create</a>
+                <div class="filter-row">
+                    <!-- FORM SEARCH -->
+                    <form action="ProductListServlet" method="get" class="search-container">
+                        <input type="text" name="txt" value="${param.txt}" placeholder="Search by name..." class="search-input">
+                    <button type="submit" class="search-button">🔍</button>
+                </form>
+
+                <!-- Checkbox để lọc sản phẩm mới nhập -->
+                <form action="ProductListServlet" method="get" class="checkbox-container">
+                    <input type="hidden" name="filter" value="new_import"> 
+                    <input type="checkbox" id="new_import" name="new_import" value="true" ${param.new_import == 'true' ? 'checked' : ''} onchange="this.form.submit()">
+                    <label for="new_import">Newly imported products</label>
+                </form>
+
+                <!-- FORM FILTER MỚI NHẬP -->
+                <form action="ProductListServlet" method="get" class="filter-container">
+                    <select name="categoryId" class="form-select" onchange="this.form.submit()">
+                        <option value="">All Categories</option>
+                        <c:forEach var="cat" items="${categories}">
+                            <option value="${cat.categoryId}" ${param.categoryId == cat.categoryId ? 'selected' : ''}>
+                                ${cat.name}
+                            </option>
+                        </c:forEach>
+                    </select>
+                </form>
+
+                <a href="CreateProductServlet" class="btn btn-add">Create Product</a>
+            </div>
+            <script>
+                function debugForm() {
+                    let category = document.querySelector("select[name='categoryId']").value;
+                    console.log("Submitting categoryId: " + category);
+                    return true;
+                }
+            </script>
+
+
+            <c:if test="${not empty message}">
+                <div class="alert alert-info" role="alert">
+                    ${message}
+                </div>
+            </c:if>
+
             <div class="table-container">
                 <table class="table table-hover">
                     <thead>

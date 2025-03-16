@@ -86,7 +86,6 @@
     </head>
     <body>
         <div class="container">
-            <a href="VerifyOTPServlet" class="back-btn">&#8592;</a>
             <h2>Reset Password</h2>
             <p>Enter your new password below</p>
             <form action="ResetPasswordServlet" method="post">

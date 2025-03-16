@@ -148,6 +148,7 @@
                 overflow: hidden;
                 border: 2px solid #7D69FF;
                 margin-bottom: 15px;
+                margin-top: 10px;
             }
 
             .search-input {
@@ -185,6 +186,12 @@
                     🔍
                 </button>
             </form>
+            <c:if test="${not empty message}">
+                <div class="alert alert-info" role="alert">
+                    ${message}
+                </div>
+            </c:if>
+
 
             <div class="table-container">
                 <table class="table table-hover">
@@ -210,6 +217,7 @@
                                         ${s.getStatus()}
                                     </span>
                                 </td>
+
                                 <td>
                                     <a href="CustomerListServlet?${s.getIsBlock() == 1 ? 'Activate' : 'Blocked'}=${s.getId()}" 
                                        class="btn ${s.getIsBlock() == 1 ? 'btn-success' : 'btn-danger'}" 
