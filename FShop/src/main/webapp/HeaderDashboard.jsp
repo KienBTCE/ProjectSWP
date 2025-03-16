@@ -3,7 +3,7 @@
     Created on : Feb 27, 2025, 12:38:21 PM
     Author     : KienBTCE180180
 --%>
-
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
@@ -31,6 +31,7 @@
                 height: 40px;
                 border-radius: 50%;
                 object-fit: cover;
+                margin: 5px;
             }
             .fullname{
                 text-decoration: none;
@@ -41,9 +42,16 @@
     </head>
     <body>
         <div class="header">
-            <a href="ViewEmployeeProfile">
+            <a href="ViewEmployeeProfile" style="text-decoration: none">
                 <div style="display: flex; align-items: center;">
-                    <img src="assets/imgs/EmployeeAvatar/defauft_avatar.jpg" alt="User Icon" class="icon">
+                    <c:choose>
+                        <c:when test="${!sessionScope.employee.getAvatar().equals('')}">
+                            <img class="icon" src="assets/imgs/EmployeeAvatar/${sessionScope.employee.getAvatar()}" >
+                        </c:when>
+                        <c:otherwise>
+                            <img  class="icon" src="assets/imgs/EmployeeAvatar/defauft_avatar.jpg">
+                        </c:otherwise>
+                    </c:choose>
                     <p class="fullname" style="margin-top: 10px;">Hi, ${sessionScope.employee.getFullname()}</p>
                 </div>
             </a>

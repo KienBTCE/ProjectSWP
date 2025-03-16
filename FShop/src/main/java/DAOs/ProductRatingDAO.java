@@ -54,7 +54,9 @@ public class ProductRatingDAO {
 
     public float getStarAverage(int productId) {
         float star = 0;
-        String query = "SELECT COALESCE(SUM(Star) / COUNT(Star), 0) AS avs FROM ProductRatings as p  where p.ProductID =?";
+        String query = "SELECT COALESCE(ROUND(SUM(Star) * 1.0 / COUNT(Star), 0), 0) AS avs\n"
+                + "FROM ProductRatings as p  \n"
+                + "WHERE p.ProductID = ?";
         try {
             PreparedStatement pre = connector.prepareStatement(query);
             pre.setInt(1, productId);
@@ -71,7 +73,9 @@ public class ProductRatingDAO {
     public ProductRating getStarAVG(int productId) {
         int star = 0;
         ProductRating p = new ProductRating();
-        String query = "SELECT COALESCE(SUM(Star) / COUNT(Star), 0) AS avs FROM ProductRatings as p  where p.ProductID =?";
+        String query = "SELECT COALESCE(ROUND(SUM(Star) * 1.0 / COUNT(Star), 0), 0) AS avs\n"
+                + "FROM ProductRatings as p  \n"
+                + "WHERE p.ProductID = ?";
         try {
             PreparedStatement pre = connector.prepareStatement(query);
             pre.setInt(1, productId);
@@ -114,7 +118,7 @@ public class ProductRatingDAO {
 
     public List<ProductRating> getNewFeedback() {
         List<ProductRating> list = new ArrayList<>();
-        String query = "SELECT P.* ,C.FullName FROM ProductRatings AS P JOIN Customers AS C ON C.CustomerID = P.CustomerID  ORDER BY P.CreatedDate DESC";
+        String query = "SELECT P.* ,C.FullName FROM ProductRatings AS P JOIN Customers AS C ON C.CustomerID = P.CustomerID  ORDER BY P.IsRead ASC";
         try {
             PreparedStatement pre = connector.prepareStatement(query);
             ResultSet rs = pre.executeQuery();

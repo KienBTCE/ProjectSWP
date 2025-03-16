@@ -150,7 +150,7 @@
                     <div class="d-block align-items-center">
                         <c:if test="${sessionScope.customer.getAvatar().equals('') == true}">
                             <c:if test="${sessionScope.customer.getAvatar().equals('') == true}">
-                                <img id="avatarPreview" class="avatar-preview mb-3" src="assets/imgs/icon/user (3).png" alt="default">
+                                <img id="avatarPreview" class="avatar-preview mb-3" src="assets/imgs/CustomerAvatar/defaut.jpg" alt="default">
                             </c:if>   
                             <c:if test="${sessionScope.customer.getAvatar().equals('') == false}">
                                 <img id="avatarPreview" class="avatar-preview mb-3"  src="assets/imgs/CustomerAvatar/${sessionScope.customer.getAvatar()}" alt="default">

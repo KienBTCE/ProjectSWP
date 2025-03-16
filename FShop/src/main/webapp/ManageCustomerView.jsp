@@ -219,11 +219,13 @@
                                 </td>
 
                                 <td>
+                                    <c:if test="${sessionScope.employee.getRoleId() == 2}">
                                     <a href="CustomerListServlet?${s.getIsBlock() == 1 ? 'Activate' : 'Blocked'}=${s.getId()}" 
                                        class="btn ${s.getIsBlock() == 1 ? 'btn-success' : 'btn-danger'}" 
                                        onclick="return confirm('Are you sure?');">
                                         ${s.getIsBlock() == 0 ? 'Blocked' : 'Activate'}
                                     </a>
+                                    </c:if>
                                     <a href="CustomerListServlet?id=${s.getId()}" class="btn btn-detail" style="background-color: #BDF3BD">Detail</a>
                                 </td>
                             </tr>
