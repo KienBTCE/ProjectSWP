@@ -27,7 +27,7 @@
                 background-color: white;
                 z-index: 1050;
                 padding: 10px 20px;
-                box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+               box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
             }
 
             /* Cố định Sidebar */
@@ -59,6 +59,7 @@
                 display: flex;
                 justify-content: space-between;
                 align-items: center;
+                padding: 10px;
                 gap: 20px;
             }
 
@@ -81,7 +82,42 @@
                 font-size: 1.5rem;
                 font-weight: bold;
             }
+            .search-container {
+                display: flex;
+                align-items: center;
+                width: 100%;
+                max-width: 300px; /* Giảm kích thước tối đa */
+                background: white;
+                border-radius: 13px; /* Bo góc mềm hơn */
+                overflow: hidden;
+                border: 2px solid #7D69FF;
+                margin-bottom: 15px;
+                margin-top: 10px;
+            }
 
+            .search-input {
+                flex: 1;
+                border: none;
+                outline: none;
+                padding: 8px 12px; /* Giảm padding để nhỏ hơn */
+                font-size: 14px; /* Giảm kích thước chữ */
+                color: #555;
+            }
+
+            .search-button {
+                border: none;
+                padding: 8px 12px; /* Giảm padding của nút */
+                cursor: pointer;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                color: white;
+                font-size: 14px;
+            }
+
+            .search-button:hover {
+                background: #6454cc;
+            }
 
         </style>
     </head>
@@ -91,24 +127,30 @@
             </div>
 
             <div class="main-layout">
+
+
+
+
+
                 <div class="fixed-header">
-                    <div class="header-container">
-                        <form action="ViewOrderListServlet" method="GET" class="search-container">
-                            <input type="text" name="search" id="searchInput" value="${searchQuery}" 
-                               placeholder="Search by Name, Phone..." class="form-control">
-                        <button type="submit" class="btn btn-primary">
-                            <i class="fa fa-search"></i>
-                        </button>
-                    </form>
 
-                    <h2 class="header-title"><i class="fa-solid fa-box"></i> Order List</h2>
-                    <jsp:include page="HeaderDashboard.jsp"></jsp:include>
 
-                    </div>
-                </div>
+                <jsp:include page="HeaderDashboard.jsp"></jsp:include>
+                    <!--<h2 class="header-title"><i class="fa-solid fa-box"></i> Order List</h2>-->
 
-                <div class="content">
-                    <div class="order-container">
+
+
+                    <form action="ViewOrderListServlet" method="GET" class="search-container">
+                        <input type="text" name="search" id="searchInput" value="${searchQuery}" 
+                           placeholder="Search by Name, Phone..." class="search-input">
+                     <button type="submit" class="search-button">
+                    🔍
+                </button>
+                </form>
+            </div>
+
+            <div class="content">
+                <div class="order-container">
                     <c:forEach items="${data}" var="order">
                         <div class="order-card">
                             <div class="order-header">

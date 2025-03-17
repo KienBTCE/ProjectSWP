@@ -74,13 +74,15 @@ public class OrderDetailDAO {
                 + "FROM Customers AS c\n"
                 + "JOIN Orders AS o ON o.CustomerID = c.CustomerID\n"
                 + "JOIN OrderDetails AS od ON od.OrderID = o.OrderID\n"
-                + "LEFT JOIN ProductRatings AS pr \n"
-                + "    ON pr.CustomerID = c.CustomerID \n"
-                + "    AND pr.ProductID = @ProductID\n"
                 + "WHERE od.ProductID = @ProductID\n"
-                + "      AND o.Status = 4\n"
+                + "      AND o.Status = 4 \n"
                 + "GROUP BY c.CustomerID\n"
-                + "HAVING COUNT(od.OrderID) > COUNT(pr.RateID);";
+                + "HAVING SUM(od.Quantity) > \n"
+                + "      (SELECT COUNT(*) \n"
+                + "       FROM ProductRatings AS pr \n"
+                + "       WHERE pr.CustomerID = c.CustomerID \n"
+                + "       AND pr.ProductID = @ProductID\n"
+                + "       AND pr.IsDeleted = 0);";
 
         try {
             PreparedStatement pre = connector.prepareStatement(query);

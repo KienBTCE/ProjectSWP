@@ -304,7 +304,7 @@
         </script>
         <script src="assets/js/bootstrap.bundle.min.js"></script>
         <script>
-            document.addEventListener("DOMContentLoaded", function () {
+                        document.addEventListener("DOMContentLoaded", function () {
                 const notifBtn = document.querySelector('.btn-notif');
                 notifBtn.addEventListener('click', function () {
                     fetch('NotificationServlet?ajax=true')
