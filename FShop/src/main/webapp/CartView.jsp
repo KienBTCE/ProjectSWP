@@ -39,9 +39,9 @@
                                         <th class="th" style="width: 17%;">Item</th>
                                         <th class="th" style="width: 34%;"></th>
                                         <th class="th" style="width: 13%;">Price</th>
-                                        <th class="th" style="width: 15%;">Qty</th>
-                                        <th class="th" style="width: 13%;">Subtotal</th>
-                                        <th class="th" style="width: 5%;"></th>
+                                        <th class="th" style="width: 12%;">Qty</th>
+                                        <th class="th" style="width: 16%;">Subtotal</th>
+                                        <th class="th" style="width: 2%;"></th>
                                     </tr>
                                     <form id="cartSelected" action="order" method="post">
                                         <input type="text" name="orderUrl" value="Cart" hidden>
@@ -73,7 +73,7 @@
                                                     </td>
                                                     <td class="th">
                                                         <h6 id="price-${p.getProductID()}">
-                                                            <fmt:formatNumber value="${p.getPrice()}" type="currency" />
+                                                            <fmt:formatNumber value="${p.getPrice() * p.getQuantity()}" type="currency" />
                                                         </h6>
                                                     </td>
                                                     <td class="th">
