@@ -68,6 +68,19 @@ public class CategoryDAO {
         return list;
     }
 
+    public List<Category> getAllCategories() {
+        List<Category> categories = new ArrayList<>();
+        String query = "SELECT * FROM Categories";
+        try ( PreparedStatement ps = connector.prepareStatement(query);  ResultSet rs = ps.executeQuery()) {
+            while (rs.next()) {
+                categories.add(new Category(rs.getInt("CategoryID"), rs.getString("Name")));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return categories;
+    }
+
     public static void main(String[] args) {
         CategoryDAO c = new CategoryDAO();
         System.out.println(c.getCategoryIdByName("Laptop"));

@@ -93,7 +93,6 @@
     </head>
     <body>
         <div class="container">
-            <a href="/customerLogin" class="back-btn">&#8592;</a>
             <h2>Verify OTP</h2>
             <p>Enter the OTP sent to your email</p>
             <form action="RegisterOTPServlet" method="post">

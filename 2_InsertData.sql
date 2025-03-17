@@ -123,31 +123,29 @@ INSERT INTO Products (ProductID, BrandID, CategoryID, Model, FullName, [Descript
 (20, 5, 1, 'Asus-Zephyrus-G14', 'Asus Zephyrus G14', 'Powerful gaming laptop with AMD Ryzen 9 and RTX 3060', 'asus-zephyrus-g14.jpg', 35999000, 0, 30);
 
 -- Insert Products for Headphone, Charger, and Charging Cable
-SET IDENTITY_INSERT Products ON;
-
 -- Headphones
 INSERT INTO Products (ProductID, BrandID, CategoryID, Model, FullName, [Description], [Image], Price, IsDeleted, Stock) VALUES 
-(11, 3, 4, 'Sony-WH-1000XM5', 'Sony WH-1000XM5', 'Premium noise-canceling wireless headphones', 'sony-wh-1000xm5.jpg', 8490000, 0, 30),
-(12, 5, 4, 'Xiaomi-FlipBuds-Pro', 'Xiaomi FlipBuds Pro', 'True wireless earbuds with ANC', 'xiaomi-flipbuds-pro.jpg', 2990000, 0, 50),
-(13, 14, 4, 'LG-Tone-Free-FP9', 'LG Tone Free FP9', 'Wireless earbuds with UV cleaning case', 'lg-tone-free-fp9.jpg', 3290000, 0, 40),
-(14, 4, 4, 'Huawei-FreeBuds-Pro-2', 'Huawei FreeBuds Pro 2', 'High-quality sound with dynamic drivers', 'huawei-freebuds-pro-2.jpg', 3990000, 0, 35),
-(15, 10, 4, 'Acer-Predator-Galea-350', 'Acer Predator Galea 350', 'Gaming headset with surround sound', 'acer-predator-galea-350.jpg', 2590000, 0, 20);
+(21, 3, 4, 'Sony-WH-1000XM5', 'Sony WH-1000XM5', 'Premium noise-canceling wireless headphones', 'sony-wh-1000xm5.jpg', 8490000, 0, 30),
+(22, 5, 4, 'Xiaomi-FlipBuds-Pro', 'Xiaomi FlipBuds Pro', 'True wireless earbuds with ANC', 'xiaomi-flipbuds-pro.jpg', 2990000, 0, 50),
+(23, 14, 4, 'LG-Tone-Free-FP9', 'LG Tone Free FP9', 'Wireless earbuds with UV cleaning case', 'lg-tone-free-fp9.jpg', 3290000, 0, 40),
+(24, 4, 4, 'Huawei-FreeBuds-Pro-2', 'Huawei FreeBuds Pro 2', 'High-quality sound with dynamic drivers', 'huawei-freebuds-pro-2.jpg', 3990000, 0, 35),
+(25, 10, 4, 'Acer-Predator-Galea-350', 'Acer Predator Galea 350', 'Gaming headset with surround sound', 'acer-predator-galea-350.jpg', 2590000, 0, 20);
 
 -- Chargers
 INSERT INTO Products (ProductID, BrandID, CategoryID, Model, FullName, [Description], [Image], Price, IsDeleted, Stock) VALUES 
-(16, 1, 5, 'Apple-20W-USB-C', 'Apple 20W USB-C Charger', 'Fast charging for iPhone and iPad', 'apple-20w-usb-c.jpg', 590000, 0, 100),
-(17, 2, 5, 'Samsung-25W-USB-C', 'Samsung 25W USB-C Charger', 'Super Fast Charging adapter', 'samsung-25w-usb-c.jpg', 690000, 0, 80),
-(18, 5, 5, 'Xiaomi-67W-SuperCharge', 'Xiaomi 67W Super Charge', 'High-speed charging adapter', 'xiaomi-67w.jpg', 890000, 0, 70),
-(19, 4, 5, 'Huawei-40W-SuperCharge', 'Huawei 40W Super Charge', 'Fast charging technology', 'huawei-40w.jpg', 790000, 0, 60),
-(20, 9, 5, 'Lenovo-65W-Charger', 'Lenovo 65W Laptop Charger', 'Fast charging for Lenovo laptops', 'lenovo-65w.jpg', 1290000, 0, 50);
+(26, 1, 5, 'Apple-20W-USB-C', 'Apple 20W USB-C Charger', 'Fast charging for iPhone and iPad', 'apple-20w-usb-c.jpg', 590000, 0, 100),
+(27, 2, 5, 'Samsung-25W-USB-C', 'Samsung 25W USB-C Charger', 'Super Fast Charging adapter', 'samsung-25w-usb-c.jpg', 690000, 0, 80),
+(28, 5, 5, 'Xiaomi-67W-SuperCharge', 'Xiaomi 67W Super Charge', 'High-speed charging adapter', 'xiaomi-67w.jpg', 890000, 0, 70),
+(29, 4, 5, 'Huawei-40W-SuperCharge', 'Huawei 40W Super Charge', 'Fast charging technology', 'huawei-40w.jpg', 790000, 0, 60),
+(30, 9, 5, 'Lenovo-65W-Charger', 'Lenovo 65W Laptop Charger', 'Fast charging for Lenovo laptops', 'lenovo-65w.jpg', 1290000, 0, 50);
 
 -- Charging Cables
 INSERT INTO Products (ProductID, BrandID, CategoryID, Model, FullName, [Description], [Image], Price, IsDeleted, Stock) VALUES 
-(21, 1, 6, 'Apple-USB-C-Lightning', 'Apple USB-C to Lightning Cable', 'Official Apple charging cable', 'apple-usb-c-lightning.jpg', 490000, 0, 200),
-(22, 2, 6, 'Samsung-USB-C-Cable', 'Samsung USB-C Cable 1m', 'Durable and fast-charging', 'samsung-usb-c.jpg', 290000, 0, 180),
-(23, 5, 6, 'Xiaomi-Braided-USB-C', 'Xiaomi Braided USB-C Cable', 'Reinforced and tangle-free', 'xiaomi-braided-usb-c.jpg', 390000, 0, 160),
-(24, 4, 6, 'Huawei-SuperCharge-Cable', 'Huawei SuperCharge USB-C Cable', 'Supports high-speed charging', 'huawei-supercharge.jpg', 450000, 0, 140),
-(25, 9, 6, 'Lenovo-Thunderbolt-4', 'Lenovo Thunderbolt 4 Cable', 'High-speed data and charging', 'lenovo-thunderbolt-4.jpg', 990000, 0, 120);
+(31, 1, 6, 'Apple-USB-C-Lightning', 'Apple USB-C to Lightning Cable', 'Official Apple charging cable', 'apple-usb-c-lightning.jpg', 490000, 0, 200),
+(32, 2, 6, 'Samsung-USB-C-Cable', 'Samsung USB-C Cable 1m', 'Durable and fast-charging', 'samsung-usb-c.jpg', 290000, 0, 180),
+(33, 5, 6, 'Xiaomi-Braided-USB-C', 'Xiaomi Braided USB-C Cable', 'Reinforced and tangle-free', 'xiaomi-braided-usb-c.jpg', 390000, 0, 160),
+(34, 4, 6, 'Huawei-SuperCharge-Cable', 'Huawei SuperCharge USB-C Cable', 'Supports high-speed charging', 'huawei-supercharge.jpg', 450000, 0, 140),
+(35, 9, 6, 'Lenovo-Thunderbolt-4', 'Lenovo Thunderbolt 4 Cable', 'High-speed data and charging', 'lenovo-thunderbolt-4.jpg', 990000, 0, 120);
 
 SET IDENTITY_INSERT Products OFF;
 

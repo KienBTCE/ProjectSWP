@@ -142,7 +142,7 @@
                                 <label class="form-label">Avatar</label>
                                 <div class="mb-3">
                                     <c:choose>
-                                        <c:when test="${not empty sessionScope.employee.getAvatar()}">
+                                        <c:when test="${!sessionScope.employee.getAvatar().equals('')}">
                                             <img id="avatarPreview" class="avatar-preview" src="assets/imgs/EmployeeAvatar/${sessionScope.employee.getAvatar()}" alt="Avatar">
                                         </c:when>
                                         <c:otherwise>

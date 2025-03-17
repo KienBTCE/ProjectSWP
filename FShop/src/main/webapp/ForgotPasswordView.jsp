@@ -97,7 +97,6 @@
     </head>
     <body>
         <div class="container">
-            <a href="CustomerLoginServlet" class="back-btn">&#8592;</a>
             <h2>Reset Password</h2>
             <p>Enter your registration email to reset your forgotten password</p>
             <form action="SendMailServlet" method="post">

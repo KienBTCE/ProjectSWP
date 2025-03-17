@@ -98,7 +98,8 @@
             fieldset{
                 display: flex;
                 flex-direction: column;
-            } .star-rating {
+            }
+            .star-rating {
                 display: flex;
                 align-items: center;
                 color: #ffcc00;
@@ -114,7 +115,7 @@
                 opacity: 0.7;
                 text-decoration: none;
             }
-               .star-rating {
+            .star-rating {
                 display: flex;
                 align-items: center;
                 color: #ffcc00;
@@ -180,12 +181,10 @@
 
                         <div class="show-product row col-md-10">
                             <!--===================================================-->
-                        <c:forEach var="i" begin="1" end="${numberRow}" step="1">
-
                             <div class="section-content">
-
+                                <div class="row">
                                 <c:forEach items="${dataMap.products}" var="p" varStatus="status">
-                                    <c:if test="${status.index >= (i * 4 - 4) && status.index < (i * 4)}">
+                                    <div class="col-md-3 mb-4"> 
                                         <a class="frame-represent" href="ProductDetailServlet?id=${p.getProductId()}">
                                             <img src="assets/imgs/Products/${p.getImage()}" width="150px" height="150px" alt="alt"/>
                                             <div class="star-rating">
@@ -200,15 +199,13 @@
                                                     </c:choose>
                                                 </c:forEach>
                                             </div>
-
                                             <h6>${p.getFullName()}</h6>
                                             <p>${p.getPriceFormatted()}</p>
                                         </a>
-                                    </c:if>
+                                    </div>
                                 </c:forEach>
-
                             </div>
-                        </c:forEach>
+                        </div>
                         <!--===================================================-->
                     </div>
                 </div>
