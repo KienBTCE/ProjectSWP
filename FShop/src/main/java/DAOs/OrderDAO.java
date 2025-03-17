@@ -120,7 +120,7 @@ public class OrderDAO {
 
     public void subtractQuantityAfterBuy(int productID, int quantity) {
         try {
-            PreparedStatement pr = connector.prepareStatement("Update Products set Quantity = quantity - ? where ProductID=?");
+            PreparedStatement pr = connector.prepareStatement("Update Products set Stock = Stock - ? where ProductID=?");
             pr.setInt(1, quantity);
             pr.setInt(2, productID);
             pr.executeUpdate();

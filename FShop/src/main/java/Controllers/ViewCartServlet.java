@@ -80,6 +80,11 @@ public class ViewCartServlet extends HttpServlet {
                     //System.out.println(cart.getFullName());
                     if (product.getStock() == 0 && product.getProductId() == cart.getProductID()) {
                         cart.setQuantity(product.getStock());
+                    } else if (product.getStock() != 0 && product.getProductId() == cart.getProductID()) {
+                        if (product.getStock() < cart.getQuantity()) {
+                            cart.setQuantity(product.getStock());
+                            c.updateProductQuantity(product.getProductId(), product.getStock(), cus.getId());
+                        }
                     }
                 }
             }
