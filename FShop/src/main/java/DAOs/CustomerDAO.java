@@ -193,18 +193,12 @@ public class CustomerDAO {
     public int addNewCustomer(Customer ctm) {
         try {
             PreparedStatement pr = connector.prepareStatement(
-                    "INSERT INTO Customers (FullName, Birthday, [Password], PhoneNumber, Email, Gender, CreatedDate, GoogleID, IsBlock, IsDeleted, Avatar) "
-                    + "VALUES (?, ?, ?, ?, ?, ?, GETDATE(), '', ?, ?, ?);"
+                    "INSERT INTO Customers (FullName, [Password], Email, CreatedDate, GoogleID, IsBlock, IsDeleted, Avatar) "
+                    + "VALUES (?, ?, ?, GETDATE(), '', 0, 0, '');"
             );
             pr.setString(1, ctm.getFullName());
-            pr.setString(2, ctm.getBirthday());
-            pr.setString(3, getMD5(ctm.getPassword()));
-            pr.setString(4, ctm.getPhoneNumber());
-            pr.setString(5, ctm.getEmail());
-            pr.setString(6, ctm.getGender());
-            pr.setInt(7, ctm.getIsBlock()); // Giá trị mặc định của IsBlock
-            pr.setInt(8, ctm.getIsDeleted()); // Giá trị mặc định của IsDeleted
-            pr.setString(9, ctm.getAvatar());
+            pr.setString(2, getMD5(ctm.getPassword()));
+            pr.setString(3, ctm.getEmail());
 
             int rs = pr.executeUpdate();
             return rs;
