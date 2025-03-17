@@ -77,10 +77,8 @@ public class RegisterServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        String fullName = request.getParameter("fullName");
-        String birthday = request.getParameter("birthday");
-        String gender = request.getParameter("gender");
-        String phoneNumber = request.getParameter("phoneNumber");
+        String fullName = request.getParameter("fullname");
+//        String phoneNumber = request.getParameter("phone");
         String email = request.getParameter("email");
         String password = request.getParameter("password");
 
@@ -95,7 +93,7 @@ public class RegisterServlet extends HttpServlet {
         // Generate OTP
         String otp = generateOTP();
         session.setAttribute("otp", otp);
-        session.setAttribute("registerCustomer", new Customer(0, fullName, password, birthday, gender, phoneNumber, email, "", 0, 0, ""));
+        session.setAttribute("registerCustomer", new Customer(0, fullName, password, "", "", "", email, "", 0, 0, ""));
 
         // Send OTP via email
         sendOTPEmail(email, otp, fullName);
