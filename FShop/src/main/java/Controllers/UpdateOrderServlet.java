@@ -78,38 +78,38 @@ public class UpdateOrderServlet extends HttpServlet {
             throws ServletException, IOException {
         try {
             String status = request.getParameter("update");
-        String orderID = request.getParameter("orderID");
-        OrderDAO oDAO = new OrderDAO();
+            String orderID = request.getParameter("orderID");
+            OrderDAO oDAO = new OrderDAO();
 
-        if (status != null && orderID != null) {
-            int orderIdInt = Integer.parseInt(orderID);
-            int orderStatus = Integer.parseInt(status);
-            oDAO.updateOrder(Integer.parseInt(orderID), Integer.parseInt(status));
-            // Retrieve customer details
-            Customer customer = oDAO.getCustomerByOrderId(orderIdInt);
-            if (customer == null || customer.getEmail() == null || customer.getEmail().isEmpty()) {
-                System.out.println("ERROR: Customer email is missing!");
-                return; // Không gửi email nếu email bị null
+            if (status != null && orderID != null) {
+                int orderIdInt = Integer.parseInt(orderID);
+                int orderStatus = Integer.parseInt(status);
+                oDAO.updateOrder(Integer.parseInt(orderID), Integer.parseInt(status));
+                // Retrieve customer details
+                Customer customer = oDAO.getCustomerByOrderId(orderIdInt);
+                if (customer == null || customer.getEmail() == null || customer.getEmail().isEmpty()) {
+                    System.out.println("ERROR: Customer email is missing!");
+                    return; // Không gửi email nếu email bị null
+                }
+
+                // Fetch order details
+                OrderDetailDAO odDAO = new OrderDetailDAO();
+                List<OrderDetail> orderItems = odDAO.getOrderDetail(orderID);
+                if (orderItems == null || orderItems.isEmpty()) {
+                    System.out.println("ERROR: Order items are empty!");
+                    return;
+                }
+
+                // Send order confirmation email
+                sendOrderConfirmationEmail(customer, orderID, orderStatus, orderItems);
+
+                // Redirect to order list view
+                response.sendRedirect(request.getContextPath() + "/ViewOrderListServlet");
             }
-
-            // Fetch order details
-            OrderDetailDAO odDAO = new OrderDetailDAO();
-            List<OrderDetail> orderItems = odDAO.getOrderDetail(orderID);
-            if (orderItems == null || orderItems.isEmpty()) {
-                System.out.println("ERROR: Order items are empty!");
-                return;
-            }
-
-            // Send order confirmation email
-            sendOrderConfirmationEmail(customer, orderID, orderStatus, orderItems);
-
-            // Redirect to order list view
-            response.sendRedirect(request.getContextPath() + "/ViewOrderListServlet");
-        } } catch (NumberFormatException e) {
-                System.out.println(e);
+        } catch (NumberFormatException e) {
+            System.out.println(e);
         }
-        
-        
+
     }
 
     private void sendOrderConfirmationEmail(Customer customer, String orderID, int orderStatus, List<OrderDetail> orderItems) {
@@ -167,6 +167,8 @@ public class UpdateOrderServlet extends HttpServlet {
                 return "Waiting For Delivery";
             case 4:
                 return "Delivered";
+            case 5:
+                return "Cancel";
             default:
                 return "Unknown Status";
         }

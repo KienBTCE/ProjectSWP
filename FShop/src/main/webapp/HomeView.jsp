@@ -121,9 +121,9 @@
                                             </c:otherwise>
                                         </c:choose>
                                     </c:forEach>
-                                                 </div>
-                                    <h6>${p.getFullName()}</h6>
-                                    <p>${p.getPriceFormatted()}</p>
+                                </div>
+                                <h6>${p.getFullName()}</h6>
+                                <p>${p.getPriceFormatted()}</p>
                             </a>
                         </c:if>
                     </c:forEach>
@@ -153,8 +153,8 @@
                                     </c:forEach>
                                 </div>
 
-                                    <h6>${p.getFullName()}</h6>
-                                    <p>${p.getPriceFormatted()}</p>
+                                <h6>${p.getFullName()}</h6>
+                                <p>${p.getPriceFormatted()}</p>
 
                             </a>
                         </c:if>
@@ -163,12 +163,12 @@
             </div>
 
             <div class="row">
-                <h4 class="title-content"><a href="Accessory">Accessories</a></h4>
+                <h4 class="title-content"><a href="Accessory Headphone">Headphone</a></h4>
                 <div class="gap-section section-content">
 
                     <c:set var="count" value="0" scope="page"></c:set>
                     <c:forEach items="${dataMap.products}" var="p" varStatus="status">
-                        <c:if test="${count < 5 and p.getCategoryId() == 9}">
+                        <c:if test="${count < 5 and p.getCategoryId() == 4}">
                             <c:set var="count" value="${count + 1}" scope="page"></c:set>
                             <a class="frame-represent" href="ProductDetailServlet?id=${p.getProductId()}">
                                 <img src="assets/imgs/Products/${p.getImage()}" width="150px" height="150px" alt="alt"/>
@@ -183,13 +183,77 @@
                                             </c:otherwise>
                                         </c:choose>
                                     </c:forEach>
-                                    <h6>${p.getFullName()}</h6>
-                                    <p>${p.getPriceFormatted()}</p>
+                                </div>
+                                <h6>${p.getFullName()}</h6>
+                                <p>${p.getPriceFormatted()}</p>
                             </a>
                         </c:if>
                     </c:forEach>
                 </div>
             </div>
+
+            <div class="row">
+                <h4 class="title-content"><a href="Accessory Charger">Charger</a></h4>
+                <div class="gap-section section-content">
+
+                    <c:set var="count" value="0" scope="page"></c:set>
+                    <c:forEach items="${dataMap.products}" var="p" varStatus="status">
+                        <c:if test="${count < 5 and p.getCategoryId() == 5}">
+                            <c:set var="count" value="${count + 1}" scope="page"></c:set>
+                            <a class="frame-represent" href="ProductDetailServlet?id=${p.getProductId()}">
+                                <img src="assets/imgs/Products/${p.getImage()}" width="150px" height="150px" alt="alt"/>
+                                <div class="star-rating">
+                                    <c:forEach var="i" begin="1" end="5">
+                                        <c:choose>
+                                            <c:when test="${dataMap.stars != null and dataMap.stars.size() > 0 and i <= dataMap.stars[status.index].getStar()}">
+                                                <i class="fa fa-star"></i>
+                                            </c:when>
+                                            <c:otherwise>
+                                                <i class="fa fa-star text-muted"></i>
+                                            </c:otherwise>
+                                        </c:choose>
+                                    </c:forEach>
+                                </div>
+                                <h6>${p.getFullName()}</h6>
+                                <p>${p.getPriceFormatted()}</p>
+                            </a>
+                        </c:if>
+                    </c:forEach>
+                </div>
+            </div>
+
+            <div class="row">
+                <h4 class="title-content"><a href="Accessory Cable">Cable</a></h4>
+                <div class="gap-section section-content">
+
+                    <c:set var="count" value="0" scope="page"></c:set>
+                    <c:forEach items="${dataMap.products}" var="p" varStatus="status">
+                        <c:if test="${count < 5 and p.getCategoryId() == 6}">
+                            <c:set var="count" value="${count + 1}" scope="page"></c:set>
+                            <a class="frame-represent" href="ProductDetailServlet?id=${p.getProductId()}">
+                                <img src="assets/imgs/Products/${p.getImage()}" width="150px" height="150px" alt="alt"/>
+                                <div class="star-rating">
+                                    <c:forEach var="i" begin="1" end="5">
+                                        <c:choose>
+                                            <c:when test="${dataMap.stars != null and dataMap.stars.size() > 0 and i <= dataMap.stars[status.index].getStar()}">
+                                                <i class="fa fa-star"></i>
+                                            </c:when>
+                                            <c:otherwise>
+                                                <i class="fa fa-star text-muted"></i>
+                                            </c:otherwise>
+                                        </c:choose>
+                                    </c:forEach>
+                                </div>
+                                <h6>${p.getFullName()}</h6>
+                                <p>${p.getPriceFormatted()}</p>
+                            </a>
+                        </c:if>
+                    </c:forEach>
+                </div>
+            </div>
+
+
+
             <!--Commit 15694d5
             --><div class="row">
                 <h5 class="title-content">Follow us on Instagram for News, Offers & More</h5>
