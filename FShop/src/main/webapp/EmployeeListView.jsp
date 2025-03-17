@@ -154,7 +154,7 @@
         <jsp:include page="SidebarDashboard.jsp"></jsp:include>
             <div class="content">
             <jsp:include page="HeaderDashboard.jsp"></jsp:include>
-                <br><!-- comment -->
+                <br>
                 <div class="table-navigate">
                     <form action="SearchEmployee" method="GET" class="search-form">
                         <input type="text" name="query" value="${searchQuery}" placeholder="Search by Name..." required>

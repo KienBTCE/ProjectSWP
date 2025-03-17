@@ -54,7 +54,7 @@ public class AddEmployeeServlet extends HttpServlet {
             
             // **Kiểm tra email đã tồn tại chưa**
             if (empDAO.isEmailExists(email)) {
-                request.setAttribute("errorMsg", "Email đã tồn tại! Vui lòng chọn email khác.");
+                request.setAttribute("errorMsg", "Email already exists! Please choose another email.");
                 request.setAttribute("txtRoleId", roleId);
                 request.setAttribute("txtName", name);
                 request.setAttribute("txtPass", password);
@@ -69,7 +69,7 @@ public class AddEmployeeServlet extends HttpServlet {
 
             // **2. Kiểm tra mật khẩu có hợp lệ không**
             if (!isValidPassword(password)) {
-                request.setAttribute("errorMsg", "Mật khẩu phải có ít nhất 8 ký tự, bao gồm 1 chữ hoa và 1 ký tự đặc biệt!");
+                request.setAttribute("errorMsg", "Password must be at least 8 characters, including 1 uppercase letter and 1 special character!");
                 request.setAttribute("txtRoleId", roleId);
                 request.setAttribute("txtName", name);
                 request.setAttribute("txtPass", password);

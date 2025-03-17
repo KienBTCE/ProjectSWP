@@ -119,7 +119,7 @@
                                 <div class="form-container">
                                     <div class="mb-3 d-flex">
                                         <label class="form-label value">Employee ID</label>
-                                        <input type="text" class="form-control" name="txtEmployeeId" value="${txtEmployeeId != null ? txtEmployeeId : employee.employeeId}" readonly />
+                                        <input type="text" class="form-control" name="txtEmployeeId" value="${txtEmployeeId != null ? txtEmployeeId : employee.employeeId}" readonly/>
                                     </div>
                                     <div class="mb-3 d-flex">
                                         <label class="form-label value" value>Role ID</label>
@@ -144,7 +144,7 @@
 
                                     <div class="mb-3 d-flex">
                                         <label class="form-label value">Birthday</label>
-                                        <input type="date" class="form-control" name="txtBirthday" value="${txtBirthday != null ? txtBirthday : employee.birthday}" required />
+                                        <input type="date" class="form-control" name="txtBirthday" value="${txtBirthday != null ? txtBirthday : employee.birthday}">
                                     </div>
 
                                     <div class="mb-3 d-flex">
@@ -154,7 +154,7 @@
 
                                     <div class="mb-3 d-flex">
                                         <label class="form-label value">Email</label>
-                                        <input type="email" class="form-control" name="txtEmail" value="${txtEmail != null ? txtEmail : employee.email}" required />
+                                        <input type="text" class="form-control" name="txtEmail" value="${txtEmail != null ? txtEmail : employee.email}" readonly/>
                                         <input type="hidden" name="currentEmail" value="${employee.email}" />
                                     </div>
 
@@ -168,7 +168,7 @@
 
                                     <div class="mb-3 d-flex">
                                         <label class="form-label value">Created Date</label>
-                                        <input type="date" class="form-control" name="txtCreatedDate" value="${txtCreatedDate != null ? txtCreatedDate : employee.createdDate}" readonly />
+                                        <input type="date" class="form-control" name="txtCreatedDate" value="${txtCreatedDate != null ? txtCreatedDate : employee.createdDate}" readonly/>
                                     </div>
 
                                     <div class="mb-3 d-flex">

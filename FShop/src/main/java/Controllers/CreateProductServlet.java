@@ -15,7 +15,6 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.Part;
 import java.io.File;
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.nio.file.Paths;
 import java.util.List;
 
@@ -77,7 +76,7 @@ public class CreateProductServlet extends HttpServlet {
             response.sendRedirect("ProductListServlet?success=Product created successfully");
         } else {
             request.setAttribute("errorMsg", "Product creation failed");
-            request.getRequestDispatcher("createProduct.jsp").forward(request, response);
+            request.getRequestDispatcher("CreateProductView.jsp").forward(request, response);
         }
 
     }
