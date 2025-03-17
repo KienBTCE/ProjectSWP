@@ -175,7 +175,7 @@ public class CustomerDAO {
         }
         return 0;
     }
-    
+
     public int checkGoogleEmailExisted(String email) {
         try {
             PreparedStatement pr = connector.prepareStatement("SELECT * FROM Customers WHERE Email = ? AND IsDeleted = 0;");
@@ -389,6 +389,45 @@ public class CustomerDAO {
 
         return list;
 
+    }
+
+    public Customer getCustomerByEmail(String email) {
+        Customer customer = null;
+        String sql = "SELECT * FROM Customers WHERE LOWER(Email) = LOWER(?)";
+
+        try ( PreparedStatement ps = connector.prepareStatement(sql)) {
+
+            if (connector == null) {
+                System.out.println("Database connection failed!");
+                return null;
+            }
+
+            ps.setString(1, email.trim());
+            ResultSet rs = ps.executeQuery();
+
+            if (rs.next()) {
+                System.out.println("User found: " + rs.getString("Email")); // Debugging log
+                customer = new Customer(
+                        rs.getInt("CustomerID"),
+                        rs.getString("FullName"),
+                        rs.getString("Password"),
+                        rs.getString("Birthday"),
+                        rs.getString("Gender"),
+                        rs.getString("PhoneNumber"),
+                        rs.getString("Email"),
+                        rs.getString("CreatedDate"),
+                        rs.getString("GoogleID"),
+                        rs.getInt("IsBlock"),
+                        rs.getInt("IsDeleted"),
+                        rs.getString("Avatar")
+                );
+            } else {
+                System.out.println("No user found for email: " + email);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return customer;
     }
 
     public static void main(String[] args) {

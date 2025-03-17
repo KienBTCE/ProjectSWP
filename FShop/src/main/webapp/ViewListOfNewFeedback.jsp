@@ -73,13 +73,13 @@
              <jsp:include page="SidebarDashboard.jsp"></jsp:include>
         </div>
 
-        <!-- Header được cố định ở góc phải -->
-        <div class="header-container">
-            <jsp:include page="HeaderDashboard.jsp"></jsp:include>
-            </div>
+        
+     
+            
+            
 
             <div class="container-feedback">
-                <h2 class="text-center mb-4">Customer Feedback</h2>
+                <h2 class="text-center mb-4"><jsp:include page="HeaderDashboard.jsp"></jsp:include></h2>
                 <div class="card card-shadow p-4">
                     <div class="table-responsive">
                         <table class="table table-hover align-middle">

@@ -7,6 +7,7 @@ package Controllers;
 import DAOs.ProductDAO;
 import DAOs.ProductRatingDAO;
 import Models.Product;
+import Models.ProductRating;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -52,29 +53,25 @@ public class SearchProductServlet extends HttpServlet {
         List<Product> products = pd.searchProductByName(request.getParameter("name"));
 
         if (request.getParameter("name") != null) {
+            ArrayList<String> filters = new ArrayList<>();
             try {
-                int numberRow = 0;
-                if (products != null) {
-                    numberRow = products.size() / 4;
-                    if (products.size() % 4 != 0) {
-                        numberRow++;
-                    }
-                }
                 ProductRatingDAO prDAO = new ProductRatingDAO();
-                ArrayList<String> stars = new ArrayList<>();
+                ArrayList<ProductRating> stars = new ArrayList<>();
                 for (Product p : products) {
-                    float star = prDAO.getStarAverage(p.getProductId());
+                    ProductRating star = prDAO.getStarAVG(p.getProductId());
+                    System.out.println("STAR LAPTOP: ________________________________________________________");
                     System.out.println(star);
-                    stars.add(String.valueOf(star));
+
+                    stars.add(star);
 
                 }
-
-                ArrayList<String> brands = pd.getAllBrandByCategory("Smartphone");
-                Map<String, Object> dataMap = new HashMap<>();
+                Map<Object, Object> dataMap = new HashMap<>();
+                dataMap.put("stars", stars);
+                dataMap.put("products", products);
                 request.setAttribute("dataMap", dataMap);
                 request.setAttribute("products", products);
-                request.setAttribute("numberRow", numberRow);
-                request.getRequestDispatcher("ProductListView.jsp").forward(request, response);
+                request.setAttribute("filters", filters);
+                request.getRequestDispatcher("SearchProductListView.jsp").forward(request, response);
             } catch (NullPointerException e) {
                 System.out.println(e);
             }

@@ -1,8 +1,10 @@
 package Controllers;
 
 import DAOs.AttributeDAO;
+import DAOs.CategoryDAO;
 import DAOs.ProductDAO;
 import Models.AttributeDetail;
+import Models.Category;
 import Models.Product;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -67,12 +69,22 @@ public class ProductListServlet extends HttpServlet {
         }
 
         ProductDAO pr = new ProductDAO();
-        ArrayList<Product> products = null;
+        CategoryDAO catDAO = new CategoryDAO();
+        ArrayList<Product> products = new ArrayList<>();
 
+        // Lấy danh sách danh mục để hiển thị trong dropdown
+        List<Category> categories = catDAO.getAllCategories();
+        request.setAttribute("categories", categories);
+
+        // Lấy tham số từ request
         String detailID = request.getParameter("id");
         String deleteID = request.getParameter("delete");
         String restoreID = request.getParameter("restore");
         String keyword = request.getParameter("txt");
+        String selectedCategoryID = request.getParameter("categoryId");
+        String filterNewImport = request.getParameter("new_import"); // Lọc sản phẩm mới nhập
+
+        // Xử lý xóa sản phẩm
         if (deleteID != null) {
             int id = Integer.parseInt(deleteID);
             Product product = pr.getProductByID(id);
@@ -85,6 +97,8 @@ public class ProductListServlet extends HttpServlet {
             response.sendRedirect("ProductListServlet");
             return;
         }
+
+        // Xử lý khôi phục sản phẩm
         if (restoreID != null) {
             int id = Integer.parseInt(restoreID);
             Product product = pr.getProductByID(id);
@@ -98,29 +112,42 @@ public class ProductListServlet extends HttpServlet {
             return;
         }
 
+        // Xử lý xem chi tiết sản phẩm
         if (detailID != null) {
             int id = Integer.parseInt(detailID);
             Product product = pr.getProductByID(id);
-            // Lấy danh sách attribute và gán vào product
             AttributeDAO ad = new AttributeDAO();
             List<AttributeDetail> attributes = ad.getAttributesByProductID(id);
             product.setAttributeDetails(attributes);
             request.setAttribute("product", product);
             request.getRequestDispatcher("ProductDetailManagerView.jsp").forward(request, response);
-            return; // Dừng xử lý để không tiếp tục hiển thị danh sách sản phẩm
+            return;
         }
 
-        if (keyword != null && !keyword.trim().isEmpty()) {
+        // Xử lý lọc sản phẩm theo danh mục
+        if (selectedCategoryID != null && !selectedCategoryID.isEmpty()) {
+            try {
+                int categoryID = Integer.parseInt(selectedCategoryID);
+                products = (ArrayList<Product>) pr.getProductsByCategory(categoryID);
+                System.out.println("Số sản phẩm tìm thấy theo danh mục: " + products.size());
+            } catch (NumberFormatException e) {
+                System.out.println("Lỗi: categoryID không hợp lệ - " + selectedCategoryID);
+            }
+        } else if (keyword != null && !keyword.trim().isEmpty()) {
+            // Tìm kiếm theo tên sản phẩm
             products = (ArrayList<Product>) pr.searchProductByName(keyword);
         } else {
+            // Nếu không có bộ lọc nào, lấy toàn bộ danh sách sản phẩm
             products = pr.getProductList();
         }
-        try {
-            request.setAttribute("products", products);
-            request.getRequestDispatcher("ManageProductView.jsp").forward(request, response);
-        } catch (NullPointerException e) {
-            System.out.println(e);
+// Xử lý lọc sản phẩm mới nhập
+        if ("true".equals(filterNewImport)) {
+            products = (ArrayList<Product>) pr.getNewImportedProducts();
+            System.out.println("Số sản phẩm mới nhập: " + products.size());
         }
+        request.setAttribute("products", products);
+        request.getRequestDispatcher("ManageProductView.jsp").forward(request, response);
+
     }
 
     /**

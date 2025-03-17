@@ -43,7 +43,7 @@
             /* Form container */
             .form-container {
                 max-width: 600px;
-                margin: 50px auto;
+                margin: 100px auto;
                 padding: 20px;
                 background-color: #f9f9f9;
                 border-radius: 8px;
@@ -83,11 +83,24 @@
                 border-radius: 5px;
                 margin-top: 20px;
             }
+            .fixed-header {
+                position: fixed;
+                top: 0;
+                left: 250px; /* Điều chỉnh để tránh che sidebar */
+                width: calc(100% - 250px); /* Chiều rộng trừ đi sidebar */
+                /*background-color: white;*/
+                z-index: 1050;
+                padding: 10px 20px;
+
+            }
+
         </style>
         <title>Delete Order Page</title>
     </head>
     <body>
-        <jsp:include page="sidebarOrderManager.jsp" />
+
+        <jsp:include page="SidebarDashboard.jsp" />
+        <div class="fixed-header"><jsp:include page="HeaderDashboard.jsp"></jsp:include></div>
 
         <!-- Form container -->
         <div class="form-container">
@@ -137,12 +150,12 @@
                 const timeframe = document.getElementById("delete").value;
                 // Gọi AJAX để lấy danh sách đơn hàng (giả sử servlet PreviewDeleteOrderServlet trả về HTML)
                 fetch("DeleteOrderServlet?delete=" + timeframe)
-                    .then(response => response.text())
-                    .then(data => {
-                        document.getElementById("orderList").innerHTML = data;
-                        document.getElementById("previewModal").style.display = "flex";
-                    })
-                    .catch(error => console.error("Error fetching preview orders:", error));
+                        .then(response => response.text())
+                        .then(data => {
+                            document.getElementById("orderList").innerHTML = data;
+                            document.getElementById("previewModal").style.display = "flex";
+                        })
+                        .catch(error => console.error("Error fetching preview orders:", error));
             }
 
             // Khi người dùng nhấn "Yes, Delete", gửi yêu cầu xóa đơn hàng
@@ -156,18 +169,18 @@
                     },
                     body: "delete=" + encodeURIComponent(timeframe)
                 })
-                .then(response => response.text())
-                .then(data => {
-                    // Ẩn modal preview
-                    document.getElementById("previewModal").style.display = "none";
-                    // Hiển thị modal thành công
-                    document.getElementById("successModal").style.display = "flex";
-                    // Chờ 3 giây rồi chuyển hướng về trang chính (update URL theo thực tế)
-                    setTimeout(() => {
-                        window.location.href = "ViewOrderListServlet";
-                    }, 2000);
-                })
-                .catch(error => console.error("Error deleting orders:", error));
+                        .then(response => response.text())
+                        .then(data => {
+                            // Ẩn modal preview
+                            document.getElementById("previewModal").style.display = "none";
+                            // Hiển thị modal thành công
+                            document.getElementById("successModal").style.display = "flex";
+                            // Chờ 3 giây rồi chuyển hướng về trang chính (update URL theo thực tế)
+                            setTimeout(() => {
+                                window.location.href = "ViewOrderListServlet";
+                            }, 2000);
+                        })
+                        .catch(error => console.error("Error deleting orders:", error));
             };
 
             // Khi người dùng nhấn Cancel trong modal preview

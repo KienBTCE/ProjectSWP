@@ -101,10 +101,13 @@
             </c:if>
 
             <c:if test="${sessionScope.employee.getRoleId() == 3}">
-                <h6><a href="#">Order Management</a></h6>
-                <a href="ViewListNewFeedbackServlet">Feedback</a>
-                <a href="ViewOrderListServlet">Order</a>
-                <a href="DeleteOrder.jsp">Delete</a>
+                <h6><a href="#"> <i class="fas fa-box-open"></i>Order Management</a></h6>
+                <a href="ViewListNewFeedbackServlet"><i class="bi bi-chat-left-text"></i>Feedback</a>
+                <a href="ViewOrderListServlet">
+                    <i class="fas fa-box-open"></i>Order</a>
+                <a href="CustomerListServlet"> <i class="bi bi-person"></i>
+                    Customer</a>
+                <a href="DeleteOrder.jsp"><i class="bi bi-trash"></i> Delete</a>
             </c:if>
             <c:if test="${sessionScope.employee.getRoleId() == 4}">
                 <h6><a href="Warehouse">Warehouse Management</a></h6>
@@ -116,7 +119,7 @@
                     <button type="submit">Export to Excel</button>
                 </form>
             </c:if>
-            <a style="margin-top: auto; color: red;" href="" onclick="confirmLogout()"><i class="bi bi-box-arrow-right"></i> Logout</a>
+            <a style="margin-top: auto; color: red;" href="Logout" onclick="return confirm('Are you sure to logout?')"><i class="bi bi-box-arrow-right"></i> Logout</a>
         </div>
         <script>
 

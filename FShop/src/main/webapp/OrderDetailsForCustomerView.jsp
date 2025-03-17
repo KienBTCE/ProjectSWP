@@ -90,8 +90,9 @@
                             <c:set var="subtotal" value="0"></c:set>
                             <c:forEach items="${sessionScope.orderDetail}" var="od">
                                 <tr style="border-bottom: 1px solid #f2f2f2;">
-                                    <td style="padding: 12px 8px;"><img src="./assets/imgs/Products/${od.getImage()}" alt="" style="width: 85px; border-radius: 8px;"></td>
-                                    <td style="padding: 12px 8px; font-size: 15px;">${od.getProductName()}</td>
+                                    <td style="padding: 12px 8px;"> <a href="ProductDetailServlet?id=${od.getProductID()}" target="target"><img src="./assets/imgs/Products/${od.getImage()}" alt="" style="width: 85px; border-radius: 8px;">  </a></td>
+                                    <td style="padding: 12px 8px; font-size: 15px;"><a href="ProductDetailServlet?id=${od.getProductID()}" target="target">${od.getProductName()}</a></td>
+
                                     <td style="padding: 12px 8px; text-align: right; font-weight: 500; color: #444;">
                                         <fmt:formatNumber value="${od.getPrice()}" type="currency"/>
                                     </td>
@@ -177,7 +178,7 @@
             <c:if test="${sessionScope.order.getStatus() < 4}">
                 <c:set var="status" value="${sessionScope.order.getStatus() - 1}"></c:set>
             </c:if>
-             <c:if test="${sessionScope.order.getStatus() == 4}">
+            <c:if test="${sessionScope.order.getStatus() == 4}">
                 <c:set var="status" value="${sessionScope.order.getStatus()}"></c:set>
             </c:if>
         </main>

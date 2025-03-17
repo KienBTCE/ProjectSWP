@@ -120,7 +120,7 @@
                                 <div id="brandFilter" style="display: none;">
                                     <c:forEach items="${brands}" var="b">
                                         <label><input type="checkbox" name="brand" value="${b}" <c:if test="${fn:contains(filters, b)}">checked</c:if> >${b}</label>
-                                    </c:forEach>
+                                        </c:forEach>
                                 </div>
                             </fieldset>
                             <fieldset>
@@ -131,21 +131,19 @@
                                     <label><input type="checkbox" name="price" value="20-25" <c:if test="${fn:contains(filters, '20-25')}">checked</c:if> >20 - 25 million</label>
                                     <label><input type="checkbox" name="price" value="25-30" <c:if test="${fn:contains(filters, '25-30')}">checked</c:if> >25 - 30 million</label>
                                     <label><input type="checkbox" name="price" value="30-over" <c:if test="${fn:contains(filters, '30-over')}">checked</c:if> >Over 30 million</label>
-                                </div>
-                            </fieldset>
-                        </form>
+                                    </div>
+                                </fieldset>
+                            </form>
 
 
-                    </div>
+                        </div>
 
-                    <div class="show-product row col-md-10">
-                        <!--===================================================-->
-                        <c:forEach var="i" begin="1" end="${numberRow}" step="1">
-
+                        <div class="show-product row col-md-10">
+                            <!--===================================================-->
                             <div class="section-content">
-
-                                <c:forEach items="${products}" var="p" varStatus="status">
-                                    <c:if test="${status.index >= (i * 4 - 4) && status.index < (i * 4)}">
+                                <div class="row">
+                                <c:forEach items="${products}" var="p">
+                                    <div class="col-md-3 mb-4">
                                         <a class="frame-represent" href="ProductDetailServlet?id=${p.getProductId()}">
                                             <img src="assets/imgs/Products/${p.getImage()}" width="150px" height="150px" alt="alt"/>
                                             <div class="star-rating">
@@ -159,11 +157,10 @@
                                             <h6>${p.getFullName()}</h6>
                                             <p>${p.getPriceFormatted()}</p>
                                         </a>
-                                    </c:if>
+                                    </div>
                                 </c:forEach>
-
                             </div>
-                        </c:forEach>
+                        </div>
                         <!--===================================================-->
                     </div>
                 </div>
