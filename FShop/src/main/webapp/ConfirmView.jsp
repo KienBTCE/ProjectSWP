@@ -24,7 +24,7 @@
         <title>Checkout</title>
         <style>
 
-
+            
         </style>
     </head>
 
@@ -203,13 +203,13 @@
             <div style="background: white; padding: 20px; border-radius: 10px; width: 400px; text-align: left;">
                 <h2>Choose your voucher</h2>
 
-                <!--                 Nhập mã voucher 
-                                <div style="display: flex; gap: 10px; margin-bottom: 15px;">
-                                    <input type="text" id="voucherCode" placeholder="Shopee voucher code" style="flex: 1; padding: 8px; border: 1px solid #ccc;">
-                                    <button id="applyVoucher" style="padding: 8px 12px; background-color: orange; color: white; border: none; cursor: pointer;">Áp dụng</button>
-                                </div>-->
+                
+<!--                <div style="display: flex; gap: 10px; margin-bottom: 15px;">
+                    <input type="text" id="voucherCode" placeholder="Shopee voucher code" style="flex: 1; padding: 8px; border: 1px solid #ccc;">
+                    <button id="applyVoucher" style="padding: 8px 12px; background-color: orange; color: white; border: none; cursor: pointer;">Áp dụng</button>
+                </div>-->
 
-                <!-- Danh sách voucher -->
+           
                 <div style="border-top: 1px solid #ddd; padding-top: 10px;">
                     <div style="padding: 10px; border-bottom: 1px solid #eee;">
                         <input type="radio" name="voucher" value="FREESHIP_XTRA" data-valid="true">
@@ -223,6 +223,42 @@
                     </div>
 
                 </div>
+<!--
+                <div class="bodyyyyyy">
+
+                    <div class="voucher">
+                        <div class="left">
+                            <h2><img class="logo" src="./assets/imgs/HeaderImgs/Vector-Header-Logo.svg" alt="Logo"> GIFT VOUCHER</h2>
+                            <p>Company slogan will be here</p>
+                            <div class="terms">
+                                <strong>CONDITIONS</strong>
+                                <p>Some placeholder text for terms and conditions.</p>
+                            </div>
+                        </div>
+                        <div class="right">
+                            500$ VALUE
+                        </div>
+                        <div class="quatity">
+                            X5
+                        </div>
+                    </div>
+                    <div class="voucher">
+                        <div class="left">
+                            <h2><img class="logo" src="./assets/imgs/HeaderImgs/Vector-Header-Logo.svg" alt="Logo"> GIFT VOUCHER</h2>
+                            <p>Company slogan will be here</p>
+                            <div class="terms">
+                                <strong>CONDITIONS</strong>
+                                <p>Some placeholder text for terms and conditions.</p>
+                            </div>
+                        </div>
+                        <div class="right">
+                            500$ VALUE
+                        </div>
+                        <div class="quatity">
+                            X5
+                        </div>
+                    </div>
+                </div>-->
 
                 <!-- Nút xác nhận -->
                 <div style="margin-top: 10px; display: flex; justify-content: right; column-gap: 10px">

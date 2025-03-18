@@ -400,16 +400,17 @@ VALUES
 (2, 2, 20, 28000000),
 (2, 3, 15, 18000000);
 
--- Insert data into Vouchers table
-INSERT INTO Vouchers (VoucherCode, VoucherType, StartDate, DiscountValue, MinOrderValue, [Status], [Description], UsedCount, MaxDiscountAmount)
+INSERT INTO Vouchers (VoucherCode, VoucherValue, VoucherType, StartDate, EndDate, UsedCount, MaxUsedCount, MaxDiscountAmount, MinOrderValue, Status, [Description])
 VALUES 
-('DISCOUNT10', 1, '2025-03-01', 0.10, 100000, 1, N'Get 10% off on orders from 100k, max 50k discount', 0, 50000), -- 10% off, max 50k
-('VIP20', 1, '2025-03-01', 0.20, 200000, 1, N'Get 20% off on orders from 200k, max 100k discount', 0, 100000), -- 20% off, max 100k
-('FIX50K', 2, '2025-03-01', 50000, 300000, 1, N'Get 50k off for orders from 300k', 0, NULL); -- Fixed 50k discount
+('DISCOUNT10', 10, 1, '2025-03-01', '2025-03-31', 0, 100, 50000, 200000, 1, N'10% discount up to 50,000 VND for orders from 200,000 VND'),
+('FREESHIP', 30000, 0, '2025-03-05', '2025-04-05', 0, 500, NULL, 150000, 1, N'30,000 VND off shipping fee for orders from 150,000 VND'),
+('VIP50', 50000, 0, '2025-03-10', '2025-04-10', 0, 50, NULL, 500000, 1, N'50,000 VND discount for orders from 500,000 VND'),
+('FLASHSALE', 20, 1, '2025-03-15', '2025-03-20', 0, 200, 70000, 300000, 1, N'20% discount up to 70,000 VND for orders from 300,000 VND'),
+('NEWUSER', 50000, 0, '2025-03-01', '2025-12-31', 0, NULL, NULL, 100000, 1, N'50,000 VND discount for new customers on orders from 100,000 VND');
 
 -- Assign vouchers to Customer with ID = 1
-INSERT INTO CustomerVoucher (CustomerID, VoucherID)
+INSERT INTO CustomerVoucher (CustomerID, VoucherID, ExpirationDate, Quantity)
 VALUES 
-(1, 1),
-(1, 2),
-(1, 3);
+(1, 1, '2026-01-10', 1),
+(1, 2,'2026-01-10', 1),	
+(1, 3, '2026-01-10', 1);
