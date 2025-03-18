@@ -730,10 +730,12 @@
                                     <label for="quantity" class="me-2 fw-bold">Quantity:</label>
                                     <div class="quantity-controls">
                                         <button type="button" onclick="decreaseQuantity()">-</button>
-                                        <input type="number" id="quantity" name="quantity" value="1" min="1" max="${product.stock}">
+                                        <input type="number" id="quantity" name="quantity" value="1" min="1" max="${product.getStock()}" oninput="validateQuantity()">
                                         <button type="button" onclick="increaseQuantity()">+</button>
                                     </div>
                                 </div>
+                                <p id="quantityWarning" class="text-danger" style="display: none;">Quantity exceeds stock limit!</p>
+
 
                                 <!-- Action Buttons -->
                                 <div class="action-buttons">
@@ -877,18 +879,16 @@
                                         mainImg.src = img.src;
                                         img.src = tempSrc;
                                     }
-
-                                    // Increase/decrease quantity
                                     function increaseQuantity() {
                                         const quantityInput = document.getElementById('quantity');
                                         const maxQuantity = parseInt(quantityInput.max);
                                         let currentVal = parseInt(quantityInput.value);
                                         if (currentVal < maxQuantity) {
                                             quantityInput.value = currentVal + 1;
+                                        } else {
+                                            showWarning(true);
                                         }
-                                        // Sync with hidden inputs
-                                        document.getElementById("quantityInputHidden").value = quantityInput.value;
-                                        document.getElementById("quantityInputHiddenBuyNow").value = quantityInput.value;
+                                        syncHiddenInputs();
                                     }
 
                                     function decreaseQuantity() {
@@ -896,11 +896,36 @@
                                         let currentVal = parseInt(quantityInput.value);
                                         if (currentVal > 1) {
                                             quantityInput.value = currentVal - 1;
+                                            showWarning(false);
                                         }
-                                        // Sync with hidden inputs
-                                        document.getElementById("quantityInputHidden").value = quantityInput.value;
-                                        document.getElementById("quantityInputHiddenBuyNow").value = quantityInput.value;
+                                        syncHiddenInputs();
                                     }
+
+                                    function validateQuantity() {
+                                        const quantityInput = document.getElementById('quantity');
+                                        const maxQuantity = parseInt(quantityInput.max);
+                                        let currentVal = parseInt(quantityInput.value);
+
+                                        if (isNaN(currentVal) || currentVal < 1) {
+                                            quantityInput.value = 1;
+                                        } else if (currentVal > maxQuantity) {
+                                            quantityInput.value = maxQuantity;
+                                            showWarning(true);
+                                        } else {
+                                            showWarning(false);
+                                        }
+                                        syncHiddenInputs();
+                                    }
+
+                                    function syncHiddenInputs() {
+                                        document.getElementById("quantityInputHidden").value = document.getElementById("quantity").value;
+                                        document.getElementById("quantityInputHiddenBuyNow").value = document.getElementById("quantity").value;
+                                    }
+
+                                    function showWarning(show) {
+                                        document.getElementById("quantityWarning").style.display = show ? "block" : "none";
+                                    }
+
 
                                     // Close popup
                                     function closePopup() {
