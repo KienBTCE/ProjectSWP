@@ -141,7 +141,7 @@
                                 <form id="importSupplierForm" method="POST" action="CreateSupplier">
                                     <div class="mb-3">
                                         <label for="taxId" class="form-label">Tax ID</label>
-                                        <input name="taxNumber" type="number" class="form-control" id="taxId" required>
+                                        <input name="taxNumber" type="text" class="form-control" id="taxId" required minlength="13" maxlength="13" title="Tax ID must have 13 numbers">
                                     </div>
                                     <div class="mb-3">
                                         <label for="companyName" class="form-label">Company Name</label>
@@ -152,8 +152,8 @@
                                         <input name="email" type="email" class="form-control" id="email" required>
                                     </div>
                                     <div class="mb-3">
-                                        <label for="phoneNumber" class="form-label">Phone Number</label>
-                                        <input name="phone" type="number" class="form-control" id="phoneNumber" required>
+                                        <label for="phoneNumber" class="form-label" require>Phone Number</label>
+                                        <input name="phone" type="text" class="form-control" id="phoneNumber" required minlength="10" maxlength="10" title="Phone number must have 10 numbers">
                                     </div>
                                     <div class="mb-3">
                                         <label for="address" class="form-label">Address</label>

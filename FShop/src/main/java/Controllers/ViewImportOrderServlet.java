@@ -6,11 +6,9 @@ package Controllers;
 
 import DAOs.EmployeeDAO;
 import DAOs.ImportOrderDAO;
-import DAOs.ProductDAO;
 import DAOs.SupplierDAO;
 import Models.ImportOrder;
 import java.io.IOException;
-import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
