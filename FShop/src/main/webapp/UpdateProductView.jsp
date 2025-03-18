@@ -50,6 +50,14 @@
                                 <input type="hidden" name="categoryName" value="${product.categoryName}" />
                             </div>
 
+                            <div class="mb-3">
+                                <label class="form-label">Brand</label>
+                                <select class="form-select" name="brandName">
+                                    <c:forEach var="brand" items="${brands}">
+                                        <option value="${brand}" ${brand == product.brandName ? 'selected' : ''}>${brand}</option>
+                                    </c:forEach>
+                                </select>
+                            </div>
                             <!-- Full Name -->
                             <div class="mb-3">
                                 <label class="form-label">Full Name</label>
