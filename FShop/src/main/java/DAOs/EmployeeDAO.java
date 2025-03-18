@@ -12,9 +12,6 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
-import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 
 /**
@@ -237,7 +234,7 @@ public class EmployeeDAO {
             pr.setString(1, email);
             ResultSet rs = pr.executeQuery();
             if (rs.next()) {
-                return rs.getInt(1) > 0; // Trả về true nếu có ít nhất 1 email trùng
+                return rs.getInt(1) > 0;
             }
         } catch (SQLException e) {
             System.out.println(e);

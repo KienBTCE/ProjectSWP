@@ -20,6 +20,7 @@
             .fixed-header {
                 position: fixed;
                 width: 82%;
+                margin-top: -10px;
                 margin-bottom: 500px;
             }
 
@@ -245,7 +246,7 @@
             </c:forEach>
 
             var currentPage = 0;
-            var itemsPerPage = 3;
+            var itemsPerPage = 4;
 
             function updateChart() {
                 var start = currentPage * itemsPerPage;
@@ -301,7 +302,7 @@
             stockQuantitiesPhone.push('${item.stockQuantity}');
             </c:forEach>
             var currentPagePhone = 0;
-            var itemsPerPagePhone = 3;
+            var itemsPerPagePhone = 4;
             function updatePhoneChart() {
                 var start = currentPagePhone * itemsPerPagePhone;
                 var end = start + itemsPerPagePhone;
