@@ -262,12 +262,12 @@
                 <table class="table table-hover">
                     <thead>
                         <tr>
-                            <th>Product ID</th>
+                            <th>ID</th>
                             <th>Category</th>
                             <th>Brand</th>
-                            <th>Product Name</th>
+                            <th>Name</th>
                             <th>Price</th>
-                            <th>Quantity</th>
+                            <th>Stock</th>
                             <th>Status</th>
                             <th>Action</th>
                         </tr>
@@ -280,7 +280,7 @@
                                 <td>${s.getBrandName()}</td>
                                 <td>${s.getFullName()}</td>
                                 <td>${s.getPrice()}</td>
-                                <td>${s.getQuantity()}</td>
+                                <td>${s.getStock()}</td>
                                 <td>
                                     <span class="badge ${s.getDeleted() == 1 ?  'bg-danger':'bg-success'}">
                                         ${s.getStatus()}

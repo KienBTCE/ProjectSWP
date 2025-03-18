@@ -197,7 +197,7 @@
                 <table class="table table-hover">
                     <thead>
                         <tr>
-                            <th>Customer ID</th>
+                            <th>ID</th>
                             <th>Name</th>
                             <th>Email</th>
                             <th>Phone</th>
