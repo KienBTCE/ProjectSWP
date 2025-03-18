@@ -158,7 +158,7 @@
 
                         <div class="sidebar">
                             <ul style="list-style-type: none; padding: 0; color: black; ">
-                                <a href="#" class="menu-item">🔔 Notification</a>
+                                <a href="#" class="menu-item  load-content" data-url="CustomerVoucherView.jsp"><img src="./assets/imgs/icon/voucher.png" width="17px" height="17px" alt="alt"/> Voucher</a>
 
                                 <div class="droppeddown">
                                     <a href="#" class="menu-item droppeddown-toggle" data-url="CustomerProfileView.jsp">👤 My Information</a>

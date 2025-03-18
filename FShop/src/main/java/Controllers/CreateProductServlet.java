@@ -40,7 +40,7 @@ public class CreateProductServlet extends HttpServlet {
         CategoryDAO categoryDAO = new CategoryDAO();
         List<String> categories = categoryDAO.getAllCategoryNames();
         BrandDAO brandDAO = new BrandDAO();
-        List<String> brands = brandDAO.getAllBrandNames();
+        List<String> brands = brandDAO.getAllBrandName();
 
         request.setAttribute("categories", categories);
         request.setAttribute("brands", brands);
