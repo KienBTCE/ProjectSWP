@@ -399,3 +399,17 @@ VALUES
 (1, 1, 10, 45000000),
 (2, 2, 20, 28000000),
 (2, 3, 15, 18000000);
+
+-- Insert data into Vouchers table
+INSERT INTO Vouchers (VoucherCode, VoucherType, StartDate, DiscountValue, MinOrderValue, [Status], [Description], UsedCount, MaxDiscountAmount)
+VALUES 
+('DISCOUNT10', 1, '2025-03-01', 0.10, 100000, 1, N'Get 10% off on orders from 100k, max 50k discount', 0, 50000), -- 10% off, max 50k
+('VIP20', 1, '2025-03-01', 0.20, 200000, 1, N'Get 20% off on orders from 200k, max 100k discount', 0, 100000), -- 20% off, max 100k
+('FIX50K', 2, '2025-03-01', 50000, 300000, 1, N'Get 50k off for orders from 300k', 0, NULL); -- Fixed 50k discount
+
+-- Assign vouchers to Customer with ID = 1
+INSERT INTO CustomerVoucher (CustomerID, VoucherID)
+VALUES 
+(1, 1),
+(1, 2),
+(1, 3);
