@@ -742,7 +742,7 @@
                                     <!-- Add to Cart form -->
                                     <form action="AddToCart?productID=${product.productId}" method="POST">
                                         <input type="hidden" name="quantity" id="quantityInputHidden" value="1">
-                                        <button type="submit" class="btn btn-add-cart">
+                                        <button id="addToCartBtn" type="submit" class="btn btn-add-cart">
                                             <i class="fas fa-shopping-cart me-1"></i> Add to Cart
                                         </button>
                                     </form>
@@ -752,7 +752,7 @@
                                         <input type="hidden" name="orderUrl" value="buyNow">
                                         <input type="hidden" name="productSelected" value="${product.productId}">
                                         <input type="hidden" name="buyProductAction" value="checkout">
-                                        <button type="submit" class="btn btn-buy-now">
+                                        <button id="buyNowBtn" type="submit" class="btn btn-buy-now">
                                             <i class="fas fa-bolt me-1"></i> Buy Now
                                         </button>
                                     </form>
@@ -883,21 +883,25 @@
                                         const quantityInput = document.getElementById('quantity');
                                         const maxQuantity = parseInt(quantityInput.max);
                                         let currentVal = parseInt(quantityInput.value);
+
                                         if (currentVal < maxQuantity) {
                                             quantityInput.value = currentVal + 1;
                                         } else {
                                             showWarning(true);
                                         }
+                                        validateButtons();
                                         syncHiddenInputs();
                                     }
 
                                     function decreaseQuantity() {
                                         const quantityInput = document.getElementById('quantity');
                                         let currentVal = parseInt(quantityInput.value);
+
                                         if (currentVal > 1) {
                                             quantityInput.value = currentVal - 1;
                                             showWarning(false);
                                         }
+                                        validateButtons();
                                         syncHiddenInputs();
                                     }
 
@@ -914,16 +918,32 @@
                                         } else {
                                             showWarning(false);
                                         }
+                                        validateButtons();
                                         syncHiddenInputs();
+                                    }
+
+                                    function validateButtons() {
+                                        const quantityInput = document.getElementById('quantity');
+                                        const maxQuantity = parseInt(quantityInput.max);
+                                        const addToCartBtn = document.getElementById('addToCartBtn');
+                                        const buyNowBtn = document.getElementById('buyNowBtn');
+
+                                        if (parseInt(quantityInput.value) > maxQuantity) {
+                                            addToCartBtn.disabled = true;
+                                            buyNowBtn.disabled = true;
+                                        } else {
+                                            addToCartBtn.disabled = false;
+                                            buyNowBtn.disabled = false;
+                                        }
+                                    }
+
+                                    function showWarning(show) {
+                                        document.getElementById("quantityWarning").style.display = show ? "block" : "none";
                                     }
 
                                     function syncHiddenInputs() {
                                         document.getElementById("quantityInputHidden").value = document.getElementById("quantity").value;
                                         document.getElementById("quantityInputHiddenBuyNow").value = document.getElementById("quantity").value;
-                                    }
-
-                                    function showWarning(show) {
-                                        document.getElementById("quantityWarning").style.display = show ? "block" : "none";
                                     }
 
 
