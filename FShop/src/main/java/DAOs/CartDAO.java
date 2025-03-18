@@ -29,7 +29,7 @@ public class CartDAO {
             PreparedStatement pre = connector.prepareStatement("SELECT c.ProductID, c.Quantity, p.[Image], p.FullName, p.Price, p.CategoryID\n"
                     + "FROM Carts c\n"
                     + "LEFT JOIN Products p ON c.ProductID = p.ProductID\n"
-                    + "WHERE c.CustomerID = ?");
+                    + "WHERE c.CustomerID = ? AND p.IsDeleted = 0 ORDER BY CustomerID DESC");
             pre.setInt(1, accountID);
             ResultSet rs = pre.executeQuery();
             while (rs.next()) {
@@ -44,7 +44,9 @@ public class CartDAO {
     public int getNumberOfProduct(int accountID) {
         int num = 0;
         try {
-            PreparedStatement pre = connector.prepareStatement("SELECT * FROM Carts WHERE CustomerID = ?");
+            PreparedStatement pre = connector.prepareStatement("SELECT * FROM Carts c\n"
+                    + "  JOIN Products p On c.ProductID = p.ProductID\n"
+                    + "  WHERE CustomerID = ? AND p.IsDeleted = 0");
             pre.setInt(1, accountID);
             ResultSet rs = pre.executeQuery();
             while (rs.next()) {
