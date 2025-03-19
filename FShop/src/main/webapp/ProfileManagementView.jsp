@@ -363,8 +363,33 @@
                     }
                 }
             });
+            document.addEventListener("DOMContentLoaded", function () {
+                let phoneInput = document.getElementById("newPhoneNumber");
+                if (phoneInput) {
+                    phoneInput.addEventListener("input", validatePhone);
+                }
+            });
 
+            function validatePhone() {
+                console.log("validatePhone function is loaded!");
+                let phoneInput = document.getElementById("newPhoneNumber");
+                let phoneError = document.getElementById("phoneError");
+                let saveButton = document.getElementById("saveButton");
+
+                let phonePattern = /^0[2-9][0-9]{8}$/;  // Chỉ chấp nhận 10-11 số
+                if (phonePattern.test(phoneInput.value)) {
+                    console.log("none");
+                    phoneError.style.display = "none";
+                    saveButton.disabled = false;
+                } else {
+                    console.log("block");
+                    phoneError.style.display = "block";
+                    saveButton.disabled = true;
+                }
+            }
         </script>
+        <script src="./assets/js/profile.js"></script>
+
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
