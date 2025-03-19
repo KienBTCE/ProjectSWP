@@ -25,8 +25,15 @@
             .gap-section{
                 margin-bottom: 50px;
             }
-            .banner-content img{
-                width: 100%;
+            .banner-content {
+                position: relative;
+                overflow: hidden;
+            }
+
+            #banner {
+                display: block;
+                transition: opacity 0.5s ease-in-out;
+                border-radius: 10px;
             }
 
             .title-content{
@@ -89,45 +96,52 @@
                 opacity: 0.7;
                 text-decoration: none;
             }
-             .arrow-btn {
-                        position: absolute;
-                        top: 50%;
-                        transform: translateY(-50%);
-                        background: rgba(0, 0, 0, 0.6);
-                        color: white;
-                        border: none;
-                        width: 45px;
-                        height: 45px;
-                        border-radius: 50%;
-                        font-size: 24px;
-                        cursor: pointer;
-                        display: flex;
-                        align-items: center;
-                        justify-content: center;
-                        transition: background 0.3s, transform 0.2s;
-                    }
+            .arrow-btn {
+                position: absolute;
+                top: 50%;
+                transform: translateY(-50%);
+                background: rgba(0, 0, 0, 0.6);
+                color: white;
+                border: none;
+                width: 45px;
+                height: 45px;
+                border-radius: 50%;
+                font-size: 24px;
+                cursor: pointer;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                transition: background 0.3s, transform 0.2s;
+            }
 
-                    .arrow-btn:hover {
-                        background: rgba(0, 0, 0, 0.8);
-                        transform: translateY(-50%) scale(1.1);
-                    }
+            .arrow-btn:hover {
+                background: rgba(0, 0, 0, 0.8);
+                transform: translateY(-50%) scale(1.1);
+            }
+            .hi {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+            }
         </style>
     </head>
     <body>
         <jsp:include page="header.jsp"></jsp:include>
             <div class="container">
-                <div class="row">
-                    <div class="gap-section banner-content" style="position: relative; width: fit-content; overflow: hidden;">
-                        <img id="banner" src="assets/imgs/Banners/image26.svg" alt="alt" style="width: 100%; display: block; transition: opacity 0.5s ease-in-out;" />
-                        <button id="prev" onclick="prevBanner()" class="arrow-btn" style="left: 10px;">‹</button>
-                        <button id="next" onclick="nextBanner()" class="arrow-btn" style="right: 10px;">›</button>
+                <div class="hi">
+                    <div class="row">
+                        <div class="gap-section banner-content" style="position: relative; width: fit-content; overflow: hidden;">
+                            <img id="banner" src="assets/imgs/Banners/1.jpg" alt="alt" style="width: 100%; display: block; transition: opacity 0.5s ease-in-out;" />
+                            <button id="prev" onclick="prevBanner()" class="arrow-btn" style="left: 10px;">‹</button>
+                            <button id="next" onclick="nextBanner()" class="arrow-btn" style="right: 10px;">›</button>
+                        </div>
                     </div>
                 </div>
                 <script>
                     const images = [
-                        "assets/imgs/Banners/image26.svg",
-                        "assets/imgs/Banners/status.jpg",
-                        "assets/imgs/Banners/avatar1.jpg"
+                        "assets/imgs/Banners/1.jpg",
+                        "assets/imgs/Banners/2.png",
+                        "assets/imgs/Banners/3.png"
                     ];
                     let currentIndex = 0;
                     let interval;
