@@ -22,7 +22,7 @@ public class RoleDAO {
     
     public ArrayList<Role> getAllRoles(){
         ArrayList<Role> list = new ArrayList<>();
-        String sql = "SELECT * FROM Roles";
+        String sql = "SELECT * FROM Roles WHERE RoleID <> 1";
         try {
             PreparedStatement pr =connector.prepareStatement(sql);
             ResultSet rs = pr.executeQuery();
