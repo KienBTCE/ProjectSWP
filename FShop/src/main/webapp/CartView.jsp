@@ -72,6 +72,7 @@
                                                             onchange="updateQuantity(${p.getProductID()}, this.value)">
                                                     </td>
                                                     <td class="th">
+                                                        <p id="price-${p.getProductID()}" hidden><fmt:formatNumber value="${p.getPrice()}" type="currency" /></p>
                                                         <h6 id="price-${p.getProductID()}">
                                                             <fmt:formatNumber value="${p.getPrice() * p.getQuantity()}" type="currency" />
                                                         </h6>
@@ -117,7 +118,7 @@
                                                     </td>
                                                     <td class="th">
                                                         <a href="deletePOC?id=${p.getProductID()}"><img src="./assets/imgs/ShoppingCartImg/x.jpg" alt=""
-                                                                                                         width="25px" ></a>
+                                                                                                        width="25px" ></a>
                                                         <!--                                                        <a href=""><img src="./assets/imgs/ShoppingCartImg/pen.jpg" alt="" width="25px"
                                                                                                                                 style="margin-top: 5px;"></a>-->
                                                     </td>
@@ -142,36 +143,7 @@
                                     <div>
 
                                     </div>
-                                    <div>
-                                        <!--                            <div class="tax">
-                                                                        <p>Apply Discount Code</p>
-                                                                        <button onclick="toggleDisplay('detail2')"
-                                                                                style="width: 10%; border: white solid; border-radius: 30px; height: auto;"><svg
-                                                                                width="16" height="15" viewBox="0 0 16 15" fill="none"
-                                                                                xmlns="http://www.w3.org/2000/svg">
-                                                                            <path d="M6 9.20209L8 7.20209L10 9.20209" stroke="black" stroke-width="1.6"
-                                                                                  stroke-linecap="round" />
-                                                                            </svg>
-                                                                        </button>
-                                                                    </div>
-                                                                    <div id="detail2" style="display: none; color: gray;">
-                                                                        <div>
-                                                                            <form action="" class="discount">
-                                                                                <div class="form-group">
-                                                                                    <div class="control-label" style="text-align: left;">Enter discount code
-                                                                                    </div>
-                                                                                    <div class="">
-                                                                                        <input type="text" class="form-control" value="" required
-                                                                                               placeholder="Enter Discount code" />
-                                                                                    </div>
-                                                                                </div>
-                                                                                <button type="submit"
-                                                                                        style="background-color: white; border: #0156ff solid 1px; color: #0156ff;">Apply
-                                                                                    Discount</button>
-                                                                            </form>
-                                                                        </div>
-                                                                    </div>-->
-                                    </div>
+
 
                                     <svg width="385" height="2" viewBox="0 0 385 2" fill="none"
                                          xmlns="http://www.w3.org/2000/svg">
@@ -265,141 +237,183 @@
                     </div>
                 </div>
             </div>
-            <%
-                String message = (String) session.getAttribute("message");
-                System.out.println("Session message: " + message + request.getRequestURI());
-            %>
-            <%
-                if (message != null) {
-            %>
-            <div style="display:flex;" class="popup" id="updatePopup">
-                <div class="popup-content">
-                    <h4>${sessionScope.message}</h4>
-                    <div style="display: flex; justify-content: center;">
-                        <c:choose>
-                            <c:when test="${sessionScope.message.contains('add your address')}">
-                                <div>
-                                    <a class="btn btn-success" href="ViewShippingAddress">OK</a>
-                                    <a class="btn btn-danger text-white" onclick="closePopup()">Cancel</a>
-                                </div>
-                            </c:when>
-                            <c:when test="${sessionScope.message.contains('add your phone number')}">
-                                <div>
-                                    <a class="btn btn-success" href="viewCustomerProfile">OK</a>
-                                    <a class="btn btn-danger text-white" onclick="closePopup()">Cancel</a>
-                                </div>
-                            </c:when>
-                            <c:otherwise>  
-                                <button class="btn btn-primary" onclick="closePopup()">OK</button>
-                            </c:otherwise>
-                        </c:choose>
 
-
+            <!-- Bootstrap Modal -->
+            <div class="modal fade" id="updatePopup" tabindex="-1" aria-labelledby="updatePopupLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <c:choose>
+                                <c:when test="${sessionScope.message.contains('add your address') ||
+                                                sessionScope.message.contains('add your phone number') ||
+                                                sessionScope.message.contains('Go to your cart')}">
+                                        <h5 class="modal-title text-danger">Notification</h5>
+                                </c:when>
+                                <c:otherwise>
+                                    <h5 class="modal-title text-danger">Warning</h5>
+                                </c:otherwise>
+                            </c:choose>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body text-dark">
+                            <c:choose>
+                                <c:when test="${sessionScope.message.contains('a maximum')}">
+                                    <p> You are allowed to buy a maximum quantity of <b>5</b>! 
+                                        <br>
+                                        Or if you want to buy more, contact us at: 
+                                        <a href="mailto:kieuthy@gmail.com" class="text-primary">kieuthy@gmail.com</a>
+                                    </p>
+                                </c:when>
+                                <c:when test="${sessionScope.message.contains('total amount too big')}">
+                                    <p> You can buy product online with the total amount <br> under <b>100.000.000đ</b>! 
+                                        <br>
+                                        Or if you want to buy, contact us at: 
+                                        <a href="mailto:kieuthy@gmail.com" class="text-primary">kieuthy@gmail.com</a>
+                                    </p>
+                                </c:when>
+                                <c:otherwise>
+                                    <p>${sessionScope.message}</p>
+                                </c:otherwise>
+                            </c:choose>
+                        </div>
+                        <div class="modal-footer">
+                            <c:choose>
+                                <c:when test="${sessionScope.message.contains('add your address')}">
+                                    <a class="btn btn-primary text-white" href="ViewShippingAddress">OK</a>
+                                    <a class="btn btn-secondary text-white" onclick='closeMessagePopup()'>Cancel</a>
+                                </c:when>
+                                <c:when test="${sessionScope.message.contains('add your phone number')}">
+                                    <a class="btn btn-primary text-white" href="viewCustomerProfile">OK</a>
+                                    <a class="btn  btn-secondary text-white" onclick='closeMessagePopup()'>Cancel</a>
+                                </c:when>
+                                <c:when test="${sessionScope.message.contains('Go to your cart')}">
+                                    <a class="btn btn-primary text-white" href="cart">OK</a>
+                                    <a class="btn btn-secondary text-white" onclick='closeMessagePopup()'>Cancel</a>
+                                </c:when>
+                                <c:otherwise>
+                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">OK</button>
+                                </c:otherwise>
+                            </c:choose>
+                        </div>
                     </div>
                 </div>
             </div>
-            <%
-                    session.removeAttribute("message");
-                }
-            %>
+
 
         </main>
         <jsp:include page="footer.jsp"></jsp:include>
-        <script>
-            function formatCurrency(amount) {
-                return new Intl.NumberFormat('vi-VN').format(amount) + ' đ';
-            }
+            <script>
+                window.onload = function () {
+            <% if (session.getAttribute("message") != null) { %>
+                    showMessage(true);
+            <% }%>
+                };
+                function showMessage(show) {
+                    if (show) {
+                        var warningModal = new bootstrap.Modal(document.getElementById('updatePopup'));
+                        warningModal.show();
+                    }
+                }
+                function closeMessagePopup() {
+                    var warningModal = bootstrap.Modal.getInstance(document.getElementById('updatePopup'));
+                    if (warningModal) {
+                        warningModal.hide();
+                    }
+                }
+
+                function formatCurrency(amount) {
+                    return new Intl.NumberFormat('vi-VN').format(amount) + ' đ';
+                }
 
 
-            function updateTotal() {
-                let total = 0;
-                document.querySelectorAll("input[name='cartSelected']:checked").forEach((checkbox) => {
-                    let productId = checkbox.value;
-                    let price = parseFloat(document.getElementById("price-" + productId).innerText.replace(/\D/g, ''));
-                    let quantity = parseInt(document.getElementById("quantity-" + productId).value);
-                    total += price * quantity;
+                function updateTotal() {
+                    let total = 0;
+                    document.querySelectorAll("input[name='cartSelected']:checked").forEach((checkbox) => {
+                        let productId = checkbox.value;
+                        let price = parseFloat(document.getElementById("price-" + productId).innerText.replace(/\D/g, ''));
+                        let quantity = parseInt(document.getElementById("quantity-" + productId).value);
+                        total += price * quantity;
+                    });
+                    document.getElementById("totalAmount").innerText = formatCurrency(total);
+                    document.getElementById("subTotal").innerText = formatCurrency(total);
+                }
+
+                document.querySelectorAll("input[name='cartSelected']").forEach((checkbox) => {
+                    checkbox.addEventListener("change", updateTotal);
                 });
-                document.getElementById("totalAmount").innerText = formatCurrency(total);
-                document.getElementById("subTotal").innerText = formatCurrency(total);
-            }
 
-            document.querySelectorAll("input[name='cartSelected']").forEach((checkbox) => {
-                checkbox.addEventListener("change", updateTotal);
-            });
+                document.querySelectorAll("input[name='quantity']").forEach((input) => {
+                    input.addEventListener("change", updateTotal);
+                });
 
-            document.querySelectorAll("input[name='quantity']").forEach((input) => {
-                input.addEventListener("change", updateTotal);
-            });
-            function showUpdatePopup() {
-                document.getElementById("updatePopup").style.display = "flex";
-            }
-            function showPopup() {
-                document.getElementById("orderPopup").style.display = "flex";
-            }
+                function showPopup() {
+                    document.getElementById("orderPopup").style.display = "flex";
+                }
 
-            function closePopup() {
-                document.getElementById("orderPopup").style.display = "none";
-                document.getElementById("updatePopup").style.display = "none";
-            }
-            function updateQuantity(productId, quantity) {
-                // Gửi dữ liệu tới Servlet qua AJAX
-                fetch('updateCart', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify({
-                        productId: productId,
-                        quantity: quantity
-                    })
-                })
-                        .then(response => response.text())
-                        .then(data => {
-                            console.log(data); // Kiểm tra phản hồi từ server
-                            window.location.reload(); // Reload lại trang
-                            //alert("Quantity updated successfully!");
+                function closePopup() {
+                    document.getElementById("orderPopup").style.display = "none";
+                }
+                function updateQuantity(productId, quantity) {
+                    // Gửi dữ liệu tới Servlet qua AJAX
+                    fetch('updateCart', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({
+                            productId: productId,
+                            quantity: quantity
                         })
-                        .catch(error => {
-                            console.error("Error updating quantity:", error);
-                            //alert("Failed to update quantity. Please try again.");
-                        });
-            }
+                    })
+                            .then(response => response.text())
+                            .then(data => {
+                                console.log(data); // Kiểm tra phản hồi từ server
+                                window.location.reload(); // Reload lại trang
+                                //alert("Quantity updated successfully!");
+                            })
+                            .catch(error => {
+                                console.error("Error updating quantity:", error);
+                                //alert("Failed to update quantity. Please try again.");
+                            });
+                }
 
-            document.getElementById("checkout").addEventListener("click", function () {
-                // Lấy tất cả các checkbox trong form
-                const checkboxes = document.querySelectorAll("input[name='cartSelected']");
-                let isChecked = false;
+                document.getElementById("checkout").addEventListener("click", function () {
+                    // Lấy tất cả các checkbox trong form
+                    const checkboxes = document.querySelectorAll("input[name='cartSelected']");
+                    let isChecked = false;
 
-                // Kiểm tra xem có ít nhất một checkbox được chọn không
-                checkboxes.forEach(checkbox => {
-                    if (checkbox.checked) {
-                        isChecked = true;
+                    // Kiểm tra xem có ít nhất một checkbox được chọn không
+                    checkboxes.forEach(checkbox => {
+                        if (checkbox.checked) {
+                            isChecked = true;
+                        }
+                    });
+
+                    if (!isChecked) {
+                        // Hiển thị thông báo nếu chưa chọn checkbox nào
+                        showPopup();
+                    } else {
+                        // Gửi form nếu có checkbox được chọn
+                        document.getElementById("cartSelected").submit();
                     }
                 });
 
-                if (!isChecked) {
-                    // Hiển thị thông báo nếu chưa chọn checkbox nào
-                    showPopup();
-                } else {
-                    // Gửi form nếu có checkbox được chọn
-                    document.getElementById("cartSelected").submit();
-                }
-            });
 
-
-            function toggleDisplay(divId) {
-                var x = document.getElementById(divId);
-                if (x.style.display === "none") {
-                    x.style.display = "block";
-                } else {
-                    x.style.display = "none";
+                function toggleDisplay(divId) {
+                    var x = document.getElementById(divId);
+                    if (x.style.display === "none") {
+                        x.style.display = "block";
+                    } else {
+                        x.style.display = "none";
+                    }
                 }
-            }
 
         </script>
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
                 integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
         crossorigin="anonymous"></script>
     </body>
-
+    <c:if test="${not empty sessionScope.message}">
+        <c:remove var="message" scope="session"/>
+    </c:if>
 </html>
