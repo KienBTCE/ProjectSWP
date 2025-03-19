@@ -12,26 +12,13 @@
             body {
                 background-color: #f8f9fa;
             }
-
             .profile-container {
-                max-width: 1600px;
-                height: auto;
+                max-width: 800px;
                 margin: 20px auto;
                 background: white;
                 padding: 40px;
                 border-radius: 10px;
                 box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-                display: flex;
-                flex-wrap: wrap;
-                justify-content: space-between;
-                align-items: center;
-            }
-            .form-container {
-                width: 60%;
-            }
-            .avatar-container {
-                text-align: center;
-                width: 35%;
             }
             .avatar-preview {
                 width: 180px;
@@ -39,10 +26,11 @@
                 border-radius: 50%;
                 object-fit: cover;
                 border: 3px solid #ddd;
+                display: block;
+                margin: 0 auto;
             }
-            .value{
-                width: 150px;
-
+            .info-label {
+                font-weight: bold;
             }
             /* Popup styles */
             .popup {
@@ -85,82 +73,37 @@
                     </div>
                     <div class="col-md-10" style="padding-top: 10px;">
                     <jsp:include page="HeaderDashboard.jsp"></jsp:include>
-                        <form action="UpdateEmployeeProfile" method="post" enctype="multipart/form-data" onsubmit="return validateForm()">
-
-                            <div class="profile-container">
-
-                                <div class="form-container">
-
-                                    <div class="mb-3 d-flex">
-                                        <label class="value">Email:</label>
-                                        <p>${sessionScope.employee.getEmail()}</p>
-                                </div>
-
-                                <div class="mb-3 d-flex">
-                                    <label class="value">Role:</label>
-                                    <c:if test="${sessionScope.employee.getRoleId() == 1}">
-                                        <p class="fw-bold">Admin</p>
-                                    </c:if>
-                                    <c:if test="${sessionScope.employee.getRoleId() == 2}">
-                                        <p class="fw-bold">Shop Manager</p>
-                                    </c:if>
-                                    <c:if test="${sessionScope.employee.getRoleId() == 3}">
-                                        <p class="fw-bold">Order Manager</p>
-                                    </c:if>
-                                    <c:if test="${sessionScope.employee.getRoleId() == 4}">
-                                        <p class="fw-bold">Warehouse Manager</p>
-                                    </c:if>
-                                </div>
-
-                                <div class="mb-3 d-flex">
-                                    <label class="form-label value">Full Name</label>
-                                    <input type="text" class="form-control" name="fullName" value="${sessionScope.employee.getFullname()}" required>
-                                </div>
-
-                                <div class="mb-3 d-flex">
-                                    <label class="form-label value" value>Gender</label>
-                                    <select class="form-select" name="gender" required>
-                                        <option value="Male" ${sessionScope.employee.getGender() == 'Male' ? 'selected' : ''}>Male</option>
-                                        <option value="Female" ${sessionScope.employee.getGender() == 'Female' ? 'selected' : ''}>Female</option>
-                                        <option value="Other" ${sessionScope.employee.getGender() == 'Other' ? 'selected' : ''}>Other</option>
-                                    </select>
-                                </div>
-
-                                <div class="mb-3 d-flex">
-                                    <label class="form-label value">Phone</label>
-                                    <input type="text" class="form-control" name="phone" value="${sessionScope.employee.getPhoneNumber()}" required>
-                                </div>
-
-                                <div class="mb-3 d-flex">
-                                    <label class="form-label value">Date Of Birth</label>
-                                    <input type="date" class="form-control" name="dob" value="${sessionScope.employee.getBirthday().toString()}" required>
-                                </div>
-
-                            </div>
-
-                            <div class="avatar-container">
-                                <label class="form-label">Avatar</label>
-                                <div class="mb-3">
-                                    <c:choose>
-                                        <c:when test="${not empty sessionScope.employee.getAvatar()}">
-                                            <img id="avatarPreview" class="avatar-preview" src="assets/imgs/EmployeeAvatar/${sessionScope.employee.getAvatar()}" alt="Avatar">
-                                        </c:when>
-                                        <c:otherwise>
-                                            <img id="avatarPreview" class="avatar-preview" src="assets/imgs/EmployeeAvatar/defauft_avatar.jpg" alt="Avatar">
-                                        </c:otherwise>
-                                    </c:choose>
-                                </div>
-                                <input type="file" class="form-control" name="avatar" accept="image/*" onchange="previewImage(event)">
-                            </div>
+                        <div class="container">
+                            <div class="profile-container text-center">
+                            <c:choose>
+                                <c:when test="${!sessionScope.employee.getAvatar().equals('')}">
+                                    <img class="avatar-preview" src="assets/imgs/EmployeeAvatar/${sessionScope.employee.getAvatar()}" alt="Avatar">
+                                </c:when>
+                                <c:otherwise>
+                                    <img class="avatar-preview" src="assets/imgs/EmployeeAvatar/defauft_avatar.jpg" alt="Avatar">
+                                </c:otherwise>
+                            </c:choose>
+                            <h3 class="mt-3">${sessionScope.employee.getFullname()}</h3>
+                            <p class="text-muted">${sessionScope.employee.getEmail()}</p>
+                            <p><span class="info-label">Role:</span>
+                                <c:choose>
+                                    <c:when test="${sessionScope.employee.getRoleId() == 1}">Admin</c:when>
+                                    <c:when test="${sessionScope.employee.getRoleId() == 2}">Shop Manager</c:when>
+                                    <c:when test="${sessionScope.employee.getRoleId() == 3}">Order Manager</c:when>
+                                    <c:when test="${sessionScope.employee.getRoleId() == 4}">Warehouse Manager</c:when>
+                                </c:choose>
+                            </p>
+                            <p><span class="info-label">Gender:</span> ${sessionScope.employee.getGender()}</p>
+                            <p><span class="info-label">Phone:</span> ${sessionScope.employee.getPhoneNumber()}</p>
+                            <p><span class="info-label">Date of Birth:</span> ${sessionScope.employee.getBirthday().toString()}</p>
                             <div class="form-container">
-                                <div class="d-flex gap-3" style="justify-content: space-between;">
-                                    <button type="submit" class="btn btn-primary px-4 py-2">Save</button>
-                                    <button type="button" class="btn btn-warning px-4 py-2" onclick="changePassword()">Change Password</button>
-                                </div>
+                            <div class="d-flex gap-3" style="justify-content: space-between;">
+                                <button type="submit" class="btn btn-primary px-4 py-2" onclick="updateProfile()">Update Profile</button>
+                                <button type="button" class="btn btn-warning px-4 py-2" onclick="changePassword()">Change Password</button>
                             </div>
-
                         </div>
-                    </form>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -197,23 +140,15 @@
                 }
                 return true;
             }
-
-            function previewImage(event) {
-                var reader = new FileReader();
-                reader.onload = function () {
-                    var output = document.getElementById('avatarPreview');
-                    output.src = reader.result;
-                };
-                reader.readAsDataURL(event.target.files[0]);
+            function updateProfile(){
+                window.location.href = '/UpdateEmployeeProfile';
             }
-
 
             function changePassword() {
                 window.location.href = '/ChangeEmployeePassword';
             }
 
         </script>
-
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     </body>
 </html>

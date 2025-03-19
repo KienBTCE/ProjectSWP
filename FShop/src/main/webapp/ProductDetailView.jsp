@@ -4,6 +4,8 @@
     Author     : kiuth
 --%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+<fmt:setLocale value="vi_VN" />
 <!DOCTYPE html>
 <html>
     <head>
@@ -16,9 +18,6 @@
 
         <!-- Google Font (optional) -->
         <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&display=swap" rel="stylesheet">
-        <!-- Custom CSS -->
-
-
         <link rel="stylesheet" href="./assets/css/popup.css"/>
         <style>
             body {
@@ -188,22 +187,15 @@
                 .product-gallery .main-image {
                     max-width: 100%;
                 }
+                .feedback-container {
+                    min-height: auto;  
+                }
             }
             main {
-                min-height: auto;
+                /*min-height: auto;*/
                 padding-bottom: 50px;
             }
 
-
-            .containerfb {
-                max-width: 768px;
-                width: 100%;
-                background: #ffffff;
-                padding: 25px;
-                margin: 20px auto;
-                border-radius: 10px;
-                box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.15);
-            }
             .profile {
                 display: flex;
                 align-items: center;
@@ -376,14 +368,15 @@
             /* =================== Review Card =================== */
             .review-card {
                 background: #fff;
-                border: 1px solid #e0e0e0;
-                border-radius: 8px;
-                padding: 20px;
-                margin-bottom: 20px;
-                transition: box-shadow 0.2s ease;
+                padding: 15px;
+                margin-bottom: 15px;
+                border-top: 1px solid #ddd;
+                border-bottom: 1px solid #ddd;
+                border-left: none;
+                border-right: none;
             }
             .review-card:hover {
-                box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+                /*box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);*/
             }
 
             /* Profile Info */
@@ -412,7 +405,8 @@
 
             /* Star Rating */
             .star-icon {
-                margin-bottom: 10px;
+                margin-bottom: 1%;
+                margin-left: 5%;
             }
             .star-icon i {
                 font-size: 1rem;
@@ -430,12 +424,21 @@
                 color: #555;
                 margin: 0;
             }
+            .rateComment {
+                font-size: 1rem !important;
+                color: #555 !important;
+                line-height: 1.5 !important;
+                font-style: italic !important;
+                margin-left: 5%! important;
+
+            }
 
             /* =================== Reply Container =================== */
             .reply-container {
                 background: #f7f7f7;
                 border-left: 3px solid #007bff;
                 padding: 15px;
+                margin-left: 7%;
                 margin-top: 15px;
                 border-radius: 4px;
                 font-size: 0.9rem;
@@ -513,14 +516,12 @@
 
             .feedback-container {
                 background-color: #fff;
-                border-radius: 10px;
-                box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+                /*border-radius: 10px;*/
+                /*box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);*/
                 padding: 25px;
                 margin-top: 40px;
-                max-width: 800px;
-                width: 100%;
-                margin-left: auto;
-                margin-right: auto;
+                width: 70%;
+                min-height: 500px;
             }
 
 
@@ -645,6 +646,16 @@
             button:hover {
                 background-color: #0056b3;
             }
+            .feedback-container {
+                background-color: #fff;
+                border-radius: 10px;
+                box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+                padding: 35px;
+                margin-top: 40px;
+                /*                max-width: 800px;*/
+                width: 100%;
+
+            }
 
         </style>
     </head>
@@ -733,17 +744,39 @@
                                     <label for="quantity" class="me-2 fw-bold">Quantity:</label>
                                     <div class="quantity-controls">
                                         <button type="button" onclick="decreaseQuantity()">-</button>
-                                        <input type="number" id="quantity" name="quantity" value="1" min="1" max="${product.stock}">
+                                        <input type="number" id="quantity" name="quantity" value="1" min="1" 
+                                               max="${product.getStock()}" oninput="validateQuantity()">
                                         <button type="button" onclick="increaseQuantity()">+</button>
                                     </div>
                                 </div>
+                                <!-- Bootstrap Modal -->
+                                <div class="modal fade" id="quantityWarningModal" tabindex="-1" aria-labelledby="warningModalLabel" aria-hidden="true">
+                                    <div class="modal-dialog">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title text-danger" id="warningModalLabel">Warning</h5>
+                                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                            </div>
+                                            <div class="modal-body text-dark">
+                                                You are allowed to buy a maximum quantity of <b>5</b>! 
+                                                <br>
+                                                Or if you want to buy more, contact us at: 
+                                                <a href="mailto:kieuthy@gmail.com" class="text-primary">kieuthy@gmail.com</a>
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">OK</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
 
                                 <!-- Action Buttons -->
                                 <div class="action-buttons">
                                     <!-- Add to Cart form -->
                                     <form action="AddToCart?productID=${product.productId}" method="POST">
                                         <input type="hidden" name="quantity" id="quantityInputHidden" value="1">
-                                        <button type="submit" class="btn btn-add-cart">
+                                        <button id="addToCartBtn" type="submit" class="btn btn-add-cart">
                                             <i class="fas fa-shopping-cart me-1"></i> Add to Cart
                                         </button>
                                     </form>
@@ -753,7 +786,7 @@
                                         <input type="hidden" name="orderUrl" value="buyNow">
                                         <input type="hidden" name="productSelected" value="${product.productId}">
                                         <input type="hidden" name="buyProductAction" value="checkout">
-                                        <button type="submit" class="btn btn-buy-now">
+                                        <button id="buyNowBtn" type="submit" class="btn btn-buy-now">
                                             <i class="fas fa-bolt me-1"></i> Buy Now
                                         </button>
                                     </form>
@@ -778,8 +811,23 @@
                 </div>
             </div>
             <div class="feedback-container">
-                <h3 class="feedback-title">Customer Reviews</h3>
-
+                <h3 class="feedback-title">PRODUCT REVIEW</h3>
+                <c:if test="${isOk}">
+                    <form id="reviewForm" method="POST" action="ProductDetailServlet">
+                        <input type="hidden" name="productId" value="${product.productId}">
+                        <input type="hidden" name="customerId" value="${customerId}">
+                        <label class="rating-label">Share your experience:</label>
+                        <div class="star-rating">
+                            <input required type="radio" name="star" value="5" id="star5"><label for="star5" class="fa fa-star"></label>
+                            <input required type="radio" name="star" value="4" id="star4"><label for="star4" class="fa fa-star"></label>
+                            <input required type="radio" name="star" value="3" id="star3"><label for="star3" class="fa fa-star"></label>
+                            <input required type="radio" name="star" value="2" id="star2"><label for="star2" class="fa fa-star"></label>
+                            <input required type="radio" name="star" value="1" id="star1"><label for="star1" class="fa fa-star"></label>
+                        </div>
+                        <textarea required name="comment" placeholder="Write your review..."></textarea>
+                        <button type="submit">Submit Review</button>
+                    </form>
+                </c:if>
                 <c:forEach var="rate" items="${dataRating}">
                     <div class="review-card">
                         <div class="profile">
@@ -801,124 +849,211 @@
                                 </c:choose>
                             </c:forEach>
                         </div>
-                        <p>${rate.isDeleted ? "\"This feedback was hidden for some reason.\"" : rate.comment}</p>
+                        <p class="rateComment">${rate.isDeleted ? "\"This feedback was hidden for some reason.\"" : rate.comment}</p>
+                        <c:forEach var="reply" items="${dataReplies}">
+                            <c:if test="${reply.rateID == rate.rateID}">
+                                <div class="reply-container">
+                                    <strong>Shop Manager:</strong> ${reply.answer}
+                                </div>
+                            </c:if>
+                        </c:forEach>
                     </div>
 
-                    <c:forEach var="reply" items="${dataReplies}">
-                        <c:if test="${reply.rateID == rate.rateID}">
-                            <div class="reply-container">
-                                <strong>Shop Manager:</strong> ${reply.answer}
-                            </div>
-                        </c:if>
-                    </c:forEach>
+
                 </c:forEach>
 
-                <c:if test="${isOk}">
-                    <form id="reviewForm" method="POST" action="ProductDetailServlet">
-                        <input type="hidden" name="productId" value="${product.productId}">
-                        <input type="hidden" name="customerId" value="${customerId}">
-                        <label class="rating-label">Share your experience:</label>
-                        <div class="star-rating">
-                            <input required type="radio" name="star" value="5" id="star5"><label for="star5" class="fa fa-star"></label>
-                            <input required type="radio" name="star" value="4" id="star4"><label for="star4" class="fa fa-star"></label>
-                            <input required type="radio" name="star" value="3" id="star3"><label for="star3" class="fa fa-star"></label>
-                            <input required type="radio" name="star" value="2" id="star2"><label for="star2" class="fa fa-star"></label>
-                            <input required type="radio" name="star" value="1" id="star1"><label for="star1" class="fa fa-star"></label>
-                        </div>
-                        <textarea required name="comment" placeholder="Write your review..."></textarea>
-                        <button type="submit">Submit Review</button>
-                    </form>
-                </c:if>
+
             </div>
 
-            <!-- Popup Notification (if needed) -->
-            <%
-                String message = (String) session.getAttribute("message");
-                if (message != null) {
-            %>
-            <div class="popup" id="updatePopup" style="display: flex;">
-                <div class="popup-content">
-                    <h4>${sessionScope.message}</h4>
-                    <div style="display: flex; justify-content: center;">
-                        <c:choose>
-                            <c:when test="${sessionScope.message.contains('add your address')}">
-                                <div>
-                                    <a class="btn btn-success" href="ViewShippingAddress">OK</a>
-                                    <a class="btn btn-danger text-white" onclick="closePopup()">Cancel</a>
-                                </div>
-                            </c:when>
-                            <c:when test="${sessionScope.message.contains('add your phone number')}">
-                                <div>
-                                    <a class="btn btn-success" href="viewCustomerProfile">OK</a>
-                                    <a class="btn btn-danger text-white" onclick="closePopup()">Cancel</a>
-                                </div>
-                            </c:when>
-                            <c:otherwise>  
-                                <button class="btn btn-primary" onclick="closePopup()">OK</button>
-                            </c:otherwise>
-                        </c:choose>
 
-
+            <!-- Bootstrap Modal -->
+            <div class="modal fade" id="updatePopup" tabindex="-1" aria-labelledby="updatePopupLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <c:choose>
+                                <c:when test="${sessionScope.message.contains('add your address') ||
+                                                sessionScope.message.contains('add your phone number') ||
+                                                sessionScope.message.contains('Go to your cart')}">
+                                        <h5 class="modal-title text-danger">Notification</h5>
+                                </c:when>
+                                <c:otherwise>
+                                    <h5 class="modal-title text-danger">Warning</h5>
+                                </c:otherwise>
+                            </c:choose>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body text-dark">
+                            <c:choose>
+                                <c:when test="${sessionScope.message.contains('a maximum')}">
+                                    <p> You are allowed to buy a maximum quantity of <b>5</b>! 
+                                        <br>
+                                        Or if you want to buy more, contact us at: 
+                                        <a href="mailto:kieuthy@gmail.com" class="text-primary">kieuthy@gmail.com</a>
+                                    </p>
+                                </c:when>
+                                <c:when test="${sessionScope.message.contains('total amount too big')}">
+                                    <p> You can buy product online with the total amount <br> under <b><fmt:formatNumber value="100000000" type="currency" /></b>! 
+                                        <br>
+                                        Or if you want to buy, contact us at: 
+                                        <a href="mailto:kieuthy@gmail.com" class="text-primary">kieuthy@gmail.com</a>
+                                    </p>
+                                </c:when>
+                                <c:otherwise>
+                                    <p>${sessionScope.message}</p>
+                                </c:otherwise>
+                            </c:choose>
+                        </div>
+                        <div class="modal-footer">
+                            <c:choose>
+                                <c:when test="${sessionScope.message.contains('add your address')}">
+                                    <a class="btn btn-primary text-white" href="ViewShippingAddress">OK</a>
+                                    <a class="btn btn-secondary text-white" onclick='closePopup()'>Cancel</a>
+                                </c:when>
+                                <c:when test="${sessionScope.message.contains('add your phone number')}">
+                                    <a class="btn btn-primary text-white" href="viewCustomerProfile">OK</a>
+                                    <a class="btn  btn-secondary text-white" onclick='closePopup()'>Cancel</a>
+                                </c:when>
+                                <c:when test="${sessionScope.message.contains('Go to your cart')}">
+                                    <a class="btn btn-primary text-white" href="cart">OK</a>
+                                    <a class="btn btn-secondary text-white" onclick='closePopup()'>Cancel</a>
+                                </c:when>
+                                <c:otherwise>
+                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">OK</button>
+                                </c:otherwise>
+                            </c:choose>
+                        </div>
                     </div>
                 </div>
             </div>
 
-            <%
-                    session.removeAttribute("message");
-                }
-            %>
+
         </main>
         <jsp:include page="footer.jsp"></jsp:include>
-        <!-- Bootstrap JS -->
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+            <!-- Bootstrap JS -->
+            <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
-        <script>
-                                    // Swap main and sub images
-                                    function swapImage(img) {
-                                        const mainImg = document.getElementById("mainImage");
-                                        const tempSrc = mainImg.src;
-                                        mainImg.src = img.src;
-                                        img.src = tempSrc;
-                                    }
-
-                                    // Increase/decrease quantity
-                                    function increaseQuantity() {
-                                        const quantityInput = document.getElementById('quantity');
-                                        const maxQuantity = parseInt(quantityInput.max);
-                                        let currentVal = parseInt(quantityInput.value);
-                                        if (currentVal < maxQuantity) {
-                                            quantityInput.value = currentVal + 1;
+            <script>
+                                        window.onload = function () {
+            <% if (session.getAttribute("message") != null) { %>
+                                            showMessage(true);
+            <% }%>
+                                        };
+                                        function showMessage(show) {
+                                            if (show) {
+                                                var warningModal = new bootstrap.Modal(document.getElementById('updatePopup'));
+                                                warningModal.show();
+                                            }
                                         }
-                                        // Sync with hidden inputs
-                                        document.getElementById("quantityInputHidden").value = quantityInput.value;
-                                        document.getElementById("quantityInputHiddenBuyNow").value = quantityInput.value;
-                                    }
-
-                                    function decreaseQuantity() {
-                                        const quantityInput = document.getElementById('quantity');
-                                        let currentVal = parseInt(quantityInput.value);
-                                        if (currentVal > 1) {
-                                            quantityInput.value = currentVal - 1;
+                                        // Swap main and sub images
+                                        function swapImage(img) {
+                                            const mainImg = document.getElementById("mainImage");
+                                            const tempSrc = mainImg.src;
+                                            mainImg.src = img.src;
+                                            img.src = tempSrc;
                                         }
-                                        // Sync with hidden inputs
-                                        document.getElementById("quantityInputHidden").value = quantityInput.value;
-                                        document.getElementById("quantityInputHiddenBuyNow").value = quantityInput.value;
-                                    }
+                                        function getMaxQuantity() {
+                                            const stockQuantity = parseInt(document.getElementById('quantity').max) || 5;
+                                            return Math.min(stockQuantity, 5);
+                                        }
 
-                                    // Close popup
-                                    function closePopup() {
-                                        document.getElementById("updatePopup").style.display = "none";
-                                    }
+                                        function increaseQuantity() {
+                                            const quantityInput = document.getElementById('quantity');
+                                            const maxQuantity = getMaxQuantity();
+                                            let currentVal = parseInt(quantityInput.value);
 
-                                    // When user manually changes the quantity input
-                                    document.getElementById("quantity")?.addEventListener("input", function () {
-                                        document.getElementById("quantityInputHidden").value = this.value;
-                                        document.getElementById("quantityInputHiddenBuyNow").value = this.value;
-                                    });
+                                            if (currentVal < maxQuantity) {
+                                                quantityInput.value = currentVal + 1;
+                                            } else {
+                                                showWarning(true);
+                                            }
+                                            validateButtons();
+                                            syncHiddenInputs();
+                                        }
+
+                                        function decreaseQuantity() {
+                                            const quantityInput = document.getElementById('quantity');
+                                            let currentVal = parseInt(quantityInput.value);
+
+                                            if (currentVal > 1) {
+                                                quantityInput.value = currentVal - 1;
+                                                showWarning(false);
+                                            }
+                                            validateButtons();
+                                            syncHiddenInputs();
+                                        }
+
+                                        function validateQuantity() {
+                                            const quantityInput = document.getElementById('quantity');
+                                            const maxQuantity = getMaxQuantity();
+                                            let currentVal = parseInt(quantityInput.value);
+
+                                            if (isNaN(currentVal) || currentVal < 1) {
+                                                currentVal = 1;
+                                            } else if (currentVal > maxQuantity) {
+                                                currentVal = maxQuantity;
+                                                showWarning(true);
+                                            } else {
+                                                showWarning(false);
+                                            }
+
+                                            quantityInput.value = currentVal;
+                                            syncHiddenInputs();
+                                            validateButtons();
+                                        }
+
+                                        function validateButtons() {
+                                            const quantityInput = document.getElementById('quantity');
+                                            const maxQuantity = getMaxQuantity();
+                                            const addToCartBtn = document.getElementById('addToCartBtn');
+                                            const buyNowBtn = document.getElementById('buyNowBtn');
+
+                                            if (parseInt(quantityInput.value) > maxQuantity) {
+                                                addToCartBtn.disabled = true;
+                                                buyNowBtn.disabled = true;
+                                            } else {
+                                                addToCartBtn.disabled = false;
+                                                buyNowBtn.disabled = false;
+                                            }
+                                        }
+
+                                        function showWarning(show) {
+                                            if (show) {
+                                                var warningModal = new bootstrap.Modal(document.getElementById('quantityWarningModal'));
+                                                warningModal.show();
+                                            }
+                                        }
+
+                                        function syncHiddenInputs() {
+                                            const quantity = document.getElementById("quantity").value;
+                                            document.getElementById("quantityInputHidden").value = quantity;
+                                            document.getElementById("quantityInputHiddenBuyNow").value = quantity;
+                                        }
+
+                                        document.addEventListener("DOMContentLoaded", function () {
+                                            document.getElementById('quantity').max = getMaxQuantity();
+                                        });
+
+                                        function closePopup() {
+                                            var warningModal = bootstrap.Modal.getInstance(document.getElementById('updatePopup'));
+                                            if (warningModal) {
+                                                warningModal.hide();
+                                            }
+                                        }
+
+
+                                        // When user manually changes the quantity input
+                                        document.getElementById("quantity")?.addEventListener("input", function () {
+                                            document.getElementById("quantityInputHidden").value = this.value;
+                                            document.getElementById("quantityInputHiddenBuyNow").value = this.value;
+                                        });
 
 
 
         </script>
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     </body>
+    <c:if test="${not empty sessionScope.message}">
+        <c:remove var="message" scope="session"/>
+    </c:if>
 </html>

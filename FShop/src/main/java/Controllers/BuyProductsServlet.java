@@ -108,100 +108,84 @@ public class BuyProductsServlet extends HttpServlet {
                 List<Cart> cartSelected = new ArrayList<>();
                 if (url.equalsIgnoreCase("Cart")) {
                     String selectedProductIds[] = request.getParameterValues("cartSelected");
-                    if (add == null) {
-                        session.setAttribute("message", "Please add your address before order");
-                        response.sendRedirect("CartView.jsp");
-                    } else {
-                        if (cus.getPhoneNumber() == null || cus.getPhoneNumber().equals("")) {
-                            session.setAttribute("message", "Please add your phone number before order");
-                            response.sendRedirect("CartView.jsp");
-                        } else {
-                            String address = add.getAddressDetails();
-                            int count = 0;
-                            long totalAmount = 0;
-                            for (int i = 0; i < cart.size(); i++) {
-                                for (String selectedProductId : selectedProductIds) {
-                                    if (cart.get(i).getProductID() == Integer.parseInt(selectedProductId)) {
-                                        cartSelected.add(cart.get(i));
-                                        totalAmount += cart.get(i).getPrice() * cart.get(i).getQuantity();
-                                        count++;
-                                        System.out.println(cart.get(i).getFullName());
-                                    }
-                                }
+                    int count = 0;
+                    long totalAmount = 0;
+                    for (int i = 0; i < cart.size(); i++) {
+                        for (String selectedProductId : selectedProductIds) {
+                            if (cart.get(i).getProductID() == Integer.parseInt(selectedProductId)) {
+                                cartSelected.add(cart.get(i));
+                                totalAmount += cart.get(i).getPrice() * cart.get(i).getQuantity();
+                                count++;
+                                System.out.println(cart.get(i).getFullName());
                             }
-                            session.setAttribute("cartSelected", cartSelected);
-                            session.setAttribute("totalAmount", totalAmount);
-                            session.setAttribute("shipAddress", address);
-                            session.setAttribute("numOfItems", count);
-                            request.getRequestDispatcher("CheckoutView.jsp").forward(request, response);
                         }
                     }
+                    if (totalAmount > 100000000) {
+                        session.setAttribute("message", "total amount too big");
+                        response.sendRedirect("cart");
+                    } else {
+                        if (add == null) {
+                            session.setAttribute("message", "Please add your address before order");
+                            response.sendRedirect("CartView.jsp");
+                        } else {
+                            if (cus.getPhoneNumber() == null || cus.getPhoneNumber().equals("")) {
+                                session.setAttribute("message", "Please add your phone number before order");
+                                response.sendRedirect("CartView.jsp");
+                            } else {
+                                String address = add.getAddressDetails();
+
+                                session.setAttribute("cartSelected", cartSelected);
+                                session.setAttribute("totalAmount", totalAmount);
+                                session.setAttribute("shipAddress", address);
+                                session.setAttribute("numOfItems", count);
+                                session.setAttribute("url", url);
+                                request.getRequestDispatcher("CheckoutView.jsp").forward(request, response);
+
+                            }
+                        }
+                    }
+
                 } else if (url.equalsIgnoreCase("buyNow")) {
                     String productSelected = request.getParameter("productSelected");
+                    int id = Integer.parseInt(productSelected);
                     String quantity = request.getParameter("quantity");
-                    if (add == null) {
-                        session.setAttribute("message", "Please add your address before order");
-                        response.sendRedirect("ProductDetailServlet?id=" + Integer.parseInt(productSelected));
+                    int quantityInput = Integer.parseInt(quantity);
+                    Product pd = p.getProductByID(id);
+                    if (pd.getPrice() * quantityInput > 100000000) {
+                        session.setAttribute("message", "total amount too big");
+                        response.sendRedirect("ProductDetailServlet?id=" + id);
                     } else {
-                        if (cus.getPhoneNumber() == null || cus.getPhoneNumber().equals("")) {
+                        if (add == null) {
+                            session.setAttribute("message", "Please add your address before order");
+                            response.sendRedirect("ProductDetailServlet?id=" + id);
+                        } else if (cus.getPhoneNumber() == null || cus.getPhoneNumber().equals("")) {
                             session.setAttribute("message", "Please add your phone number before order");
-                            response.sendRedirect("ProductDetailServlet?id=" + Integer.parseInt(productSelected));
+                            response.sendRedirect("ProductDetailServlet?id=" + id);
                         } else {
                             String address = add.getAddressDetails();
-                            int count = 0;
-                            long totalAmount = 0;
-                            int id = Integer.parseInt(productSelected);
-                            Product pd = p.getProductByID(id);
-                            int quantityInput = Integer.parseInt(quantity);
-                            cartSelected.add(new Cart(id, quantityInput, pd.getImage(), pd.getFullName(), pd.getPrice(), pd.getCategoryId()));
-                            totalAmount = pd.getPrice() * quantityInput;
-                            count = 1;
-                            session.setAttribute("cartSelected", cartSelected);
-                            session.setAttribute("totalAmount", totalAmount);
-                            session.setAttribute("shipAddress", address);
-                            session.setAttribute("numOfItems", count);
-                            request.getRequestDispatcher("CheckoutView.jsp").forward(request, response);
+                            boolean existsInCart = false;
+                            for (Cart c : cart) {
+                                if (c.getProductID() == id) {
+                                    existsInCart = true;
+                                    break;
+                                }
+                            }
+                            if (existsInCart) {
+                                session.setAttribute("message", "You had this product in your cart. Go to your cart to checkout.");
+                                response.sendRedirect("ProductDetailServlet?id=" + id);
+                            } else {
+                                cartSelected.add(new Cart(id, quantityInput, pd.getImage(), pd.getFullName(), pd.getPrice(), pd.getCategoryId()));
+                                session.setAttribute("cartSelected", cartSelected);
+                                session.setAttribute("totalAmount", pd.getPrice() * quantityInput);
+                                session.setAttribute("shipAddress", address);
+                                session.setAttribute("numOfItems", 1);
+                                session.setAttribute("url", url);
+                                request.getRequestDispatcher("CheckoutView.jsp").forward(request, response);
+
+                            }
                         }
                     }
                 }
-
-//            if (add == null) {
-//                session.setAttribute("message", "Please add your address before order");
-//                response.sendRedirect("CartView.jsp");
-//            } else {
-//                if (cus.getPhoneNumber() == null || cus.getPhoneNumber().equals("")) {
-//                    session.setAttribute("message", "Please add your phone number before order");
-//                    response.sendRedirect("CartView.jsp");
-//                } else {
-//                    String address = add.getAddressDetails();
-//                    int count = 0;
-//                    long totalAmount = 0;
-//                    if (url.equalsIgnoreCase("Cart")) {
-//                        for (int i = 0; i < cart.size(); i++) {
-//                            for (String selectedProductId : selectedProductIds) {
-//                                if (cart.get(i).getProductID() == Integer.parseInt(selectedProductId)) {
-//                                    cartSelected.add(cart.get(i));
-//                                    totalAmount += cart.get(i).getPrice() * cart.get(i).getQuantity();
-//                                    count++;
-//                                    System.out.println(cart.get(i).getFullName());
-//                                }
-//                            }
-//                        }
-//                    } else if (url.equalsIgnoreCase("buyNow")) {
-//                        int id = Integer.parseInt(productSelected);
-//                        Product pd = p.getProductByID(id);
-//                        int quantityInput = Integer.parseInt(quantity);
-//                        cartSelected.add(new Cart(id, quantityInput, pd.getImage(), pd.getFullName(), pd.getPrice(), pd.getCategoryId()));
-//                        totalAmount = pd.getPrice() * quantityInput;
-//                        count = 1;
-//                    }
-//                    session.setAttribute("cartSelected", cartSelected);
-//                    session.setAttribute("totalAmount", totalAmount);
-//                    session.setAttribute("shipAddress", address);
-//                    session.setAttribute("numOfItems", count);
-//                    request.getRequestDispatcher("CheckoutView.jsp").forward(request, response);
-//                }
-//            }
             } else if (action.equals("confirm")) {
                 String fullname = request.getParameter("fullname");
                 String phone = request.getParameter("phone");
@@ -210,6 +194,8 @@ public class BuyProductsServlet extends HttpServlet {
                 session.setAttribute("order", new Order(fullname, phone, address));
                 request.getRequestDispatcher("ConfirmView.jsp").forward(request, response);
             } else if (action.equals("placeOrder")) {
+                String urlBuy = (String) session.getAttribute("url");
+                System.out.println("URL" + urlBuy);
                 long totalAmount = Long.parseLong(request.getParameter("totalAmount"));
                 Order o = (Order) session.getAttribute("order");
                 o.setAccountID(cus.getId());
@@ -219,8 +205,11 @@ public class BuyProductsServlet extends HttpServlet {
                 for (Cart c : cartSelected) {
                     od.addOrderDetail(od.getNewestOrderID(), c.getProductID(), c.getQuantity(), c.getPrice());
                     od.subtractQuantityAfterBuy(c.getProductID(), c.getQuantity());
-                    ca.deleteProductOnCart(c.getProductID(), cus.getId());
+                    if (!urlBuy.equalsIgnoreCase("buyNow")) {
+                        ca.deleteProductOnCart(c.getProductID(), cus.getId());
+                    }
                 }
+
                 session.setAttribute("orderStatus", "success");
                 session.setAttribute("numOfProCartOfCus", ca.getNumberOfProduct(cus.getId()));
                 //gui mail xac nhan don hang thanh cong
@@ -234,10 +223,9 @@ public class BuyProductsServlet extends HttpServlet {
         } else {
             response.sendRedirect("customerLogin");
         }
-
     }
-
     //phuong thuc gui mail
+
     private void sendOrderConfirmationEmail(Customer customer, Order order, List<Cart> cartItems, long totalAmount) {
         try {
             Email email = new Email();

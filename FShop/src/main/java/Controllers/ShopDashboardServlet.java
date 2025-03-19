@@ -63,18 +63,13 @@ public class ShopDashboardServlet extends HttpServlet {
             throws ServletException, IOException {
         try {
             ProductDAO productDAO = new ProductDAO();
-            // Lấy dữ liệu từ DAO
             Map<String, Object> stats = productDAO.getDashboardStats();
-            List<Map<String, Object>> weeklySalesPhone = productDAO.getWeeklySales("Phone");
-            List<Map<String, Object>> weeklySalesLaptop = productDAO.getWeeklySales("Laptop");
-            List<Map<String, Object>> topProducts = productDAO.getTopSellingProducts();
+            List<Map<String, Object>> newProducts = productDAO.getNewProducts(); // Lấy danh sách sản phẩm mới
             List<Map<String, Object>> newCustomers = productDAO.getNewCustomers();
 
-            // Đưa dữ liệu vào request để truyền sang JSP
+            // Đưa dữ liệu vào request
             request.setAttribute("stats", stats);
-            request.setAttribute("weeklySalesPhone", weeklySalesPhone);
-            request.setAttribute("weeklySalesLaptop", weeklySalesLaptop);
-            request.setAttribute("topProducts", topProducts);
+            request.setAttribute("newProducts", newProducts);
             request.setAttribute("newCustomers", newCustomers);
 
             // Chuyển hướng đến JSP

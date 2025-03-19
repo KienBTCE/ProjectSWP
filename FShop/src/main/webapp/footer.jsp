@@ -24,16 +24,6 @@
                         <h1>Sign Up To Our Newsletter.</h1>
                         <p>Be the first to hear about the latest offers.</p>
                     </div>
-                    <div class="col-md-6" style="padding: 10px;">
-                        <form action="" style="display: flex; column-gap: 20px; align-items: center;">
-                            <input type="text" placeholder="Your Email" 
-                                   style="width: 380px; height: 40px; border: solid white 1px; background-color: black; color: white; padding-left: 10px; opacity: 0.8;">
-                            <button type="submit" 
-                                    style="background-color: #0156ff; color: white; border-radius: 20px; width: 140px; height: 40px; border: #0156ff 1px;">
-                                Subscribe
-                            </button>
-                        </form>
-                    </div>
                 </div>
             </div>
             <div class="container" style="color: white;">
@@ -122,20 +112,7 @@
             </div>
             <div class="container" style="color: white;">
                 <div class="row lastFooter" style="display: flex; align-items: center; padding: 20px 0;">
-                    <div class="col-md-4 footer-icons" style="display: flex; align-items: center;">
-                        <img src="assets/imgs/FooterImg/z6116371726666_cbbf6ee34516c774226f5f87890a30e4.jpg" alt="" style="width: 27px; margin-right: 5px;">
-                        <img src="assets/imgs/FooterImg/z6116372812657_8765105253e69e58580e781208f33a24.jpg" alt="" style="width: 30px; margin-right: 5px;">
-                    </div>
-                    <div class="col-md-4 text-center" style="text-align: center;">
-                        <div class="payment" style="display: flex; justify-content: center; column-gap: 10px;">
-                            <img src="./assets/imgs/FooterImg/paypal.jpg" alt="" style="border-radius: 5px; width: 50px; height: auto; margin: 0 5px;">
-                            <img src="./assets/imgs/FooterImg/visa.jpg" alt="" style="border-radius: 5px; width: 50px; height: auto; margin: 0 5px;">
-                            <img src="./assets/imgs/FooterImg/2Tron.jpg" alt="" style="border-radius: 5px; width: 50px; height: auto; margin: 0 5px;">
-                            <img src="./assets/imgs/FooterImg/dissco.jpg" alt="" style="border-radius: 5px; width: 50px; height: auto; margin: 0 5px;">
-                            <img src="./assets/imgs/FooterImg/ame.jpg" alt="" style="border-radius: 5px; width: 50px; height: auto; margin: 0 5px;">
-                        </div>
-                    </div>
-                    <div class="col-md-4" style="text-align: right;">
+                    <div class="col-md-4" style="text-align: left;">
                         <p class="copyright" style="color: gray; font-size: 13px;">Copyright © 2020 Shop Pty. Ltd.</p>
                     </div>
                 </div>

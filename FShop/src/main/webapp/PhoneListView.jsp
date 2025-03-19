@@ -13,6 +13,7 @@
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>JSP Page</title>
         <!--<link rel="stylesheet" href="assets/css/bootstrap.css"/>-->
+
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
 
         <!-- Font Awesome for icons -->
@@ -98,7 +99,8 @@
                 display: flex;
                 flex-direction: column;
             }
-               .star-rating {
+
+            .star-rating {
                 display: flex;
                 align-items: center;
                 color: #ffcc00;
@@ -164,12 +166,10 @@
 
                         <div class="show-product row col-md-10">
                             <!--===================================================-->
-                        <c:forEach var="i" begin="1" end="${numberRow}" step="1">
-
                             <div class="section-content">
-
-                                <c:forEach items="${products}" var="p" varStatus="status">
-                                    <c:if test="${status.index >= (i * 4 - 4) && status.index < (i * 4)}">
+                                <div class="row">
+                                <c:forEach items="${dataMap.products}" var="p" varStatus="status">
+                                    <div class="col-md-3 mb-4"> 
                                         <a class="frame-represent" href="ProductDetailServlet?id=${p.getProductId()}">
                                             <img src="assets/imgs/Products/${p.getImage()}" width="150px" height="150px" alt="alt"/>
                                             <div class="star-rating">
@@ -188,11 +188,10 @@
                                             <h6>${p.getFullName()}</h6>
                                             <p>${p.getPriceFormatted()}</p>
                                         </a>
-                                    </c:if>
+                                    </div>
                                 </c:forEach>
-
                             </div>
-                        </c:forEach>
+                        </div>
                         <!--===================================================-->
                     </div>
                 </div>

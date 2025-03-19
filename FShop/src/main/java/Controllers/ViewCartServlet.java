@@ -73,16 +73,16 @@ public class ViewCartServlet extends HttpServlet {
             List<Cart> cartList = c.getCartOfAccountID(cus.getId());
             System.out.println(cus.getId());
             List<Product> pList = p.getAllProducts();
-            for (Product product : pList) {
-//                System.out.println( product.getFullName() +  " " + product.getStock());
-
-                for (Cart cart : cartList) {
-                    //System.out.println(cart.getFullName());
-                    if (product.getStock() == 0 && product.getProductId() == cart.getProductID()) {
-                        cart.setQuantity(product.getStock());
-                    }
+            for (Cart cart : cartList) {
+                Product product = p.getProductByID(cart.getProductID());
+                if (product.getStock() == 0) {
+                    cart.setQuantity(0);
+                } else if (product.getStock() > 0 && (product.getStock() < cart.getQuantity())) {
+                    cart.setQuantity(product.getStock());
+                    c.updateProductQuantity(cart.getProductID(), product.getStock(), cus.getId());
                 }
             }
+
             session.setAttribute(
                     "cartList", cartList);
             request.getRequestDispatcher(

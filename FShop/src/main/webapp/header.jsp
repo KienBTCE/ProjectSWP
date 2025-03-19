@@ -204,7 +204,7 @@
                                 <a href="Smartphone">Smartphone</a>
                             </li>
                             <li>
-                                <a href="#">Accessories</a>
+                                <a href="Accessory">Accessories</a>
                             </li>
                         </ul>
                         <!--<input type="text" id="searchInput" class="form-control search-box" placeholder="Find by name ..." value="${searchValue}">-->
@@ -230,7 +230,11 @@
                                 <c:if test="${sessionScope.customer != null}">
                                     <a href="viewCustomerProfile">
                                         <c:if test="${sessionScope.customer.getAvatar().equals('') == true}">
+<!--<<<<<<< HEAD
                                             <img width="30px" src="assets/imgs/icon/user (3).png" alt="default">
+=======-->
+                                            <img width="30px" src="assets/imgs/CustomerAvatar/defaut.jpg" alt="default">
+<!-->>>>>>> main-->
                                         </c:if>   
                                         <c:if test="${sessionScope.customer.getAvatar().equals('') == false}">
                                             <img style="border-radius: 50%;" width="40px" height="40px" src="assets/imgs/CustomerAvatar/${sessionScope.customer.getAvatar()}" alt="default">
@@ -304,7 +308,7 @@
         </script>
         <script src="assets/js/bootstrap.bundle.min.js"></script>
         <script>
-            document.addEventListener("DOMContentLoaded", function () {
+                        document.addEventListener("DOMContentLoaded", function () {
                 const notifBtn = document.querySelector('.btn-notif');
                 notifBtn.addEventListener('click', function () {
                     fetch('NotificationServlet?ajax=true')
@@ -359,6 +363,72 @@
                             });
                 });
             });
+            document.addEventListener("DOMContentLoaded", function () {
+                // Hàm lấy giá trị của tham số từ URL
+                function getParameterByName(name) {
+                    let urlParams = new URLSearchParams(window.location.search);
+                    return urlParams.get(name) || "";
+                }
+
+                // Lấy giá trị của tham số "name" và đặt vào input
+                document.getElementById("searchInput").value = getParameterByName("name");
+                            });
+        </script>
+                            <script  src="assets/js/bootstrap.bun dl e.min.js"></script>
+        <script>
+                                    document.addEventListener("DOMCo ntentLoaded",  function () {
+                                            const notifBtn  =  document.querySelector('.btn-notif');
+                                    notifBtn.addEventListener('click',  funct ion  () {
+                    fetch('NotificationServlet?ajax=true') 
+                                            .then(response  =>  response.json())                             .then(d at a  =>  {
+                                            console.log("Received data:",  data);  // Kiểm tra JSON trong console
+                                            const notificationList  =  document.getEle mentById("notific ationList");
+                                    notification List.innerHTML  =  "";
+                                    if  (data.replies &&  Array.isA rray(da ta. replies) &&  data.replies.length >  0) {
+                                            data.replies.forEach(( reply,  index)  =>  {
+                                            let productId  =  data.productId[index] ||  "";
+                            // Tạo thẻ <a> để hiển  th ị thông báo
+                            const aElem  =  document.createElement('a');
+                            aElem.href  =  "ProductDetailServlet?id=" +  productId;
+                            aElem.classList.add('list-group-item',  'list-group-item-action');
+                            aElem.innerHTML  =  `
+    <div class="d-flex w-100 justify-content-between">
+        <h6 class="mb-1">New reply From Fshop</h6>
+        <small class="${reply.isRead ? 'text-muted' : 'text-danger'}">
+           
+        </small>
+    </div>
+    <p class="mb-1">${reply.answer}</p>
+            `;<!--${reply.isRead ? "Viewed" : "Not viewed yet"}-->
+                    
+        aElem.addEventListener('click', function (event) {
+                    event.preventDefault();
+
+                    fetch("NotificationServlet", {
+                        method: "POST",
+                        headers: {"Content-Type": "application/x-www-form-urlencoded"},
+                        body: "repliesID=" + reply.replyID
+                    }).then(response => response.text())
+                            .then(() => {
+                                window.location.href = "ProductDetailServlet?id=" + productId;
+                            })
+                            .catch(error => console.error("Error updating reply status:", error));
+                });
+
+                notificationList.appendChild(aElem);
+            });
+        } else {
+            notificationList.innerHTML = '<p class="text-muted">No new comments.</p>';
+        }
+    })
+    .catch(error => {
+        console.error('Error fetching unread replies:', error);
+        document.getElementById("notificationList").innerHTML = '<p class="text-muted">Error loading data</p>';
+    });
+});
+});
+
+
 
 
         </script>

@@ -175,7 +175,7 @@ public class CustomerDAO {
         }
         return 0;
     }
-    
+
     public int checkGoogleEmailExisted(String email) {
         try {
             PreparedStatement pr = connector.prepareStatement("SELECT * FROM Customers WHERE Email = ? AND IsDeleted = 0;");
@@ -193,18 +193,12 @@ public class CustomerDAO {
     public int addNewCustomer(Customer ctm) {
         try {
             PreparedStatement pr = connector.prepareStatement(
-                    "INSERT INTO Customers (FullName, Birthday, [Password], PhoneNumber, Email, Gender, CreatedDate, GoogleID, IsBlock, IsDeleted, Avatar) "
-                    + "VALUES (?, ?, ?, ?, ?, ?, GETDATE(), '', ?, ?, ?);"
+                    "INSERT INTO Customers (FullName, [Password], Email, CreatedDate, GoogleID, IsBlock, IsDeleted, Avatar) "
+                    + "VALUES (?, ?, ?, GETDATE(), '', 0, 0, '');"
             );
             pr.setString(1, ctm.getFullName());
-            pr.setString(2, ctm.getBirthday());
-            pr.setString(3, getMD5(ctm.getPassword()));
-            pr.setString(4, ctm.getPhoneNumber());
-            pr.setString(5, ctm.getEmail());
-            pr.setString(6, ctm.getGender());
-            pr.setInt(7, ctm.getIsBlock()); // Giá trị mặc định của IsBlock
-            pr.setInt(8, ctm.getIsDeleted()); // Giá trị mặc định của IsDeleted
-            pr.setString(9, ctm.getAvatar());
+            pr.setString(2, getMD5(ctm.getPassword()));
+            pr.setString(3, ctm.getEmail());
 
             int rs = pr.executeUpdate();
             return rs;
@@ -389,6 +383,45 @@ public class CustomerDAO {
 
         return list;
 
+    }
+
+    public Customer getCustomerByEmail(String email) {
+        Customer customer = null;
+        String sql = "SELECT * FROM Customers WHERE LOWER(Email) = LOWER(?)";
+
+        try ( PreparedStatement ps = connector.prepareStatement(sql)) {
+
+            if (connector == null) {
+                System.out.println("Database connection failed!");
+                return null;
+            }
+
+            ps.setString(1, email.trim());
+            ResultSet rs = ps.executeQuery();
+
+            if (rs.next()) {
+                System.out.println("User found: " + rs.getString("Email")); // Debugging log
+                customer = new Customer(
+                        rs.getInt("CustomerID"),
+                        rs.getString("FullName"),
+                        rs.getString("Password"),
+                        rs.getString("Birthday"),
+                        rs.getString("Gender"),
+                        rs.getString("PhoneNumber"),
+                        rs.getString("Email"),
+                        rs.getString("CreatedDate"),
+                        rs.getString("GoogleID"),
+                        rs.getInt("IsBlock"),
+                        rs.getInt("IsDeleted"),
+                        rs.getString("Avatar")
+                );
+            } else {
+                System.out.println("No user found for email: " + email);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return customer;
     }
 
     public static void main(String[] args) {

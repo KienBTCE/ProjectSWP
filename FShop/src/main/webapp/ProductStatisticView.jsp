@@ -21,6 +21,7 @@
         <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
         <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
         <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+        
         <style>
             .container {
                 display: flex;
@@ -37,42 +38,68 @@
                 padding: 15px;
                 border-radius: 10px;
                 box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
-                width: 35%;
+                width: 40%;
+                min-width: 400px; /* Đảm bảo không bị bó hẹp */
             }
+
             canvas {
                 max-height: 300px;
+                max-width: 100%; /* Đảm bảo không bị tràn */
             }
+
+            .truncate-text {
+                white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis;
+                max-width: 200px; /* Giới hạn chiều dài chữ */
+                display: inline-block;
+            }
+
             h3 {
                 margin-bottom: 10px;
             }
             body {
                 display: flex;
-                background-color: white;
-                font-family: 'Poppins', sans-serif;
-                background: #f4f7fc;
             }
 
             .sidebar {
                 width: 250px;
-                background: linear-gradient(white, #6a11cb, #2575fc);
-                color: white;
-                padding: 20px;
-                min-height: 100vh;
-                box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.1);
+                height: 700px;
+                background: #FFFFFF;
+                color: black;
+                padding-top: 20px;
+                box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.3);
+                transform: translateZ(0);
+                position: relative;
+                z-index: 10;
+                border-radius: 10px;
+                margin-top: 10px;
             }
+
             .sidebar a {
-                color: white;
+                color: #7A7D90;
                 text-decoration: none;
-                display: block;
                 padding: 10px;
-                border-radius: 5px;
+                display: block;
             }
+
             .sidebar a:hover {
-                background: rgba(255, 255, 255, 0.2);
+                background: #7D69FF;
+                color: white;
+                width: 90%;
+                font-weight: bold;
+
+                border-top-right-radius: 10px;
+                border-bottom-right-radius: 10px;
+                border-top-left-radius: 0;
+                border-bottom-left-radius: 0;
+
             }
+
             .content {
                 flex-grow: 1;
                 padding: 12px;
+                margin-left: 250px;
             }
 
             .header {
@@ -204,17 +231,12 @@
                 padding: 5px 10px;
             }
 
+
         </style>
     </head>
     <body>
-        <div class="sidebar">
-            <h3><img src="assets/imgs/Dashboard/Group 1521.svg" class="logo-side-bar"></h3>
-            <a href="ShopDashboardServlet"><i class="fas fa-store"></i> Shop Management</a>
-            <a href="CustomerListServlet"><i class="fas fa-users"></i> Customer Management</a>
-            <a href="ProductListServlet"><i class="fas fa-box"></i> Product Management</a>
-            <a href="ProductStatisticServlet"><i class="fas fa-chart-bar"></i> Product Statistic</a>
-        </div>
-        <div class="content">
+        <jsp:include page="SidebarDashboard.jsp"></jsp:include>
+            <div class="content">
             <jsp:include page="HeaderDashboard.jsp"></jsp:include>
             <div class ="container">
                 <div class="chart-box">
@@ -233,6 +255,7 @@
                     <h3>Sales by Category</h3>
                     <canvas id="categorySalesChart"></canvas>
                 </div>
+                
             </div>
         </div>
 
@@ -258,6 +281,39 @@
                 const colors = ['rgba(255, 99, 132, 0.6)', 'rgba(54, 162, 235, 0.6)', 'rgba(255, 206, 86, 0.6)', 'rgba(75, 192, 192, 0.6)', 'rgba(153, 102, 255, 0.6)', 'rgba(255, 159, 64, 0.6)'];
                 return Array.from({length: count}, (_, i) => colors[i % colors.length]);
             }
+
+            function renderChart(canvasId, type, label, labels, values) {
+                // Giới hạn số ký tự tối đa hiển thị trên biểu đồ
+                const maxLength = 20;
+                const formattedLabels = labels.map(name => name.length > maxLength ? name.substring(0, maxLength) + "..." : name);
+
+                new Chart(document.getElementById(canvasId), {
+                    type: type,
+                    data: {
+                        labels: formattedLabels,
+                        datasets: [{
+                                label: label,
+                                data: values,
+                                backgroundColor: getRandomColors(values.length)
+                            }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        scales: type === 'bar' || type === 'line' ? {y: {beginAtZero: true}} : {},
+                        plugins: {
+                            legend: {display: false},
+                            tooltip: {
+                                callbacks: {
+                                    title: (tooltipItems) => labels[tooltipItems[0].dataIndex] // Hiển thị tên đầy đủ khi hover
+                                }
+                            }
+                        }
+                    }
+                });
+            }
+
+
         </script>
     </body>
 </html>

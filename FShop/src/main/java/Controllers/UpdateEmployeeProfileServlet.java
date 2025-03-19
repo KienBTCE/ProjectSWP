@@ -69,7 +69,7 @@ public class UpdateEmployeeProfileServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        request.getRequestDispatcher("UpdateEmployeeProfile.jsp").forward(request, response);
     }
 
     /**
@@ -104,10 +104,14 @@ public class UpdateEmployeeProfileServlet extends HttpServlet {
         em.setPhoneNumber(phoneNumber);
         em.setBirthday(date);
 
+        String uploadPath = getServletContext().getRealPath("/");
+        uploadPath = uploadPath.replace("target", "src");
+        uploadPath = uploadPath.replace("FShop-1.0-SNAPSHOT", "main");
+        uploadPath += "webapp\\assets\\imgs\\EmployeeAvatar\\";
         if (img != null && img.getSize() > 0) {
             em.setAvatar(em.getEmployeeId() + ".jpg");
             for (Part part : request.getParts()) {
-                part.write("E:\\HocTap\\Ky5\\ProjectSWP\\FShop\\src\\main\\webapp\\assets\\imgs\\EmployeeAvatar\\" + em.getEmployeeId() + ".jpg");
+                part.write(uploadPath + em.getEmployeeId() + ".jpg");
             }
             try {
                 Thread.sleep(2500); // 15 giây = 15000 mili giây

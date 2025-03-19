@@ -6,6 +6,8 @@ package Controllers;
 
 import DAOs.OrderDAO;
 import DAOs.OrderDetailDAO;
+import Models.Order;
+import Models.OrderDetail;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -65,6 +67,8 @@ public class ViewOrderDetailsForCustomer extends HttpServlet {
         System.out.println(id);
         OrderDAO o = new OrderDAO();
         OrderDetailDAO od = new OrderDetailDAO();
+        Order order = o.getOrderByID(id);
+        System.out.println(order.getTotalAmount());
         session.setAttribute("order", o.getOrderByID(id));  
         session.setAttribute("orderDetail", od.getOrderDetail(id));
         request.setAttribute("profilePage", "OrderDetailsForCustomerView.jsp");

@@ -6,19 +6,30 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>Create Product</title>
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+        <style>
+            .content {
+                flex-grow: 1;
+                padding: 12px;
+                display: flex;
+                flex-direction: column;
+                gap: 20px;
+                margin-left: 250px;
+            }
+        </style>
     </head>
     <body>
-        <div class="container mt-4">
-            <h3>Create New Product</h3>
-
-            <form action="CreateProductServlet" method="get">
-
+        <jsp:include page="SidebarDashboard.jsp"></jsp:include>
+            <div class="content">
+            <jsp:include page="HeaderDashboard.jsp"></jsp:include>
+                <h3>Create New Product</h3>
+                <form action="CreateProductServlet" method="post" enctype="multipart/form-data">
+                    <input type="hidden" name="categoryName" value="${categoryName}" />
                 <!-- Category Selection -->
                 <div class="mb-3">
                     <label class="form-label">Category</label>
-                    <select class="form-select" name="categoryName" id="categoryName" required onchange="this.form.submit()">
+                    <select class="form-select" name="categoryName" id="categoryName" required>
                         <c:forEach var="category" items="${categories}">
-                            <option value="${category}" ${category == categoryName ? 'selected' : ''}>${category}</option>
+                            <option value="CreateProductServlet?name=${category}" ${category == categoryName ? 'selected' : ''}>${category}</option>
                         </c:forEach>
                     </select>
                 </div>
@@ -60,6 +71,7 @@
                                 <div class="mb-2 row align-items-center">
                                     <div class="col-sm-4">
                                         <label class="form-label fw-bold">${attr.attributeName}</label>
+                                        <input type="hidden" name="attributeId" value="${attr.attributeId}" />
                                     </div>
                                     <div class="col-sm-8">
                                         <input type="text" class="form-control" name="attributeInfor_${attr.attributeId}" 
@@ -114,7 +126,14 @@
 
                 <button type="submit" class="btn btn-primary">Create Product</button>
             </form>
-        </div>
-        
+        </div>   
     </body>
+    <script>
+        document.getElementById("categoryName").addEventListener("change", function () {
+            let url = this.value;
+            if (url) {
+                window.location.href = url;
+            }
+        });
+    </script>
 </html>

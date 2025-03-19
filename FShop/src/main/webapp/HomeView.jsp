@@ -25,8 +25,15 @@
             .gap-section{
                 margin-bottom: 50px;
             }
-            .banner-content img{
-                width: 100%;
+            .banner-content {
+                position: relative;
+                overflow: hidden;
+            }
+
+            #banner {
+                display: block;
+                transition: opacity 0.5s ease-in-out;
+                border-radius: 10px;
             }
 
             .title-content{
@@ -63,7 +70,6 @@
                 transition: 0.3s;
             }
 
- 
             .title-content a{
                 text-decoration: none;
                 color: black;
@@ -90,17 +96,105 @@
                 opacity: 0.7;
                 text-decoration: none;
             }
+            @keyframes blink-move {
+                0% {
+                    transform: translateY(-50%) scale(1);
+                    opacity: 1;
+                }
+                50% {
+                    transform: translateY(-50%) scale(1.1);
+                    opacity: 0.7;
+                }
+                100% {
+                    transform: translateY(-50%) scale(1);
+                    opacity: 1;
+                }
+            }
+            .arrow-btn {
+                animation: blink-move 1s infinite alternate;
+                position: absolute;
+                top: 50%;
+                transform: translateY(-50%);
+                background: transparent;
+                color: lightblue;
+                font-weight: bold;
+                border: none;
+                width: 45px;
+                height: 45px;
+                border-radius: 50%;
+                font-size: 24px;
+                cursor: pointer;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                font-size: 40px;
+                transition: background 0.3s, transform 0.2s;
+            }
+
+            .arrow-btn:hover {
+                transform: translateY(-50%) scale(1.1);
+            }
+            .hi {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+            }
         </style>
     </head>
     <body>
         <jsp:include page="header.jsp"></jsp:include>
             <div class="container">
-                <!--Commit 15694d5
-                --><div class="row">
-                    <div class="gap-section banner-content">
-                        <img src="assets/imgs/Banners/image26.svg" alt="alt"/>
+                <div class="hi">
+                    <div class="row">
+                        <div class="gap-section banner-content" style="position: relative; width: fit-content; overflow: hidden;">
+                            <img id="banner" src="assets/imgs/Banners/1.jpg" alt="alt" style="width: 100%; display: block; transition: opacity 0.5s ease-in-out;" />
+                            <button id="prev" onclick="prevBanner()" class="arrow-btn" style="left: 10px;">‹</button>
+                            <button id="next" onclick="nextBanner()" class="arrow-btn" style="right: 10px;">›</button>
+                        </div>
                     </div>
                 </div>
+                <script>
+                    const images = [
+                        "assets/imgs/Banners/1.jpg",
+                        "assets/imgs/Banners/2.png",
+                        "assets/imgs/Banners/3.png"
+                    ];
+                    let currentIndex = 0;
+                    let interval;
+
+                    function updateBanner() {
+                        const banner = document.getElementById("banner");
+                        banner.style.opacity = 0; // Làm mờ trước khi đổi ảnh
+                        setTimeout(() => {
+                            banner.src = images[currentIndex];
+                            banner.style.opacity = 1; // Hiện ảnh lên mượt mà
+                        }, 300);
+                    }
+
+                    function nextBanner() {
+                        currentIndex = (currentIndex + 1) % images.length;
+                        updateBanner();
+                        resetAutoSlide();
+                    }
+
+                    function prevBanner() {
+                        currentIndex = (currentIndex - 1 + images.length) % images.length;
+                        updateBanner();
+                        resetAutoSlide();
+                    }
+
+                    function autoSlide() {
+                        interval = setInterval(nextBanner, 3000);
+                    }
+
+                    function resetAutoSlide() {
+                        clearInterval(interval);
+                        autoSlide();
+                    }
+
+                    autoSlide(); // Bắt đầu tự động chạy
+                </script>
+
                 <div class="row">
                     <h4 class="title-content"><a href="Laptop">Laptop</a></h4>
                     <div class="gap-section section-content">
@@ -122,9 +216,10 @@
                                             </c:otherwise>
                                         </c:choose>
                                     </c:forEach>
-                                                 </div>
-                                    <h6>${p.getFullName()}</h6>
-                                    <p>${p.getPriceFormatted()}</p>
+
+                                </div>
+                                <h6>${p.getFullName()}</h6>
+                                <p>${p.getPriceFormatted()}</p>
                             </a>
                         </c:if>
                     </c:forEach>
@@ -153,8 +248,11 @@
                                         </c:choose>
                                     </c:forEach>
                                 </div>
-                                    <h6>${p.getFullName()}</h6>
-                                    <p>${p.getPriceFormatted()}</p>
+
+
+                                <h6>${p.getFullName()}</h6>
+                                <p>${p.getPriceFormatted()}</p>
+
                             </a>
                         </c:if>
                     </c:forEach>
@@ -162,12 +260,14 @@
             </div>
 
             <div class="row">
-                <h4 class="title-content"><a href="Accessory">Accessories</a></h4>
+                <h4 class="title-content"><a href="Accessory Headphone">Headphone</a></h4>
                 <div class="gap-section section-content">
 
                     <c:set var="count" value="0" scope="page"></c:set>
                     <c:forEach items="${dataMap.products}" var="p" varStatus="status">
-                        <c:if test="${count < 5 and p.getCategoryId() == 9}">
+
+                        <c:if test="${count < 5 and p.getCategoryId() == 4}">
+
                             <c:set var="count" value="${count + 1}" scope="page"></c:set>
                             <a class="frame-represent" href="ProductDetailServlet?id=${p.getProductId()}">
                                 <img src="assets/imgs/Products/${p.getImage()}" width="150px" height="150px" alt="alt"/>
@@ -182,13 +282,125 @@
                                             </c:otherwise>
                                         </c:choose>
                                     </c:forEach>
-                                    <h6>${p.getFullName()}</h6>
-                                    <p>${p.getPriceFormatted()}</p>
+
+                                </div>
+                                <h6>${p.getFullName()}</h6>
+                                <p>${p.getPriceFormatted()}</p>
+
                             </a>
                         </c:if>
                     </c:forEach>
                 </div>
             </div>
+            <!--Commit 15694d5
+            --><div class="row">
+                <h5 class="title-content">Follow us on Instagram for News, Offers & More</h5>
+                <div class="gap-section section-content">
+                    <div class="frame-represent">
+                        <img src="assets/imgs/Magazines/news-1.svg" width="235px" height="150px" alt="alt"/>
+                        <div class="magazine-paragraph">
+                            <p style="width: 100%">
+                                If you’ve recently made a desktop PC or laptop purchase, you might want to consider adding peripherals to enhance your home office setup, your gaming rig, or your business workspace...
+                            </p>
+                        </div>
+                    </div>
+                    <div class="frame-represent">
+                        <img src="assets/imgs/Magazines/news-2.svg" width="235px" height="150px" alt="alt"/>
+                        <div class="magazine-paragraph">
+                            <p style="width: 100%">
+                                As a gamer, superior sound counts for a lot. You need to hear enemies tiptoeing up behind you for a sneak attack or a slight change in the atmospheric music signaling a new challenge or task...
+                            </p>
+                        </div>
+                    </div>
+                    <div class="frame-represent">
+                        <img src="assets/imgs/Magazines/news-3.svg" width="235px" height="150px" alt="alt"/>
+                        <div class="magazine-paragraph">
+                            <p style="width: 100%">
+                                If you’ve recently made a desktop PC or laptop purchase, you might want to consider adding peripherals to enhance your home office setup, your gaming rig, or your business workspace...
+                            </p>
+                        </div>
+                    </div>
+                    <div class="frame-represent">
+                        <img src="assets/imgs/Magazines/news-4.svg" width="235px" height="150px" alt="alt"/>
+                        <div class="magazine-paragraph">
+                            <p style="width: 100%">
+                                If you’ve recently made a desktop PC or laptop purchase, you might want to consider adding peripherals to enhance your home office setup, your gaming rig, or your business workspace...
+                            </p>
+                        </div>
+                    </div>
+                    <div class="frame-represent">
+                        <img src="assets/imgs/Magazines/news-5.svg" width="235px" height="150px" alt="alt"/>
+                        <div class="magazine-paragraph">
+                            <p style="width: 100%">
+                                If you’ve recently made a desktop PC or laptop purchase, you might want to consider adding peripherals to enhance your home office setup, your gaming rig, or your business workspace...
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <h4 class="title-content"><a href="Accessory Charger">Charger</a></h4>
+                <div class="gap-section section-content">
+
+                    <c:set var="count" value="0" scope="page"></c:set>
+                    <c:forEach items="${dataMap.products}" var="p" varStatus="status">
+                        <c:if test="${count < 5 and p.getCategoryId() == 5}">
+                            <c:set var="count" value="${count + 1}" scope="page"></c:set>
+                            <a class="frame-represent" href="ProductDetailServlet?id=${p.getProductId()}">
+                                <img src="assets/imgs/Products/${p.getImage()}" width="150px" height="150px" alt="alt"/>
+                                <div class="star-rating">
+                                    <c:forEach var="i" begin="1" end="5">
+                                        <c:choose>
+                                            <c:when test="${dataMap.stars != null and dataMap.stars.size() > 0 and i <= dataMap.stars[status.index].getStar()}">
+                                                <i class="fa fa-star"></i>
+                                            </c:when>
+                                            <c:otherwise>
+                                                <i class="fa fa-star text-muted"></i>
+                                            </c:otherwise>
+                                        </c:choose>
+                                    </c:forEach>
+                                </div>
+                                <h6>${p.getFullName()}</h6>
+                                <p>${p.getPriceFormatted()}</p>
+                            </a>
+                        </c:if>
+                    </c:forEach>
+                </div>
+            </div>
+
+            <div class="row">
+                <h4 class="title-content"><a href="Accessory Cable">Cable</a></h4>
+                <div class="gap-section section-content">
+
+                    <c:set var="count" value="0" scope="page"></c:set>
+                    <c:forEach items="${dataMap.products}" var="p" varStatus="status">
+                        <c:if test="${count < 5 and p.getCategoryId() == 6}">
+                            <c:set var="count" value="${count + 1}" scope="page"></c:set>
+                            <a class="frame-represent" href="ProductDetailServlet?id=${p.getProductId()}">
+                                <img src="assets/imgs/Products/${p.getImage()}" width="150px" height="150px" alt="alt"/>
+                                <div class="star-rating">
+                                    <c:forEach var="i" begin="1" end="5">
+                                        <c:choose>
+                                            <c:when test="${dataMap.stars != null and dataMap.stars.size() > 0 and i <= dataMap.stars[status.index].getStar()}">
+                                                <i class="fa fa-star"></i>
+                                            </c:when>
+                                            <c:otherwise>
+                                                <i class="fa fa-star text-muted"></i>
+                                            </c:otherwise>
+                                        </c:choose>
+                                    </c:forEach>
+                                </div>
+                                <h6>${p.getFullName()}</h6>
+                                <p>${p.getPriceFormatted()}</p>
+                            </a>
+                        </c:if>
+                    </c:forEach>
+                </div>
+            </div>
+
+
+
             <!--Commit 15694d5
             --><div class="row">
                 <h5 class="title-content">Follow us on Instagram for News, Offers & More</h5>

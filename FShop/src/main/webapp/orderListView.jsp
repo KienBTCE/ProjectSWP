@@ -50,7 +50,7 @@
             .content {
                 flex-grow: 1;
                 margin-left: 250px; /* Khoảng cách để không bị chồng lên sidebar */
-                margin-top: 80px; /* Để tránh bị header che */
+                margin-top: 120px; 
                 padding: 20px;
             }
 
@@ -59,6 +59,7 @@
                 display: flex;
                 justify-content: space-between;
                 align-items: center;
+                padding: 10px;
                 gap: 20px;
             }
 
@@ -82,87 +83,174 @@
                 font-weight: bold;
             }
 
+            .search-container {
+                display: flex;
+                align-items: center;
+                width: 100%;
+                max-width: 300px; /* Giảm kích thước tối đa */
+                background: white;
+                border-radius: 13px; /* Bo góc mềm hơn */
+                overflow: hidden;
+                border: 2px solid #7D69FF;
+                margin-bottom: 15px;
+                margin-top: 10px;
+            }
 
+            .search-input {
+                flex: 1;
+                border: none;
+                outline: none;
+                padding: 8px 12px; /* Giảm padding để nhỏ hơn */
+                font-size: 14px; /* Giảm kích thước chữ */
+                color: #555;
+            }
+
+            .search-button {
+                border: none;
+                padding: 8px 12px; /* Giảm padding của nút */
+                cursor: pointer;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                color: white;
+                font-size: 14px;
+            }
+
+            .search-button:hover {
+                background: #6454cc;
+            }
+
+            /* Định dạng bảng */
+            .order-table {
+                width: 100%;
+                border-collapse: collapse;
+                margin-top: 20px;
+            }
+
+            .order-table th, .order-table td {
+                padding: 12px;
+                text-align: left;
+                border: 1px solid #ddd;
+            }
+
+            .order-table th {
+                background-color: #f5f5f5;
+                font-weight: bold;
+            }
+
+            .order-status {
+                text-align: center;
+            }
+
+            .status {
+                padding: 5px 10px;
+                border-radius: 5px;
+            }
+
+            .waiting {
+                background-color: #ffeb3b;
+            }
+
+            .packaging {
+                background-color: #ff9800;
+            }
+
+            .waiting-delivery {
+                background-color: #2196f3;
+            }
+
+            .delivered {
+                background-color: #4caf50;
+                color: white;
+            }
+
+            .cancelled {
+                background-color: #f44336;
+                color: white;
+            }
         </style>
     </head>
     <body>
         <div class="sidebar-container">
             <jsp:include page="SidebarDashboard.jsp"></jsp:include>
+        </div>
+
+        <div class="main-layout">
+            <div class="fixed-header">
+                <jsp:include page="HeaderDashboard.jsp"></jsp:include>
+                <form action="ViewOrderListServlet" method="GET" class="search-container">
+                    <input type="text" name="search" id="searchInput" value="${searchQuery}" 
+                        placeholder="Search by Name, Phone..." class="search-input">
+                    <button type="submit" class="search-button">
+                        🔍
+                    </button>
+                </form>
             </div>
 
-            <div class="main-layout">
-                <div class="fixed-header">
-                    <div class="header-container">
-                        <form action="ViewOrderListServlet" method="GET" class="search-container">
-                            <input type="text" name="search" id="searchInput" value="${searchQuery}" 
-                               placeholder="Search by Name, Phone..." class="form-control">
-                        <button type="submit" class="btn btn-primary">
-                            <i class="fa fa-search"></i>
-                        </button>
-                    </form>
-
-                    <h2 class="header-title"><i class="fa-solid fa-box"></i> Order List</h2>
-                    <jsp:include page="HeaderDashboard.jsp"></jsp:include>
-
-                    </div>
-                </div>
-
-                <div class="content">
-                    <div class="order-container">
-                    <c:forEach items="${data}" var="order">
-                        <div class="order-card">
-                            <div class="order-header">
-                                <h5><i class="fa-solid fa-receipt"></i> Order ID: #${order.orderID}</h5>
-                            </div>
-
-                            <div class="order-details">
-                                <p><i class="fa-solid fa-user"></i> <strong>Customer:</strong> ${order.fullName}</p>
-                                <p><i class="fa-solid fa-phone"></i> <strong>Phone:</strong> ${order.phone}</p>
-                                <p><i class="fa-solid fa-map-marker-alt"></i> <strong>Address:</strong> ${order.address}</p>
-                                <p><i class="fa-solid fa-dollar-sign"></i> <strong>Total Amount:</strong> ${order.totalAmount}</p>
-                                <p><i class="fa-solid fa-calendar"></i> <strong>Order Date:</strong> ${order.orderDate}</p>
-                            </div>
-
-                            <div class="order-status">
-                                <c:choose>
-                                    <c:when test="${order.status == 1}">
-                                        <span class="status waiting">
-                                            <i class="fa-solid fa-hourglass-half"></i> Waiting For Acceptance
-                                        </span>
-                                    </c:when>
-                                    <c:when test="${order.status == 2}">
-                                        <span class="status packaging">
-                                            <i class="fa-solid fa-box"></i> Packaging
-                                        </span>
-                                    </c:when>
-                                    <c:when test="${order.status == 3}">
-                                        <span class="status waiting-delivery">
-                                            <i class="fa-solid fa-truck"></i> Waiting For Delivery
-                                        </span>
-                                    </c:when>
-                                    <c:when test="${order.status == 4}">
-                                        <span class="status delivered">
-                                            <i class="fa-solid fa-check-circle"></i> Delivered
-                                        </span>
-                                    </c:when>
-                                    <c:otherwise>
-                                        <span class="status cancelled">
-                                            <i class="fa-solid fa-times-circle"></i> Cancelled
-                                        </span>
-                                    </c:otherwise>
-                                </c:choose>
-                            </div>
-
-                            <div class="order-actions">
-                                <a href="ViewOrderDetailServlet?orderID=${order.orderID}" class="btn btn-primary">
-                                    <i class="fa-solid fa-eye"></i> View Details
-                                </a>
-                            </div>
-                        </div>
-                    </c:forEach>
+            <div class="content">
+                <div class="order-container">
+                    <table class="order-table">
+                        <thead>
+                            <tr>
+                                <th>Order ID</th>
+                                <th>Customer</th>
+                                <th>Phone</th>
+                                <th>Address</th>
+                                <th>Total Amount</th>
+                                <th>Order Date</th>
+                                <th>Status</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <c:forEach items="${data}" var="order">
+                                <tr>
+                                    <td>#${order.orderID}</td>
+                                    <td>${order.fullName}</td>
+                                    <td>${order.phone}</td>
+                                    <td>${order.address}</td>
+                                    <td>${order.totalAmount}</td>
+                                    <td>${order.orderDate}</td>
+                                    <td class="order-status">
+                                        <c:choose>
+                                            <c:when test="${order.status == 1}">
+                                                <span class="status waiting">
+                                                    <i class="fa-solid fa-hourglass-half"></i> Waiting For Acceptance
+                                                </span>
+                                            </c:when>
+                                            <c:when test="${order.status == 2}">
+                                                <span class="status packaging">
+                                                    <i class="fa-solid fa-box"></i> Packaging
+                                                </span>
+                                            </c:when>
+                                            <c:when test="${order.status == 3}">
+                                                <span class="status waiting-delivery">
+                                                    <i class="fa-solid fa-truck"></i> Waiting For Delivery
+                                                </span>
+                                            </c:when>
+                                            <c:when test="${order.status == 4}">
+                                                <span class="status delivered">
+                                                    <i class="fa-solid fa-check-circle"></i> Delivered
+                                                </span>
+                                            </c:when>
+                                            <c:otherwise>
+                                                <span class="status cancelled">
+                                                    <i class="fa-solid fa-times-circle"></i> Cancelled
+                                                </span>
+                                            </c:otherwise>
+                                        </c:choose>
+                                    </td>
+                                    <td>
+                                        <a href="ViewOrderDetailServlet?orderID=${order.orderID}" class="btn btn-primary">
+                                            <i class="fa-solid fa-eye"></i> View Details
+                                        </a>
+                                    </td>
+                                </tr>
+                            </c:forEach>
+                        </tbody>
+                    </table>
                 </div>
             </div>
         </div>
-
     </body>
 </html>

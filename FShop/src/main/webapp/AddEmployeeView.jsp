@@ -111,7 +111,7 @@
                         <div class="col-md-10" style="padding: 10px;">                       
                             <div id="overlay" class="overlay"></div>
                             <div id="popup" class="popup"></div>
-                            <form action="AddEmployee" method="post" enctype="multipart/form-data">
+                            <form action="AddEmployeeServlet" method="post" enctype="multipart/form-data">
                             <c:if test="${not empty errorMsg}">
                                 <div class="alert alert-danger text-center">${errorMsg}</div>
                             </c:if>
@@ -120,49 +120,35 @@
                                     <div class="mb-3 d-flex">
                                         <label class="form-label value" value>Role ID</label>
                                         <select class="form-select" name="txtRoleId" required>
-                                            <option value="1" ${txtRoleId == 1 ? 'selected' : ''}>1-Admin</option>
-                                            <option value="2" ${txtRoleId == 2 ? 'selected' : ''}>2-Shop Manager</option>
-                                            <option value="3" ${txtRoleId == 3 ? 'selected' : ''}>3-Order Manager</option>
-                                            <option value="4" ${txtRoleId == 4 ? 'selected' : ''}>4-Warehouse Manager</option>
+                                            <option value="2" ${txtRoleId == 2 ? 'selected' : ''}>Shop Manager</option>
+                                            <option value="3" ${txtRoleId == 3 ? 'selected' : ''}>Order Manager</option>
+                                            <option value="4" ${txtRoleId == 4 ? 'selected' : ''}>Warehouse Manager</option>
                                         </select>
                                     </div>
 
                                     <div class="mb-3 d-flex">
                                         <label class="form-label value">Full Name</label>
-                                        <input type="text" class="form-control" name="txtName" value="${txtName != null ? txtName : ''}" required>
+                                        <input type="text" class="form-control" name="txtName" value="${txtName != null ? txtName : ''}" placeholder="Enter Full Name" required>
                                     </div>
 
                                     <div class="mb-3 d-flex">
                                         <label class="form-label value">Password</label>
-                                        <input type="password" class="form-control" name="txtPass" value="${txtPass != null ? txtPass : ''}" required>
-                                    </div>
-
-                                    <div class="mb-3 d-flex">
-                                        <label class="form-label value">Birthday</label>
-                                        <input type="date" class="form-control" name="txtBirthday" value="${txtBirthday != null ? txtBirthday : ''}" required>
+                                        <input type="password" class="form-control" name="txtPass" value="${txtPass != null ? txtPass : ''}" placeholder="Enter Password" required>
                                     </div>
 
                                     <div class="mb-3 d-flex">
                                         <label class="form-label value">Phone</label>
-                                        <input type="text" class="form-control" name="txtPhoneNumber" value="${txtPhoneNumber != null ? txtPhoneNumber : ''}" required>
+                                        <input type="text" class="form-control" name="txtPhoneNumber" value="${txtPhoneNumber != null ? txtPhoneNumber : ''}" placeholder="Enter Phone Number" required>
                                     </div>
 
                                     <div class="mb-3 d-flex">
                                         <label class="form-label value">Email</label>
-                                        <input type="email" class="form-control" name="txtEmail" value="${txtEmail != null ? txtEmail : ''}" required>
-                                    </div>
-
-                                    <div class="mb-3 d-flex">
-                                        <label class="form-label value" value>Gender</label>
-                                        <select class="form-select" name="txtGender" required>
-                                            <option value="Male" ${txtGender == 'Male' ? 'selected' : ''}>Male</option>
-                                            <option value="Female" ${txtGender == 'Female' ? 'selected' : ''}>Female</option>                                  
-                                        </select>
+                                        <input type="email" class="form-control" name="txtEmail" value="${txtEmail != null ? txtEmail : ''}" placeholder="Enter Email" required>
                                     </div>
 
                                     <div class="mb-3 d-flex">
                                         <label class="form-label value">Created Date</label>
-                                        <input type="date" class="form-control" name="txtCreatedDate" value="${txtCreatedDate != null ? txtCreatedDate : ''}" required>
+                                        <input type="date" class="form-control" name="txtCreatedDate" id="createdDate" value="${txtCreatedDate != null ? txtCreatedDate : ''}" readonly>
                                     </div>
 
                                     <div class="mb-3 d-flex">
@@ -197,6 +183,13 @@
                 </div>
             </div>
             <script>
+
+                document.addEventListener("DOMContentLoaded", function () {
+                    let today = new Date();
+                    let formattedDate = today.toISOString().split('T')[0];
+                    document.getElementById("createdDate").value = formattedDate; 
+                });
+
                 function previewImage(event) {
                     var output = document.getElementById('avatarPreview');
                     if (event.target.files.length > 0) {
@@ -208,7 +201,6 @@
                     }
                 }
 
-                // Function to show popup
                 function showPopup(message, type) {
                     var popup = document.getElementById("popup");
                     var overlay = document.getElementById("overlay");
@@ -232,11 +224,10 @@
                     setTimeout(function () {
                         overlay.style.display = "none";
                         popup.style.display = "none";
-                        window.location.href = "Employee"; // Redirect to Employee page
+                        window.location.href = "ViewEmployeeServlet"; // Redirect to Employee page
                     }, 2000);
                 }
 
-                // Example: Show success or fail message
                 <c:if test="${not empty popupSuccessMsg}">
                 window.onload = function () {
                     showPopup("${popupSuccessMsg}", 'success');

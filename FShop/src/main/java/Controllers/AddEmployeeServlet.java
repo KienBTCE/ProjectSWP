@@ -9,7 +9,6 @@ import Models.Employee;
 import java.io.IOException;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.MultipartConfig;
-import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -22,7 +21,6 @@ import java.sql.Date;
  *
  * @author NguyenPVT-CE181835
  */
-@WebServlet(name = "AddEmployeeServlet", urlPatterns = {"/AddEmployee"})
 @MultipartConfig(fileSizeThreshold = 1024 * 1024 * 2, // 2MB
         maxFileSize = 1024 * 1024 * 10, // 10MB
         maxRequestSize = 1024 * 1024 * 50) // 50MB
@@ -31,7 +29,7 @@ public class AddEmployeeServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        
+
     }
 
     @Override
@@ -42,29 +40,21 @@ public class AddEmployeeServlet extends HttpServlet {
             int roleId = Integer.parseInt(request.getParameter("txtRoleId"));
             String name = request.getParameter("txtName");
             String password = request.getParameter("txtPass");
-            Date birthday = Date.valueOf(request.getParameter("txtBirthday"));
             String phone = request.getParameter("txtPhoneNumber");
             String email = request.getParameter("txtEmail");
-            String gender = request.getParameter("txtGender");
             Date createdDate = Date.valueOf(request.getParameter("txtCreatedDate"));
             int status = Integer.parseInt(request.getParameter("txtStatus"));
-            // **Lấy đường dẫn Avatar
             Part part = request.getPart("txtAvatar");
             String fileName = Paths.get(part.getSubmittedFileName()).getFileName().toString();
             String avatar = request.getParameter("currentAvatar");
-            
-            
-            
-            // **Kiểm tra email đã tồn tại chưa**
+
             if (empDAO.isEmailExists(email)) {
-                request.setAttribute("errorMsg", "Email đã tồn tại! Vui lòng chọn email khác.");
+                request.setAttribute("errorMsg", "Email already exists! Please choose another email.");
                 request.setAttribute("txtRoleId", roleId);
                 request.setAttribute("txtName", name);
                 request.setAttribute("txtPass", password);
-                request.setAttribute("txtBirthday", birthday);
                 request.setAttribute("txtPhoneNumber", phone);
                 request.setAttribute("txtEmail", email);
-                request.setAttribute("txtGender", gender);
                 request.setAttribute("txtCreatedDate", createdDate);
                 request.setAttribute("txtStatus", status);
                 request.setAttribute("currentAvatar", avatar);
@@ -72,16 +62,27 @@ public class AddEmployeeServlet extends HttpServlet {
                 return;
             }
 
-            // **2. Kiểm tra mật khẩu có hợp lệ không**
-            if (!isValidPassword(password)) {
-                request.setAttribute("errorMsg", "Mật khẩu phải có ít nhất 8 ký tự, bao gồm 1 chữ hoa và 1 ký tự đặc biệt!");
+            if (!isValidPhoneNumber(phone)) {
+                request.setAttribute("errorMsg", "Phone number must be exactly 10 digits.");
                 request.setAttribute("txtRoleId", roleId);
                 request.setAttribute("txtName", name);
                 request.setAttribute("txtPass", password);
-                request.setAttribute("txtBirthday", birthday);
                 request.setAttribute("txtPhoneNumber", phone);
                 request.setAttribute("txtEmail", email);
-                request.setAttribute("txtGender", gender);
+                request.setAttribute("txtCreatedDate", createdDate);
+                request.setAttribute("txtStatus", status);
+                request.setAttribute("currentAvatar", avatar);
+                request.getRequestDispatcher("AddEmployeeView.jsp").forward(request, response);
+                return;
+            }
+
+            if (!isValidPassword(password)) {
+                request.setAttribute("errorMsg", "Password must be at least 8 characters, including 1 uppercase letter and 1 special character!");
+                request.setAttribute("txtRoleId", roleId);
+                request.setAttribute("txtName", name);
+                request.setAttribute("txtPass", password);
+                request.setAttribute("txtPhoneNumber", phone);
+                request.setAttribute("txtEmail", email);
                 request.setAttribute("txtCreatedDate", createdDate);
                 request.setAttribute("txtStatus", status);
                 request.setAttribute("currentAvatar", avatar);
@@ -103,7 +104,7 @@ public class AddEmployeeServlet extends HttpServlet {
             }
             request.getParameter("currentAvatar");
 
-            Employee emp = new Employee(name, birthday, password, phone, email, gender, createdDate, status, avatar, roleId);
+            Employee emp = new Employee(name, null, password, phone, email, null, createdDate, status, avatar, roleId);
             int result = empDAO.AddEmployee(emp);
 
             if (result > 0) {
@@ -118,9 +119,12 @@ public class AddEmployeeServlet extends HttpServlet {
         }
     }
 
-    // **Hàm kiểm tra mật khẩu**
     private boolean isValidPassword(String password) {
         return password.matches("^(?=.*[A-Z])(?=.*[@#$%^&+=])(?=\\S+$).{8,}$");
+    }
+
+    private boolean isValidPhoneNumber(String phoneNumber) {
+        return phoneNumber.matches("\\d{10}");
     }
 
 }

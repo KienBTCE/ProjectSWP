@@ -6,6 +6,7 @@ package Controllers;
 
 import DAOs.CartDAO;
 import DAOs.ProductDAO;
+import Models.Cart;
 import Models.Customer;
 import Models.Product;
 import java.io.IOException;
@@ -107,11 +108,15 @@ public class UpdateCartServlet extends HttpServlet {
         System.out.println("Received productId: " + productId);
         System.out.println("Received quantity: " + quantity);
         Product product = p.getProductByID(productId);
+        Cart cart = c.getProductOfCart(cus.getId(), productId);
         if (product.getStock() >= quantity) {
-            c.updateProductQuantity(productId, quantity, cus.getId());
+            if (quantity > 5) {
+                session.setAttribute("message", "Sorry, you can only buy a maximum of 5 per product.");
+            } else if (quantity <= 5) {
+                c.updateProductQuantity(productId, quantity, cus.getId());
+            }
         } else if (product.getStock() < quantity) {
             session.setAttribute("message", "Sorry, the product quantity in stock is not enough.");
-
         }
     }
 
