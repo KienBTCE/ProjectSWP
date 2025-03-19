@@ -24,18 +24,23 @@ function closeModal() {
     document.getElementById("phoneModal").style.display = "none";
 }
 
-function updatePhone() {
-    let newPhone = document.getElementById("newPhoneNumber").value;
 
-    if (!newPhone.match(/^\d{10}$/)) {
-        alert("Invalid phone number. Please enter a 10-digit number.");
+function updatePhone() {
+    let newPhone = document.getElementById("newPhoneNumber").value.trim();
+    
+    // Double-check before updating
+    if (newPhone.length !== 10 || newPhone[0] !== '0' || newPhone[1] < '2' || newPhone[1] > '9' || isNaN(Number(newPhone))) {
+        alert("Invalid phone number. Please enter a valid 10-digit number starting with 0.");
         return;
     }
 
-    // C?p nh?t s? ?i?n tho?i vào giao di?n
+    // Update phone number in the UI
     document.getElementById("phoneDisplay").innerText = newPhone.slice(-2);
     document.getElementById("phoneInput").value = newPhone;
 
-    // ?óng modal
+    // Close modal
     closeModal();
 }
+
+
+

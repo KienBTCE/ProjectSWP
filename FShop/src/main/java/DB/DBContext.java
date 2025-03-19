@@ -22,7 +22,7 @@ public class DBContext {
                     + "databaseName=FSHOP;"
                     + "user=sa;" // Enter your user SQL Server
 
-                    + "password=;"
+                    + "password=admin;"
 
                     + "encrypt=true;trustServerCertificate=true";
 
