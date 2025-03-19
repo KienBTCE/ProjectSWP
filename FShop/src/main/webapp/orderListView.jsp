@@ -50,7 +50,7 @@
             .content {
                 flex-grow: 1;
                 margin-left: 250px; /* Khoảng cách để không bị chồng lên sidebar */
-                margin-top: 80px; /* Để tránh bị header che */
+                margin-top: 120px; 
                 padding: 20px;
             }
 
@@ -127,10 +127,6 @@
             </div>
 
             <div class="main-layout">
-
-
-
-
 
                 <div class="fixed-header">
 

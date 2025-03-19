@@ -91,7 +91,9 @@ public class ProductDetailServlet extends HttpServlet {
             List<ProductRating> listPro = prRateDAO.getAllProductRating(id);
             List<RatingReplies> listReplies = rrDAO.getAllRatingRepliesByProduct(id);
             if (cus != null) {
-                isOk = list.contains(cus.getId());
+                if(list.contains(cus.getId())){
+                isOk=true;
+                }
             }
             try {
 

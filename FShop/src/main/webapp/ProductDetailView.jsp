@@ -192,15 +192,15 @@
             }
 
 
-            .containerfb {
-                max-width: 768px;
+/*            .containerfb {
+                max-width: 900px;
                 width: 100%;
                 background: #ffffff;
                 padding: 25px;
                 margin: 20px auto;
                 border-radius: 10px;
                 box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.15);
-            }
+            }*/
             .profile {
                 display: flex;
                 align-items: center;
@@ -514,7 +514,7 @@
                 box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
                 padding: 25px;
                 margin-top: 40px;
-                max-width: 800px;
+                /*max-width: 1000px;*/
                 width: 100%;
                 margin-left: auto;
                 margin-right: auto;
@@ -641,6 +641,16 @@
 
             button:hover {
                 background-color: #0056b3;
+            }
+            .feedback-container {
+                background-color: #fff;
+                border-radius: 10px;
+                box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+                padding: 35px;
+                margin-top: 40px;
+/*                max-width: 800px;*/
+                width: 100%;
+
             }
 
         </style>
@@ -776,7 +786,22 @@
             </div>
             <div class="feedback-container">
                 <h3 class="feedback-title">Customer Reviews</h3>
-
+                <c:if test="${isOk}">
+                    <form id="reviewForm" method="POST" action="ProductDetailServlet">
+                        <input type="hidden" name="productId" value="${product.productId}">
+                        <input type="hidden" name="customerId" value="${customerId}">
+                        <label class="rating-label">Share your experience:</label>
+                        <div class="star-rating">
+                            <input required type="radio" name="star" value="5" id="star5"><label for="star5" class="fa fa-star"></label>
+                            <input required type="radio" name="star" value="4" id="star4"><label for="star4" class="fa fa-star"></label>
+                            <input required type="radio" name="star" value="3" id="star3"><label for="star3" class="fa fa-star"></label>
+                            <input required type="radio" name="star" value="2" id="star2"><label for="star2" class="fa fa-star"></label>
+                            <input required type="radio" name="star" value="1" id="star1"><label for="star1" class="fa fa-star"></label>
+                        </div>
+                        <textarea required name="comment" placeholder="Write your review..."></textarea>
+                        <button type="submit">Submit Review</button>
+                    </form>
+                </c:if>
                 <c:forEach var="rate" items="${dataRating}">
                     <div class="review-card">
                         <div class="profile">
@@ -810,22 +835,7 @@
                     </c:forEach>
                 </c:forEach>
 
-                <c:if test="${isOk}">
-                    <form id="reviewForm" method="POST" action="ProductDetailServlet">
-                        <input type="hidden" name="productId" value="${product.productId}">
-                        <input type="hidden" name="customerId" value="${customerId}">
-                        <label class="rating-label">Share your experience:</label>
-                        <div class="star-rating">
-                            <input required type="radio" name="star" value="5" id="star5"><label for="star5" class="fa fa-star"></label>
-                            <input required type="radio" name="star" value="4" id="star4"><label for="star4" class="fa fa-star"></label>
-                            <input required type="radio" name="star" value="3" id="star3"><label for="star3" class="fa fa-star"></label>
-                            <input required type="radio" name="star" value="2" id="star2"><label for="star2" class="fa fa-star"></label>
-                            <input required type="radio" name="star" value="1" id="star1"><label for="star1" class="fa fa-star"></label>
-                        </div>
-                        <textarea required name="comment" placeholder="Write your review..."></textarea>
-                        <button type="submit">Submit Review</button>
-                    </form>
-                </c:if>
+
             </div>
 
             <!-- Popup Notification (if needed) -->

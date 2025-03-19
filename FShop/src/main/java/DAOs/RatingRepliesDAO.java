@@ -81,6 +81,21 @@ public class RatingRepliesDAO {
         return list;
     }
 
+    public  int UpdateReply(int replyID, String Answer){
+    String query = "UPDATE RatingReplies SET Answer = ? WHERE ReplyID = ?";
+
+        try (
+                 PreparedStatement stmt = connector.prepareStatement(query)) {
+
+            stmt.setInt(2, replyID);
+            stmt.setString(1, Answer);
+            return stmt.executeUpdate() ;
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return 0;
+    }
     public boolean markReplyAsRead(int ReplyID) {
         String query = "UPDATE RatingReplies SET IsRead = 1 WHERE ReplyID = ?";
 
@@ -96,5 +111,20 @@ public class RatingRepliesDAO {
         return false;
 
     }
+  
+     public boolean DeleteRatingReply(int ReplyID) {
+        String query = "DELETE FROM RatingReplies WHERE ReplyID = ?";
 
+        try (
+                 PreparedStatement stmt = connector.prepareStatement(query)) {
+
+            stmt.setInt(1, ReplyID);
+            return stmt.executeUpdate() > 0;
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return false;
+
+    }
 }

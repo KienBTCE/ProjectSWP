@@ -3,7 +3,6 @@
     Created on : Mar 2, 2025, 10:17:23 AM
     Author     : HP
 --%>
-
 <%@ page contentType="text/html" pageEncoding="UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
@@ -89,17 +88,31 @@
             .reply-btn:hover {
                 background-color: #0056b3;
             }
+
+            .modal-content {
+                border-radius: 8px;
+            }
+
+            .modal-body {
+                padding: 20px;
+            }
+
+            textarea.form-control {
+                min-height: 100px;
+            }
+
+            .btn-secondary {
+                background-color: #6c757d;
+            }
         </style>
     </head>
     <body>
         <jsp:include page="HeaderDashboard.jsp"></jsp:include>
+        <jsp:include page="SidebarDashboard.jsp"></jsp:include>
 
-            <!-- Sidebar -->
-         <jsp:include page="SidebarDashboard.jsp"></jsp:include>
-
-        <div class="main-content">
-            <h2 class="text-center mb-4">Customer Reviews</h2>
-            <h3>"${Product.fullName}" - "${Product.model}"</h3>
+            <div class="main-content">
+                <h2 class="text-center mb-4">Customer Reviews</h2>
+                <h3>"${Product.fullName}" - "${Product.model}"</h3>
 
             <c:forEach var="rate" items="${dataRating}">
                 <div class="review-card">
@@ -125,16 +138,12 @@
                     </div>
 
                     <!-- Comment -->
-                    <p id="comment-${rate.rateID}" 
-                       data-original="${rate.comment}" 
-                       class="${rate.isDeleted ? 'hidden-feedback' : ''}">
+                    <p id="comment-${rate.rateID}" data-original="${rate.comment}" class="${rate.isDeleted ? 'hidden-feedback' : ''}">
                         ${rate.isDeleted ? "This feedback was hidden for some reason." : rate.comment}
                     </p>
 
                     <!-- Toggle Ẩn/Hiện -->
-                    <button id="toggle-btn-${rate.rateID}" 
-                            class="btn btn-toggle ${rate.isDeleted ? 'btn-warning' : 'btn-success'} btn-sm"
-                            onclick="toggleVisibility(${rate.rateID}, ${rate.isDeleted ? 1 : 0})">
+                    <button id="toggle-btn-${rate.rateID}" class="btn btn-toggle ${rate.isDeleted ? 'btn-warning' : 'btn-success'} btn-sm" onclick="toggleVisibility(${rate.rateID}, ${rate.isDeleted ? 1 : 0})">
                         <i class="fa ${rate.isDeleted ? 'fa-eye' : 'fa-eye-slash'}"></i>
                         ${rate.isDeleted ? "Show" : "Hidden"}
                     </button>
@@ -147,23 +156,73 @@
                     <!-- Reply List -->
                     <c:forEach var="reply" items="${dataReplies}">
                         <c:if test="${reply.rateID == rate.rateID}">
-                            <div class="reply-container">
+                            <div id="reply-container-${reply.replyID}" class="reply-container">
                                 <strong>Shop Manager</strong>
                                 <p>${reply.answer}</p>
+
+                                <button class="update-btn btn btn-primary btn-sm" onclick="openUpdateModal(${reply.replyID}, '${reply.answer}', ${rate.rateID})">
+                                    <i class="fa fa-edit"></i> Update
+                                </button>
+
+                                <button class="delete-btn btn btn-danger btn-sm" onclick="openDeleteModal(${reply.replyID})">
+                                    <i class="bi bi-trash"></i> Delete
+                                </button>
                             </div>
                         </c:if>
                     </c:forEach>
+
 
                     <!-- Reply Form -->
                     <div id="replyForm-${rate.rateID}" class="reply-form">
                         <form method="POST" action="ReplyFeedbackServlet">
                             <input type="hidden" name="rateID" value="${rate.rateID}">
-                            <textarea name="Answer" class="form-control" placeholder="Write your reply..."></textarea>
+                            <textarea required="true" name="Answer" class="form-control" placeholder="Write your reply..."></textarea>
                             <button type="submit" class="btn btn-primary btn-sm mt-2">Submit Reply</button>
                         </form>
                     </div>
                 </div>
             </c:forEach>
+        </div>
+
+        <!-- Modal Update Reply -->
+        <div class="modal fade" id="updateModal" tabindex="-1" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">UPDATE REPLY</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                    </div>
+                    <div class="modal-body">
+                        <input type="hidden" id="updateReplyID">
+                        <input type="hidden" id="updateRateID">
+                        <textarea id="updateReplyText" class="form-control" required="true"></textarea>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                        <button type="button" class="btn btn-primary" onclick="updateReply()">Save</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Modal Delete Reply -->
+        <div class="modal fade" id="deleteModal" tabindex="-1" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">DELETE REPLY?</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                    </div>
+                    <div class="modal-body">
+                        <p>Are you sure you want to delete this reply?</p>
+                        <input type="hidden" id="deleteReplyID">
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                        <button type="button" class="btn btn-danger" onclick="deleteReply()">Delete</button>
+                    </div>
+                </div>
+            </div>
         </div>
 
         <script>
@@ -212,7 +271,69 @@
 
                 xhr.send("rateID=" + rateID + "&isDeleted=" + newStatus);
             }
+
+            function openUpdateModal(replyID, replyText, rateID) {
+                let modalElement = document.getElementById("updateModal");
+                let modal = new bootstrap.Modal(modalElement);
+
+                // Gán giá trị cho input trước khi mở modal
+                document.getElementById("updateReplyID").value = replyID;
+                document.getElementById("updateReplyText").value = replyText;
+                document.getElementById("updateRateID").value = rateID;
+
+                // Hiển thị modal
+                modal.show();
+
+                // Đợi modal hiển thị xong rồi mới focus vào input
+                setTimeout(() => {
+                    document.getElementById("updateReplyText").focus();
+                }, 300);
+            }
+
+            function updateReply() {
+                let replyID = document.getElementById("updateReplyID").value;
+                let updatedText = document.getElementById("updateReplyText").value;
+
+                let xhr = new XMLHttpRequest();
+                xhr.open("POST", "UpdateReplyServlet", true);
+                xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+
+                xhr.onreadystatechange = function () {
+                    if (xhr.readyState === 4 && xhr.status === 200) {
+                        let response = xhr.responseText.trim();
+                        if (response === "Success") {
+                            location.reload(); // 🔄 Reload lại trang sau khi cập nhật
+                        } else {
+                            alert("Failed to update the reply. Please try again.");
+                        }
+                    }
+                };
+                xhr.send("replyID=" + replyID + "&answer=" + encodeURIComponent(updatedText));
+            }
+
+
+
+            function openDeleteModal(replyID) {
+                document.getElementById("deleteReplyID").value = replyID;
+                var modal = new bootstrap.Modal(document.getElementById("deleteModal"));
+                modal.show();
+            }
+
+            function deleteReply() {
+                let replyID = document.getElementById("deleteReplyID").value;
+
+                let xhr = new XMLHttpRequest();
+                xhr.open("POST", "DeleteReplyServlet", true);
+                xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+                xhr.onreadystatechange = function () {
+                    if (xhr.readyState === 4 && xhr.status === 200) {
+                        location.reload();
+                    }
+                };
+                xhr.send("replyID=" + replyID);
+            }
         </script>
 
     </body>
 </html>
+

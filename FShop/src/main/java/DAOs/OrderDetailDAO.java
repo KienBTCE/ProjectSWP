@@ -68,21 +68,22 @@ public class OrderDetailDAO {
 
     public List<Integer> getCustomerByProductID(int productID) {
         List<Integer> list = new ArrayList<>();
-        String query = "DECLARE @ProductID INT = ?; \n"
-                + "\n"
-                + "SELECT c.CustomerID\n"
-                + "FROM Customers AS c\n"
-                + "JOIN Orders AS o ON o.CustomerID = c.CustomerID\n"
-                + "JOIN OrderDetails AS od ON od.OrderID = o.OrderID\n"
-                + "WHERE od.ProductID = @ProductID\n"
-                + "      AND o.Status = 4 \n"
-                + "GROUP BY c.CustomerID\n"
-                + "HAVING SUM(od.Quantity) > \n"
-                + "      (SELECT COUNT(*) \n"
-                + "       FROM ProductRatings AS pr \n"
-                + "       WHERE pr.CustomerID = c.CustomerID \n"
-                + "       AND pr.ProductID = @ProductID\n"
-                + "       AND pr.IsDeleted = 0);";
+//        String query = "DECLARE @ProductID INT = ?; \n"
+//                + "\n"
+//                + "SELECT c.CustomerID\n"
+//                + "FROM Customers AS c\n"
+//                + "JOIN Orders AS o ON o.CustomerID = c.CustomerID\n"
+//                + "JOIN OrderDetails AS od ON od.OrderID = o.OrderID\n"
+//                + "WHERE od.ProductID = @ProductID\n"
+//                + "      AND o.Status = 4 \n"
+//                + "GROUP BY c.CustomerID\n"
+//                + "HAVING SUM(od.Quantity) > \n"
+//                + "      (SELECT COUNT(*) \n"
+//                + "       FROM ProductRatings AS pr \n"
+//                + "       WHERE pr.CustomerID = c.CustomerID \n"
+//                + "       AND pr.ProductID = @ProductID\n"
+//                + "       AND pr.IsDeleted = 0);";
+    String query ="SELECT CustomerID FROM ProductRatings WHERE ProductID = ";
 
         try {
             PreparedStatement pre = connector.prepareStatement(query);
