@@ -9,14 +9,12 @@ import java.io.IOException;
 import java.nio.file.Paths;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.MultipartConfig;
-import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.Part;
 import java.sql.Date;
 
-@WebServlet(name = "UpdateEmployeeServlet", urlPatterns = {"/UpdateEmployee"})
 @MultipartConfig(fileSizeThreshold = 1024 * 1024 * 2, // 2MB
         maxFileSize = 1024 * 1024 * 10, // 10MB
         maxRequestSize = 1024 * 1024 * 50) // 50MB
@@ -39,7 +37,6 @@ public class UpdateEmployeeServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         try {
-
             EmployeeDAO empDAO = new EmployeeDAO();
             int employeeId = Integer.parseInt(request.getParameter("txtEmployeeId"));
             int roleId = Integer.parseInt(request.getParameter("txtRoleId"));
@@ -61,18 +58,19 @@ public class UpdateEmployeeServlet extends HttpServlet {
 
             if (!isValidPassword(password) && !password.equals(request.getParameter("currentPassword"))) {
                 request.setAttribute("errorMsg", "Password must be at least 8 characters, including 1 uppercase letter and 1 special character!");
-                request.setAttribute("txtEmployeeId", employeeId);
-                request.setAttribute("txtRoleId", roleId);
-                request.setAttribute("txtName", name);
-                request.setAttribute("txtPass", password);
-                request.setAttribute("txtBirthday", birthday);
-                request.setAttribute("txtPhoneNumber", phone);
-                request.setAttribute("txtEmail", email);
-                request.setAttribute("txtGender", gender);
-                request.setAttribute("txtCreatedDate", createdDate);
-                request.setAttribute("txtStatus", status);
-                request.setAttribute("currentAvatar", avatar);
-                request.getRequestDispatcher("UpdateEmployeeView.jsp").forward(request, response);
+                forwardToUpdatePage(request, response, employeeId, roleId, name, password, birthday, phone, email, gender, createdDate, status, avatar);
+                return;
+            }
+
+            if (empDAO.isEmailExists(email) && !email.equals(request.getParameter("currentEmail"))) {
+                request.setAttribute("errorMsg", "Email already exists! Please choose another email.");
+                forwardToUpdatePage(request, response, employeeId, roleId, name, password, birthday, phone, email, gender, createdDate, status, avatar);
+                return;
+            }
+
+            if (!isValidPhoneNumber(phone)) {
+                request.setAttribute("errorMsg", "Phone number must be exactly 10 digits.");
+                forwardToUpdatePage(request, response, employeeId, roleId, name, password, birthday, phone, email, gender, createdDate, status, avatar);
                 return;
             }
 
@@ -85,30 +83,17 @@ public class UpdateEmployeeServlet extends HttpServlet {
                 part.write(uploadPath + File.separator + fileName);
                 avatar = fileName;
             }
+
             if (avatar == null || avatar.isEmpty()) {
                 avatar = request.getParameter("currentAvatar");
             }
 
-            request.setAttribute("currentAvatar", avatar);
-
-            Employee emp = new Employee(employeeId, name, birthday != null ? birthday : null, password, phone, email, gender, createdDate, status, avatar, roleId);
+            Employee emp = new Employee(employeeId, name, birthday, password, phone, email, gender, createdDate, status, avatar, roleId);
             int result = empDAO.UpdateEmployee(emp);
 
             if (result > 0) {
-                String emailAddress = request.getParameter("txtEmail");
-                Email sendEmail = new Email();
-                sendEmail.setFrom("kieuthy2004@gmail.com");
-                sendEmail.setFromPassword("xkkc ohwn aesf arqm");
-                sendEmail.setTo(emailAddress);
-                sendEmail.setSubject("Reset Password " + emailAddress);
-                String emailContent = "Your password has been updated successfully.\n"
-                        + "Your new password is:" + password + "\n"
-                        + "Note: Please do not share this password with others.";
-                sendEmail.setContent(emailContent);
-                try {
-                    EmailUtils.send(sendEmail);
-                } catch (Exception e) {
-                    e.printStackTrace();
+                if (!password.equals(request.getParameter("currentPassword"))) {
+                    sendPasswordChangeEmail(email, password);
                 }
 
                 request.setAttribute("popupSuccessMsg", "Updated successfully");
@@ -122,8 +107,45 @@ public class UpdateEmployeeServlet extends HttpServlet {
         }
     }
 
+    private void forwardToUpdatePage(HttpServletRequest request, HttpServletResponse response, int employeeId, int roleId, String name, String password, Date birthday, String phone, String email, String gender, Date createdDate, int status, String avatar) throws ServletException, IOException {
+        request.setAttribute("txtEmployeeId", employeeId);
+        request.setAttribute("txtRoleId", roleId);
+        request.setAttribute("txtName", name);
+        request.setAttribute("txtPass", password);
+        request.setAttribute("txtBirthday", birthday);
+        request.setAttribute("txtPhoneNumber", phone);
+        request.setAttribute("txtEmail", email);
+        request.setAttribute("txtGender", gender);
+        request.setAttribute("txtCreatedDate", createdDate);
+        request.setAttribute("txtStatus", status);
+        request.setAttribute("currentAvatar", avatar);
+        request.setAttribute("employee", new Employee(employeeId, name, birthday, password, phone, email, gender, createdDate, status, avatar, roleId));
+        request.getRequestDispatcher("UpdateEmployeeView.jsp").forward(request, response);
+    }
+
+    private void sendPasswordChangeEmail(String emailAddress, String newPassword) {
+        Email sendEmail = new Email();
+        sendEmail.setFrom("kieuthy2004@gmail.com");
+        sendEmail.setFromPassword("xkkc ohwn aesf arqm");
+        sendEmail.setTo(emailAddress);
+        sendEmail.setSubject("Reset Password " + emailAddress);
+        String emailContent = "Your password has been updated successfully.\n"
+                + "Your new password is: " + newPassword + "\n"
+                + "Note: Please do not share this password with others.";
+        sendEmail.setContent(emailContent);
+        try {
+            EmailUtils.send(sendEmail);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
     private boolean isValidPassword(String password) {
         return password.matches("^(?=.*[A-Z])(?=.*[@#$%^&+=])(?=\\S+$).{8,}$");
+    }
+
+    private boolean isValidPhoneNumber(String phoneNumber) {
+        return phoneNumber.matches("\\d{10}");
     }
 
 }
