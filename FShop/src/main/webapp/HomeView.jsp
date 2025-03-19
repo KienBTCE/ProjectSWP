@@ -96,12 +96,28 @@
                 opacity: 0.7;
                 text-decoration: none;
             }
+            @keyframes blink-move {
+                0% {
+                    transform: translateY(-50%) scale(1);
+                    opacity: 1;
+                }
+                50% {
+                    transform: translateY(-50%) scale(1.1);
+                    opacity: 0.7;
+                }
+                100% {
+                    transform: translateY(-50%) scale(1);
+                    opacity: 1;
+                }
+            }
             .arrow-btn {
+                animation: blink-move 1s infinite alternate;
                 position: absolute;
                 top: 50%;
                 transform: translateY(-50%);
-                background: rgba(0, 0, 0, 0.6);
-                color: white;
+                background: transparent;
+                color: lightblue;
+                font-weight: bold;
                 border: none;
                 width: 45px;
                 height: 45px;
@@ -111,11 +127,11 @@
                 display: flex;
                 align-items: center;
                 justify-content: center;
+                font-size: 40px;
                 transition: background 0.3s, transform 0.2s;
             }
 
             .arrow-btn:hover {
-                background: rgba(0, 0, 0, 0.8);
                 transform: translateY(-50%) scale(1.1);
             }
             .hi {
