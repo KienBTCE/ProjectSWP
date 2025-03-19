@@ -160,6 +160,7 @@ public class BuyProductsServlet extends HttpServlet {
                             session.setAttribute("totalAmount", totalAmount);
                             session.setAttribute("shipAddress", address);
                             session.setAttribute("numOfItems", count);
+                            session.setAttribute("url", url);
                             request.getRequestDispatcher("CheckoutView.jsp").forward(request, response);
                         }
                     }
@@ -210,6 +211,7 @@ public class BuyProductsServlet extends HttpServlet {
                 session.setAttribute("order", new Order(fullname, phone, address));
                 request.getRequestDispatcher("ConfirmView.jsp").forward(request, response);
             } else if (action.equals("placeOrder")) {
+                String urlBuy = (String)session.getAttribute("url");
                 long totalAmount = Long.parseLong(request.getParameter("totalAmount"));
                 Order o = (Order) session.getAttribute("order");
                 o.setAccountID(cus.getId());
@@ -219,7 +221,9 @@ public class BuyProductsServlet extends HttpServlet {
                 for (Cart c : cartSelected) {
                     od.addOrderDetail(od.getNewestOrderID(), c.getProductID(), c.getQuantity(), c.getPrice());
                     od.subtractQuantityAfterBuy(c.getProductID(), c.getQuantity());
-                    ca.deleteProductOnCart(c.getProductID(), cus.getId());
+                    if (!urlBuy.equals("buyNow")) {
+                        ca.deleteProductOnCart(c.getProductID(), cus.getId());
+                    }
                 }
                 session.setAttribute("orderStatus", "success");
                 session.setAttribute("numOfProCartOfCus", ca.getNumberOfProduct(cus.getId()));

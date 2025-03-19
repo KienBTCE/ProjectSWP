@@ -58,101 +58,108 @@
             .btn-back:hover {
                 background-color: #593196;
             }
+            .content {
+                flex-grow: 1;
+                display: flex;
+                flex-direction: column;
+
+                margin-left: 250px;
+            }
         </style>
     </head>
     <body>
-        <div class="container my-4">
-            <!-- Customer Details Card -->
-            <div class="card">
-                <div class="card-header">
-                    Customer Details
-                </div>
-                <div class="card-body">
-                    <div class="row align-items-center">
-                        <div class="col-md-4 text-center">
-                            <img src="assets/imgs/CustomerAvatar/${customer.getAvatar()}" alt="Avatar" class="avatar mb-3">
+        <jsp:include page="SidebarDashboard.jsp"></jsp:include>
+
+            <div class="content">
+            <jsp:include page="HeaderDashboard.jsp"></jsp:include>
+                <div class="container my-4">
+                    <!-- Customer Details Card -->
+                    <div class="card">
+                        <div class="card-header">
+                            Customer Details
                         </div>
-                        <div class="col-md-8">
-                            <div class="row mb-2">
-                                <div class="col-sm-4 detail-label">ID:</div>
-                                <div class="col-sm-8">${customer.getId()}</div>
+                        <div class="card-body">
+                            <div class="row align-items-center">
+                                <div class="col-md-4 text-center">
+                                    <img src="assets/imgs/CustomerAvatar/${customer.getAvatar()}" alt="Avatar" class="avatar mb-3">
                             </div>
-                            <div class="row mb-2">
-                                <div class="col-sm-4 detail-label">Name:</div>
-                                <div class="col-sm-8">${customer.getFullName()}</div>
-                            </div>
-                            <div class="row mb-2">
-                                <div class="col-sm-4 detail-label">Birthday:</div>
-                                <div class="col-sm-8">${customer.getBirthday()}</div>
-                            </div>
-                            <div class="row mb-2">
-                                <div class="col-sm-4 detail-label">Gender:</div>
-                                <div class="col-sm-8">${customer.getGender()}</div>
-                            </div>
-                            <div class="row mb-2">
-                                <div class="col-sm-4 detail-label">Phone:</div>
-                                <div class="col-sm-8">${customer.getPhoneNumber()}</div>
-                            </div>
-                            <div class="row mb-2">
-                                <div class="col-sm-4 detail-label">Email:</div>
-                                <div class="col-sm-8">${customer.getEmail()}</div>
-                            </div>
-                            <div class="row mb-2">
-                                <div class="col-sm-4 detail-label">Created:</div>
-                                <div class="col-sm-8">${customer.getCreateAt()}</div>
-                            </div>
-                            <div class="row">
-                                <div class="col-sm-4 detail-label">Status:</div>
-                                <div class="col-sm-8">
-                                    <span class="badge ${customer.getIsBlock() == 0 ? 'bg-success' : 'bg-danger'}">
-                                        ${customer.getIsBlock() == 1 ? 'Deleted' : 'Activate'}
-                                    </span>
+                            <div class="col-md-8">
+                                <div class="row mb-2">
+                                    <div class="col-sm-4 detail-label">ID:</div>
+                                    <div class="col-sm-8">${customer.getId()}</div>
+                                </div>
+                                <div class="row mb-2">
+                                    <div class="col-sm-4 detail-label">Name:</div>
+                                    <div class="col-sm-8">${customer.getFullName()}</div>
+                                </div>
+                                <div class="row mb-2">
+                                    <div class="col-sm-4 detail-label">Birthday:</div>
+                                    <div class="col-sm-8">${customer.getBirthday()}</div>
+                                </div>
+                                <div class="row mb-2">
+                                    <div class="col-sm-4 detail-label">Gender:</div>
+                                    <div class="col-sm-8">${customer.getGender()}</div>
+                                </div>
+                                <div class="row mb-2">
+                                    <div class="col-sm-4 detail-label">Phone:</div>
+                                    <div class="col-sm-8">${customer.getPhoneNumber()}</div>
+                                </div>
+                                <div class="row mb-2">
+                                    <div class="col-sm-4 detail-label">Email:</div>
+                                    <div class="col-sm-8">${customer.getEmail()}</div>
+                                </div>
+                                <div class="row mb-2">
+                                    <div class="col-sm-4 detail-label">Created:</div>
+                                    <div class="col-sm-8">${customer.getCreateAt()}</div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-sm-4 detail-label">Status:</div>
+                                    <div class="col-sm-8">
+                                        <span class="badge ${customer.getIsBlock() == 0 ? 'bg-success' : 'bg-danger'}">
+                                            ${customer.getIsBlock() == 1 ? 'Deleted' : 'Activate'}
+                                        </span>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
-            </div>
 
-            <!-- Purchase History Card -->
-            <div class="card">
-                <div class="card-header">
-                    Purchase History
-                </div>
-                <div class="card-body">
-                    <c:if test="${not empty purchaseHistory}">
-                        <div class="table-responsive">
-                            <table class="table table-bordered table-hover">
-                                <thead>
-                                    <tr>
-                                        <th>Order ID</th>
-                                        <th>Date</th>
-                                        <th>Total Amount</th>
-                                        <th>Status</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <c:forEach var="order" items="${purchaseHistory}">
+                <!-- Purchase History Card -->
+                <div class="card">
+                    <div class="card-header">
+                        Purchase History
+                    </div>
+                    <div class="card-body">
+                        <c:if test="${not empty purchaseHistory}">
+                            <div class="table-responsive">
+                                <table class="table table-bordered table-hover">
+                                    <thead>
                                         <tr>
-                                            <td>${order.orderID}</td>
-                                            <td>${order.orderDate}</td>
-                                            <td>${order.totalAmount}</td>
-                                            <td>${order.status}</td>
+                                            <th>Order ID</th>
+                                            <th>Date</th>
+                                            <th>Total Amount</th>
+                                            <th>Status</th>
                                         </tr>
-                                    </c:forEach>
-                                </tbody>
-                            </table>
-                        </div>
-                    </c:if>
-                    <c:if test="${empty purchaseHistory}">
-                        <p class="text-center mb-0">No purchase history available.</p>
-                    </c:if>
+                                    </thead>
+                                    <tbody>
+                                        <c:forEach var="order" items="${purchaseHistory}">
+                                            <tr>
+                                                <td>${order.orderID}</td>
+                                                <td>${order.orderDate}</td>
+                                                <td>${order.totalAmount}</td>
+                                                <td>${order.status}</td>
+                                            </tr>
+                                        </c:forEach>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </c:if>
+                        <c:if test="${empty purchaseHistory}">
+                            <p class="text-center mb-0">No purchase history available.</p>
+                        </c:if>
+                    </div>
                 </div>
-            </div>
-
-            <!-- Back Button -->
-            <div class="text-center">
-                <a href="CustomerListServlet" class="btn-back">Back to List</a>
             </div>
         </div>
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>

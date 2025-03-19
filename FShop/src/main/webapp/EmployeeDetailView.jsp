@@ -153,7 +153,7 @@
                                             </c:choose>
                                     </div>
                                     <div class="d-flex gap-1" style="justify-content: left;">
-                                        <a href="UpdateEmployee?id=${employee.employeeId}" style="background-color: orange; color: white; text-decoration: none; padding: 5px 15px; border-radius: 5px; display: inline-block; cursor: pointer;">
+                                        <a href="UpdateEmployeeServlet?id=${employee.employeeId}" style="background-color: orange; color: white; text-decoration: none; padding: 5px 15px; border-radius: 5px; display: inline-block; cursor: pointer;">
                                             <i class='bx bx-edit'></i> Update
                                         </a>
                                     </div>

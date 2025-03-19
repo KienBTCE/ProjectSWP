@@ -96,7 +96,7 @@ public class SendMailServlet extends HttpServlet {
             
             // Check if the account is created using Google
             if (user.getGoogleId() != null && !user.getGoogleId().isEmpty()) {
-                request.setAttribute("error", "This account was created using Google and cannot reset password! Please use 'Login with Google Account'");
+                request.setAttribute("error", "This account was created using Google and cannot reset password!");
                 request.getRequestDispatcher("ForgotPasswordView.jsp").forward(request, response);
                 return;
             }
@@ -151,15 +151,5 @@ public class SendMailServlet extends HttpServlet {
         int otp = 100000 + random.nextInt(900000); // 6-digit OTP
         return String.valueOf(otp);
     }
-
-    /**
-     * Returns a short description of the servlet.
-     *
-     * @return a String containing servlet description
-     */
-    @Override
-    public String getServletInfo() {
-        return "Short description";
-    }// </editor-fold>
 
 }
