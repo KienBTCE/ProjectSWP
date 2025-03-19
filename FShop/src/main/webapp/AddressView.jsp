@@ -137,7 +137,7 @@
                                             <%
                                                 if (!action.equalsIgnoreCase("") && action.equalsIgnoreCase("forOrder")) {
                                             %>
-                                             <a href="DeleteAddress?id=${ad.getAddressID()}&currentAddressPage=forOrder" class="btn btn-delete"
+                                            <a href="DeleteAddress?id=${ad.getAddressID()}&currentAddressPage=forOrder" class="btn btn-delete"
                                                style="color: red; background: none; padding: 5px 5px; cursor: pointer; border: none; margin-left: 5px;">Delete</a>
                                             <input type="type" name="currentAddressPage" value="forOrder" hidden>
                                             <%
@@ -148,7 +148,7 @@
                                                style="color: red; background: none; padding: 5px 5px; cursor: pointer; border: none; margin-left: 5px;">Delete</a>
                                             <%                                                }
                                             %>
-                                           
+
                                         </c:if>
 
                                     </div>
@@ -191,14 +191,16 @@
             String message = (String) session.getAttribute("message");
             if (message != null) {
         %>
-        <div class="popup" id="updatePopup" style="display: flex;">
-            <div class="popup-content">
-                <h4>${sessionScope.message}</h4>
-                <div class="text-center mt-3">
-                    <button class="btn btn-primary" onclick="closePopup()">OK</button>
-                </div>
-            </div>
+        <div id="cookiesPopup" style="position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 350px; display: flex; flex-direction: column; align-items: center; background-color: #fff; color: #000; text-align: center; border-radius: 20px; padding: 30px 30px 20px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); z-index: 1000;">
+            <button class="close" onclick="closePopup()" style="width: 30px; font-size: 20px; color: #c0c5cb; align-self: flex-end; background-color: transparent; border: none; margin-bottom: 10px; cursor: pointer;">✖</button>
+            <img src="https://cdn-icons-png.flaticon.com/512/845/845646.png" alt="success-tick" style="width: 82px; margin-bottom: 15px;" />
+            <p style="margin-bottom: 40px; font-size: 18px;">${sessionScope.message}</p>
+            <button class="accept" onclick="closePopup()" style="background-color: #28a745; border: none; border-radius: 5px; width: 200px; padding: 14px; font-size: 16px; color: white; box-shadow: 0px 6px 18px -5px rgba(40, 167, 69, 1); cursor: pointer;">OK</button>
         </div>
+
+
+        <div id="overlay" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0, 0, 0, 0.5); z-index: 999;"></div>
+
         <%
                 session.removeAttribute("message");
             }
@@ -277,11 +279,10 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.21.1/axios.min.js"></script>
 
     <script>
-                        // Close popup
                         function closePopup() {
-                            document.getElementById("updatePopup").style.display = "none";
+                            document.getElementById("cookiesPopup").style.display = "none";
+                            document.getElementById("overlay").style.display = "none";
                         }
-
                         var allData = [];
                         var citis = document.getElementById("city");
                         var districts = document.getElementById("district");

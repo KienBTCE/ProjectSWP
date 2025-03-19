@@ -174,6 +174,26 @@
                     </div>
                 </div>
             </div>
+
+            <!-- Bootstrap Modal -->
+            <div class="modal fade" id="updatePopup" tabindex="-1" aria-labelledby="warningModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title text-danger" id="warningModalLabel">Warning</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body text-dark">
+                            Are you sure to cancel this order?
+                        </div>
+                        <div class="modal-footer">
+                            <a class="btn btn-danger" href="cancelOrder?id=${sessionScope.order.getOrderID()}">Yes</a>
+                            <a class="btn btn-secondary"  href="">No</a>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
             <c:set var="status" value="0"></c:set>
             <c:if test="${sessionScope.order.getStatus() < 4}">
                 <c:set var="status" value="${sessionScope.order.getStatus() - 1}"></c:set>
@@ -186,7 +206,18 @@
         <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.21.1/axios.min.js"></script>
         <script src="./assets/js/orderDetail.js"></script>
         <script>
-
+                                function showWarning(show) {
+                                    if (show) {
+                                        var warningModal = new bootstrap.Modal(document.getElementById('updatePopup'));
+                                        warningModal.show();
+                                    }
+                                }
+                                function closePopup() {
+                                    var warningModal = bootstrap.Modal.getInstance(document.getElementById('updatePopup'));
+                                    if (warningModal) {
+                                        warningModal.hide();
+                                    }
+                                }
                                 let currentStep = ${status}; // Thay đổi bước hiện tại theo trạng thái đơn hàng
                                 const steps = document.querySelectorAll(".progress-step");
                                 const progress = document.querySelector(".progress");
