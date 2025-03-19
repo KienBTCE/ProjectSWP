@@ -77,7 +77,7 @@ public class ProductDetailServlet extends HttpServlet {
         ProductRatingDAO prRateDAO = new ProductRatingDAO();
 
         RatingRepliesDAO rrDAO = new RatingRepliesDAO();
-        
+
         OrderDetailDAO odDAO = new OrderDetailDAO();
         if (detailID != null) {
             HttpSession session = request.getSession();
@@ -86,18 +86,16 @@ public class ProductDetailServlet extends HttpServlet {
             boolean isOk = false;
             float star = prRateDAO.getStarAverage(id);
             Models.Product product = pr.getProductByID(id);
-             List<Integer> list = odDAO.getCustomerByProductID(id);
+        
             List<AttributeDetail> attributes = ad.getAttributesByProductID(id);
             List<ProductRating> listPro = prRateDAO.getAllProductRating(id);
             List<RatingReplies> listReplies = rrDAO.getAllRatingRepliesByProduct(id);
             if (cus != null) {
-                if(list.contains(cus.getId())){
-                isOk=true;
-                }
+             isOk = odDAO.getCustomerByProductID(cus.getId(), id);
             }
             try {
 
-                request.setAttribute("isOk", isOk);
+                request.setAttribute("isOk", Boolean.valueOf(isOk));
                 request.setAttribute("dataRating", listPro);
                 request.setAttribute("dataReplies", listReplies);
                 request.setAttribute("star", star);

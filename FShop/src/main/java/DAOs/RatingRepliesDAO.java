@@ -43,7 +43,28 @@ public class RatingRepliesDAO {
         }
         return list;
     }
-
+ public List<RatingReplies> getAllRatingRepliesByRateID(int rateId) {
+        List<RatingReplies> list = new ArrayList<>();
+        String query = "select * from RatingReplies where RateID =?";
+        try {
+            PreparedStatement pre = connector.prepareStatement(query);
+            pre.setInt(1, rateId);
+            ResultSet rs = pre.executeQuery();
+            while (rs.next()) {
+                RatingReplies rr = new RatingReplies(
+                        rs.getInt("ReplyID"),
+                        rs.getInt("EmployeeID"),
+                        rs.getInt("RateID"),
+                        rs.getString("Answer"),
+                        rs.getBoolean("IsRead")
+                );
+                list.add(rr);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return list;
+    }
     public void addRatingReply(int employeeId, int rateId, String answer) {
         String query = "INSERT INTO RatingReplies (EmployeeID, RateID, Answer, IsRead) VALUES (?, ?, ?, 0)";
         try {

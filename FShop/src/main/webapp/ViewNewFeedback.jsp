@@ -21,6 +21,33 @@
             body {
                 background-color: #f8f9fa;
             }
+            /* Modal Success */
+            .modal {
+                display: none; /* Modal mặc định ẩn */
+                position: fixed;
+                z-index: 1000;
+                left: 0;
+                top: 0;
+                width: 100%;
+                height: 100%;
+                background-color: rgba(0, 0, 0, 0.5);
+                justify-content: center;
+                align-items: center;
+            }
+            .modal-content {
+                background-color: #fff;
+                padding: 20px;
+                border-radius: 10px;
+                text-align: center;
+                width: 400px;
+                max-height: 80vh;
+                overflow-y: auto;
+            }
+            .btn-danger, .btn-secondary {
+                margin: 10px;
+                padding: 10px 20px;
+                font-size: 16px;
+            }
 
             .main-content {
                 margin-left: 270px;
@@ -104,84 +131,102 @@
             .btn-secondary {
                 background-color: #6c757d;
             }
+            .fixed-header {
+                position: fixed;
+                top: 0;
+                left: 250px; /* Điều chỉnh để tránh che sidebar */
+                width: calc(100% - 250px); /* Chiều rộng trừ đi sidebar */
+                /*background-color: white;*/
+                z-index: 1050;
+                padding: 10px 20px;
+                /*box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);*/
+            }
         </style>
     </head>
     <body>
-        <jsp:include page="HeaderDashboard.jsp"></jsp:include>
-        <jsp:include page="SidebarDashboard.jsp"></jsp:include>
 
+        <jsp:include page="SidebarDashboard.jsp"></jsp:include>
+        <div class="fixed-header"><jsp:include page="HeaderDashboard.jsp"></jsp:include> </div>
             <div class="main-content">
                 <h2 class="text-center mb-4">Customer Reviews</h2>
                 <h3>"${Product.fullName}" - "${Product.model}"</h3>
 
-            <c:forEach var="rate" items="${dataRating}">
-                <div class="review-card">
-                    <div class="profile">
-                        <img src="assets/imgs/icon/person.jpg" alt="Avatar">
-                        <div>
-                            <h5>${rate.fullName}</h5>
-                            <small>${rate.createdDate}</small>
-                        </div>
-                    </div>
+            <%--<c:forEach var="rate" items="${dataRating}">--%>
+            <div class="review-card">
+                <div class="profile">
+                    <img src="<c:choose>
+                             <c:when test="${not empty cus.avatar}">
+                                 ${cus.avatar} 
+                             </c:when>
+                             <c:otherwise>
+                                 assets/imgs/icon/person.jpg 
+                             </c:otherwise>
+                         </c:choose>" alt="Avatar">
 
-                    <div class="star-rating">
-                        <c:forEach var="i" begin="1" end="5">
-                            <c:choose>
-                                <c:when test="${i <= rate.star}">
-                                    <i class="fa fa-star"></i>
-                                </c:when>
-                                <c:otherwise>
-                                    <i class="fa fa-star text-muted"></i>
-                                </c:otherwise>
-                            </c:choose>
-                        </c:forEach>
-                    </div>
-
-                    <!-- Comment -->
-                    <p id="comment-${rate.rateID}" data-original="${rate.comment}" class="${rate.isDeleted ? 'hidden-feedback' : ''}">
-                        ${rate.isDeleted ? "This feedback was hidden for some reason." : rate.comment}
-                    </p>
-
-                    <!-- Toggle Ẩn/Hiện -->
-                    <button id="toggle-btn-${rate.rateID}" class="btn btn-toggle ${rate.isDeleted ? 'btn-warning' : 'btn-success'} btn-sm" onclick="toggleVisibility(${rate.rateID}, ${rate.isDeleted ? 1 : 0})">
-                        <i class="fa ${rate.isDeleted ? 'fa-eye' : 'fa-eye-slash'}"></i>
-                        ${rate.isDeleted ? "Show" : "Hidden"}
-                    </button>
-
-                    <!-- Reply Button -->
-                    <button class="reply-btn btn-sm" onclick="toggleReplyForm(${rate.rateID})">
-                        <i class="fa fa-reply"></i> Reply
-                    </button>
-
-                    <!-- Reply List -->
-                    <c:forEach var="reply" items="${dataReplies}">
-                        <c:if test="${reply.rateID == rate.rateID}">
-                            <div id="reply-container-${reply.replyID}" class="reply-container">
-                                <strong>Shop Manager</strong>
-                                <p>${reply.answer}</p>
-
-                                <button class="update-btn btn btn-primary btn-sm" onclick="openUpdateModal(${reply.replyID}, '${reply.answer}', ${rate.rateID})">
-                                    <i class="fa fa-edit"></i> Update
-                                </button>
-
-                                <button class="delete-btn btn btn-danger btn-sm" onclick="openDeleteModal(${reply.replyID})">
-                                    <i class="bi bi-trash"></i> Delete
-                                </button>
-                            </div>
-                        </c:if>
-                    </c:forEach>
-
-
-                    <!-- Reply Form -->
-                    <div id="replyForm-${rate.rateID}" class="reply-form">
-                        <form method="POST" action="ReplyFeedbackServlet">
-                            <input type="hidden" name="rateID" value="${rate.rateID}">
-                            <textarea required="true" name="Answer" class="form-control" placeholder="Write your reply..."></textarea>
-                            <button type="submit" class="btn btn-primary btn-sm mt-2">Submit Reply</button>
-                        </form>
+                    <div>
+                        <h5>${cus.fullName}</h5>
+                        <small>${rate.createdDate}</small>
                     </div>
                 </div>
-            </c:forEach>
+
+                <div class="star-rating">
+                    <c:forEach var="i" begin="1" end="5">
+                        <c:choose>
+                            <c:when test="${i <= rate.star}">
+                                <i class="fa fa-star"></i>
+                            </c:when>
+                            <c:otherwise>
+                                <i class="fa fa-star text-muted"></i>
+                            </c:otherwise>
+                        </c:choose>
+                    </c:forEach>
+                </div>
+
+                <!-- Comment -->
+                <p id="comment-${rate.rateID}" data-original="${rate.comment}" class="${rate.isDeleted ? 'hidden-feedback' : ''}">
+                    ${rate.isDeleted ? "This feedback was hidden for some reason." : rate.comment}
+                </p>
+
+                <!-- Toggle Ẩn/Hiện -->
+                <button id="toggle-btn-${rate.rateID}" class="btn btn-toggle ${rate.isDeleted ? 'btn-warning' : 'btn-success'} btn-sm" onclick="toggleVisibility(${rate.rateID}, ${rate.isDeleted ? 1 : 0})">
+                    <i class="fa ${rate.isDeleted ? 'fa-eye' : 'fa-eye-slash'}"></i>
+                    ${rate.isDeleted ? "Show" : "Hidden"}
+                </button>
+
+                <!-- Reply Button -->
+                <button class="reply-btn btn-sm" onclick="toggleReplyForm(${rate.rateID})">
+                    <i class="fa fa-reply"></i> Reply
+                </button>
+
+                <!-- Reply List -->
+                <c:forEach var="reply" items="${dataReplies}">
+                    <c:if test="${reply.rateID == rate.rateID}">
+                        <div id="reply-container-${reply.replyID}" class="reply-container">
+                            <strong>Shop Manager</strong>
+                            <p>${reply.answer}</p>
+
+                            <button class="update-btn btn btn-primary btn-sm" onclick="openUpdateModal(${reply.replyID}, '${reply.answer}', ${rate.rateID})">
+                                <i class="fa fa-edit"></i> Update
+                            </button>
+
+                            <button class="delete-btn btn btn-danger btn-sm" onclick="openDeleteModal(${reply.replyID})">
+                                <i class="bi bi-trash"></i> Delete
+                            </button>
+                        </div>
+                    </c:if>
+                </c:forEach>
+
+
+                <!-- Reply Form -->
+                <div id="replyForm-${rate.rateID}" class="reply-form">
+                    <form method="POST" action="ReplyFeedbackServlet">
+                        <input type="hidden" name="rateID" value="${rate.rateID}">
+                        <textarea required="true" name="Answer" class="form-control" placeholder="Write your reply..."></textarea>
+                        <button type="submit" class="btn btn-primary btn-sm mt-2">Submit Reply</button>
+                    </form>
+                </div>
+            </div>
+            <%--</c:forEach>--%>
         </div>
 
         <!-- Modal Update Reply -->
@@ -224,8 +269,88 @@
                 </div>
             </div>
         </div>
+        <!-- Success Modal -->
+        <div id="successModal" class="modal">
+            <div class="modal-content">
+                <h3>Action Successful!</h3>
+                <p>You will be redirected shortly...</p>
+            </div>
+        </div>
+
+
 
         <script>
+            // Hàm hiển thị popup thành công và tự động chuyển hướng sau 2 giây
+            function showSuccessAndRedirect() {
+                // Hiển thị modal thành công
+                var successModal = new bootstrap.Modal(document.getElementById('successModal'));
+                successModal.show();
+
+                // Chuyển hướng sau 2 giây
+                setTimeout(function () {
+                    window.location.href = "ViewListFeedbackServlet"; // Cập nhật URL nếu cần
+                }, 2000);
+            }
+
+// Hàm xử lý khi cập nhật trả lời
+            function updateReply() {
+                let replyID = document.getElementById("updateReplyID").value;
+                let updatedText = document.getElementById("updateReplyText").value;
+
+                let xhr = new XMLHttpRequest();
+                xhr.open("POST", "UpdateReplyServlet", true);
+                xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+
+                xhr.onreadystatechange = function () {
+                    if (xhr.readyState === 4 && xhr.status === 200) {
+                        let response = xhr.responseText.trim();
+                        if (response === "Success") {
+                            showSuccessAndRedirect(); // Hiển thị popup thành công và chuyển hướng
+                        } else {
+                            alert("Failed to update the reply. Please try again.");
+                        }
+                    }
+                };
+                xhr.send("replyID=" + replyID + "&answer=" + encodeURIComponent(updatedText));
+            }
+
+// Hàm xử lý khi xóa trả lời
+            function deleteReply() {
+                let replyID = document.getElementById("deleteReplyID").value;
+
+                let xhr = new XMLHttpRequest();
+                xhr.open("POST", "DeleteReplyServlet", true);
+                xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+                xhr.onreadystatechange = function () {
+                    if (xhr.readyState === 4 && xhr.status === 200) {
+                        showSuccessAndRedirect(); // Hiển thị popup thành công và chuyển hướng
+                    }
+                };
+                xhr.send("replyID=" + replyID);
+            }
+
+// Hàm xử lý khi submit trả lời
+            function submitReply(rateID) {
+                let replyText = document.querySelector("#replyForm-" + rateID + " textarea").value;
+                let xhr = new XMLHttpRequest();
+                xhr.open("POST", "ReplyFeedbackServlet", true);
+                xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+
+                xhr.onreadystatechange = function () {
+                    if (xhr.readyState === 4 && xhr.status === 200) {
+                        let response = xhr.responseText.trim();
+                        if (response === "Success") {
+                            showSuccessAndRedirect(); // Hiển thị popup thành công và chuyển hướng
+                        } else {
+                            alert("Failed to submit the reply. Please try again.");
+                        }
+                    }
+                };
+                xhr.send("rateID=" + rateID + "&Answer=" + encodeURIComponent(replyText));
+            }
+
+
+
             function toggleReplyForm(rateID) {
                 let form = document.getElementById("replyForm-" + rateID);
                 form.style.display = (form.style.display === "none" || form.style.display === "") ? "block" : "none";

@@ -135,8 +135,6 @@ public class ViewProductServlet extends HttpServlet {
                 ArrayList<ProductRating> stars = new ArrayList<>();
                 for (Product p : products) {
                     ProductRating star = prDAO.getStarAVG(p.getProductId());
-                    System.out.println("STAR LAPTOP: ________________________________________________________");
-                    System.out.println(star);
 
                     stars.add(star);
 
@@ -235,7 +233,7 @@ public class ViewProductServlet extends HttpServlet {
                 ArrayList<ProductRating> stars = new ArrayList<>();
                 for (Product p : products) {
                     ProductRating star = prDAO.getStarAVG(p.getProductId());
-                    System.out.println(star);
+                    
 
                     stars.add(star);
 
@@ -353,7 +351,7 @@ public class ViewProductServlet extends HttpServlet {
                 ArrayList<ProductRating> stars = new ArrayList<>();
                 for (Product p : products) {
                     ProductRating star = prDAO.getStarAVG(p.getProductId());
-                    System.out.println(star);
+                    
 
                     stars.add(star);
 
@@ -377,7 +375,7 @@ public class ViewProductServlet extends HttpServlet {
             ArrayList<ProductRating> stars = new ArrayList<>();
             for (Product p : products) {
                 ProductRating star = prDAO.getStarAVG(p.getProductId());
-                System.out.println(star);
+                
 
                 stars.add(star);
 
