@@ -77,7 +77,7 @@ public class ViewCartServlet extends HttpServlet {
                 Product product = p.getProductByID(cart.getProductID());
                 if (product.getStock() == 0) {
                     cart.setQuantity(0);
-                } else if (product.getStock() > 0) {
+                } else if (product.getStock() > 0 && (product.getStock() < cart.getQuantity())) {
                     cart.setQuantity(product.getStock());
                     c.updateProductQuantity(cart.getProductID(), product.getStock(), cus.getId());
                 }
