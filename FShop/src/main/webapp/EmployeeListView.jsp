@@ -154,7 +154,7 @@
         <jsp:include page="SidebarDashboard.jsp"></jsp:include>
             <div class="content">
             <jsp:include page="HeaderDashboard.jsp"></jsp:include>
-                <br><!-- comment -->
+                <br>
                 <div class="table-navigate">
                     <form action="SearchEmployee" method="GET" class="search-form">
                         <input type="text" name="query" value="${searchQuery}" placeholder="Search by Name..." required>
@@ -207,11 +207,11 @@
                                                     </c:otherwise>
                                                 </c:choose>
                                             <td>
-                                                <a href="UpdateEmployee?id=${e.employeeId}" style="background-color: orange; color: white; text-decoration: none; padding: 3px 9px; border-radius: 5px; display: inline-block; cursor: pointer;">
+                                                <a href="UpdateEmployeeServlet?id=${e.employeeId}" style="background-color: orange; color: white; text-decoration: none; padding: 3px 9px; border-radius: 5px; display: inline-block; cursor: pointer;">
                                                     <i class='bx bx-edit'></i> Update
                                                 </a>
 
-                                                <a href="Employee?id=${e.employeeId}" style="background-color: red; color: white; text-decoration: none; padding: 3px 9px; border-radius: 5px; display: inline-block; cursor: pointer;">
+                                                <a href="ViewEmployeeServlet?id=${e.employeeId}" style="background-color: red; color: white; text-decoration: none; padding: 3px 9px; border-radius: 5px; display: inline-block; cursor: pointer;">
                                                     <i class='bx bx-detail'></i> Detail
                                                 </a>
                                             </td>
@@ -249,11 +249,11 @@
                                             </c:otherwise>
                                         </c:choose>
                                     <td>
-                                        <a href="UpdateEmployee?id=${e.employeeId}" style="background-color: orange; color: white; text-decoration: none; padding: 3px 9px; border-radius: 5px; display: inline-block; cursor: pointer;">
+                                        <a href="UpdateEmployeeServlet?id=${e.employeeId}" style="background-color: orange; color: white; text-decoration: none; padding: 3px 9px; border-radius: 5px; display: inline-block; cursor: pointer;">
                                             <i class='bx bx-edit'></i> Update
                                         </a>
 
-                                        <a href="Employee?id=${e.employeeId}" style="background-color: red; color: white; text-decoration: none; padding: 3px 9px; border-radius: 5px; display: inline-block; cursor: pointer;">
+                                        <a href="ViewEmployeeServlet?id=${e.employeeId}" style="background-color: red; color: white; text-decoration: none; padding: 3px 9px; border-radius: 5px; display: inline-block; cursor: pointer;">
                                             <i class='bx bx-detail'></i> Detail
                                         </a>
                                     </td>

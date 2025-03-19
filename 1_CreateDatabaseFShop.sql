@@ -134,6 +134,32 @@ CREATE TABLE AttributeDetails (
     FOREIGN KEY (ProductID) REFERENCES Products(ProductID)
 );
 
+-- Tạo bảng Voucher
+CREATE TABLE Vouchers (
+    VoucherID INT IDENTITY(1,1) PRIMARY KEY,
+    VoucherCode VARCHAR(10) UNIQUE NOT NULL,
+	VoucherValue INT NOT NULL,
+	VoucherType INT NOT NULL,
+    StartDate DATETIME NOT NULL,
+	EndDate DATETIME NOT NULL,
+	UsedCount INT,
+	MaxUsedCount INT,
+	MaxDiscountAmount INT,
+    MinOrderValue INT NOT NULL,
+    [Status] INT NOT NULL,
+    [Description] NTEXT,
+);
+
+-- Tạo bảng CustomerVoucher (liên kết giữa Customer và Voucher)
+CREATE TABLE CustomerVoucher (
+    CustomerID INT NOT NULL,
+    VoucherID INT NOT NULL,
+	ExpirationDate DATETIME,
+	Quantity INT,
+    FOREIGN KEY (CustomerID) REFERENCES Customers(CustomerID),
+    FOREIGN KEY (VoucherID) REFERENCES Vouchers(VoucherID)
+);
+
 CREATE TABLE OrderStatus (
     ID INT PRIMARY KEY,
     [Status]NVARCHAR(50) NOT NULL
@@ -149,8 +175,9 @@ CREATE TABLE Orders (
     DeliveredDate DATETIME,
     [Status]INT,
     TotalAmount BIGINT,
+	Discount INT,
     FOREIGN KEY (CustomerID) REFERENCES Customers(CustomerID),
-	FOREIGN KEY ([Status]) REFERENCES OrderStatus(ID),
+	FOREIGN KEY ([Status]) REFERENCES OrderStatus(ID)
 );
 
 CREATE TABLE OrderDetails (
@@ -218,6 +245,7 @@ CREATE TABLE Carts (
     FOREIGN KEY (CustomerID) REFERENCES Customers(CustomerID),
     FOREIGN KEY (ProductID) REFERENCES Products(ProductID)
 );
+
 
 /*******************************************************************************
    Schema for UI/UX Testing

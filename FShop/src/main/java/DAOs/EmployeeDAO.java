@@ -12,9 +12,6 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
-import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 
 /**
@@ -26,7 +23,7 @@ public class EmployeeDAO {
     DBContext db = new DBContext();
     Connection connector = db.getConnection();
 
-    private String getMD5(String input) {
+    public String getMD5(String input) {
 
         try {
             // Tạo instance của MessageDigest với thuật toán MD5
@@ -52,7 +49,9 @@ public class EmployeeDAO {
 
     public ArrayList<Employee> getAllEmployees() {
         ArrayList<Employee> listEmployee = new ArrayList<>();
-        String sql = "SELECT * FROM Employees";
+        String sql = "SELECT * \n"
+                + "FROM Employees \n"
+                + "WHERE RoleID <> 1;";
         try {
             PreparedStatement pr = connector.prepareStatement(sql);
             ResultSet rs = pr.executeQuery();
@@ -114,7 +113,7 @@ public class EmployeeDAO {
             PreparedStatement pr = connector.prepareStatement(sql);
             pr.setString(1, employee.getFullname());
             pr.setDate(2, employee.getBirthday());
-            pr.setString(3, getMD5(employee.getPassword()));
+            pr.setString(3, employee.getPassword());
             pr.setString(4, employee.getPhoneNumber());
             pr.setString(5, employee.getEmail());
             pr.setString(6, employee.getGender());
@@ -204,7 +203,7 @@ public class EmployeeDAO {
 
     public ArrayList<Employee> searchEmployeesByName(String employeeName) {
         ArrayList<Employee> employees = new ArrayList<>();
-        String sql = "SELECT * FROM Employees WHERE fullname LIKE ?";
+        String sql = "SELECT * FROM Employees WHERE fullname LIKE ? AND RoleID <> 1";
         try {
             PreparedStatement pr = connector.prepareStatement(sql);
             pr.setString(1, "%" + employeeName + "%"); // Tìm kiếm gần đúng
@@ -237,7 +236,7 @@ public class EmployeeDAO {
             pr.setString(1, email);
             ResultSet rs = pr.executeQuery();
             if (rs.next()) {
-                return rs.getInt(1) > 0; // Trả về true nếu có ít nhất 1 email trùng
+                return rs.getInt(1) > 0;
             }
         } catch (SQLException e) {
             System.out.println(e);
