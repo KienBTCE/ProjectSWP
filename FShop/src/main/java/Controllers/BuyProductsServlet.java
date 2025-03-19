@@ -133,6 +133,7 @@ public class BuyProductsServlet extends HttpServlet {
                             session.setAttribute("totalAmount", totalAmount);
                             session.setAttribute("shipAddress", address);
                             session.setAttribute("numOfItems", count);
+                            session.setAttribute("url", url);
                             request.getRequestDispatcher("CheckoutView.jsp").forward(request, response);
                         }
                     }
@@ -211,7 +212,8 @@ public class BuyProductsServlet extends HttpServlet {
                 session.setAttribute("order", new Order(fullname, phone, address));
                 request.getRequestDispatcher("ConfirmView.jsp").forward(request, response);
             } else if (action.equals("placeOrder")) {
-                String urlBuy = (String)session.getAttribute("url");
+                String urlBuy = (String) session.getAttribute("url");
+                System.out.println("URL" + urlBuy);
                 long totalAmount = Long.parseLong(request.getParameter("totalAmount"));
                 Order o = (Order) session.getAttribute("order");
                 o.setAccountID(cus.getId());
@@ -221,10 +223,13 @@ public class BuyProductsServlet extends HttpServlet {
                 for (Cart c : cartSelected) {
                     od.addOrderDetail(od.getNewestOrderID(), c.getProductID(), c.getQuantity(), c.getPrice());
                     od.subtractQuantityAfterBuy(c.getProductID(), c.getQuantity());
-                    if (!urlBuy.equals("buyNow")) {
-                        ca.deleteProductOnCart(c.getProductID(), cus.getId());
+                    if (url != null) {
+                        if (urlBuy.equalsIgnoreCase("Cart")) {
+                            ca.deleteProductOnCart(c.getProductID(), cus.getId());
+                        }
                     }
                 }
+
                 session.setAttribute("orderStatus", "success");
                 session.setAttribute("numOfProCartOfCus", ca.getNumberOfProduct(cus.getId()));
                 //gui mail xac nhan don hang thanh cong
@@ -238,10 +243,9 @@ public class BuyProductsServlet extends HttpServlet {
         } else {
             response.sendRedirect("customerLogin");
         }
-
     }
-
     //phuong thuc gui mail
+
     private void sendOrderConfirmationEmail(Customer customer, Order order, List<Cart> cartItems, long totalAmount) {
         try {
             Email email = new Email();

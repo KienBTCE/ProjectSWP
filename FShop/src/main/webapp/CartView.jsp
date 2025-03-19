@@ -116,7 +116,7 @@
                                                         </h6>
                                                     </td>
                                                     <td class="th">
-                                                        <a href="updateCart?id=${p.getProductID()}"><img src="./assets/imgs/ShoppingCartImg/x.jpg" alt=""
+                                                        <a href="deletePOC?id=${p.getProductID()}"><img src="./assets/imgs/ShoppingCartImg/x.jpg" alt=""
                                                                                                          width="25px" ></a>
                                                         <!--                                                        <a href=""><img src="./assets/imgs/ShoppingCartImg/pen.jpg" alt="" width="25px"
                                                                                                                                 style="margin-top: 5px;"></a>-->

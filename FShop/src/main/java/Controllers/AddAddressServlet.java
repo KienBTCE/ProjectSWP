@@ -90,10 +90,10 @@ public class AddAddressServlet extends HttpServlet {
             if (request.getParameter("isDefault") != null) {
                 int id = add.addAddress(new Address(cus.getId(), 1, addressDetails));
                 add.disableDefaultAddress(id, cus.getId());
-                session.setAttribute("message", "Add Address Successfully");
+                session.setAttribute("message", "Add sddress successfully");
             } else {
                 add.addAddress(new Address(cus.getId(), 0, addressDetails));
-                session.setAttribute("message", "Add Address Successfully");
+                session.setAttribute("message", "Add address successfully");
             }
             if (url.equalsIgnoreCase("addressPage")) {
                 response.sendRedirect("ViewShippingAddress");

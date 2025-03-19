@@ -730,11 +730,31 @@
                                     <label for="quantity" class="me-2 fw-bold">Quantity:</label>
                                     <div class="quantity-controls">
                                         <button type="button" onclick="decreaseQuantity()">-</button>
-                                        <input type="number" id="quantity" name="quantity" value="1" min="1" max="${product.getStock()}" oninput="validateQuantity()">
+                                        <input type="number" id="quantity" name="quantity" value="1" min="1" 
+                                               max="${product.getStock()}" oninput="validateQuantity()">
                                         <button type="button" onclick="increaseQuantity()">+</button>
                                     </div>
                                 </div>
-                                <p id="quantityWarning" class="text-danger" style="display: none;">Quantity exceeds stock limit!</p>
+                                <!-- Bootstrap Modal -->
+                                <div class="modal fade" id="quantityWarningModal" tabindex="-1" aria-labelledby="warningModalLabel" aria-hidden="true">
+                                    <div class="modal-dialog">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title text-danger" id="warningModalLabel">Warning</h5>
+                                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                            </div>
+                                            <div class="modal-body text-dark">
+                                                You are allowed to buy a maximum quantity of <b>5</b>! 
+                                                <br>
+                                                Or if you want to buy more, contact us at: 
+                                                <a href="mailto:kieuthy@gmail.com" class="text-primary">kieuthy@gmail.com</a>
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">OK</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
 
 
                                 <!-- Action Buttons -->
@@ -879,9 +899,14 @@
                                         mainImg.src = img.src;
                                         img.src = tempSrc;
                                     }
+                                    function getMaxQuantity() {
+                                        const stockQuantity = parseInt(document.getElementById('quantity').max) || 5;
+                                        return Math.min(stockQuantity, 5);
+                                    }
+
                                     function increaseQuantity() {
                                         const quantityInput = document.getElementById('quantity');
-                                        const maxQuantity = parseInt(quantityInput.max);
+                                        const maxQuantity = getMaxQuantity();
                                         let currentVal = parseInt(quantityInput.value);
 
                                         if (currentVal < maxQuantity) {
@@ -907,24 +932,26 @@
 
                                     function validateQuantity() {
                                         const quantityInput = document.getElementById('quantity');
-                                        const maxQuantity = parseInt(quantityInput.max);
+                                        const maxQuantity = getMaxQuantity();
                                         let currentVal = parseInt(quantityInput.value);
 
                                         if (isNaN(currentVal) || currentVal < 1) {
-                                            quantityInput.value = 1;
+                                            currentVal = 1;
                                         } else if (currentVal > maxQuantity) {
-                                            quantityInput.value = maxQuantity;
+                                            currentVal = maxQuantity;
                                             showWarning(true);
                                         } else {
                                             showWarning(false);
                                         }
-                                        validateButtons();
+
+                                        quantityInput.value = currentVal;
                                         syncHiddenInputs();
+                                        validateButtons();
                                     }
 
                                     function validateButtons() {
                                         const quantityInput = document.getElementById('quantity');
-                                        const maxQuantity = parseInt(quantityInput.max);
+                                        const maxQuantity = getMaxQuantity();
                                         const addToCartBtn = document.getElementById('addToCartBtn');
                                         const buyNowBtn = document.getElementById('buyNowBtn');
 
@@ -938,14 +965,21 @@
                                     }
 
                                     function showWarning(show) {
-                                        document.getElementById("quantityWarning").style.display = show ? "block" : "none";
+                                        if (show) {
+                                            var warningModal = new bootstrap.Modal(document.getElementById('quantityWarningModal'));
+                                            warningModal.show();
+                                        }
                                     }
 
                                     function syncHiddenInputs() {
-                                        document.getElementById("quantityInputHidden").value = document.getElementById("quantity").value;
-                                        document.getElementById("quantityInputHiddenBuyNow").value = document.getElementById("quantity").value;
+                                        const quantity = document.getElementById("quantity").value;
+                                        document.getElementById("quantityInputHidden").value = quantity;
+                                        document.getElementById("quantityInputHiddenBuyNow").value = quantity;
                                     }
 
+                                    document.addEventListener("DOMContentLoaded", function () {
+                                        document.getElementById('quantity').max = getMaxQuantity();
+                                    });
 
                                     // Close popup
                                     function closePopup() {
