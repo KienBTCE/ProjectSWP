@@ -90,8 +90,8 @@
                             <c:set var="subtotal" value="0"></c:set>
                             <c:forEach items="${sessionScope.orderDetail}" var="od">
                                 <tr style="border-bottom: 1px solid #f2f2f2;">
-                                    <td style="padding: 12px 8px;"> <a href="ProductDetailServlet?id=${od.getProductID()}" target="target"><img src="./assets/imgs/Products/${od.getImage()}" alt="" style="width: 85px; border-radius: 8px;">  </a></td>
-                                    <td style="padding: 12px 8px; font-size: 15px;"><a href="ProductDetailServlet?id=${od.getProductID()}" target="target">${od.getProductName()}</a></td>
+                                    <td style="padding: 12px 8px;"> <a style="text-decoration: none; color: black;" href="ProductDetailServlet?id=${od.getProductID()}" ><img src="./assets/imgs/Products/${od.getImage()}" alt="" style="width: 85px; border-radius: 8px;">  </a></td>
+                                    <td style="padding: 12px 8px; font-size: 15px;"><a style="text-decoration: none; color: black;"  href="ProductDetailServlet?id=${od.getProductID()}" >${od.getProductName()}</a></td>
 
                                     <td style="padding: 12px 8px; text-align: right; font-weight: 500; color: #444;">
                                         <fmt:formatNumber value="${od.getPrice()}" type="currency"/>

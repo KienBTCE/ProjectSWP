@@ -194,7 +194,8 @@
 
                                     <!-- Xuống dòng sau mỗi 4 sản phẩm -->
                                     <c:if test="${(status.index + 1) % 4 == 0}">
-                                    </div><div class="row">
+                                    </div>
+                                    <div class="row">
                                     </c:if>
                                 </c:forEach>
                             </div>
@@ -296,6 +297,10 @@
                     arrow.innerHTML = "▼";
                 }
             }
+
+        </script>
+
+        <script>
 
         </script>
         <script src="assets/js/bootstrap.min.js"></script>

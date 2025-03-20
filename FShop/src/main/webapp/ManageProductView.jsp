@@ -262,12 +262,12 @@
                 <table class="table table-hover">
                     <thead>
                         <tr>
-                            <th>Product ID</th>
+                            <th>ID</th>
                             <th>Category</th>
                             <th>Brand</th>
-                            <th>Product Name</th>
+                            <th>Name</th>
                             <th>Price</th>
-                            <th>Quantity</th>
+                            <th>Stock</th>
                             <th>Status</th>
                             <th>Action</th>
                         </tr>

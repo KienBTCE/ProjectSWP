@@ -5,6 +5,7 @@
 package Controllers;
 
 import DAOs.AttributeDAO;
+import DAOs.BrandDAO;
 import DAOs.CategoryDAO;
 import Models.Product;
 import DAOs.ProductDAO;
@@ -79,13 +80,20 @@ public class UpdateProductServlet extends HttpServlet {
             if (product != null) {
                 // Lấy danh sách category từ DB thông qua CategoryDAO
                 CategoryDAO categoryDAO = new CategoryDAO();
-                List<String> categories = categoryDAO.getAllCategoryNames();
-                request.setAttribute("categories", categories);
+                BrandDAO brandDAO = new BrandDAO();
 
+                List<String> categories = categoryDAO.getAllCategoryNames();
+                List<String> brands = brandDAO.getAllBrandName();
+
+                request.setAttribute("categories", categories);
+                request.setAttribute("brands", brands);
                 // Lấy danh sách attribute details từ DB thông qua AttributeDAO
                 AttributeDAO attributeDAO = new AttributeDAO();
                 List<AttributeDetail> attributeDetails = attributeDAO.getAttributesByProductID(productId);
                 product.setAttributeDetails(attributeDetails);
+
+                String brandName = request.getParameter("brandName");
+                product.setBrandName(brandName);
 
                 request.setAttribute("product", product);
                 request.getRequestDispatcher("UpdateProductView.jsp").forward(request, response);
@@ -118,11 +126,7 @@ public class UpdateProductServlet extends HttpServlet {
             long price = Long.parseLong(request.getParameter("price"));
             int isDeleted = Integer.parseInt(request.getParameter("isDeleted"));
             String categoryName = request.getParameter("categoryName");
-
-            // In log giá trị cơ bản
-            System.out.println("doPost - Cập nhật Product ID: " + id);
-            System.out.println("doPost - FullName: " + fullName + ", Price: " + price);
-
+            String brandName = request.getParameter("brandName");
             // Lấy sản phẩm hiện có để giữ lại các trường không cập nhật từ form
             Product currentProduct = productDAO.getProductByID(id);
             if (currentProduct == null) {
@@ -144,7 +148,6 @@ public class UpdateProductServlet extends HttpServlet {
                 String fileSavePath = imgDir.toString() + File.separator + fileName;
                 part.write(fileSavePath);
                 photoPath = fileName;
-                System.out.println("doPost - Ảnh chính mới: " + fileName);
             } else {
                 System.out.println("doPost - Giữ ảnh chính hiện tại: " + photoPath);
             }
@@ -162,7 +165,6 @@ public class UpdateProductServlet extends HttpServlet {
                 String fileSavePath = imgDir.toString() + File.separator + fileName;
                 part1.write(fileSavePath);
                 photoPath1 = fileName;
-                System.out.println("doPost - Ảnh thứ 2 mới: " + fileName);
             }
 
             // Xử lý ảnh thứ 3
@@ -178,7 +180,6 @@ public class UpdateProductServlet extends HttpServlet {
                 String fileSavePath = imgDir.toString() + File.separator + fileName;
                 part2.write(fileSavePath);
                 photoPath2 = fileName;
-                System.out.println("doPost - Ảnh thứ 3 mới: " + fileName);
             }
 
             // Xử lý ảnh thứ 4
@@ -194,7 +195,6 @@ public class UpdateProductServlet extends HttpServlet {
                 String fileSavePath = imgDir.toString() + File.separator + fileName;
                 part3.write(fileSavePath);
                 photoPath3 = fileName;
-                System.out.println("doPost - Ảnh thứ 4 mới: " + fileName);
             }
 
             // Tạo đối tượng Product mới để update
@@ -210,8 +210,7 @@ public class UpdateProductServlet extends HttpServlet {
             product.setImage3(photoPath3);
             product.setCategoryName(categoryName);
             product.setModel(currentProduct.getModel());
-            product.setBrandName(currentProduct.getBrandName());
-
+            product.setBrandName(brandName);
             // Xây dựng danh sách attribute details từ form
             String[] attributeIds = request.getParameterValues("attributeId");
             if (attributeIds != null) {
@@ -219,7 +218,6 @@ public class UpdateProductServlet extends HttpServlet {
                 for (String attrIdStr : attributeIds) {
                     int attrId = Integer.parseInt(attrIdStr);
                     String attributeInfor = request.getParameter("attributeInfor_" + attrId);
-                    System.out.println("doPost - Attribute " + attrId + ": " + attributeInfor);
                     AttributeDetail detail = new AttributeDetail(attrId, id, attributeInfor, null);
                     attributeDetails.add(detail);
                 }

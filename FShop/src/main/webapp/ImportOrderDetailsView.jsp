@@ -140,7 +140,7 @@
                                 <th>Import ID</th>
                                 <th>Employee ID</th>
                                 <th>Employee Name</th>
-                                <th>Date & Time</th>
+                                <th>Date</th>
                                 <th>Supplier</th>
                                 <th>Amount</th>
                             </tr>

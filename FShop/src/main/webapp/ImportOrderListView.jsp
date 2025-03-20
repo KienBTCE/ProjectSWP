@@ -206,7 +206,7 @@
                     <thead>
                         <tr>
                             <th>Import ID</th>
-                            <th>Date & Time</th>
+                            <th>Date</th>
                             <th>Amount</th>
                             <th>Supplier</th>
                             <th>Action</th>
