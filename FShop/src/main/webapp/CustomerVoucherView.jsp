@@ -24,16 +24,15 @@
             }
 
             .voucher {
-                background: linear-gradient(135deg, white, white);
-                width: 450px;
-                height: 120px; /* Reduced height */
+                margin: 10px 0px 0px 0px;
+                background: white;
                 display: flex;
                 border-radius: 10px;
                 overflow: hidden;
                 box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+                border: solid 0.5px black;
                 position: relative;
             }
-
             .left {
                 padding: 10px;
                 color: black;
@@ -68,8 +67,8 @@
             }
 
             .right {
-                background: #007bff;
-                color: gold;
+                background: #ee4d2d;
+                color: white;
                 padding: 10px 20px 10px 10px;
                 flex: 0.5; /* Shortened width */
                 display: flex;
@@ -83,7 +82,7 @@
             .quatity {
                 width: 40px;
                 height: 25px;
-                background-color: #d10000;
+                background-color: #ee4d2d;
                 color: white;
                 font-size: 12px;
                 font-weight: bold;
@@ -93,7 +92,7 @@
                 align-items: center;
                 position: absolute;
                 top: 5px;
-                right: 0px;
+                right: -1px;
             }
             h1{
                 border-bottom: 1px gray solid;
@@ -110,70 +109,65 @@
               background-color: white; height: 100%">
             <h1>Your voucher</h1>
             <br>
-            <div class="bodyyyyyy">
+            <div class="container-fluid">
 
-                <div class="voucher">
-                    <div class="left">
-                        <h2><img class="logo" src="./assets/imgs/HeaderImgs/Vector-Header-Logo.svg" alt="Logo"> GIFT VOUCHER</h2>
-                        <p>Company slogan will be here</p>
-                        <div class="terms">
-                            <strong>CONDITIONS</strong>
-                            <p>Some placeholder text for terms and conditions.</p>
+                <div class="row d-flex" style="">
+                    <div class=" col-md-6">
+                        <div class="voucher">
+                            <div class="right">
+                                500$ VALUE
+                            </div>
+                            <div class="quatity">
+                                X5
+                            </div>
+                            <div class="left">
+                                <h2><img class="logo" src="./assets/imgs/HeaderImgs/Vector-Header-Logo.svg" alt="Logo"> GIFT VOUCHER</h2>
+                                <p>Company slogan will be here</p>
+                                <div class="terms">
+                                    <strong>CONDITIONS</strong>
+                                    <p>Some placeholder text for terms and conditions.</p>
+                                </div>
+                            </div>
+
                         </div>
                     </div>
-                    <div class="right">
-                        500$ VALUE
-                    </div>
-                    <div class="quatity">
-                        X5
-                    </div>
-                </div>
-                <div class="voucher">
-                    <div class="left">
-                        <h2><img class="logo" src="./assets/imgs/HeaderImgs/Vector-Header-Logo.svg" alt="Logo"> GIFT VOUCHER</h2>
-                        <p>Company slogan will be here</p>
-                        <div class="terms">
-                            <strong>CONDITIONS</strong>
-                            <p>Some placeholder text for terms and conditions.</p>
+                    <div class=" col-md-6">
+                        <div class="voucher">
+                            <div class="right">
+                                500$ VALUE
+                            </div>
+                            <div class="quatity">
+                                X5
+                            </div>
+                            <div class="left">
+                                <h2><img class="logo" src="./assets/imgs/HeaderImgs/Vector-Header-Logo.svg" alt="Logo"> GIFT VOUCHER</h2>
+                                <p>Company slogan will be here</p>
+                                <div class="terms">
+                                    <strong>CONDITIONS</strong>
+                                    <p>Some placeholder text for terms and conditions.</p>
+                                </div>
+                            </div>
+
                         </div>
                     </div>
-                    <div class="right">
-                        500$ VALUE
-                    </div>
-                    <div class="quatity">
-                        X5
-                    </div>
-                </div>
-                <div class="voucher">
-                    <div class="left">
-                        <h2><img class="logo" src="./assets/imgs/HeaderImgs/Vector-Header-Logo.svg" alt="Logo"> GIFT VOUCHER</h2>
-                        <p>Company slogan will be here</p>
-                        <div class="terms">
-                            <strong>CONDITIONS</strong>
-                            <p>Some placeholder text for terms and conditions.</p>
+                    <div class=" col-md-6">
+                        <div class="voucher">
+                            <div class="right">
+                                500$ VALUE
+                            </div>
+                            <div class="quatity">
+                                X5
+                            </div>
+                            <div class="left">
+                                <h2><img class="logo" src="./assets/imgs/HeaderImgs/Vector-Header-Logo.svg" alt="Logo"> GIFT VOUCHER</h2>
+                                <p>Company slogan will be here</p>
+                                <div class="terms">
+                                    <strong>CONDITIONS</strong>
+                                    <p>Some placeholder text for terms and conditions.</p>
+                                </div>
+                            </div>
+
                         </div>
-                    </div>
-                    <div class="right">
-                        500$ VALUE
-                    </div>
-                    <div class="quatity">
-                        X5
-                    </div>
-                </div>
-                <div class="voucher">
-                    <div class="left">
-                        <h2><img class="logo" src="./assets/imgs/HeaderImgs/Vector-Header-Logo.svg" alt="Logo"> GIFT VOUCHER</h2>
-                        <p>Company slogan will be here</p>
-                        <div class="terms">
-                            <strong>CONDITIONS</strong>
-                            <p>Some placeholder text for terms and conditions.</p>
-                        </div>
-                    </div>
-                    <div class="right">
-                        500$ VALUE
-                    </div>
-                    <div class="quatity">
-                        X5
                     </div>
                 </div>
             </div>
