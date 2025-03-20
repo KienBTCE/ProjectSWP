@@ -229,6 +229,23 @@ public class ViewProductServlet extends HttpServlet {
             // ================================================================== Multi Filter
 
             try {
+//<<<<<<< HEAD
+//                int numberRow = 0;
+//                if (products != null) {
+//                    numberRow = products.size() / 4;
+//                    if (products.size() % 4 != 0) {
+//                        numberRow++;
+//                    }
+//                }
+//
+//              ProductRatingDAO prDAO = new ProductRatingDAO();
+//                ArrayList<ProductRating> stars = new ArrayList<>();
+//            for (Product p : products) {
+//               ProductRating star = prDAO.getStarAVG(p.getProductId());
+//                System.out.println(star);
+//                
+//                stars.add(star);
+//=======
                 ProductRatingDAO prDAO = new ProductRatingDAO();
                 ArrayList<ProductRating> stars = new ArrayList<>();
                 for (Product p : products) {
@@ -236,10 +253,13 @@ public class ViewProductServlet extends HttpServlet {
                     
 
                     stars.add(star);
+//>>>>>>> main
 
-                }
+            }
+              
 
                 ArrayList<String> brands = pd.getAllBrandByCategory("Smartphone");
+
                 Map<Object, Object> dataMap = new HashMap<>();
                 dataMap.put("stars", stars);
                 dataMap.put("products", products);
