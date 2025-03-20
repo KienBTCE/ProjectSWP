@@ -188,7 +188,7 @@
                     max-width: 100%;
                 }
                 .feedback-container {
-                    min-height: auto;  
+                    min-height: auto;
                 }
             }
             main {
@@ -770,7 +770,23 @@
                                     </div>
                                 </div>
 
-
+                                <!-- Bootstrap Modal -->
+                                <div class="modal fade" id="stockLimit" tabindex="-1" aria-labelledby="warningModalLabel" aria-hidden="true">
+                                    <div class="modal-dialog">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title text-danger" id="warningModalLabel">Warning</h5>
+                                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                            </div>
+                                            <div class="modal-body text-dark">
+                                                <p>There are only <b>${product.getStock()}</b> products left in stock.</p>
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">OK</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
                                 <!-- Action Buttons -->
                                 <div class="action-buttons">
                                     <!-- Add to Cart form -->
@@ -965,7 +981,7 @@
                                             if (currentVal < maxQuantity) {
                                                 quantityInput.value = currentVal + 1;
                                             } else {
-                                                showWarning(true);
+                                                showStockWarning(true);
                                             }
                                             validateButtons();
                                             syncHiddenInputs();
@@ -1023,7 +1039,12 @@
                                                 warningModal.show();
                                             }
                                         }
-
+                                        function showStockWarning(show) {
+                                            if (show) {
+                                                var warningModal = new bootstrap.Modal(document.getElementById('stockLimit'));
+                                                warningModal.show();
+                                            }
+                                        }
                                         function syncHiddenInputs() {
                                             const quantity = document.getElementById("quantity").value;
                                             document.getElementById("quantityInputHidden").value = quantity;
