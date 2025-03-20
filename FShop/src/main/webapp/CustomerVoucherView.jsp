@@ -3,8 +3,12 @@
     Created on : Mar 18, 2025, 5:20:29 PM
     Author     : nhutb
 --%>
-
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+<fmt:setLocale value="vi_VN" />
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@page import="Models.CustomerVoucher" %> 
 <!DOCTYPE html>
 <html lang="vi">
 
@@ -24,6 +28,7 @@
             }
 
             .voucher {
+                height: 150px;
                 margin: 10px 0px 0px 0px;
                 background: white;
                 display: flex;
@@ -112,63 +117,31 @@
             <div class="container-fluid">
 
                 <div class="row d-flex" style="">
-                    <div class=" col-md-6">
-                        <div class="voucher">
-                            <div class="right">
-                                500$ VALUE
-                            </div>
-                            <div class="quatity">
-                                X5
-                            </div>
-                            <div class="left">
-                                <h2><img class="logo" src="./assets/imgs/HeaderImgs/Vector-Header-Logo.svg" alt="Logo"> GIFT VOUCHER</h2>
-                                <p>Company slogan will be here</p>
-                                <div class="terms">
-                                    <strong>CONDITIONS</strong>
-                                    <p>Some placeholder text for terms and conditions.</p>
+                    <c:forEach var="vou" items="${sessionScope.customerVoucher}" >
+                        <div class=" col-md-6">
+                            <div class="voucher">
+                                <div class="right">
+                                    <c:if test="${vou.getVoucherType() == 0}">
+                                        <fmt:formatNumber type="currency" value="${vou.getVoucherValue()}"></fmt:formatNumber> Sale off
+                                    </c:if>
+                                    <c:if test="${vou.getVoucherType() == 1}">
+                                        ${vou.getVoucherValue()}% Sale off
+                                    </c:if>
+                                </div>
+                                <div class="quatity">
+                                    X${vou.getQuantity()}
+                                </div>
+                                <div class="left">
+                                    <h2><img class="logo" src="./assets/imgs/HeaderImgs/Vector-Header-Logo.svg" alt="Logo"> GIFT VOUCHER</h2>
+                                    <p>FShop</p>
+                                    <div class="terms">
+                                        <strong>CONDITIONS</strong>
+                                        <p>${vou.getDescription()}</p>
+                                    </div>
                                 </div>
                             </div>
-
                         </div>
-                    </div>
-                    <div class=" col-md-6">
-                        <div class="voucher">
-                            <div class="right">
-                                500$ VALUE
-                            </div>
-                            <div class="quatity">
-                                X5
-                            </div>
-                            <div class="left">
-                                <h2><img class="logo" src="./assets/imgs/HeaderImgs/Vector-Header-Logo.svg" alt="Logo"> GIFT VOUCHER</h2>
-                                <p>Company slogan will be here</p>
-                                <div class="terms">
-                                    <strong>CONDITIONS</strong>
-                                    <p>Some placeholder text for terms and conditions.</p>
-                                </div>
-                            </div>
-
-                        </div>
-                    </div>
-                    <div class=" col-md-6">
-                        <div class="voucher">
-                            <div class="right">
-                                500$ VALUE
-                            </div>
-                            <div class="quatity">
-                                X5
-                            </div>
-                            <div class="left">
-                                <h2><img class="logo" src="./assets/imgs/HeaderImgs/Vector-Header-Logo.svg" alt="Logo"> GIFT VOUCHER</h2>
-                                <p>Company slogan will be here</p>
-                                <div class="terms">
-                                    <strong>CONDITIONS</strong>
-                                    <p>Some placeholder text for terms and conditions.</p>
-                                </div>
-                            </div>
-
-                        </div>
-                    </div>
+                    </c:forEach>
                 </div>
             </div>
         </main>
