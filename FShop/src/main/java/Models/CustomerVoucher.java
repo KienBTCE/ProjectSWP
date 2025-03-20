@@ -14,21 +14,21 @@ public class CustomerVoucher {
     private int voucherType;
     private String voucherCode;
     private int voucherValue;
-    private int customerID;
     private String expirationDate;
     private String description;
+    private int quantity;
 
     public CustomerVoucher() {
     }
 
-    public CustomerVoucher(int voucherID, int voucherType, String voucherCode, int voucherValue, int customerID, String expirationDate, String description) {
+    public CustomerVoucher(int voucherID, int voucherType, String voucherCode, int voucherValue, String expirationDate, String description, int quantity) {
         this.voucherID = voucherID;
         this.voucherType = voucherType;
         this.voucherCode = voucherCode;
         this.voucherValue = voucherValue;
-        this.customerID = customerID;
         this.expirationDate = expirationDate;
         this.description = description;
+        this.quantity = quantity;
     }
 
     public int getVoucherID() {
@@ -63,14 +63,6 @@ public class CustomerVoucher {
         this.voucherValue = voucherValue;
     }
 
-    public int getCustomerID() {
-        return customerID;
-    }
-
-    public void setCustomerID(int customerID) {
-        this.customerID = customerID;
-    }
-
     public String getExpirationDate() {
         return expirationDate;
     }
@@ -85,6 +77,14 @@ public class CustomerVoucher {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public int getQuantity() {
+        return quantity;
+    }
+
+    public void setQuantity(int quantity) {
+        this.quantity = quantity;
     }
 
 }
