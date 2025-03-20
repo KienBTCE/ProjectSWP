@@ -164,6 +164,14 @@
         <servlet-name>SearchInventoryServlet</servlet-name>
         <servlet-class>Controllers.SearchInventoryServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>UpdateReplyServlet</servlet-name>
+        <servlet-class>Controllers.UpdateReplyServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>DeleteReplyServlet</servlet-name>
+        <servlet-class>Controllers.DeleteReplyServlet</servlet-class>
+    </servlet>
      <servlet>
         <servlet-name>UpdateEmployeeServlet</servlet-name>
         <servlet-class>Controllers.UpdateEmployeeServlet</servlet-class>
@@ -207,11 +215,11 @@
     <servlet-mapping>
         <servlet-name>StatisticManagementServlet</servlet-name>
         <url-pattern>/StatisticManagementServlet</url-pattern>
-    </servlet-mapping>   
+    </servlet-mapping>
     <servlet-mapping>
         <servlet-name>InventoryStatisticServlet</servlet-name>
         <url-pattern>/InventoryStatisticServlet</url-pattern>
-    </servlet-mapping> 
+    </servlet-mapping>
     <servlet-mapping>
         <servlet-name>RevenueStatisticServlet</servlet-name>
         <url-pattern>/RevenueStatisticServlet</url-pattern>
@@ -375,6 +383,14 @@
     <welcome-file-list>
         <welcome-file>/</welcome-file>
     </welcome-file-list>
+    <servlet-mapping>
+        <servlet-name>UpdateReplyServlet</servlet-name>
+        <url-pattern>/UpdateReplyServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>DeleteReplyServlet</servlet-name>
+        <url-pattern>/DeleteReplyServlet</url-pattern>
+    </servlet-mapping>
     <session-config>
         <session-timeout>30</session-timeout>
     </session-config>

@@ -82,7 +82,7 @@ public class ExportStockToFileServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
          response.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
-        response.setHeader("Content-Disposition", "attachment; filename=data.xlsx");
+        response.setHeader("Content-Disposition", "attachment; filename=StockReportForWarehouse.xlsx");
 
         XSSFWorkbook b = new XSSFWorkbook();
         XSSFSheet sheet = b.createSheet("list");

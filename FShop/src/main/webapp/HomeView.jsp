@@ -216,6 +216,7 @@
                                             </c:otherwise>
                                         </c:choose>
                                     </c:forEach>
+
                                 </div>
                                 <h6>${p.getFullName()}</h6>
                                 <p>${p.getPriceFormatted()}</p>
@@ -248,6 +249,7 @@
                                     </c:forEach>
                                 </div>
 
+
                                 <h6>${p.getFullName()}</h6>
                                 <p>${p.getPriceFormatted()}</p>
 
@@ -263,7 +265,9 @@
 
                     <c:set var="count" value="0" scope="page"></c:set>
                     <c:forEach items="${dataMap.products}" var="p" varStatus="status">
+
                         <c:if test="${count < 5 and p.getCategoryId() == 4}">
+
                             <c:set var="count" value="${count + 1}" scope="page"></c:set>
                             <a class="frame-represent" href="ProductDetailServlet?id=${p.getProductId()}">
                                 <img src="assets/imgs/Products/${p.getImage()}" width="150px" height="150px" alt="alt"/>
@@ -278,12 +282,60 @@
                                             </c:otherwise>
                                         </c:choose>
                                     </c:forEach>
+
                                 </div>
                                 <h6>${p.getFullName()}</h6>
                                 <p>${p.getPriceFormatted()}</p>
+
                             </a>
                         </c:if>
                     </c:forEach>
+                </div>
+            </div>
+            <!--Commit 15694d5
+            --><div class="row">
+                <h5 class="title-content">Follow us on Instagram for News, Offers & More</h5>
+                <div class="gap-section section-content">
+                    <div class="frame-represent">
+                        <img src="assets/imgs/Magazines/news-1.svg" width="235px" height="150px" alt="alt"/>
+                        <div class="magazine-paragraph">
+                            <p style="width: 100%">
+                                If you’ve recently made a desktop PC or laptop purchase, you might want to consider adding peripherals to enhance your home office setup, your gaming rig, or your business workspace...
+                            </p>
+                        </div>
+                    </div>
+                    <div class="frame-represent">
+                        <img src="assets/imgs/Magazines/news-2.svg" width="235px" height="150px" alt="alt"/>
+                        <div class="magazine-paragraph">
+                            <p style="width: 100%">
+                                As a gamer, superior sound counts for a lot. You need to hear enemies tiptoeing up behind you for a sneak attack or a slight change in the atmospheric music signaling a new challenge or task...
+                            </p>
+                        </div>
+                    </div>
+                    <div class="frame-represent">
+                        <img src="assets/imgs/Magazines/news-3.svg" width="235px" height="150px" alt="alt"/>
+                        <div class="magazine-paragraph">
+                            <p style="width: 100%">
+                                If you’ve recently made a desktop PC or laptop purchase, you might want to consider adding peripherals to enhance your home office setup, your gaming rig, or your business workspace...
+                            </p>
+                        </div>
+                    </div>
+                    <div class="frame-represent">
+                        <img src="assets/imgs/Magazines/news-4.svg" width="235px" height="150px" alt="alt"/>
+                        <div class="magazine-paragraph">
+                            <p style="width: 100%">
+                                If you’ve recently made a desktop PC or laptop purchase, you might want to consider adding peripherals to enhance your home office setup, your gaming rig, or your business workspace...
+                            </p>
+                        </div>
+                    </div>
+                    <div class="frame-represent">
+                        <img src="assets/imgs/Magazines/news-5.svg" width="235px" height="150px" alt="alt"/>
+                        <div class="magazine-paragraph">
+                            <p style="width: 100%">
+                                If you’ve recently made a desktop PC or laptop purchase, you might want to consider adding peripherals to enhance your home office setup, your gaming rig, or your business workspace...
+                            </p>
+                        </div>
+                    </div>
                 </div>
             </div>
 

@@ -187,22 +187,15 @@
                 .product-gallery .main-image {
                     max-width: 100%;
                 }
+                .feedback-container {
+                    min-height: auto;  
+                }
             }
             main {
-                min-height: auto;
+                /*min-height: auto;*/
                 padding-bottom: 50px;
             }
 
-
-            .containerfb {
-                max-width: 768px;
-                width: 100%;
-                background: #ffffff;
-                padding: 25px;
-                margin: 20px auto;
-                border-radius: 10px;
-                box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.15);
-            }
             .profile {
                 display: flex;
                 align-items: center;
@@ -375,14 +368,15 @@
             /* =================== Review Card =================== */
             .review-card {
                 background: #fff;
-                border: 1px solid #e0e0e0;
-                border-radius: 8px;
-                padding: 20px;
-                margin-bottom: 20px;
-                transition: box-shadow 0.2s ease;
+                padding: 15px;
+                margin-bottom: 15px;
+                border-top: 1px solid #ddd;
+                border-bottom: 1px solid #ddd;
+                border-left: none;
+                border-right: none;
             }
             .review-card:hover {
-                box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+                /*box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);*/
             }
 
             /* Profile Info */
@@ -411,7 +405,8 @@
 
             /* Star Rating */
             .star-icon {
-                margin-bottom: 10px;
+                margin-bottom: 1%;
+                margin-left: 5%;
             }
             .star-icon i {
                 font-size: 1rem;
@@ -429,12 +424,21 @@
                 color: #555;
                 margin: 0;
             }
+            .rateComment {
+                font-size: 1rem !important;
+                color: #555 !important;
+                line-height: 1.5 !important;
+                font-style: italic !important;
+                margin-left: 5%! important;
+
+            }
 
             /* =================== Reply Container =================== */
             .reply-container {
                 background: #f7f7f7;
                 border-left: 3px solid #007bff;
                 padding: 15px;
+                margin-left: 7%;
                 margin-top: 15px;
                 border-radius: 4px;
                 font-size: 0.9rem;
@@ -512,14 +516,12 @@
 
             .feedback-container {
                 background-color: #fff;
-                border-radius: 10px;
-                box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+                /*border-radius: 10px;*/
+                /*box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);*/
                 padding: 25px;
                 margin-top: 40px;
-                max-width: 800px;
-                width: 100%;
-                margin-left: auto;
-                margin-right: auto;
+                width: 70%;
+                min-height: 500px;
             }
 
 
@@ -643,6 +645,16 @@
 
             button:hover {
                 background-color: #0056b3;
+            }
+            .feedback-container {
+                background-color: #fff;
+                border-radius: 10px;
+                box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+                padding: 35px;
+                margin-top: 40px;
+                /*                max-width: 800px;*/
+                width: 100%;
+
             }
 
         </style>
@@ -799,8 +811,23 @@
                 </div>
             </div>
             <div class="feedback-container">
-                <h3 class="feedback-title">Customer Reviews</h3>
-
+                <h3 class="feedback-title">PRODUCT REVIEW</h3>
+                <c:if test="${isOk}">
+                    <form id="reviewForm" method="POST" action="ProductDetailServlet">
+                        <input type="hidden" name="productId" value="${product.productId}">
+                        <input type="hidden" name="customerId" value="${customerId}">
+                        <label class="rating-label">Share your experience:</label>
+                        <div class="star-rating">
+                            <input required type="radio" name="star" value="5" id="star5"><label for="star5" class="fa fa-star"></label>
+                            <input required type="radio" name="star" value="4" id="star4"><label for="star4" class="fa fa-star"></label>
+                            <input required type="radio" name="star" value="3" id="star3"><label for="star3" class="fa fa-star"></label>
+                            <input required type="radio" name="star" value="2" id="star2"><label for="star2" class="fa fa-star"></label>
+                            <input required type="radio" name="star" value="1" id="star1"><label for="star1" class="fa fa-star"></label>
+                        </div>
+                        <textarea required name="comment" placeholder="Write your review..."></textarea>
+                        <button type="submit">Submit Review</button>
+                    </form>
+                </c:if>
                 <c:forEach var="rate" items="${dataRating}">
                     <div class="review-card">
                         <div class="profile">
@@ -822,34 +849,20 @@
                                 </c:choose>
                             </c:forEach>
                         </div>
-                        <p>${rate.isDeleted ? "\"This feedback was hidden for some reason.\"" : rate.comment}</p>
+                        <p class="rateComment">${rate.isDeleted ? "\"This feedback was hidden for some reason.\"" : rate.comment}</p>
+                        <c:forEach var="reply" items="${dataReplies}">
+                            <c:if test="${reply.rateID == rate.rateID}">
+                                <div class="reply-container">
+                                    <strong>Shop Manager:</strong> ${reply.answer}
+                                </div>
+                            </c:if>
+                        </c:forEach>
                     </div>
 
-                    <c:forEach var="reply" items="${dataReplies}">
-                        <c:if test="${reply.rateID == rate.rateID}">
-                            <div class="reply-container">
-                                <strong>Shop Manager:</strong> ${reply.answer}
-                            </div>
-                        </c:if>
-                    </c:forEach>
+
                 </c:forEach>
 
-                <c:if test="${isOk}">
-                    <form id="reviewForm" method="POST" action="ProductDetailServlet">
-                        <input type="hidden" name="productId" value="${product.productId}">
-                        <input type="hidden" name="customerId" value="${customerId}">
-                        <label class="rating-label">Share your experience:</label>
-                        <div class="star-rating">
-                            <input required type="radio" name="star" value="5" id="star5"><label for="star5" class="fa fa-star"></label>
-                            <input required type="radio" name="star" value="4" id="star4"><label for="star4" class="fa fa-star"></label>
-                            <input required type="radio" name="star" value="3" id="star3"><label for="star3" class="fa fa-star"></label>
-                            <input required type="radio" name="star" value="2" id="star2"><label for="star2" class="fa fa-star"></label>
-                            <input required type="radio" name="star" value="1" id="star1"><label for="star1" class="fa fa-star"></label>
-                        </div>
-                        <textarea required name="comment" placeholder="Write your review..."></textarea>
-                        <button type="submit">Submit Review</button>
-                    </form>
-                </c:if>
+
             </div>
 
 

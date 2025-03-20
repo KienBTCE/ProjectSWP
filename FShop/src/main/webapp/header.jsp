@@ -230,7 +230,11 @@
                                 <c:if test="${sessionScope.customer != null}">
                                     <a href="viewCustomerProfile">
                                         <c:if test="${sessionScope.customer.getAvatar().equals('') == true}">
+<!--<<<<<<< HEAD
+                                            <img width="30px" src="assets/imgs/icon/user (3).png" alt="default">
+=======-->
                                             <img width="30px" src="assets/imgs/CustomerAvatar/defaut.jpg" alt="default">
+<!-->>>>>>> main-->
                                         </c:if>   
                                         <c:if test="${sessionScope.customer.getAvatar().equals('') == false}">
                                             <img style="border-radius: 50%;" width="40px" height="40px" src="assets/imgs/CustomerAvatar/${sessionScope.customer.getAvatar()}" alt="default">
@@ -423,6 +427,7 @@
     });
 });
 });
+
 
 
 
