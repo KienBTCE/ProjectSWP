@@ -85,6 +85,7 @@ public class NotificationServlet extends HttpServlet {
         List<Product> listpd = new ArrayList<>();
         for (RatingReplies r : list) {
             Product p = pdDAO.getProductID(r.getRateID());
+            
             listpd.add(p);
         }
         Map<Object, Object> dataMap = new HashMap<>();

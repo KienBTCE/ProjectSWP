@@ -823,125 +823,125 @@
 
 
                 <div id="feedbackContainer" class="feedback-section">
+                    <div class="feedback-container">
+                        <h3 class="feedback-title">PRODUCT REVIEW</h3>
+                        <c:if test="${isOk}">
+                            <form id="reviewForm" method="POST" action="ProductDetailServlet">
+                                <input type="hidden" name="productId" value="${product.productId}">
+                                <input type="hidden" name="customerId" value="${customerId}">
+                                <label class="rating-label">Share your experience:</label>
+                                <div class="star-rating">
+                                    <input required type="radio" name="star" value="5" id="star5"><label for="star5" class="fa fa-star"></label>
+                                    <input required type="radio" name="star" value="4" id="star4"><label for="star4" class="fa fa-star"></label>
+                                    <input required type="radio" name="star" value="3" id="star3"><label for="star3" class="fa fa-star"></label>
+                                    <input required type="radio" name="star" value="2" id="star2"><label for="star2" class="fa fa-star"></label>
+                                    <input required type="radio" name="star" value="1" id="star1"><label for="star1" class="fa fa-star"></label>
+                                </div>
+                                <textarea required name="comment" placeholder="Write your review..."></textarea>
+                                <button type="submit">Submit Review</button>
+                            </form>
+                        </c:if>
+                        <c:forEach var="rate" items="${dataRating}">
+                            <div class="review-card">
+                                <div class="profile">
+                                    <img src="assets/imgs/icon/person.jpg" alt="Avatar">
+                                    <div>
+                                        <h4>${rate.fullName}</h4>
+                                        <small>${rate.createdDate}</small>
+                                    </div>
+                                </div>
+                                <div class="star-icon">
+                                    <c:forEach var="i" begin="1" end="5">
+                                        <c:choose>
+                                            <c:when test="${i <= rate.star}">
+                                                <i class="fa fa-star checked"></i>
+                                            </c:when>
+                                            <c:otherwise>
+                                                <i class="fa fa-star"></i>
+                                            </c:otherwise>
+                                        </c:choose>
+                                    </c:forEach>
+                                </div>
+                                <p class="rateComment">${rate.isDeleted ? "\"This feedback was hidden for some reason.\"" : rate.comment}</p>
+                                <c:forEach var="reply" items="${dataReplies}">
+                                    <c:if test="${reply.rateID == rate.rateID}">
+                                        <div class="reply-container">
+                                            <strong>Shop Manager:</strong> ${reply.answer}
+                                        </div>
+                                    </c:if>
+                                </c:forEach>
+                            </div>
 
-                </div>
-            </div>
-            <div class="feedback-container">
-                <h3 class="feedback-title">PRODUCT REVIEW</h3>
-                <c:if test="${isOk}">
-                    <form id="reviewForm" method="POST" action="ProductDetailServlet">
-                        <input type="hidden" name="productId" value="${product.productId}">
-                        <input type="hidden" name="customerId" value="${customerId}">
-                        <label class="rating-label">Share your experience:</label>
-                        <div class="star-rating">
-                            <input required type="radio" name="star" value="5" id="star5"><label for="star5" class="fa fa-star"></label>
-                            <input required type="radio" name="star" value="4" id="star4"><label for="star4" class="fa fa-star"></label>
-                            <input required type="radio" name="star" value="3" id="star3"><label for="star3" class="fa fa-star"></label>
-                            <input required type="radio" name="star" value="2" id="star2"><label for="star2" class="fa fa-star"></label>
-                            <input required type="radio" name="star" value="1" id="star1"><label for="star1" class="fa fa-star"></label>
-                        </div>
-                        <textarea required name="comment" placeholder="Write your review..."></textarea>
-                        <button type="submit">Submit Review</button>
-                    </form>
-                </c:if>
-                <c:forEach var="rate" items="${dataRating}">
-                    <div class="review-card">
-                        <div class="profile">
-                            <img src="assets/imgs/icon/person.jpg" alt="Avatar">
-                            <div>
-                                <h4>${rate.fullName}</h4>
-                                <small>${rate.createdDate}</small>
+
+                        </c:forEach>
+
+
+                    </div>
+
+
+                    <!-- Bootstrap Modal -->
+                    <div class="modal fade" id="updatePopup" tabindex="-1" aria-labelledby="updatePopupLabel" aria-hidden="true">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <c:choose>
+                                        <c:when test="${sessionScope.message.contains('add your address') ||
+                                                        sessionScope.message.contains('add your phone number') ||
+                                                        sessionScope.message.contains('Go to your cart')}">
+                                                <h5 class="modal-title text-danger">Notification</h5>
+                                        </c:when>
+                                        <c:otherwise>
+                                            <h5 class="modal-title text-danger">Warning</h5>
+                                        </c:otherwise>
+                                    </c:choose>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body text-dark">
+                                    <c:choose>
+                                        <c:when test="${sessionScope.message.contains('a maximum')}">
+                                            <p> You are allowed to buy a maximum quantity of <b>5</b>! 
+                                                <br>
+                                                Or if you want to buy more, contact us at: 
+                                                <a href="mailto:kieuthy@gmail.com" class="text-primary">kieuthy@gmail.com</a>
+                                            </p>
+                                        </c:when>
+                                        <c:when test="${sessionScope.message.contains('total amount too big')}">
+                                            <p> You can buy product online with the total amount <br> under <b><fmt:formatNumber value="100000000" type="currency" /></b>! 
+                                                <br>
+                                                Or if you want to buy, contact us at: 
+                                                <a href="mailto:kieuthy@gmail.com" class="text-primary">kieuthy@gmail.com</a>
+                                            </p>
+                                        </c:when>
+                                        <c:otherwise>
+                                            <p>${sessionScope.message}</p>
+                                        </c:otherwise>
+                                    </c:choose>
+                                </div>
+                                <div class="modal-footer">
+                                    <c:choose>
+                                        <c:when test="${sessionScope.message.contains('add your address')}">
+                                            <a class="btn btn-primary text-white" href="ViewShippingAddress">OK</a>
+                                            <a class="btn btn-secondary text-white" onclick='closePopup()'>Cancel</a>
+                                        </c:when>
+                                        <c:when test="${sessionScope.message.contains('add your phone number')}">
+                                            <a class="btn btn-primary text-white" href="viewCustomerProfile">OK</a>
+                                            <a class="btn  btn-secondary text-white" onclick='closePopup()'>Cancel</a>
+                                        </c:when>
+                                        <c:when test="${sessionScope.message.contains('Go to your cart')}">
+                                            <a class="btn btn-primary text-white" href="cart">OK</a>
+                                            <a class="btn btn-secondary text-white" onclick='closePopup()'>Cancel</a>
+                                        </c:when>
+                                        <c:otherwise>
+                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">OK</button>
+                                        </c:otherwise>
+                                    </c:choose>
+                                </div>
                             </div>
                         </div>
-                        <div class="star-icon">
-                            <c:forEach var="i" begin="1" end="5">
-                                <c:choose>
-                                    <c:when test="${i <= rate.star}">
-                                        <i class="fa fa-star checked"></i>
-                                    </c:when>
-                                    <c:otherwise>
-                                        <i class="fa fa-star"></i>
-                                    </c:otherwise>
-                                </c:choose>
-                            </c:forEach>
-                        </div>
-                        <p class="rateComment">${rate.isDeleted ? "\"This feedback was hidden for some reason.\"" : rate.comment}</p>
-                        <c:forEach var="reply" items="${dataReplies}">
-                            <c:if test="${reply.rateID == rate.rateID}">
-                                <div class="reply-container">
-                                    <strong>Shop Manager:</strong> ${reply.answer}
-                                </div>
-                            </c:if>
-                        </c:forEach>
-                    </div>
-
-
-                </c:forEach>
-
-
-            </div>
-
-
-            <!-- Bootstrap Modal -->
-            <div class="modal fade" id="updatePopup" tabindex="-1" aria-labelledby="updatePopupLabel" aria-hidden="true">
-                <div class="modal-dialog">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <c:choose>
-                                <c:when test="${sessionScope.message.contains('add your address') ||
-                                                sessionScope.message.contains('add your phone number') ||
-                                                sessionScope.message.contains('Go to your cart')}">
-                                        <h5 class="modal-title text-danger">Notification</h5>
-                                </c:when>
-                                <c:otherwise>
-                                    <h5 class="modal-title text-danger">Warning</h5>
-                                </c:otherwise>
-                            </c:choose>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                        </div>
-                        <div class="modal-body text-dark">
-                            <c:choose>
-                                <c:when test="${sessionScope.message.contains('a maximum')}">
-                                    <p> You are allowed to buy a maximum quantity of <b>5</b>! 
-                                        <br>
-                                        Or if you want to buy more, contact us at: 
-                                        <a href="mailto:kieuthy@gmail.com" class="text-primary">kieuthy@gmail.com</a>
-                                    </p>
-                                </c:when>
-                                <c:when test="${sessionScope.message.contains('total amount too big')}">
-                                    <p> You can buy product online with the total amount <br> under <b><fmt:formatNumber value="100000000" type="currency" /></b>! 
-                                        <br>
-                                        Or if you want to buy, contact us at: 
-                                        <a href="mailto:kieuthy@gmail.com" class="text-primary">kieuthy@gmail.com</a>
-                                    </p>
-                                </c:when>
-                                <c:otherwise>
-                                    <p>${sessionScope.message}</p>
-                                </c:otherwise>
-                            </c:choose>
-                        </div>
-                        <div class="modal-footer">
-                            <c:choose>
-                                <c:when test="${sessionScope.message.contains('add your address')}">
-                                    <a class="btn btn-primary text-white" href="ViewShippingAddress">OK</a>
-                                    <a class="btn btn-secondary text-white" onclick='closePopup()'>Cancel</a>
-                                </c:when>
-                                <c:when test="${sessionScope.message.contains('add your phone number')}">
-                                    <a class="btn btn-primary text-white" href="viewCustomerProfile">OK</a>
-                                    <a class="btn  btn-secondary text-white" onclick='closePopup()'>Cancel</a>
-                                </c:when>
-                                <c:when test="${sessionScope.message.contains('Go to your cart')}">
-                                    <a class="btn btn-primary text-white" href="cart">OK</a>
-                                    <a class="btn btn-secondary text-white" onclick='closePopup()'>Cancel</a>
-                                </c:when>
-                                <c:otherwise>
-                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">OK</button>
-                                </c:otherwise>
-                            </c:choose>
-                        </div>
                     </div>
                 </div>
             </div>
+
 
 
         </main>

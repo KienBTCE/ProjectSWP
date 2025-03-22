@@ -326,9 +326,8 @@
                                         aElem.innerHTML = `
                             <div class="d-flex w-100 justify-content-between">
                                 <h6 class="mb-1">New reply on ` + product.fullName + `</h6>
-                                <small class="${reply.isRead ? 'text-muted' : 'text-danger'}">
-            ${!reply.isRead ? "Viewed" : "Not viewed yet"}
-                                </small>
+          
+
                             </div>
                             <p class="mb-1">${reply.answer}</p>
                         `;
@@ -371,6 +370,5 @@
             });
         </script>
         <script  src="assets/js/bootstrap.bun dl e.min.js"></script>
-
     </body>
 </html>
