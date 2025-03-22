@@ -89,18 +89,27 @@ public class AddToCartServlet extends HttpServlet {
             Cart cartCheck = cart.getProductOfCart(cus.getId(), id);
             if (cartCheck != null) {
                 Product product = p.getProductByID(id);
-                System.out.println(cartCheck.getQuantity() + quantity);
-                if (product.getStock() >= cartCheck.getQuantity() + quantity) {
-                    cart.updateProductQuantity(cartCheck.getProductID(), cartCheck.getQuantity() + quantity, cus.getId());
+                int totalQuantity = cartCheck.getQuantity() + quantity;
+
+                // Kiểm tra nếu vượt quá giới hạn 5
+                if (totalQuantity > 5) {
+                    session.setAttribute("message", "Sorry, you can only buy a maximum of 5 per product.");
+                    response.sendRedirect("ProductDetailServlet?id=" + id);
+                } else if (product.getStock() >= totalQuantity) { // Kiểm tra số lượng tồn kho
+                    cart.updateProductQuantity(cartCheck.getProductID(), totalQuantity, cus.getId());
                     response.sendRedirect("cart");
-                } else if(product.getStock() < cartCheck.getQuantity() + quantity){
+                } else {
                     session.setAttribute("message", "Sorry, the product quantity in stock is not enough.");
                     response.sendRedirect("ProductDetailServlet?id=" + id);
                 }
             } else {
-                cart.addToCart(cus.getId(), new Cart(id, quantity));
-                response.sendRedirect("cart");
-
+                if (quantity > 5) {
+                    session.setAttribute("message", "Sorry, you can only buy a maximum of 5 per product.");
+                    response.sendRedirect("ProductDetailServlet?id=" + id);
+                } else {
+                    cart.addToCart(cus.getId(), new Cart(id, quantity));
+                    response.sendRedirect("cart");
+                }
             }
         }
     }

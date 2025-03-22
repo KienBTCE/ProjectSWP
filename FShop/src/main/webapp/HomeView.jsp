@@ -216,6 +216,7 @@
                                             </c:otherwise>
                                         </c:choose>
                                     </c:forEach>
+
                                 </div>
                                 <h6>${p.getFullName()}</h6>
                                 <p>${p.getPriceFormatted()}</p>
@@ -248,6 +249,7 @@
                                     </c:forEach>
                                 </div>
 
+
                                 <h6>${p.getFullName()}</h6>
                                 <p>${p.getPriceFormatted()}</p>
 
@@ -263,7 +265,9 @@
 
                     <c:set var="count" value="0" scope="page"></c:set>
                     <c:forEach items="${dataMap.products}" var="p" varStatus="status">
+
                         <c:if test="${count < 5 and p.getCategoryId() == 4}">
+
                             <c:set var="count" value="${count + 1}" scope="page"></c:set>
                             <a class="frame-represent" href="ProductDetailServlet?id=${p.getProductId()}">
                                 <img src="assets/imgs/Products/${p.getImage()}" width="150px" height="150px" alt="alt"/>
@@ -278,14 +282,17 @@
                                             </c:otherwise>
                                         </c:choose>
                                     </c:forEach>
+
                                 </div>
                                 <h6>${p.getFullName()}</h6>
                                 <p>${p.getPriceFormatted()}</p>
+
                             </a>
                         </c:if>
                     </c:forEach>
                 </div>
             </div>
+         
 
             <div class="row">
                 <h4 class="title-content"><a href="Accessory Charger">Charger</a></h4>

@@ -99,22 +99,7 @@
                 display: flex;
                 flex-direction: column;
             }
-            .star-rating {
-                display: flex;
-                align-items: center;
-                color: #ffcc00;
-            }
 
-            .title-content a{
-                text-decoration: none;
-                color: black;
-                font-weight: bold;
-            }
-            .title-content a:hover{
-                color: black;
-                opacity: 0.7;
-                text-decoration: none;
-            }
             .star-rating {
                 display: flex;
                 align-items: center;
@@ -199,6 +184,7 @@
                                                     </c:choose>
                                                 </c:forEach>
                                             </div>
+
                                             <h6>${p.getFullName()}</h6>
                                             <p>${p.getPriceFormatted()}</p>
                                         </a>

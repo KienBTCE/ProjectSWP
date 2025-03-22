@@ -43,7 +43,28 @@ public class RatingRepliesDAO {
         }
         return list;
     }
-
+ public List<RatingReplies> getAllRatingRepliesByRateID(int rateId) {
+        List<RatingReplies> list = new ArrayList<>();
+        String query = "select * from RatingReplies where RateID =?";
+        try {
+            PreparedStatement pre = connector.prepareStatement(query);
+            pre.setInt(1, rateId);
+            ResultSet rs = pre.executeQuery();
+            while (rs.next()) {
+                RatingReplies rr = new RatingReplies(
+                        rs.getInt("ReplyID"),
+                        rs.getInt("EmployeeID"),
+                        rs.getInt("RateID"),
+                        rs.getString("Answer"),
+                        rs.getBoolean("IsRead")
+                );
+                list.add(rr);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return list;
+    }
     public void addRatingReply(int employeeId, int rateId, String answer) {
         String query = "INSERT INTO RatingReplies (EmployeeID, RateID, Answer, IsRead) VALUES (?, ?, ?, 0)";
         try {
@@ -81,6 +102,21 @@ public class RatingRepliesDAO {
         return list;
     }
 
+    public  int UpdateReply(int replyID, String Answer){
+    String query = "UPDATE RatingReplies SET Answer = ? WHERE ReplyID = ?";
+
+        try (
+                 PreparedStatement stmt = connector.prepareStatement(query)) {
+
+            stmt.setInt(2, replyID);
+            stmt.setString(1, Answer);
+            return stmt.executeUpdate() ;
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return 0;
+    }
     public boolean markReplyAsRead(int ReplyID) {
         String query = "UPDATE RatingReplies SET IsRead = 1 WHERE ReplyID = ?";
 
@@ -96,5 +132,20 @@ public class RatingRepliesDAO {
         return false;
 
     }
+  
+     public boolean DeleteRatingReply(int ReplyID) {
+        String query = "DELETE FROM RatingReplies WHERE ReplyID = ?";
 
+        try (
+                 PreparedStatement stmt = connector.prepareStatement(query)) {
+
+            stmt.setInt(1, ReplyID);
+            return stmt.executeUpdate() > 0;
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return false;
+
+    }
 }

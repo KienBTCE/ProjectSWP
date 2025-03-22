@@ -23,8 +23,6 @@ import jakarta.servlet.http.HttpSession;
 @WebServlet(name = "AddAddressServlet", urlPatterns = {"/AddAddress"})
 public class AddAddressServlet extends HttpServlet {
 
-
-
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -48,10 +46,10 @@ public class AddAddressServlet extends HttpServlet {
             if (request.getParameter("isDefault") != null) {
                 int id = add.addAddress(new Address(cus.getId(), 1, addressDetails));
                 add.disableDefaultAddress(id, cus.getId());
-                session.setAttribute("message", "Add Address Successfully");
+                session.setAttribute("message", "Add address successfully");
             } else {
                 add.addAddress(new Address(cus.getId(), 0, addressDetails));
-                session.setAttribute("message", "Add Address Successfully");
+                session.setAttribute("message", "Add address successfully");
             }
             if (url.equalsIgnoreCase("addressPage")) {
                 response.sendRedirect("ViewShippingAddress");

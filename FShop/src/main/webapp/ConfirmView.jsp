@@ -23,8 +23,20 @@
         <link rel="stylesheet" href="./assets/css/popup.css" />
         <title>Checkout</title>
         <style>
+            .popup-overlay {
+                display: none;
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background-color: rgba(0,0,0,0.5);
+                z-index: 1000;
+            }
 
-            
+
+
+
         </style>
     </head>
 
@@ -134,7 +146,7 @@
 
                             <h6><img src="./assets/imgs/icon/coupon.png" alt="alt" width="20" height="20" style="margin-top: -5px"/> Apply Voucher(if have)</h6>
 
-                            <a onclick="openVoucherPopup()"
+                            <a onclick="openVoucherModal()"
                                style="color: blue; margin-top: -6px; cursor: pointer">
                                 Select Voucher
                             </a>
@@ -188,85 +200,63 @@
             <br>
             <div style="display: none;" class="popup" id="orderPopup">
                 <div class="popup-content">
+                    <img src="https://cdn-icons-png.flaticon.com/512/845/845646.png" alt="success-tick" style="width: 82px; margin-bottom: 15px;" />
                     <h3>Order Successful</h3>
                     <p>Your order is waiting for acceptance by the shop.</p>
-                    <div style="display: flex; justify-content: center;">
-                        <button><a style="text-decoration: none; color: white;"
-                                   href="ViewOrderHistory">OK</a></button>
-                        <button><a style="text-decoration: none; color: white;"
-                                   href="ProductListView">Back to home</a></button>
+                    <div style="display: flex; justify-content: center; column-gap: 10px">
+                        <a  class="btn btn-primary"
+                            href="ViewOrderHistory">OK</a>
+                        <a class="btn btn-secondary"
+                           href="ProductListView">Back to home</a>
                     </div>
                 </div>
             </div>
+            <!-- Bootstrap Popup -->
+            <div class="modal fade" id="voucherModal" tabindex="-1" aria-labelledby="voucherModalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-lg">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="voucherModalLabel">Select Your Voucher</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <c:if test="${empty sessionScope.customerVoucher}">
+                                <p>No vouchers available.</p>
+                            </c:if>
+                            <c:forEach var="vou" items="${sessionScope.customerVoucher}">
+                                <div class="voucher border p-3 mb-3 d-flex justify-content-between position-relative" style="border-radius: 12px;">
+                                    <!-- Quantity Tag -->
+                                    <div class="position-absolute top-0 start-0 bg-danger text-white px-2 py-1" style="border-top-left-radius: 12px;">
+                                        X${vou.getQuantity()}
+                                    </div>
+                                    <div class="flex-grow-1 " style="padding-left: 30px">
+                                        <div class="right fw-bold text-danger" style="font-size: 16px;">
+                                            <c:choose>
+                                                <c:when test="${vou.getVoucherType() == 0}">
+                                                    <fmt:formatNumber type="currency" value="${vou.getVoucherValue()}"/> Sale Off
+                                                </c:when>
+                                                <c:otherwise>
+                                                    ${vou.getVoucherValue()}% Sale Off
+                                                </c:otherwise>
+                                            </c:choose>
+                                        </div>
+                                        <div class="terms mt-3">
+                                            <strong class="text-secondary">CONDITIONS</strong>
+                                            <p class="text-muted" style="font-size: 12px;">${vou.getDescription()}</p>
+                                        </div>
+                                    </div>
+                                    <!-- Select Button -->
+                                    <button class="btn btn-primary" style="height: 40px; align-self: center;" onclick="selectVoucher('${vou.getVoucherID()}', '${vou.getVoucherValue()}')">Select</button>
+                                </div>
+                            </c:forEach>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
         </main>
-        <div id="voucherPopup" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.5); justify-content: center; align-items: center;">
-            <div style="background: white; padding: 20px; border-radius: 10px; width: 400px; text-align: left;">
-                <h2>Choose your voucher</h2>
 
-                
-<!--                <div style="display: flex; gap: 10px; margin-bottom: 15px;">
-                    <input type="text" id="voucherCode" placeholder="Shopee voucher code" style="flex: 1; padding: 8px; border: 1px solid #ccc;">
-                    <button id="applyVoucher" style="padding: 8px 12px; background-color: orange; color: white; border: none; cursor: pointer;">Áp dụng</button>
-                </div>-->
 
-           
-                <div style="border-top: 1px solid #ddd; padding-top: 10px;">
-                    <div style="padding: 10px; border-bottom: 1px solid #eee;">
-                        <input type="radio" name="voucher" value="FREESHIP_XTRA" data-valid="true">
-                        <label>Freeship Xtra - Giảm ₫25k</label>
-                        <p>HSD: 1 ngày nữa <a href="#">T&C</a></p>
-                    </div>
-                    <div style="padding: 10px; border-bottom: 1px solid #eee;">
-                        <input type="radio" name="voucher" value="FREESHIP_XTRA" data-valid="true">
-                        <label>Freeship Xtra - Giảm ₫25k</label>
-                        <p>HSD: 1 ngày nữa <a href="#">T&C</a></p>
-                    </div>
-
-                </div>
-<!--
-                <div class="bodyyyyyy">
-
-                    <div class="voucher">
-                        <div class="left">
-                            <h2><img class="logo" src="./assets/imgs/HeaderImgs/Vector-Header-Logo.svg" alt="Logo"> GIFT VOUCHER</h2>
-                            <p>Company slogan will be here</p>
-                            <div class="terms">
-                                <strong>CONDITIONS</strong>
-                                <p>Some placeholder text for terms and conditions.</p>
-                            </div>
-                        </div>
-                        <div class="right">
-                            500$ VALUE
-                        </div>
-                        <div class="quatity">
-                            X5
-                        </div>
-                    </div>
-                    <div class="voucher">
-                        <div class="left">
-                            <h2><img class="logo" src="./assets/imgs/HeaderImgs/Vector-Header-Logo.svg" alt="Logo"> GIFT VOUCHER</h2>
-                            <p>Company slogan will be here</p>
-                            <div class="terms">
-                                <strong>CONDITIONS</strong>
-                                <p>Some placeholder text for terms and conditions.</p>
-                            </div>
-                        </div>
-                        <div class="right">
-                            500$ VALUE
-                        </div>
-                        <div class="quatity">
-                            X5
-                        </div>
-                    </div>
-                </div>-->
-
-                <!-- Nút xác nhận -->
-                <div style="margin-top: 10px; display: flex; justify-content: right; column-gap: 10px">
-                    <button id="closePopup" onclick="closeVoucherPopup()" class="btn btn-secondary">Cancel</button>
-                    <button id="confirmVoucher" class="btn btn-primary" >OK</button>
-                </div>
-            </div>
-        </div>
         <jsp:include page="footer.jsp"></jsp:include>
             <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.21.1/axios.min.js"></script>
             <script
@@ -274,31 +264,34 @@
                 integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
             crossorigin="anonymous"></script>
             <script>
+                                        function openVoucherModal() {
+                                            var modal = new bootstrap.Modal(document.getElementById('voucherModal'));
+                                            modal.show();
+                                        }
 
+                                        function closeVoucherModal() {
+                                            var modalElement = document.getElementById('voucherModal');
+                                            var modal = bootstrap.Modal.getInstance(modalElement);
+                                            if (modal) {
+                                                modal.hide();
+                                            }
+                                        }
+                                        function applyVoucher(voucher) {
+                                            document.getElementById("selectedVoucher").innerHTML = "Selected: " + voucher;
+                                            closeVoucherPopup();
+                                            // Redirect to servlet with the selected voucher
+                                            window.location.href = "applyVoucherServlet?voucher=" + voucher;
+                                        }
+                                        function showPopup() {
+                                            document.getElementById("orderPopup").style.display = "flex";
+                                        }
 
-                        function openVoucherPopup() {
-                            document.getElementById("voucherPopup").style.display = "flex";
-                        }
-                        function closeVoucherPopup() {
-                            document.getElementById("voucherPopup").style.display = "none";
-                        }
+                                        function closePopup() {
+                                            document.getElementById("orderPopup").style.display = "none";
+                                        }
 
-                        function applyVoucher(voucher) {
-                            document.getElementById("selectedVoucher").innerHTML = "Selected: " + voucher;
-                            closeVoucherPopup();
-                            // Redirect to servlet with the selected voucher
-                            window.location.href = "applyVoucherServlet?voucher=" + voucher;
-                        }
-                        function showPopup() {
-                            document.getElementById("orderPopup").style.display = "flex";
-                        }
-
-                        function closePopup() {
-                            document.getElementById("orderPopup").style.display = "none";
-                        }
-
-// Show popup if login fails (you can trigger this with backend error)
-// For example, if you're using a session attribute or response error:
+                                        // Show popup if login fails (you can trigger this with backend error)
+                                        // For example, if you're using a session attribute or response error:
             <%
                 String message = (String) session.getAttribute("orderStatus");
                 if (message != null && message.equals("success")) {

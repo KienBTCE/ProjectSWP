@@ -104,7 +104,7 @@ public class UpdateAddressServlet extends HttpServlet {
                     }
                 }
             }
-            session.setAttribute("message", "Update Address Successfully");
+            session.setAttribute("message", "Update address successfully");
             if (url.equalsIgnoreCase("addressPage")) {
                 response.sendRedirect("ViewShippingAddress");
             } else if (url.equalsIgnoreCase("forOrder")) {
