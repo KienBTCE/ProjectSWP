@@ -950,124 +950,124 @@
             <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
             <script>
-                                        window.onload = function () {
+                                                window.onload = function () {
             <% if (session.getAttribute("message") != null) { %>
-                                            showMessage(true);
+                                                    showMessage(true);
             <% }%>
-                                        };
-                                        function showMessage(show) {
-                                            if (show) {
-                                                var warningModal = new bootstrap.Modal(document.getElementById('updatePopup'));
-                                                warningModal.show();
-                                            }
-                                        }
-                                        // Swap main and sub images
-                                        function swapImage(img) {
-                                            const mainImg = document.getElementById("mainImage");
-                                            const tempSrc = mainImg.src;
-                                            mainImg.src = img.src;
-                                            img.src = tempSrc;
-                                        }
-                                        function getMaxQuantity() {
-                                            const stockQuantity = parseInt(document.getElementById('quantity').max) || 5;
-                                            return Math.min(stockQuantity, 5);
-                                        }
+                                                };
+                                                function showMessage(show) {
+                                                    if (show) {
+                                                        var warningModal = new bootstrap.Modal(document.getElementById('updatePopup'));
+                                                        warningModal.show();
+                                                    }
+                                                }
+                                                // Swap main and sub images
+                                                function swapImage(img) {
+                                                    const mainImg = document.getElementById("mainImage");
+                                                    const tempSrc = mainImg.src;
+                                                    mainImg.src = img.src;
+                                                    img.src = tempSrc;
+                                                }
+                                                function getMaxQuantity() {
+                                                    const stockQuantity = parseInt(document.getElementById('quantity').max) || 5;
+                                                    return Math.min(stockQuantity, 5);
+                                                }
 
-                                        function increaseQuantity() {
-                                            const quantityInput = document.getElementById('quantity');
-                                            const maxQuantity = getMaxQuantity();
-                                            let currentVal = parseInt(quantityInput.value);
+                                                function increaseQuantity() {
+                                                    const quantityInput = document.getElementById('quantity');
+                                                    const maxQuantity = getMaxQuantity();
+                                                    let currentVal = parseInt(quantityInput.value);
 
-                                            if (currentVal < maxQuantity) {
-                                                quantityInput.value = currentVal + 1;
-                                            } else {
-                                                showStockWarning(true);
-                                            }
-                                            validateButtons();
-                                            syncHiddenInputs();
-                                        }
+                                                    if (currentVal < maxQuantity) {
+                                                        quantityInput.value = currentVal + 1;
+                                                    } else {
+                                                        showStockWarning(true);
+                                                    }
+                                                    validateButtons();
+                                                    syncHiddenInputs();
+                                                }
 
-                                        function decreaseQuantity() {
-                                            const quantityInput = document.getElementById('quantity');
-                                            let currentVal = parseInt(quantityInput.value);
+                                                function decreaseQuantity() {
+                                                    const quantityInput = document.getElementById('quantity');
+                                                    let currentVal = parseInt(quantityInput.value);
 
-                                            if (currentVal > 1) {
-                                                quantityInput.value = currentVal - 1;
-                                                showWarning(false);
-                                            }
-                                            validateButtons();
-                                            syncHiddenInputs();
-                                        }
+                                                    if (currentVal > 1) {
+                                                        quantityInput.value = currentVal - 1;
+                                                        showWarning(false);
+                                                    }
+                                                    validateButtons();
+                                                    syncHiddenInputs();
+                                                }
 
-                                        function validateQuantity() {
-                                            const quantityInput = document.getElementById('quantity');
-                                            const maxQuantity = getMaxQuantity();
-                                            let currentVal = parseInt(quantityInput.value);
+                                                function validateQuantity() {
+                                                    const quantityInput = document.getElementById('quantity');
+                                                    const maxQuantity = getMaxQuantity();
+                                                    let currentVal = parseInt(quantityInput.value);
 
-                                            if (isNaN(currentVal) || currentVal < 1) {
-                                                currentVal = 1;
-                                            } else if (currentVal > maxQuantity) {
-                                                currentVal = maxQuantity;
-                                                showWarning(true);
-                                            } else {
-                                                showWarning(false);
-                                            }
+                                                    if (isNaN(currentVal) || currentVal < 1) {
+                                                        currentVal = 1;
+                                                    } else if (currentVal > maxQuantity) {
+                                                        currentVal = maxQuantity;
+                                                        showWarning(true);
+                                                    } else {
+                                                        showWarning(false);
+                                                    }
 
-                                            quantityInput.value = currentVal;
-                                            syncHiddenInputs();
-                                            validateButtons();
-                                        }
+                                                    quantityInput.value = currentVal;
+                                                    syncHiddenInputs();
+                                                    validateButtons();
+                                                }
 
-                                        function validateButtons() {
-                                            const quantityInput = document.getElementById('quantity');
-                                            const maxQuantity = getMaxQuantity();
-                                            const addToCartBtn = document.getElementById('addToCartBtn');
-                                            const buyNowBtn = document.getElementById('buyNowBtn');
+                                                function validateButtons() {
+                                                    const quantityInput = document.getElementById('quantity');
+                                                    const maxQuantity = getMaxQuantity();
+                                                    const addToCartBtn = document.getElementById('addToCartBtn');
+                                                    const buyNowBtn = document.getElementById('buyNowBtn');
 
-                                            if (parseInt(quantityInput.value) > maxQuantity) {
-                                                addToCartBtn.disabled = true;
-                                                buyNowBtn.disabled = true;
-                                            } else {
-                                                addToCartBtn.disabled = false;
-                                                buyNowBtn.disabled = false;
-                                            }
-                                        }
+                                                    if (parseInt(quantityInput.value) > maxQuantity) {
+                                                        addToCartBtn.disabled = true;
+                                                        buyNowBtn.disabled = true;
+                                                    } else {
+                                                        addToCartBtn.disabled = false;
+                                                        buyNowBtn.disabled = false;
+                                                    }
+                                                }
 
-                                        function showWarning(show) {
-                                            if (show) {
-                                                var warningModal = new bootstrap.Modal(document.getElementById('quantityWarningModal'));
-                                                warningModal.show();
-                                            }
-                                        }
-                                        function showStockWarning(show) {
-                                            if (show) {
-                                                var warningModal = new bootstrap.Modal(document.getElementById('stockLimit'));
-                                                warningModal.show();
-                                            }
-                                        }
-                                        function syncHiddenInputs() {
-                                            const quantity = document.getElementById("quantity").value;
-                                            document.getElementById("quantityInputHidden").value = quantity;
-                                            document.getElementById("quantityInputHiddenBuyNow").value = quantity;
-                                        }
+                                                function showWarning(show) {
+                                                    if (show) {
+                                                        var warningModal = new bootstrap.Modal(document.getElementById('quantityWarningModal'));
+                                                        warningModal.show();
+                                                    }
+                                                }
+                                                function showStockWarning(show) {
+                                                    if (show) {
+                                                        var warningModal = new bootstrap.Modal(document.getElementById('stockLimit'));
+                                                        warningModal.show();
+                                                    }
+                                                }
+                                                function syncHiddenInputs() {
+                                                    const quantity = document.getElementById("quantity").value;
+                                                    document.getElementById("quantityInputHidden").value = quantity;
+                                                    document.getElementById("quantityInputHiddenBuyNow").value = quantity;
+                                                }
 
-                                        document.addEventListener("DOMContentLoaded", function () {
-                                            document.getElementById('quantity').max = getMaxQuantity();
-                                        });
+                                                document.addEventListener("DOMContentLoaded", function () {
+                                                    document.getElementById('quantity').max = getMaxQuantity();
+                                                });
 
-                                        function closePopup() {
-                                            var warningModal = bootstrap.Modal.getInstance(document.getElementById('updatePopup'));
-                                            if (warningModal) {
-                                                warningModal.hide();
-                                            }
-                                        }
+                                                function closePopup() {
+                                                    var warningModal = bootstrap.Modal.getInstance(document.getElementById('updatePopup'));
+                                                    if (warningModal) {
+                                                        warningModal.hide();
+                                                    }
+                                                }
 
 
-                                        // When user manually changes the quantity input
-                                        document.getElementById("quantity")?.addEventListener("input", function () {
-                                            document.getElementById("quantityInputHidden").value = this.value;
-                                            document.getElementById("quantityInputHiddenBuyNow").value = this.value;
-                                        });
+                                                // When user manually changes the quantity input
+                                                document.getElementById("quantity")?.addEventListener("input", function () {
+                                                    document.getElementById("quantityInputHidden").value = this.value;
+                                                    document.getElementById("quantityInputHiddenBuyNow").value = this.value;
+                                                });
 
 
 
