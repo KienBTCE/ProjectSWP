@@ -101,7 +101,7 @@
                                         <fmt:formatNumber value="${od.getPrice() * od.getQuantity()}" type="currency"/>
                                     </td>
                                 </tr>
-                                <c:set var="subtotal" value="${od.getPrice() * od.getQuantity()}"></c:set>
+                                <c:set var="subtotal" value="${subtotal + (od.getPrice() * od.getQuantity())}"></c:set>
                             </c:forEach>
                         </table>
 
@@ -154,9 +154,13 @@
                 <div class="row" style="width: 68%;">
                     <p><b>Order Summary</b></p>
                     <div class="col-md-6">
+                        <p>Subtotal</p>
+                        <p>Discount</p>
                         <p>Total</p>
                     </div>
                     <div class="col-md-6" style="text-align: right;">
+                        <p><b><fmt:formatNumber value="${subtotal}" type="currency"/></b></p>
+                        <p><b><fmt:formatNumber value="${sessionScope.order.getDiscount()}" type="currency"/></b></p>
                         <p><b><fmt:formatNumber value="${sessionScope.order.getTotalAmount()}" type="currency"/></b></p>
                         <c:if test="${sessionScope.order.getStatus() == 1}">
                             <button style="height: 40px; width: 150px; border: 1px solid black; border-radius: 10px;" onclick="confirmDelete()">Cancel Order</button>
