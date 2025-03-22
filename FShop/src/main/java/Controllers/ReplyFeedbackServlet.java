@@ -88,8 +88,6 @@ public class ReplyFeedbackServlet extends HttpServlet {
             if (rateID > 0) {
                 rrDAO.addRatingReply(emID, rateID, answer);
                 prDAO.updateisReadComment(rateID);
-                rrDAO.addRatingReply(emID, rateID, answer);
-                prDAO.updateisReadComment(rateID);
                 // Show success popup and redirect
                 response.getWriter().write("Success");
             } else {
