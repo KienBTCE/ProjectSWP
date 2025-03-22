@@ -25,8 +25,15 @@
             .gap-section{
                 margin-bottom: 50px;
             }
-            .banner-content img{
-                width: 100%;
+            .banner-content {
+                position: relative;
+                overflow: hidden;
+            }
+
+            #banner {
+                display: block;
+                transition: opacity 0.5s ease-in-out;
+                border-radius: 10px;
             }
 
             .title-content{
@@ -89,17 +96,105 @@
                 opacity: 0.7;
                 text-decoration: none;
             }
+            @keyframes blink-move {
+                0% {
+                    transform: translateY(-50%) scale(1);
+                    opacity: 1;
+                }
+                50% {
+                    transform: translateY(-50%) scale(1.1);
+                    opacity: 0.7;
+                }
+                100% {
+                    transform: translateY(-50%) scale(1);
+                    opacity: 1;
+                }
+            }
+            .arrow-btn {
+                animation: blink-move 1s infinite alternate;
+                position: absolute;
+                top: 50%;
+                transform: translateY(-50%);
+                background: transparent;
+                color: lightblue;
+                font-weight: bold;
+                border: none;
+                width: 45px;
+                height: 45px;
+                border-radius: 50%;
+                font-size: 24px;
+                cursor: pointer;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                font-size: 40px;
+                transition: background 0.3s, transform 0.2s;
+            }
+
+            .arrow-btn:hover {
+                transform: translateY(-50%) scale(1.1);
+            }
+            .hi {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+            }
         </style>
     </head>
     <body>
         <jsp:include page="header.jsp"></jsp:include>
             <div class="container">
-                <!--Commit 15694d5
-                --><div class="row">
-                    <div class="gap-section banner-content">
-                        <img src="assets/imgs/Banners/image26.svg" alt="alt"/>
+                <div class="hi">
+                    <div class="row">
+                        <div class="gap-section banner-content" style="position: relative; width: fit-content; overflow: hidden;">
+                            <img id="banner" src="assets/imgs/Banners/1.jpg" alt="alt" style="width: 100%; display: block; transition: opacity 0.5s ease-in-out;" />
+                            <button id="prev" onclick="prevBanner()" class="arrow-btn" style="left: 10px;">‹</button>
+                            <button id="next" onclick="nextBanner()" class="arrow-btn" style="right: 10px;">›</button>
+                        </div>
                     </div>
                 </div>
+                <script>
+                    const images = [
+                        "assets/imgs/Banners/1.jpg",
+                        "assets/imgs/Banners/2.png",
+                        "assets/imgs/Banners/3.png"
+                    ];
+                    let currentIndex = 0;
+                    let interval;
+
+                    function updateBanner() {
+                        const banner = document.getElementById("banner");
+                        banner.style.opacity = 0; // Làm mờ trước khi đổi ảnh
+                        setTimeout(() => {
+                            banner.src = images[currentIndex];
+                            banner.style.opacity = 1; // Hiện ảnh lên mượt mà
+                        }, 300);
+                    }
+
+                    function nextBanner() {
+                        currentIndex = (currentIndex + 1) % images.length;
+                        updateBanner();
+                        resetAutoSlide();
+                    }
+
+                    function prevBanner() {
+                        currentIndex = (currentIndex - 1 + images.length) % images.length;
+                        updateBanner();
+                        resetAutoSlide();
+                    }
+
+                    function autoSlide() {
+                        interval = setInterval(nextBanner, 3000);
+                    }
+
+                    function resetAutoSlide() {
+                        clearInterval(interval);
+                        autoSlide();
+                    }
+
+                    autoSlide(); // Bắt đầu tự động chạy
+                </script>
+
                 <div class="row">
                     <h4 class="title-content"><a href="Laptop">Laptop</a></h4>
                     <div class="gap-section section-content">

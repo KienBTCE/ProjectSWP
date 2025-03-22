@@ -4,6 +4,8 @@
     Author     : kiuth
 --%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+<fmt:setLocale value="vi_VN" />
 <!DOCTYPE html>
 <html>
     <head>
@@ -730,11 +732,31 @@
                                     <label for="quantity" class="me-2 fw-bold">Quantity:</label>
                                     <div class="quantity-controls">
                                         <button type="button" onclick="decreaseQuantity()">-</button>
-                                        <input type="number" id="quantity" name="quantity" value="1" min="1" max="${product.getStock()}" oninput="validateQuantity()">
+                                        <input type="number" id="quantity" name="quantity" value="1" min="1" 
+                                               max="${product.getStock()}" oninput="validateQuantity()">
                                         <button type="button" onclick="increaseQuantity()">+</button>
                                     </div>
                                 </div>
-                                <p id="quantityWarning" class="text-danger" style="display: none;">Quantity exceeds stock limit!</p>
+                                <!-- Bootstrap Modal -->
+                                <div class="modal fade" id="quantityWarningModal" tabindex="-1" aria-labelledby="warningModalLabel" aria-hidden="true">
+                                    <div class="modal-dialog">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title text-danger" id="warningModalLabel">Warning</h5>
+                                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                            </div>
+                                            <div class="modal-body text-dark">
+                                                You are allowed to buy a maximum quantity of <b>5</b>! 
+                                                <br>
+                                                Or if you want to buy more, contact us at: 
+                                                <a href="mailto:kieuthy@gmail.com" class="text-primary">kieuthy@gmail.com</a>
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">OK</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
 
 
                                 <!-- Action Buttons -->
@@ -830,137 +852,195 @@
                 </c:if>
             </div>
 
-            <!-- Popup Notification (if needed) -->
-            <%
-                String message = (String) session.getAttribute("message");
-                if (message != null) {
-            %>
-            <div class="popup" id="updatePopup" style="display: flex;">
-                <div class="popup-content">
-                    <h4>${sessionScope.message}</h4>
-                    <div style="display: flex; justify-content: center;">
-                        <c:choose>
-                            <c:when test="${sessionScope.message.contains('add your address')}">
-                                <div>
-                                    <a class="btn btn-success" href="ViewShippingAddress">OK</a>
-                                    <a class="btn btn-danger text-white" onclick="closePopup()">Cancel</a>
-                                </div>
-                            </c:when>
-                            <c:when test="${sessionScope.message.contains('add your phone number')}">
-                                <div>
-                                    <a class="btn btn-success" href="viewCustomerProfile">OK</a>
-                                    <a class="btn btn-danger text-white" onclick="closePopup()">Cancel</a>
-                                </div>
-                            </c:when>
-                            <c:otherwise>  
-                                <button class="btn btn-primary" onclick="closePopup()">OK</button>
-                            </c:otherwise>
-                        </c:choose>
 
-
+            <!-- Bootstrap Modal -->
+            <div class="modal fade" id="updatePopup" tabindex="-1" aria-labelledby="updatePopupLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <c:choose>
+                                <c:when test="${sessionScope.message.contains('add your address') ||
+                                                sessionScope.message.contains('add your phone number') ||
+                                                sessionScope.message.contains('Go to your cart')}">
+                                        <h5 class="modal-title text-danger">Notification</h5>
+                                </c:when>
+                                <c:otherwise>
+                                    <h5 class="modal-title text-danger">Warning</h5>
+                                </c:otherwise>
+                            </c:choose>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body text-dark">
+                            <c:choose>
+                                <c:when test="${sessionScope.message.contains('a maximum')}">
+                                    <p> You are allowed to buy a maximum quantity of <b>5</b>! 
+                                        <br>
+                                        Or if you want to buy more, contact us at: 
+                                        <a href="mailto:kieuthy@gmail.com" class="text-primary">kieuthy@gmail.com</a>
+                                    </p>
+                                </c:when>
+                                <c:when test="${sessionScope.message.contains('total amount too big')}">
+                                    <p> You can buy product online with the total amount <br> under <b><fmt:formatNumber value="100000000" type="currency" /></b>! 
+                                        <br>
+                                        Or if you want to buy, contact us at: 
+                                        <a href="mailto:kieuthy@gmail.com" class="text-primary">kieuthy@gmail.com</a>
+                                    </p>
+                                </c:when>
+                                <c:otherwise>
+                                    <p>${sessionScope.message}</p>
+                                </c:otherwise>
+                            </c:choose>
+                        </div>
+                        <div class="modal-footer">
+                            <c:choose>
+                                <c:when test="${sessionScope.message.contains('add your address')}">
+                                    <a class="btn btn-primary text-white" href="ViewShippingAddress">OK</a>
+                                    <a class="btn btn-secondary text-white" onclick='closePopup()'>Cancel</a>
+                                </c:when>
+                                <c:when test="${sessionScope.message.contains('add your phone number')}">
+                                    <a class="btn btn-primary text-white" href="viewCustomerProfile">OK</a>
+                                    <a class="btn  btn-secondary text-white" onclick='closePopup()'>Cancel</a>
+                                </c:when>
+                                <c:when test="${sessionScope.message.contains('Go to your cart')}">
+                                    <a class="btn btn-primary text-white" href="cart">OK</a>
+                                    <a class="btn btn-secondary text-white" onclick='closePopup()'>Cancel</a>
+                                </c:when>
+                                <c:otherwise>
+                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">OK</button>
+                                </c:otherwise>
+                            </c:choose>
+                        </div>
                     </div>
                 </div>
             </div>
 
-            <%
-                    session.removeAttribute("message");
-                }
-            %>
+
         </main>
         <jsp:include page="footer.jsp"></jsp:include>
-        <!-- Bootstrap JS -->
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+            <!-- Bootstrap JS -->
+            <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
-        <script>
-                                    // Swap main and sub images
-                                    function swapImage(img) {
-                                        const mainImg = document.getElementById("mainImage");
-                                        const tempSrc = mainImg.src;
-                                        mainImg.src = img.src;
-                                        img.src = tempSrc;
-                                    }
-                                    function increaseQuantity() {
-                                        const quantityInput = document.getElementById('quantity');
-                                        const maxQuantity = parseInt(quantityInput.max);
-                                        let currentVal = parseInt(quantityInput.value);
-
-                                        if (currentVal < maxQuantity) {
-                                            quantityInput.value = currentVal + 1;
-                                        } else {
-                                            showWarning(true);
+            <script>
+                                        window.onload = function () {
+            <% if (session.getAttribute("message") != null) { %>
+                                            showMessage(true);
+            <% }%>
+                                        };
+                                        function showMessage(show) {
+                                            if (show) {
+                                                var warningModal = new bootstrap.Modal(document.getElementById('updatePopup'));
+                                                warningModal.show();
+                                            }
                                         }
-                                        validateButtons();
-                                        syncHiddenInputs();
-                                    }
-
-                                    function decreaseQuantity() {
-                                        const quantityInput = document.getElementById('quantity');
-                                        let currentVal = parseInt(quantityInput.value);
-
-                                        if (currentVal > 1) {
-                                            quantityInput.value = currentVal - 1;
-                                            showWarning(false);
+                                        // Swap main and sub images
+                                        function swapImage(img) {
+                                            const mainImg = document.getElementById("mainImage");
+                                            const tempSrc = mainImg.src;
+                                            mainImg.src = img.src;
+                                            img.src = tempSrc;
                                         }
-                                        validateButtons();
-                                        syncHiddenInputs();
-                                    }
-
-                                    function validateQuantity() {
-                                        const quantityInput = document.getElementById('quantity');
-                                        const maxQuantity = parseInt(quantityInput.max);
-                                        let currentVal = parseInt(quantityInput.value);
-
-                                        if (isNaN(currentVal) || currentVal < 1) {
-                                            quantityInput.value = 1;
-                                        } else if (currentVal > maxQuantity) {
-                                            quantityInput.value = maxQuantity;
-                                            showWarning(true);
-                                        } else {
-                                            showWarning(false);
+                                        function getMaxQuantity() {
+                                            const stockQuantity = parseInt(document.getElementById('quantity').max) || 5;
+                                            return Math.min(stockQuantity, 5);
                                         }
-                                        validateButtons();
-                                        syncHiddenInputs();
-                                    }
 
-                                    function validateButtons() {
-                                        const quantityInput = document.getElementById('quantity');
-                                        const maxQuantity = parseInt(quantityInput.max);
-                                        const addToCartBtn = document.getElementById('addToCartBtn');
-                                        const buyNowBtn = document.getElementById('buyNowBtn');
+                                        function increaseQuantity() {
+                                            const quantityInput = document.getElementById('quantity');
+                                            const maxQuantity = getMaxQuantity();
+                                            let currentVal = parseInt(quantityInput.value);
 
-                                        if (parseInt(quantityInput.value) > maxQuantity) {
-                                            addToCartBtn.disabled = true;
-                                            buyNowBtn.disabled = true;
-                                        } else {
-                                            addToCartBtn.disabled = false;
-                                            buyNowBtn.disabled = false;
+                                            if (currentVal < maxQuantity) {
+                                                quantityInput.value = currentVal + 1;
+                                            } else {
+                                                showWarning(true);
+                                            }
+                                            validateButtons();
+                                            syncHiddenInputs();
                                         }
-                                    }
 
-                                    function showWarning(show) {
-                                        document.getElementById("quantityWarning").style.display = show ? "block" : "none";
-                                    }
+                                        function decreaseQuantity() {
+                                            const quantityInput = document.getElementById('quantity');
+                                            let currentVal = parseInt(quantityInput.value);
 
-                                    function syncHiddenInputs() {
-                                        document.getElementById("quantityInputHidden").value = document.getElementById("quantity").value;
-                                        document.getElementById("quantityInputHiddenBuyNow").value = document.getElementById("quantity").value;
-                                    }
+                                            if (currentVal > 1) {
+                                                quantityInput.value = currentVal - 1;
+                                                showWarning(false);
+                                            }
+                                            validateButtons();
+                                            syncHiddenInputs();
+                                        }
+
+                                        function validateQuantity() {
+                                            const quantityInput = document.getElementById('quantity');
+                                            const maxQuantity = getMaxQuantity();
+                                            let currentVal = parseInt(quantityInput.value);
+
+                                            if (isNaN(currentVal) || currentVal < 1) {
+                                                currentVal = 1;
+                                            } else if (currentVal > maxQuantity) {
+                                                currentVal = maxQuantity;
+                                                showWarning(true);
+                                            } else {
+                                                showWarning(false);
+                                            }
+
+                                            quantityInput.value = currentVal;
+                                            syncHiddenInputs();
+                                            validateButtons();
+                                        }
+
+                                        function validateButtons() {
+                                            const quantityInput = document.getElementById('quantity');
+                                            const maxQuantity = getMaxQuantity();
+                                            const addToCartBtn = document.getElementById('addToCartBtn');
+                                            const buyNowBtn = document.getElementById('buyNowBtn');
+
+                                            if (parseInt(quantityInput.value) > maxQuantity) {
+                                                addToCartBtn.disabled = true;
+                                                buyNowBtn.disabled = true;
+                                            } else {
+                                                addToCartBtn.disabled = false;
+                                                buyNowBtn.disabled = false;
+                                            }
+                                        }
+
+                                        function showWarning(show) {
+                                            if (show) {
+                                                var warningModal = new bootstrap.Modal(document.getElementById('quantityWarningModal'));
+                                                warningModal.show();
+                                            }
+                                        }
+
+                                        function syncHiddenInputs() {
+                                            const quantity = document.getElementById("quantity").value;
+                                            document.getElementById("quantityInputHidden").value = quantity;
+                                            document.getElementById("quantityInputHiddenBuyNow").value = quantity;
+                                        }
+
+                                        document.addEventListener("DOMContentLoaded", function () {
+                                            document.getElementById('quantity').max = getMaxQuantity();
+                                        });
+
+                                        function closePopup() {
+                                            var warningModal = bootstrap.Modal.getInstance(document.getElementById('updatePopup'));
+                                            if (warningModal) {
+                                                warningModal.hide();
+                                            }
+                                        }
 
 
-                                    // Close popup
-                                    function closePopup() {
-                                        document.getElementById("updatePopup").style.display = "none";
-                                    }
-
-                                    // When user manually changes the quantity input
-                                    document.getElementById("quantity")?.addEventListener("input", function () {
-                                        document.getElementById("quantityInputHidden").value = this.value;
-                                        document.getElementById("quantityInputHiddenBuyNow").value = this.value;
-                                    });
+                                        // When user manually changes the quantity input
+                                        document.getElementById("quantity")?.addEventListener("input", function () {
+                                            document.getElementById("quantityInputHidden").value = this.value;
+                                            document.getElementById("quantityInputHiddenBuyNow").value = this.value;
+                                        });
 
 
 
         </script>
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     </body>
+    <c:if test="${not empty sessionScope.message}">
+        <c:remove var="message" scope="session"/>
+    </c:if>
 </html>

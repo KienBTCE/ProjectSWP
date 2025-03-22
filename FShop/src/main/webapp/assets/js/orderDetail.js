@@ -3,9 +3,23 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/ClientSide/javascript.js to edit this template
  */
 
+/* global bootstrap */
 
+function showWarning(show) {
+    if (show) {
+        var warningModal = new bootstrap.Modal(document.getElementById('updatePopup'));
+        warningModal.show();
+    }
+}
+function closePopup() {
+    var warningModal = bootstrap.Modal.getInstance(document.getElementById('updatePopup'));
+    if (warningModal) {
+        warningModal.hide();
+    }
+}
 function confirmDelete() {
-    document.getElementById("confirmationModal").style.display = "flex";
+    var warningModal = new bootstrap.Modal(document.getElementById('updatePopup'));
+    warningModal.show();
     return false;
 }
 document.getElementById("confirmBtn").onclick = function () {
