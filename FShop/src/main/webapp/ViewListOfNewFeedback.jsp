@@ -80,6 +80,7 @@
 
             <div class="container-feedback">
                 <h2 class="text-center mb-4"><jsp:include page="HeaderDashboard.jsp"></jsp:include></h2>
+             <h3  font-weight="Bold">FEEDBACK</h3>
                 <div class="card card-shadow p-4">
                     <div class="table-responsive">
                         <table class="table table-hover align-middle">

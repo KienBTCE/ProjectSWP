@@ -51,7 +51,7 @@ public class OrderDAO {
         return list;
     }
 
-    public Order getOrderByID(String orderID) {
+public Order getOrderByID(String orderID) {
         Order o = new Order();
         String query = "select * from Orders where Orders.OrderID = ?";
         try {
@@ -67,12 +67,12 @@ public class OrderDAO {
                 o.setTotalAmount(rs.getInt("TotalAmount"));
                 o.setOrderDate(rs.getString("OrderedDate"));
                 o.setStatus(rs.getInt("Status"));
+                o.setDiscount(rs.getInt("Discount"));
             }
         } catch (Exception e) {
         }
         return o;
     }
-
     public int getNewestOrderID() {
         int id = 0;
         try {
@@ -87,6 +87,22 @@ public class OrderDAO {
         return id;
     }
 
+//    public void createNewOrder(Order o) {
+//        try {
+//            String data = "";
+//            data = "'" + o.getAccountID() + "',";
+//            data += "'" + o.getFullName() + "',";
+//            data += "'" + o.getPhone() + "',";
+//            data += "N'" + o.getAddress() + "',";
+//            data += o.getTotalAmount() + "";
+//
+//            PreparedStatement pre = connector.prepareStatement("Insert into [Orders] (CustomerID, FullName, PhoneNumber, [Address], TotalAmount, [Status], OrderedDate)"
+//                    + " values (" + data + ", 1, GETDATE())");
+//            pre.executeUpdate();
+//        } catch (SQLException e) {
+//            System.out.println(e);
+//        }
+//    }
     public void createNewOrder(Order o) {
         try {
             String data = "";
@@ -96,8 +112,9 @@ public class OrderDAO {
             data += "N'" + o.getAddress() + "',";
             data += o.getTotalAmount() + "";
 
-            PreparedStatement pre = connector.prepareStatement("Insert into [Orders] (CustomerID, FullName, PhoneNumber, [Address], TotalAmount, [Status], OrderedDate)"
-                    + " values (" + data + ", 1, GETDATE())");
+            PreparedStatement pre = connector.prepareStatement("Insert into [Orders] (CustomerID, FullName, PhoneNumber, [Address], TotalAmount, [Status], OrderedDate, Discount)"
+                    + " values (" + data + ", 1, GETDATE(), ?)");
+            pre.setInt(1, o.getDiscount());
             pre.executeUpdate();
         } catch (SQLException e) {
             System.out.println(e);

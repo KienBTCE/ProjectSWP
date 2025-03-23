@@ -191,6 +191,12 @@
                     ${message}
                 </div>
             </c:if>
+            <c:if test="${param.success == 'assigned'}">
+                <div class="alert alert-success alert-dismissible fade show" role="alert">
+                    <i class="fa-solid fa-circle-check me-2"></i> Assigned voucher successfully!
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            </c:if>
 
 
             <div class="table-container">
@@ -219,12 +225,18 @@
                                 </td>
 
                                 <td>
-                                    <c:if test="${sessionScope.employee.getRoleId() == 2}">
-                                    <a href="CustomerListServlet?${s.getIsBlock() == 1 ? 'Activate' : 'Blocked'}=${s.getId()}" 
-                                       class="btn ${s.getIsBlock() == 1 ? 'btn-success' : 'btn-danger'}" 
-                                       onclick="return confirm('Are you sure?');">
-                                        ${s.getIsBlock() == 0 ? 'Blocked' : 'Activate'}
-                                    </a>
+                                    <c:if test="${sessionScope.employee.getRoleId() == 3}">
+                                        <a href="AssignVoucherServlet?Id=${s.getId()}" 
+                                           class="btn btn-warning">
+                                           Voucher
+                                        </a>
+                                    </c:if>
+                                    <c:if test="${sessionScope.employee.getRoleId() == 2 }">
+                                        <a href="CustomerListServlet?${s.getIsBlock() == 1 ? 'Activate' : 'Blocked'}=${s.getId()}" 
+                                           class="btn ${s.getIsBlock() == 1 ? 'btn-success' : 'btn-danger'}" 
+                                           onclick="return confirm('Are you sure?');">
+                                            ${s.getIsBlock() == 0 ? 'Blocked' : 'Activate'}
+                                        </a>
                                     </c:if>
                                     <a href="CustomerListServlet?id=${s.getId()}" class="btn btn-detail" style="background-color: #BDF3BD">Detail</a>
                                 </td>

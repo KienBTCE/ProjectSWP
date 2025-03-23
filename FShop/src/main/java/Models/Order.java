@@ -19,7 +19,7 @@ public class Order {
     private String orderDate;
     private String deliveredDate;
     private int status;
-
+    private int Discount;
     public Order() {
     }
 
@@ -61,6 +61,27 @@ public class Order {
         this.deliveredDate = deliveredDate;
 
         this.status = status;
+    }
+
+    public Order(int orderID, int accountID, String fullName, String phone, String address, long totalAmount, String orderDate, String deliveredDate, int status, int Discount) {
+        this.orderID = orderID;
+        this.accountID = accountID;
+        this.fullName = fullName;
+        this.phone = phone;
+        this.address = address;
+        this.totalAmount = totalAmount;
+        this.orderDate = orderDate;
+        this.deliveredDate = deliveredDate;
+        this.status = status;
+        this.Discount = Discount;
+    }
+
+    public int getDiscount() {
+        return Discount;
+    }
+
+    public void setDiscount(int Discount) {
+        this.Discount = Discount;
     }
 
     public int getOrderID() {

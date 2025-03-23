@@ -101,10 +101,12 @@
             </c:if>
 
             <c:if test="${sessionScope.employee.getRoleId() == 3}">
-                <h6><a href="#"> <i class="fas fa-box-open"></i>Order Management</a></h6>
+                <h6><a href="ViewOrderListServlet"> <i class="fas fa-box-open"></i>Order Management</a></h6>
                 <a href="ViewListNewFeedbackServlet"><i class="bi bi-chat-left-text"></i>Feedback</a>
                 <a href="ViewOrderListServlet">
                     <i class="fas fa-box-open"></i>Order</a>
+                    <a href="ViewVoucherListServlet"> <i class="fa-solid fa-ticket"></i>
+                    Voucher</a>
                 <a href="CustomerListServlet"> <i class="bi bi-person"></i>
                     Customer</a>
                 <a href="DeleteOrder.jsp"><i class="bi bi-trash"></i> Delete</a>
@@ -115,9 +117,9 @@
                 <a href="Supplier">Supplier</a>
                 <a href="#">Product Management</a>
                 <a href="ImportStatistic">Statistic Management</a>
-                <form action="ExportStock" method="POST">
-                    <button type="submit">Export to Excel</button>
-                </form>
+                <a href="#" class="export-btn" onclick="document.getElementById('exportForm').submit(); return false;">Export to Excel</a>
+<form id="exportForm" action="ExportStock" method="POST" style="display: none;"></form>
+
             </c:if>
             <a style="margin-top: auto; color: red;" href="Logout" onclick="return confirm('Are you sure to logout?')"><i class="bi bi-box-arrow-right"></i> Logout</a>
         </div>
