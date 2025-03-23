@@ -23,8 +23,20 @@
         <link rel="stylesheet" href="./assets/css/popup.css" />
         <title>Checkout</title>
         <style>
+            .popup-overlay {
+                display: none;
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background-color: rgba(0,0,0,0.5);
+                z-index: 1000;
+            }
 
-            
+
+
+
         </style>
     </head>
 
@@ -132,12 +144,26 @@
                         <div
                             style="display: flex; justify-content: space-between; align-items: center; margin-top: 10px">
 
-                            <h6><img src="./assets/imgs/icon/coupon.png" alt="alt" width="20" height="20" style="margin-top: -5px"/> Apply Voucher(if have)</h6>
 
-                            <a onclick="openVoucherPopup()"
-                               style="color: blue; margin-top: -6px; cursor: pointer">
-                                Select Voucher
-                            </a>
+                            <c:if test="${sessionScope.customerVoucherUsing != null}">
+                                <h6><img src="./assets/imgs/icon/coupon.png" alt="alt" width="20" height="20" style="margin-top: -5px"/>
+                                    Your Voucher
+                                </h6>
+                                <div style="display: flex; align-items: center; column-gap: 10px">
+                                    <a onclick="openVoucherModal()" style="color: blue; margin-top: -4px; cursor: pointer">${sessionScope.customerVoucherUsing.getVoucherCode()}</a>
+                                    <a class="btn btn-close" href="order?action=cancelVoucher" ></a>
+                                </div>
+                            </c:if>
+                            <c:if test="${sessionScope.customerVoucherUsing == null}">
+                                <h6><img src="./assets/imgs/icon/coupon.png" alt="alt" width="20" height="20" style="margin-top: -5px"/>
+                                    Apply Voucher(if have)
+                                </h6>
+                                <a onclick="openVoucherModal()"
+                                   style="color: blue; margin-top: -6px; cursor: pointer">
+                                    Select Voucher
+                                </a>
+                            </c:if>
+
 
                         </div>
                         <svg width="100%" height="2" viewBox="0 0 100% 2" fill="none"
@@ -157,11 +183,16 @@
                                     <fmt:formatNumber value="${subtotal}" type="currency" />
                                 </h6>
                                 <h6 style="text-align: right;">
-                                    <c:set var="total" value="${totalAmount}" />
-                                    <fmt:formatNumber value="${total}" type="currency" />
+                                    <c:if test="${sessionScope.discount != null}">
+                                        <c:set var="discount" value="${sessionScope.discount}" />
+                                        <fmt:formatNumber value="${discount}" type="currency" />
+                                    </c:if>
+                                    <c:if test="${sessionScope.discount == null}">
+                                        <fmt:formatNumber value="0" type="currency" />
+                                    </c:if>
                                 </h6>
                                 <h4 style="text-align: right;">
-                                    <c:set var="total" value="${totalAmount}" />
+                                    <c:set var="total" value="${totalAmount - discount}" />
                                     <fmt:formatNumber value="${total}" type="currency" />
                                 </h4>
                             </div>
@@ -188,85 +219,94 @@
             <br>
             <div style="display: none;" class="popup" id="orderPopup">
                 <div class="popup-content">
+                    <img src="https://cdn-icons-png.flaticon.com/512/845/845646.png" alt="success-tick" style="width: 82px; margin-bottom: 15px;" />
                     <h3>Order Successful</h3>
                     <p>Your order is waiting for acceptance by the shop.</p>
-                    <div style="display: flex; justify-content: center;">
-                        <button><a style="text-decoration: none; color: white;"
-                                   href="ViewOrderHistory">OK</a></button>
-                        <button><a style="text-decoration: none; color: white;"
-                                   href="ProductListView">Back to home</a></button>
+                    <div style="display: flex; justify-content: center; column-gap: 10px">
+                        <a  class="btn btn-primary"
+                            href="ViewOrderHistory">OK</a>
+                        <a class="btn btn-secondary"
+                           href="ProductListView">Back to home</a>
+                    </div>
+                </div>
+            </div>
+            <!-- Bootstrap Popup -->
+            <div class="modal fade" id="voucherModal" tabindex="-1" aria-labelledby="voucherModalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-lg">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="voucherModalLabel">Select Your Voucher</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <c:if test="${empty sessionScope.customerVoucher}">
+                                <p>No vouchers available.</p>
+                            </c:if>
+                            <c:forEach var="vou" items="${sessionScope.customerVoucher}">
+                                <div class="voucher border p-3 mb-3 d-flex justify-content-between position-relative" style="border-radius: 12px;">
+                                    <!-- Quantity Tag -->
+                                    <div class="position-absolute top-0 start-0 bg-danger text-white px-2 py-1" style="border-top-left-radius: 12px;">
+                                        X${vou.getQuantity()}
+                                    </div>
+                                    <div class="flex-grow-1 " style="padding-left: 30px">
+                                        <div class="right fw-bold text-danger" style="font-size: 16px;">
+                                            <c:choose>
+                                                <c:when test="${vou.getVoucherType() == 0}">
+                                                    <fmt:formatNumber type="currency" value="${vou.getVoucherValue()}"/> Sale Off
+                                                </c:when>
+                                                <c:otherwise>
+                                                    ${vou.getVoucherValue()}% Sale Off
+                                                </c:otherwise>
+                                            </c:choose>
+                                        </div>
+                                        <div class="terms mt-3">
+                                            <p class="text-muted" style="font-size: 14px;">${vou.getDescription()}</p>
+                                        </div>
+                                        <div style="width: 80%;">
+                                            <div class="progress mt-2" style="height: 12px;">
+                                                <div class="progress-bar bg-success" role="progressbar"
+                                                     style="width: ${vou.getUsedCount() * 100 / vou.getMaxUsedCount()}%;"
+                                                     aria-valuenow="${vou.getUsedCount()}" 
+                                                     aria-valuemin="0" 
+                                                     aria-valuemax="${vou.getMaxUsedCount()}">
+                                                </div>
+                                            </div>
+                                            <p class="text-muted mt-1" style="font-size: 12px;">
+                                                ${vou.getUsedCount()} / ${vou.getMaxUsedCount()} used
+                                            </p>
+                                        </div>
+                                        <c:set var="expirationDate" value="${vou.getExpirationDate()}" />
+                                        <c:set var="formattedDate" value="${expirationDate.substring(8,10)}/${expirationDate.substring(5,7)}/${expirationDate.substring(0,4)}" />
+                                        <p><b>Expiration Date:</b> ${formattedDate}</p>
+                                    </div>
+                                    <!-- Select Button -->
+                                    <a href="order?action=useVoucher&id=${vou.getVoucherID()}" class="btn btn-primary" style="height: 40px; align-self: center;">Select</a>
+                                </div>
+                            </c:forEach>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Bootstrap Modal -->
+            <div class="modal fade" id="minOrder" tabindex="-1" aria-labelledby="warningModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title text-danger" id="warningModalLabel">Warning</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body text-dark">
+                            <p>${sessionScope.message}</p>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">OK</button>
+                        </div>
                     </div>
                 </div>
             </div>
         </main>
-        <div id="voucherPopup" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.5); justify-content: center; align-items: center;">
-            <div style="background: white; padding: 20px; border-radius: 10px; width: 400px; text-align: left;">
-                <h2>Choose your voucher</h2>
 
-                
-<!--                <div style="display: flex; gap: 10px; margin-bottom: 15px;">
-                    <input type="text" id="voucherCode" placeholder="Shopee voucher code" style="flex: 1; padding: 8px; border: 1px solid #ccc;">
-                    <button id="applyVoucher" style="padding: 8px 12px; background-color: orange; color: white; border: none; cursor: pointer;">Áp dụng</button>
-                </div>-->
 
-           
-                <div style="border-top: 1px solid #ddd; padding-top: 10px;">
-                    <div style="padding: 10px; border-bottom: 1px solid #eee;">
-                        <input type="radio" name="voucher" value="FREESHIP_XTRA" data-valid="true">
-                        <label>Freeship Xtra - Giảm ₫25k</label>
-                        <p>HSD: 1 ngày nữa <a href="#">T&C</a></p>
-                    </div>
-                    <div style="padding: 10px; border-bottom: 1px solid #eee;">
-                        <input type="radio" name="voucher" value="FREESHIP_XTRA" data-valid="true">
-                        <label>Freeship Xtra - Giảm ₫25k</label>
-                        <p>HSD: 1 ngày nữa <a href="#">T&C</a></p>
-                    </div>
-
-                </div>
-<!--
-                <div class="bodyyyyyy">
-
-                    <div class="voucher">
-                        <div class="left">
-                            <h2><img class="logo" src="./assets/imgs/HeaderImgs/Vector-Header-Logo.svg" alt="Logo"> GIFT VOUCHER</h2>
-                            <p>Company slogan will be here</p>
-                            <div class="terms">
-                                <strong>CONDITIONS</strong>
-                                <p>Some placeholder text for terms and conditions.</p>
-                            </div>
-                        </div>
-                        <div class="right">
-                            500$ VALUE
-                        </div>
-                        <div class="quatity">
-                            X5
-                        </div>
-                    </div>
-                    <div class="voucher">
-                        <div class="left">
-                            <h2><img class="logo" src="./assets/imgs/HeaderImgs/Vector-Header-Logo.svg" alt="Logo"> GIFT VOUCHER</h2>
-                            <p>Company slogan will be here</p>
-                            <div class="terms">
-                                <strong>CONDITIONS</strong>
-                                <p>Some placeholder text for terms and conditions.</p>
-                            </div>
-                        </div>
-                        <div class="right">
-                            500$ VALUE
-                        </div>
-                        <div class="quatity">
-                            X5
-                        </div>
-                    </div>
-                </div>-->
-
-                <!-- Nút xác nhận -->
-                <div style="margin-top: 10px; display: flex; justify-content: right; column-gap: 10px">
-                    <button id="closePopup" onclick="closeVoucherPopup()" class="btn btn-secondary">Cancel</button>
-                    <button id="confirmVoucher" class="btn btn-primary" >OK</button>
-                </div>
-            </div>
-        </div>
         <jsp:include page="footer.jsp"></jsp:include>
             <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.21.1/axios.min.js"></script>
             <script
@@ -274,40 +314,60 @@
                 integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
             crossorigin="anonymous"></script>
             <script>
+                                    window.onload = function () {
+            <% if (session.getAttribute("message") != null) { %>
+                                        showMessage(true);
+            <% }%>
+                                    };
+                                    function showMessage(show) {
+                                        if (show) {
+                                            var warningModal = new bootstrap.Modal(document.getElementById('minOrder'));
+                                            warningModal.show();
+                                        }
+                                    }
+                                    function closePopup() {
+                                        var warningModal = bootstrap.Modal.getInstance(document.getElementById('minOrder'));
+                                        if (warningModal) {
+                                            warningModal.hide();
+                                        }
+                                    }
 
+                                    function openVoucherModal() {
+                                        var modal = new bootstrap.Modal(document.getElementById('voucherModal'));
+                                        modal.show();
+                                    }
 
-                        function openVoucherPopup() {
-                            document.getElementById("voucherPopup").style.display = "flex";
-                        }
-                        function closeVoucherPopup() {
-                            document.getElementById("voucherPopup").style.display = "none";
-                        }
+                                    function closeVoucherModal() {
+                                        var modalElement = document.getElementById('voucherModal');
+                                        var modal = bootstrap.Modal.getInstance(modalElement);
+                                        if (modal) {
+                                            modal.hide();
+                                        }
+                                    }
+                                    function applyVoucher(voucher) {
+                                        document.getElementById("selectedVoucher").innerHTML = "Selected: " + voucher;
+                                        closeVoucherPopup();
+                                        // Redirect to servlet with the selected voucher
+                                        window.location.href = "applyVoucherServlet?voucher=" + voucher;
+                                    }
+                                    function showPopup() {
+                                        document.getElementById("orderPopup").style.display = "flex";
+                                    }
 
-                        function applyVoucher(voucher) {
-                            document.getElementById("selectedVoucher").innerHTML = "Selected: " + voucher;
-                            closeVoucherPopup();
-                            // Redirect to servlet with the selected voucher
-                            window.location.href = "applyVoucherServlet?voucher=" + voucher;
-                        }
-                        function showPopup() {
-                            document.getElementById("orderPopup").style.display = "flex";
-                        }
+                                    function closePopup() {
+                                        document.getElementById("orderPopup").style.display = "none";
+                                    }
 
-                        function closePopup() {
-                            document.getElementById("orderPopup").style.display = "none";
-                        }
-
-// Show popup if login fails (you can trigger this with backend error)
-// For example, if you're using a session attribute or response error:
             <%
                 String message = (String) session.getAttribute("orderStatus");
                 if (message != null && message.equals("success")) {
                     out.print("showPopup();");
-                    session.removeAttribute("orderStatus"); // Xóa thông báo sau khi hiển thị
+                    session.removeAttribute("orderStatus");
                 }
             %>
         </script>
     </body>
-
-
+    <c:if test="${not empty sessionScope.message}">
+        <c:remove var="message" scope="session"/>
+    </c:if>
 </html>

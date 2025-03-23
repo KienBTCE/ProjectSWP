@@ -3,8 +3,12 @@
     Created on : Mar 18, 2025, 5:20:29 PM
     Author     : nhutb
 --%>
-
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+<fmt:setLocale value="vi_VN" />
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@page import="Models.CustomerVoucher" %> 
 <!DOCTYPE html>
 <html lang="vi">
 
@@ -22,84 +26,76 @@
                 align-items: center;
                 gap: 15px;
             }
-
+            h1{
+                border-bottom: 1px solid black;
+                padding-bottom: 20px
+            }
             .voucher {
-                background: linear-gradient(135deg, white, white);
-                width: 450px;
-                height: 120px; /* Reduced height */
                 display: flex;
+                background-color: white;
                 border-radius: 10px;
                 overflow: hidden;
+                border: 0.5px solid black;
                 box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+                margin: 10px 0;
                 position: relative;
             }
 
             .left {
+                flex: 1;
                 padding: 10px;
                 color: black;
-                flex: 2;
-                display: flex;
-                flex-direction: column;
-                justify-content: center;
-                position: relative; /* Needed for .quatity positioning */
             }
 
             .left h2 {
                 display: flex;
                 align-items: center;
                 font-size: 22px;
-                margin: 0;
+                margin-bottom: 10px;
             }
 
             .left p {
-                font-size: 12px;
                 margin: 5px 0;
-            }
-
-            .left .terms {
-                font-size: 11px;
-                margin-top: 5px;
-            }
-
-            .logo {
-                height: 24px;
-                width: 24px;
-                margin-right: 8px;
+                font-size: 12px;
             }
 
             .right {
-                background: #007bff;
-                color: gold;
-                padding: 10px 20px 10px 10px;
-                flex: 0.5; /* Shortened width */
+                background-color: #ee4d2d;
+                color: white;
+                padding: 20px;
                 display: flex;
                 justify-content: center;
                 align-items: center;
                 font-size: 15px;
                 font-weight: bold;
-                writing-mode: vertical-rl;
+                min-width: 120px;
             }
 
             .quatity {
-                width: 40px;
-                height: 25px;
-                background-color: #d10000;
+                position: absolute;
+                top: 5px;
+                right: 0px;
+                background-color: #ee4d2d;
                 color: white;
                 font-size: 12px;
                 font-weight: bold;
                 border-radius: 5px;
+                width: 40px;
+                height: 25px;
                 display: flex;
                 justify-content: center;
                 align-items: center;
-                position: absolute;
-                top: 5px;
-                right: 0px;
-            }
-            h1{
-                border-bottom: 1px gray solid;
-                padding-bottom: 20px;
             }
 
+            .progress {
+                width: 100%;
+                height: 12px;
+                margin-top: 10px;
+            }
+
+            .progress-bar {
+                transition: width 0.4s ease;
+            }
         </style>
     </head>
 
@@ -110,73 +106,49 @@
               background-color: white; height: 100%">
             <h1>Your voucher</h1>
             <br>
-            <div class="bodyyyyyy">
+            <div class="container-fluid">
+                <div class="row">
+                    <c:if test="${sessionScope.customerVoucher != null}">
+                        <c:forEach var="vou" items="${sessionScope.customerVoucher}">
+                            <div class="col-md-6">
+                                <div class="voucher">
+                                    <!-- Phần giảm giá -->
+                                    <div class="right">
+                                        <c:if test="${vou.getVoucherType() == 0}">
+                                            <fmt:formatNumber type="currency" value="${vou.getVoucherValue()}"></fmt:formatNumber> Sale off
+                                        </c:if>
+                                        <c:if test="${vou.getVoucherType() == 1}">
+                                            ${vou.getVoucherValue()}% Sale off
+                                        </c:if>
+                                    </div>
 
-                <div class="voucher">
-                    <div class="left">
-                        <h2><img class="logo" src="./assets/imgs/HeaderImgs/Vector-Header-Logo.svg" alt="Logo"> GIFT VOUCHER</h2>
-                        <p>Company slogan will be here</p>
-                        <div class="terms">
-                            <strong>CONDITIONS</strong>
-                            <p>Some placeholder text for terms and conditions.</p>
-                        </div>
-                    </div>
-                    <div class="right">
-                        500$ VALUE
-                    </div>
-                    <div class="quatity">
-                        X5
-                    </div>
-                </div>
-                <div class="voucher">
-                    <div class="left">
-                        <h2><img class="logo" src="./assets/imgs/HeaderImgs/Vector-Header-Logo.svg" alt="Logo"> GIFT VOUCHER</h2>
-                        <p>Company slogan will be here</p>
-                        <div class="terms">
-                            <strong>CONDITIONS</strong>
-                            <p>Some placeholder text for terms and conditions.</p>
-                        </div>
-                    </div>
-                    <div class="right">
-                        500$ VALUE
-                    </div>
-                    <div class="quatity">
-                        X5
-                    </div>
-                </div>
-                <div class="voucher">
-                    <div class="left">
-                        <h2><img class="logo" src="./assets/imgs/HeaderImgs/Vector-Header-Logo.svg" alt="Logo"> GIFT VOUCHER</h2>
-                        <p>Company slogan will be here</p>
-                        <div class="terms">
-                            <strong>CONDITIONS</strong>
-                            <p>Some placeholder text for terms and conditions.</p>
-                        </div>
-                    </div>
-                    <div class="right">
-                        500$ VALUE
-                    </div>
-                    <div class="quatity">
-                        X5
-                    </div>
-                </div>
-                <div class="voucher">
-                    <div class="left">
-                        <h2><img class="logo" src="./assets/imgs/HeaderImgs/Vector-Header-Logo.svg" alt="Logo"> GIFT VOUCHER</h2>
-                        <p>Company slogan will be here</p>
-                        <div class="terms">
-                            <strong>CONDITIONS</strong>
-                            <p>Some placeholder text for terms and conditions.</p>
-                        </div>
-                    </div>
-                    <div class="right">
-                        500$ VALUE
-                    </div>
-                    <div class="quatity">
-                        X5
-                    </div>
+                                    <!-- Nội dung chính -->
+                                    <div class="left">
+                                        <h2>
+                                            <img class="logo" src="./assets/imgs/HeaderImgs/Vector-Header-Logo.svg" alt="Logo"> GIFT VOUCHER
+                                        </h2>
+                                        <div class="terms">
+                                            <p>${vou.getDescription()}</p>
+                                        </div>
+                                        <c:set var="expirationDate" value="${vou.getExpirationDate()}" />
+                                        <c:set var="formattedDate" value="${expirationDate.substring(8,10)}/${expirationDate.substring(5,7)}/${expirationDate.substring(0,4)}" />
+                                        <p><b>Expiration Date:</b> ${formattedDate}</p>
+
+
+                                    </div>
+
+                                    <!-- Số lượng -->
+                                    <div class="quatity">X${vou.getQuantity()}</div>
+                                </div>
+                            </div>
+                        </c:forEach>
+                    </c:if>
+                    <c:if test="${sessionScope.customerVoucher == null}">
+                        <p>You have no voucher.</p>
+                    </c:if>
                 </div>
             </div>
+
         </main>
     </body>
 

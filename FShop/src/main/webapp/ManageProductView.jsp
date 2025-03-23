@@ -115,7 +115,7 @@
                 background-color: lightblue !important;
                 border: none;
                 padding: 5px 10px;
-                width: 140px;
+                width: 150px;
                 align-items: center;
                 margin-bottom: 10px;
             }
@@ -185,7 +185,7 @@
                 gap: 10px;
                 margin-bottom: 15px;
                 margin-top: 10px;
-                margin-left: 250px;
+                margin-left: 170px;
                 width: 200px;
             }
 

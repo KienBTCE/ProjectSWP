@@ -4,30 +4,27 @@
  */
 package Controllers;
 
-import DAOs.ProductRatingDAO;
-import DAOs.RatingRepliesDAO;
+import DAOs.CustomerVoucherDAO;
 import Models.Customer;
-import Models.ProductRating;
-import Models.Product;
-import Models.RatingReplies;
-import com.google.gson.Gson;
+import Models.CustomerVoucher;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
+import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
-import java.util.ArrayList;
-import java.util.HashMap;
+import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Map;
 
 /**
  *
- * @author HP
+ * @author nhutb
  */
-public class NotificationServlet extends HttpServlet {
+@WebServlet(name = "ViewCustomerVoucher", urlPatterns = {"/ViewCustomerVoucher"})
+public class ViewCustomerVoucher extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -46,10 +43,10 @@ public class NotificationServlet extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet notificationServlet</title>");
+            out.println("<title>Servlet ViewCustomerVoucher</title>");
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet notificationServlet at " + request.getContextPath() + "</h1>");
+            out.println("<h1>Servlet ViewCustomerVoucher at " + request.getContextPath() + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }
@@ -69,36 +66,36 @@ public class NotificationServlet extends HttpServlet {
             throws ServletException, IOException {
         HttpSession session = request.getSession();
         Customer cus = (Customer) session.getAttribute("customer");
+        CustomerVoucherDAO c = new CustomerVoucherDAO();
+        List<CustomerVoucher> list = c.getVoucherOfCustomer(cus.getId());
+        for (CustomerVoucher customerVoucher : list) {
+            String expirationDateString = customerVoucher.getExpirationDate();
+            String endDateString = customerVoucher.getEndDate();
+            Timestamp expirationDate = Timestamp.valueOf(expirationDateString);
+            Timestamp endDate = Timestamp.valueOf(endDateString);
+            LocalDateTime currentDate = LocalDateTime.now();
+            boolean isDeleted = false;
+            if (expirationDate.toLocalDateTime().isBefore(currentDate)) {
+                System.out.println("Voucher Het Han");
+                c.deleteVoucher(cus.getId(), customerVoucher.getVoucherID());
+                isDeleted = true;
+            }
+            if ((customerVoucher.getUsedCount() == customerVoucher.getMaxUsedCount()) && isDeleted == false) {
+                System.out.println("Voucher Het Luot sd");
+                c.deleteVoucher(cus.getId(), customerVoucher.getVoucherID());
+                isDeleted = true;
+            }
 
-        if (cus == null) {
-            response.setContentType("application/json");
-            response.getWriter().write("[]");
-            return;
+            if (endDate.toLocalDateTime().isBefore(currentDate) && isDeleted == false) {
+                System.out.println("Voucher Het End date");
+                c.deleteVoucher(cus.getId(), customerVoucher.getVoucherID());
+                isDeleted = true;
+            }
         }
-
-        int customerID = cus.getId();
-        RatingRepliesDAO rrDAO = new RatingRepliesDAO();
-
-        ProductRatingDAO pdDAO = new ProductRatingDAO();
-
-        List<RatingReplies> list = rrDAO.getCustomerReplies(customerID);
-        List<Product> listpd = new ArrayList<>();
-        for (RatingReplies r : list) {
-            Product p = pdDAO.getProductID(r.getRateID());
-            
-            listpd.add(p);
-        }
-        Map<Object, Object> dataMap = new HashMap<>();
-        dataMap.put("replies", list);        // Danh sách RatingReplies
-        dataMap.put("product", listpd);
-        // Nếu có yêu cầu AJAX (chuyển sang JSON)
-        if (request.getParameter("ajax") != null && request.getParameter("ajax").equals("true")) {
-            response.setContentType("application/json");
-            String json = new Gson().toJson(dataMap);
-            response.getWriter().write(json);
-            return;
-        }
-
+        list = c.getVoucherOfCustomer(cus.getId());
+        session.setAttribute("customerVoucher", list);
+        request.setAttribute("profilePage", "CustomerVoucherView.jsp");
+        request.getRequestDispatcher("ProfileManagementView.jsp").forward(request, response);
     }
 
     /**
@@ -112,21 +109,7 @@ public class NotificationServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        String repliesIDStr = request.getParameter("repliesID");
-
-        if (repliesIDStr != null) {
-            try {
-                int repliesID = Integer.parseInt(repliesIDStr);
-                RatingRepliesDAO rrDAO = new RatingRepliesDAO();
-                rrDAO.markReplyAsRead(repliesID); 
-
-                response.getWriter().write("Success");
-            } catch (NumberFormatException e) {
-                response.getWriter().write("Invalid ID");
-            }
-        } else {
-            response.getWriter().write("No ID provided");
-        }
+        processRequest(request, response);
     }
 
     /**

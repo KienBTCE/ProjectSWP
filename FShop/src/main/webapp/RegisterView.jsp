@@ -159,7 +159,7 @@
                             </div>
                             <button type="submit" class="w-full bg-blue-500 text-white font-semibold p-3 rounded-lg hover:bg-blue-600">Sign Up</button>
                         </form>
-                        <p class="text-sm text-center text-gray-600 mt-4">Already have an account? <a href="login.html" class="text-blue-500 hover:underline">Log in</a></p>
+                        <p class="text-sm text-center text-gray-600 mt-4">Already have an account? <a href="customerLogin" class="text-blue-500 hover:underline">Log in</a></p>
                     </div>
                 </div>
                 <div class="features">

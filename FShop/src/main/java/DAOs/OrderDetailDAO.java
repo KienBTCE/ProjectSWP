@@ -66,37 +66,29 @@ public class OrderDetailDAO {
         return list;
     }
 
-    public List<Integer> getCustomerByProductID(int productID) {
-        List<Integer> list = new ArrayList<>();
-        String query = "DECLARE @ProductID INT = ?; \n"
-                + "\n"
-                + "SELECT c.CustomerID\n"
-                + "FROM Customers AS c\n"
-                + "JOIN Orders AS o ON o.CustomerID = c.CustomerID\n"
-                + "JOIN OrderDetails AS od ON od.OrderID = o.OrderID\n"
-                + "WHERE od.ProductID = @ProductID\n"
-                + "      AND o.Status = 4 \n"
-                + "GROUP BY c.CustomerID\n"
-                + "HAVING SUM(od.Quantity) > \n"
-                + "      (SELECT COUNT(*) \n"
-                + "       FROM ProductRatings AS pr \n"
-                + "       WHERE pr.CustomerID = c.CustomerID \n"
-                + "       AND pr.ProductID = @ProductID\n"
-                + "       AND pr.IsDeleted = 0);";
+    public boolean getCustomerByProductID(int customerId, int productId) {
+        boolean isOk = false;
+        String query = "SELECT CASE "
+                + "WHEN NOT EXISTS (SELECT 1 FROM ProductRatings WHERE CustomerID = ? AND ProductID = ?) "
+                + "AND EXISTS (SELECT 1 FROM OrderDetails od "
+                + "JOIN Orders o ON od.OrderID = o.OrderID "
+                + "WHERE o.CustomerID = ? AND od.ProductID = ? AND o.Status = 4) "
+                + "THEN 1 ELSE 0 END AS CanReview;";
 
         try {
             PreparedStatement pre = connector.prepareStatement(query);
-            pre.setInt(1, productID);
-
+            pre.setInt(1, customerId);
+            pre.setInt(2, productId);
+            pre.setInt(3, customerId);
+            pre.setInt(4, productId);
             ResultSet rs = pre.executeQuery();
-
-            while (rs.next()) {
-                list.add(rs.getInt("CustomerID"));
-            };
+            if (rs.next()) {
+                isOk = rs.getBoolean("CanReview");
+            }
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return list;
+        return isOk;
     }
 
     public static void main(String[] args) {

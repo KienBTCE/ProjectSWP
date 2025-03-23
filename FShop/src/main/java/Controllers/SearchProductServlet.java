@@ -59,8 +59,6 @@ public class SearchProductServlet extends HttpServlet {
                 ArrayList<ProductRating> stars = new ArrayList<>();
                 for (Product p : products) {
                     ProductRating star = prDAO.getStarAVG(p.getProductId());
-                    System.out.println("STAR LAPTOP: ________________________________________________________");
-                    System.out.println(star);
 
                     stars.add(star);
 
