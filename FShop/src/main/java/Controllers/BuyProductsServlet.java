@@ -6,11 +6,13 @@ package Controllers;
 
 import DAOs.AddressDAO;
 import DAOs.CartDAO;
+import DAOs.CustomerVoucherDAO;
 import DAOs.OrderDAO;
 import DAOs.ProductDAO;
 import Models.Address;
 import Models.Cart;
 import Models.Customer;
+import Models.CustomerVoucher;
 import Models.Email;
 import Models.EmailUtils;
 import Models.Order;
@@ -23,6 +25,8 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
+import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -73,12 +77,48 @@ public class BuyProductsServlet extends HttpServlet {
             throws ServletException, IOException {
         HttpSession session = request.getSession();
         Customer cus = (Customer) session.getAttribute("customer");
-        AddressDAO cdao = new AddressDAO();
-        Address add = cdao.getDefaultAddress(cus.getId());
-        String address = add.getAddressDetails();
-        session.removeAttribute("shipAddress");
-        session.setAttribute("shipAddress", address);
-        response.sendRedirect("CheckoutView.jsp");
+        String action = request.getParameter("action");
+        session.removeAttribute("discount");
+        if (action.equalsIgnoreCase("changeAddress")) {
+            AddressDAO cdao = new AddressDAO();
+            Address add = cdao.getDefaultAddress(cus.getId());
+            String address = add.getAddressDetails();
+            session.removeAttribute("shipAddress");
+            session.setAttribute("shipAddress", address);
+            response.sendRedirect("CheckoutView.jsp");
+        } else if (action.equalsIgnoreCase("useVoucher")) {
+            int voucherId = 0;
+            try {
+                voucherId = Integer.parseInt(request.getParameter("id"));
+            } catch (Exception e) {
+                System.out.println(e.toString());
+            }
+            CustomerVoucherDAO cv = new CustomerVoucherDAO();
+            CustomerVoucher customerVoucherUsing = cv.getVoucherById(cus.getId(), voucherId);
+            long totalAmount = (Long) session.getAttribute("totalAmount");
+            if (totalAmount < customerVoucherUsing.getMinOrderValue()) {
+                session.setAttribute("message", "Your order is not equal or greater than " + customerVoucherUsing.getMinOrderValue() + "đ.\nYou cannot use this voucher.");
+                response.sendRedirect("ConfirmView.jsp");
+            } else {
+                int discount = 0;
+                if (customerVoucherUsing.getVoucherType() == 1) {
+                    discount = (int) Math.round(totalAmount * (customerVoucherUsing.getVoucherValue() / 100.0));
+                    if (discount > customerVoucherUsing.getMaxDiscountAmount()) {
+                        discount = customerVoucherUsing.getMaxDiscountAmount();
+                    }
+                } else if (customerVoucherUsing.getVoucherType() == 0) {
+                    discount = customerVoucherUsing.getVoucherValue();
+                }
+                System.out.println(customerVoucherUsing.getExpirationDate() + " " + (totalAmount - discount) + " " + customerVoucherUsing.getMaxDiscountAmount());
+                session.setAttribute("discount", discount);
+                session.setAttribute("customerVoucherUsing", customerVoucherUsing);
+                response.sendRedirect("ConfirmView.jsp");
+            }
+        } else if (action.equalsIgnoreCase("cancelVoucher")) {
+            session.removeAttribute("customerVoucherUsing");
+            session.removeAttribute("discount");
+            response.sendRedirect("ConfirmView.jsp");
+        }
     }
 
     /**
@@ -181,12 +221,12 @@ public class BuyProductsServlet extends HttpServlet {
                                 session.setAttribute("numOfItems", 1);
                                 session.setAttribute("url", url);
                                 request.getRequestDispatcher("CheckoutView.jsp").forward(request, response);
-
                             }
                         }
                     }
                 }
             } else if (action.equals("confirm")) {
+                session.setAttribute("customerVoucher", getRealTimeCustomerVoucherList(cus.getId()));
                 String fullname = request.getParameter("fullname");
                 String phone = request.getParameter("phone");
                 String address = request.getParameter("address");
@@ -198,6 +238,13 @@ public class BuyProductsServlet extends HttpServlet {
                 System.out.println("URL" + urlBuy);
                 long totalAmount = Long.parseLong(request.getParameter("totalAmount"));
                 Order o = (Order) session.getAttribute("order");
+                int discount = 0;
+                CustomerVoucher customerVoucherUsing = null;
+                if (session.getAttribute("customerVoucherUsing") != null) {
+                    discount = (int) session.getAttribute("discount");
+                    customerVoucherUsing = (CustomerVoucher) session.getAttribute("customerVoucherUsing");
+                }
+                o.setDiscount(discount);
                 o.setAccountID(cus.getId());
                 o.setTotalAmount(totalAmount);
                 od.createNewOrder(o);
@@ -208,8 +255,17 @@ public class BuyProductsServlet extends HttpServlet {
                     if (!urlBuy.equalsIgnoreCase("buyNow")) {
                         ca.deleteProductOnCart(c.getProductID(), cus.getId());
                     }
+                    if (session.getAttribute("customerVoucherUsing") != null) {
+                        CustomerVoucherDAO cv = new CustomerVoucherDAO();
+                        System.out.println(customerVoucherUsing.getQuantity());
+                        if (customerVoucherUsing.getQuantity() == 1) {
+                            cv.deleteVoucher(cus.getId(), customerVoucherUsing.getVoucherID());
+                        } else if (customerVoucherUsing.getQuantity() > 1) {
+                            cv.subtractQuantityOfVoucher(cus.getId(), customerVoucherUsing.getVoucherID());
+                        }
+                        cv.increaseVoucher(customerVoucherUsing.getVoucherID());
+                    }
                 }
-
                 session.setAttribute("orderStatus", "success");
                 session.setAttribute("numOfProCartOfCus", ca.getNumberOfProduct(cus.getId()));
                 //gui mail xac nhan don hang thanh cong
@@ -217,6 +273,8 @@ public class BuyProductsServlet extends HttpServlet {
                 request.getRequestDispatcher("ConfirmView.jsp").forward(request, response);
                 session.removeAttribute("order");
                 session.removeAttribute("cartSelected");
+                session.removeAttribute("discount");
+                session.removeAttribute("customerVoucherUsing");
                 session.removeAttribute("shipAddress");
                 session.removeAttribute("numOfItems");
             }
@@ -265,6 +323,37 @@ public class BuyProductsServlet extends HttpServlet {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    private List<CustomerVoucher> getRealTimeCustomerVoucherList(int customerId) {
+        CustomerVoucherDAO c = new CustomerVoucherDAO();
+        List<CustomerVoucher> list = c.getVoucherOfCustomer(customerId);
+        for (CustomerVoucher customerVoucher : list) {
+            String expirationDateString = customerVoucher.getExpirationDate();
+            String endDateString = customerVoucher.getEndDate();
+            Timestamp expirationDate = Timestamp.valueOf(expirationDateString);
+            Timestamp endDate = Timestamp.valueOf(endDateString);
+            LocalDateTime currentDate = LocalDateTime.now();
+            boolean isDeleted = false;
+            if (expirationDate.toLocalDateTime().isBefore(currentDate)) {
+                System.out.println("Voucher Het Han");
+                c.deleteVoucher(customerId, customerVoucher.getVoucherID());
+                isDeleted = true;
+            }
+            if ((customerVoucher.getUsedCount() == customerVoucher.getMaxUsedCount()) && isDeleted == false) {
+                System.out.println("Voucher Het Luot sd");
+                c.deleteVoucher(customerId, customerVoucher.getVoucherID());
+                isDeleted = true;
+            }
+
+            if (endDate.toLocalDateTime().isBefore(currentDate) && isDeleted == false) {
+                System.out.println("Voucher Het End date");
+                c.deleteVoucher(customerId, customerVoucher.getVoucherID());
+                isDeleted = true;
+            }
+        }
+        list = c.getVoucherOfCustomer(customerId);
+        return list;
     }
 
     /**

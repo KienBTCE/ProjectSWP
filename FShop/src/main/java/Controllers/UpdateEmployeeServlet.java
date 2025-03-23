@@ -19,7 +19,7 @@ import java.sql.Date;
         maxFileSize = 1024 * 1024 * 10, // 10MB
         maxRequestSize = 1024 * 1024 * 50) // 50MB
 public class UpdateEmployeeServlet extends HttpServlet {
-
+    
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         try {
@@ -33,7 +33,7 @@ public class UpdateEmployeeServlet extends HttpServlet {
             e.printStackTrace();
         }
     }
-
+    
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         try {
@@ -55,25 +55,31 @@ public class UpdateEmployeeServlet extends HttpServlet {
             String avatar = request.getParameter("currentAvatar");
             Part part = request.getPart("txtAvatar");
             String fileName = Paths.get(part.getSubmittedFileName()).getFileName().toString();
-
+            
+            if (!isValidName(name)) {
+                request.setAttribute("errorMsg", "Name must not exceed 255 characters and only contain letters.");
+                forwardToUpdatePage(request, response, employeeId, roleId, name, password, birthday, phone, email, gender, createdDate, status, avatar);
+                return;
+            }
+            
             if (!isValidPassword(password) && !password.equals(request.getParameter("currentPassword"))) {
                 request.setAttribute("errorMsg", "Password must be at least 8 characters, including 1 uppercase letter and 1 special character!");
                 forwardToUpdatePage(request, response, employeeId, roleId, name, password, birthday, phone, email, gender, createdDate, status, avatar);
                 return;
             }
-
+            
             if (empDAO.isEmailExists(email) && !email.equals(request.getParameter("currentEmail"))) {
                 request.setAttribute("errorMsg", "Email already exists! Please choose another email.");
                 forwardToUpdatePage(request, response, employeeId, roleId, name, password, birthday, phone, email, gender, createdDate, status, avatar);
                 return;
             }
-
+            
             if (!isValidPhoneNumber(phone)) {
                 request.setAttribute("errorMsg", "Phone number must be exactly 10 digits.");
                 forwardToUpdatePage(request, response, employeeId, roleId, name, password, birthday, phone, email, gender, createdDate, status, avatar);
                 return;
             }
-
+            
             if (fileName != null && !fileName.isEmpty()) {
                 String uploadPath = getServletContext().getRealPath("/") + "assets/imgs/Employee";
                 File uploadDir = new File(uploadPath);
@@ -83,19 +89,19 @@ public class UpdateEmployeeServlet extends HttpServlet {
                 part.write(uploadPath + File.separator + fileName);
                 avatar = fileName;
             }
-
+            
             if (avatar == null || avatar.isEmpty()) {
                 avatar = request.getParameter("currentAvatar");
             }
-
+            
             Employee emp = new Employee(employeeId, name, birthday, password, phone, email, gender, createdDate, status, avatar, roleId);
             int result = empDAO.UpdateEmployee(emp);
-
+            
             if (result > 0) {
                 if (!password.equals(request.getParameter("currentPassword"))) {
                     sendPasswordChangeEmail(email, password);
                 }
-
+                
                 request.setAttribute("popupSuccessMsg", "Updated successfully");
                 request.getRequestDispatcher("UpdateEmployeeView.jsp").forward(request, response);
             } else {
@@ -106,8 +112,9 @@ public class UpdateEmployeeServlet extends HttpServlet {
             System.out.println(e);
         }
     }
-
-    private void forwardToUpdatePage(HttpServletRequest request, HttpServletResponse response, int employeeId, int roleId, String name, String password, Date birthday, String phone, String email, String gender, Date createdDate, int status, String avatar) throws ServletException, IOException {
+    
+    private void forwardToUpdatePage(HttpServletRequest request, HttpServletResponse response, int employeeId, int roleId, String name, String password, Date birthday, String phone, String email, String gender, Date createdDate, int status, String avatar)
+            throws ServletException, IOException {
         request.setAttribute("txtEmployeeId", employeeId);
         request.setAttribute("txtRoleId", roleId);
         request.setAttribute("txtName", name);
@@ -122,7 +129,7 @@ public class UpdateEmployeeServlet extends HttpServlet {
         request.setAttribute("employee", new Employee(employeeId, name, birthday, password, phone, email, gender, createdDate, status, avatar, roleId));
         request.getRequestDispatcher("UpdateEmployeeView.jsp").forward(request, response);
     }
-
+    
     private void sendPasswordChangeEmail(String emailAddress, String newPassword) {
         Email sendEmail = new Email();
         sendEmail.setFrom("kieuthy2004@gmail.com");
@@ -139,13 +146,17 @@ public class UpdateEmployeeServlet extends HttpServlet {
             e.printStackTrace();
         }
     }
-
+    
+    private boolean isValidName(String name) {
+        return name != null && name.length() <= 255 && name.matches("[a-zA-Z\\s]+");
+    }
+    
     private boolean isValidPassword(String password) {
         return password.matches("^(?=.*[A-Z])(?=.*[@#$%^&+=])(?=\\S+$).{8,}$");
     }
-
+    
     private boolean isValidPhoneNumber(String phoneNumber) {
         return phoneNumber.matches("\\d{10}");
     }
-
+    
 }

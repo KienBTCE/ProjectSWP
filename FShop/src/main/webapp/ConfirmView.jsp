@@ -144,12 +144,26 @@
                         <div
                             style="display: flex; justify-content: space-between; align-items: center; margin-top: 10px">
 
-                            <h6><img src="./assets/imgs/icon/coupon.png" alt="alt" width="20" height="20" style="margin-top: -5px"/> Apply Voucher(if have)</h6>
 
-                            <a onclick="openVoucherModal()"
-                               style="color: blue; margin-top: -6px; cursor: pointer">
-                                Select Voucher
-                            </a>
+                            <c:if test="${sessionScope.customerVoucherUsing != null}">
+                                <h6><img src="./assets/imgs/icon/coupon.png" alt="alt" width="20" height="20" style="margin-top: -5px"/>
+                                    Your Voucher
+                                </h6>
+                                <div style="display: flex; align-items: center; column-gap: 10px">
+                                    <a onclick="openVoucherModal()" style="color: blue; margin-top: -4px; cursor: pointer">${sessionScope.customerVoucherUsing.getVoucherCode()}</a>
+                                    <a class="btn btn-close" href="order?action=cancelVoucher" ></a>
+                                </div>
+                            </c:if>
+                            <c:if test="${sessionScope.customerVoucherUsing == null}">
+                                <h6><img src="./assets/imgs/icon/coupon.png" alt="alt" width="20" height="20" style="margin-top: -5px"/>
+                                    Apply Voucher(if have)
+                                </h6>
+                                <a onclick="openVoucherModal()"
+                                   style="color: blue; margin-top: -6px; cursor: pointer">
+                                    Select Voucher
+                                </a>
+                            </c:if>
+
 
                         </div>
                         <svg width="100%" height="2" viewBox="0 0 100% 2" fill="none"
@@ -169,11 +183,16 @@
                                     <fmt:formatNumber value="${subtotal}" type="currency" />
                                 </h6>
                                 <h6 style="text-align: right;">
-                                    <c:set var="total" value="${totalAmount}" />
-                                    <fmt:formatNumber value="${total}" type="currency" />
+                                    <c:if test="${sessionScope.discount != null}">
+                                        <c:set var="discount" value="${sessionScope.discount}" />
+                                        <fmt:formatNumber value="${discount}" type="currency" />
+                                    </c:if>
+                                    <c:if test="${sessionScope.discount == null}">
+                                        <fmt:formatNumber value="0" type="currency" />
+                                    </c:if>
                                 </h6>
                                 <h4 style="text-align: right;">
-                                    <c:set var="total" value="${totalAmount}" />
+                                    <c:set var="total" value="${totalAmount - discount}" />
                                     <fmt:formatNumber value="${total}" type="currency" />
                                 </h4>
                             </div>
@@ -241,19 +260,50 @@
                                             </c:choose>
                                         </div>
                                         <div class="terms mt-3">
-                                            <strong class="text-secondary">CONDITIONS</strong>
-                                            <p class="text-muted" style="font-size: 12px;">${vou.getDescription()}</p>
+                                            <p class="text-muted" style="font-size: 14px;">${vou.getDescription()}</p>
                                         </div>
+                                        <div style="width: 80%;">
+                                            <div class="progress mt-2" style="height: 12px;">
+                                                <div class="progress-bar bg-success" role="progressbar"
+                                                     style="width: ${vou.getUsedCount() * 100 / vou.getMaxUsedCount()}%;"
+                                                     aria-valuenow="${vou.getUsedCount()}" 
+                                                     aria-valuemin="0" 
+                                                     aria-valuemax="${vou.getMaxUsedCount()}">
+                                                </div>
+                                            </div>
+                                            <p class="text-muted mt-1" style="font-size: 12px;">
+                                                ${vou.getUsedCount()} / ${vou.getMaxUsedCount()} used
+                                            </p>
+                                        </div>
+                                        <c:set var="expirationDate" value="${vou.getExpirationDate()}" />
+                                        <c:set var="formattedDate" value="${expirationDate.substring(8,10)}/${expirationDate.substring(5,7)}/${expirationDate.substring(0,4)}" />
+                                        <p><b>Expiration Date:</b> ${formattedDate}</p>
                                     </div>
                                     <!-- Select Button -->
-                                    <button class="btn btn-primary" style="height: 40px; align-self: center;" onclick="selectVoucher('${vou.getVoucherID()}', '${vou.getVoucherValue()}')">Select</button>
+                                    <a href="order?action=useVoucher&id=${vou.getVoucherID()}" class="btn btn-primary" style="height: 40px; align-self: center;">Select</a>
                                 </div>
                             </c:forEach>
                         </div>
                     </div>
                 </div>
             </div>
-
+            <!-- Bootstrap Modal -->
+            <div class="modal fade" id="minOrder" tabindex="-1" aria-labelledby="warningModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title text-danger" id="warningModalLabel">Warning</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body text-dark">
+                            <p>${sessionScope.message}</p>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">OK</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </main>
 
 
@@ -264,43 +314,60 @@
                 integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
             crossorigin="anonymous"></script>
             <script>
-                                        function openVoucherModal() {
-                                            var modal = new bootstrap.Modal(document.getElementById('voucherModal'));
-                                            modal.show();
+                                    window.onload = function () {
+            <% if (session.getAttribute("message") != null) { %>
+                                        showMessage(true);
+            <% }%>
+                                    };
+                                    function showMessage(show) {
+                                        if (show) {
+                                            var warningModal = new bootstrap.Modal(document.getElementById('minOrder'));
+                                            warningModal.show();
                                         }
+                                    }
+                                    function closePopup() {
+                                        var warningModal = bootstrap.Modal.getInstance(document.getElementById('minOrder'));
+                                        if (warningModal) {
+                                            warningModal.hide();
+                                        }
+                                    }
 
-                                        function closeVoucherModal() {
-                                            var modalElement = document.getElementById('voucherModal');
-                                            var modal = bootstrap.Modal.getInstance(modalElement);
-                                            if (modal) {
-                                                modal.hide();
-                                            }
-                                        }
-                                        function applyVoucher(voucher) {
-                                            document.getElementById("selectedVoucher").innerHTML = "Selected: " + voucher;
-                                            closeVoucherPopup();
-                                            // Redirect to servlet with the selected voucher
-                                            window.location.href = "applyVoucherServlet?voucher=" + voucher;
-                                        }
-                                        function showPopup() {
-                                            document.getElementById("orderPopup").style.display = "flex";
-                                        }
+                                    function openVoucherModal() {
+                                        var modal = new bootstrap.Modal(document.getElementById('voucherModal'));
+                                        modal.show();
+                                    }
 
-                                        function closePopup() {
-                                            document.getElementById("orderPopup").style.display = "none";
+                                    function closeVoucherModal() {
+                                        var modalElement = document.getElementById('voucherModal');
+                                        var modal = bootstrap.Modal.getInstance(modalElement);
+                                        if (modal) {
+                                            modal.hide();
                                         }
+                                    }
+                                    function applyVoucher(voucher) {
+                                        document.getElementById("selectedVoucher").innerHTML = "Selected: " + voucher;
+                                        closeVoucherPopup();
+                                        // Redirect to servlet with the selected voucher
+                                        window.location.href = "applyVoucherServlet?voucher=" + voucher;
+                                    }
+                                    function showPopup() {
+                                        document.getElementById("orderPopup").style.display = "flex";
+                                    }
 
-                                        // Show popup if login fails (you can trigger this with backend error)
-                                        // For example, if you're using a session attribute or response error:
+                                    function closePopup() {
+                                        document.getElementById("orderPopup").style.display = "none";
+                                    }
+
             <%
                 String message = (String) session.getAttribute("orderStatus");
                 if (message != null && message.equals("success")) {
                     out.print("showPopup();");
-                    session.removeAttribute("orderStatus"); // Xóa thông báo sau khi hiển thị
+                    session.removeAttribute("orderStatus");
                 }
             %>
         </script>
     </body>
-
-
+    <c:if test="${not empty sessionScope.message}">
+        <c:remove var="message" scope="session"/>
+    </c:if>
 </html>

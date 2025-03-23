@@ -26,84 +26,77 @@
                 align-items: center;
                 gap: 15px;
             }
-
+            h1{
+                border-bottom: 1px solid black;
+                padding-bottom: 20px
+            }
             .voucher {
-                height: 150px;
-                margin: 10px 0px 0px 0px;
-                background: white;
                 display: flex;
+                background-color: white;
                 border-radius: 10px;
                 overflow: hidden;
+                border: 0.5px solid black;
                 box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-                border: solid 0.5px black;
+                margin: 10px 0;
                 position: relative;
+                height: 130px;
             }
+
             .left {
+                flex: 1;
                 padding: 10px;
                 color: black;
-                flex: 2;
-                display: flex;
-                flex-direction: column;
-                justify-content: center;
-                position: relative; /* Needed for .quatity positioning */
             }
 
             .left h2 {
                 display: flex;
                 align-items: center;
                 font-size: 22px;
-                margin: 0;
+                margin-bottom: 10px;
             }
 
             .left p {
-                font-size: 12px;
                 margin: 5px 0;
-            }
-
-            .left .terms {
-                font-size: 11px;
-                margin-top: 5px;
-            }
-
-            .logo {
-                height: 24px;
-                width: 24px;
-                margin-right: 8px;
+                font-size: 12px;
             }
 
             .right {
-                background: #ee4d2d;
+                background-color: #ee4d2d;
                 color: white;
-                padding: 10px 20px 10px 10px;
-                flex: 0.5; /* Shortened width */
+                padding: 20px;
                 display: flex;
                 justify-content: center;
                 align-items: center;
                 font-size: 15px;
                 font-weight: bold;
-                writing-mode: vertical-rl;
+                width: 120px;
             }
 
             .quatity {
-                width: 40px;
-                height: 25px;
+                position: absolute;
+                top: 5px;
+                right: 0px;
                 background-color: #ee4d2d;
                 color: white;
                 font-size: 12px;
                 font-weight: bold;
                 border-radius: 5px;
+                width: 40px;
+                height: 25px;
                 display: flex;
                 justify-content: center;
                 align-items: center;
-                position: absolute;
-                top: 5px;
-                right: -1px;
-            }
-            h1{
-                border-bottom: 1px gray solid;
-                padding-bottom: 20px;
             }
 
+            .progress {
+                width: 100%;
+                height: 12px;
+                margin-top: 10px;
+            }
+
+            .progress-bar {
+                transition: width 0.4s ease;
+            }
         </style>
     </head>
 
@@ -115,35 +108,48 @@
             <h1>Your voucher</h1>
             <br>
             <div class="container-fluid">
+                <div class="row">
+                    <c:if test="${sessionScope.customerVoucher != null}">
+                        <c:forEach var="vou" items="${sessionScope.customerVoucher}">
+                            <div class="col-md-6">
+                                <div class="voucher">
 
-                <div class="row d-flex" style="">
-                    <c:forEach var="vou" items="${sessionScope.customerVoucher}" >
-                        <div class=" col-md-6">
-                            <div class="voucher">
-                                <div class="right">
-                                    <c:if test="${vou.getVoucherType() == 0}">
-                                        <fmt:formatNumber type="currency" value="${vou.getVoucherValue()}"></fmt:formatNumber> Sale off
-                                    </c:if>
-                                    <c:if test="${vou.getVoucherType() == 1}">
-                                        ${vou.getVoucherValue()}% Sale off
-                                    </c:if>
-                                </div>
-                                <div class="quatity">
-                                    X${vou.getQuantity()}
-                                </div>
-                                <div class="left">
-                                    <h2><img class="logo" src="./assets/imgs/HeaderImgs/Vector-Header-Logo.svg" alt="Logo"> GIFT VOUCHER</h2>
-                                    <p>FShop</p>
-                                    <div class="terms">
-                                        <strong>CONDITIONS</strong>
-                                        <p>${vou.getDescription()}</p>
+                                    <div class="right">
+                                        <c:if test="${vou.getVoucherType() == 0}">
+                                            <fmt:formatNumber type="currency" value="${vou.getVoucherValue()}"></fmt:formatNumber> Sale off
+                                        </c:if>
+                                        <c:if test="${vou.getVoucherType() == 1}">
+                                            ${vou.getVoucherValue()}% Sale off
+                                        </c:if>
                                     </div>
+
+
+                                    <div class="left">
+                                        <h2>
+                                            <img class="logo" src="./assets/imgs/HeaderImgs/Vector-Header-Logo.svg" alt="Logo"> GIFT VOUCHER
+                                        </h2>
+                                        <div class="terms">
+                                            <p>${vou.getDescription()}</p>
+                                        </div>
+                                        <c:set var="expirationDate" value="${vou.getExpirationDate()}" />
+                                        <c:set var="formattedDate" value="${expirationDate.substring(8,10)}/${expirationDate.substring(5,7)}/${expirationDate.substring(0,4)}" />
+                                        <p><b>Expiration Date:</b> ${formattedDate}</p>
+
+
+                                    </div>
+
+
+                                    <div class="quatity">X${vou.getQuantity()}</div>
                                 </div>
                             </div>
-                        </div>
-                    </c:forEach>
+                        </c:forEach>
+                    </c:if>
+                    <c:if test="${empty sessionScope.customerVoucher}">
+                        <p style="text-align: center; font-size: 20px;" >You have no voucher.</p>
+                    </c:if>
                 </div>
             </div>
+
         </main>
     </body>
 

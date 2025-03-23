@@ -50,7 +50,7 @@
             .content {
                 flex-grow: 1;
                 margin-left: 250px; /* Khoảng cách để không bị chồng lên sidebar */
-                margin-top: 120px; 
+                margin-top: 150px; 
                 padding: 20px;
             }
 
@@ -185,6 +185,7 @@
                         🔍
                     </button>
                 </form>
+                        <h3  font-weight="Bold">ORDER</h3>
             </div>
 
             <div class="content">

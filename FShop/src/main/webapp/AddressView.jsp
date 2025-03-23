@@ -52,7 +52,7 @@
             <br>
             <div class="container">
                 <div style=" justify-content: space-between; align-items: center;"> 
-                    <a class="btn btn-primary" href="order">Back to checkout</a>
+                    <a class="btn btn-primary" href="order?action=changeAddress">Back to checkout</a>
                     <p style="margin-top: 20px">Please choose other address by setting as default.</p>
                 </div>
 

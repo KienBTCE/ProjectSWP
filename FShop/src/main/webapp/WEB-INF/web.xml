@@ -175,9 +175,41 @@
         <servlet-name>DeleteReplyServlet</servlet-name>
         <servlet-class>Controllers.DeleteReplyServlet</servlet-class>
     </servlet>
-     <servlet>
+    <servlet>
         <servlet-name>UpdateEmployeeServlet</servlet-name>
         <servlet-class>Controllers.UpdateEmployeeServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>ViewVoucherListServlet</servlet-name>
+        <servlet-class>Controllers.ViewVoucherListServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>ViewVoucherDetailServlet</servlet-name>
+        <servlet-class>Controllers.ViewVoucherDetailServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>UpdateVoucherServlet</servlet-name>
+        <servlet-class>Controllers.UpdateVoucherServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>DeleteVoucherServlet</servlet-name>
+        <servlet-class>Controllers.DeleteVoucherServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>CreateVoucherServlet</servlet-name>
+        <servlet-class>Controllers.CreateVoucherServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>AssignVoucherServlet</servlet-name>
+        <servlet-class>Controllers.AssignVoucherServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>OrderReportServlet</servlet-name>
+        <servlet-class>Controllers.OrderReportServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>ViewEmployeeServlet</servlet-name>
+        <servlet-class>Controllers.ViewEmployeeServlet</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>ImportStatisticServlet</servlet-name>
@@ -190,10 +222,6 @@
     <servlet>
         <servlet-name>AddEmployeeServlet</servlet-name>
         <servlet-class>Controllers.AddEmployeeServlet</servlet-class>
-    </servlet>
-    <servlet>
-        <servlet-name>ViewEmployeeServlet</servlet-name>
-        <servlet-class>Controllers.ViewEmployeeServlet</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>UpdateEmployeeServlet</servlet-name>
@@ -390,6 +418,34 @@
     <servlet-mapping>
         <servlet-name>DeleteReplyServlet</servlet-name>
         <url-pattern>/DeleteReplyServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ViewVoucherListServlet</servlet-name>
+        <url-pattern>/ViewVoucherListServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ViewVoucherDetailServlet</servlet-name>
+        <url-pattern>/ViewVoucherDetailServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>UpdateVoucherServlet</servlet-name>
+        <url-pattern>/UpdateVoucherServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>DeleteVoucherServlet</servlet-name>
+        <url-pattern>/DeleteVoucherServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>CreateVoucherServlet</servlet-name>
+        <url-pattern>/CreateVoucherServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>AssignVoucherServlet</servlet-name>
+        <url-pattern>/AssignVoucherServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>OrderReportServlet</servlet-name>
+        <url-pattern>/OrderReportServlet</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>30</session-timeout>
