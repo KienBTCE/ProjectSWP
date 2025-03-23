@@ -20,7 +20,6 @@ public class Order {
     private String deliveredDate;
     private int status;
     private int discount;
-
     public Order() {
     }
 
@@ -64,6 +63,19 @@ public class Order {
         this.status = status;
     }
 
+    public Order(int orderID, int accountID, String fullName, String phone, String address, long totalAmount, String orderDate, String deliveredDate, int status, int discount) {
+        this.orderID = orderID;
+        this.accountID = accountID;
+        this.fullName = fullName;
+        this.phone = phone;
+        this.address = address;
+        this.totalAmount = totalAmount;
+        this.orderDate = orderDate;
+        this.deliveredDate = deliveredDate;
+        this.status = status;
+        this.discount = discount;
+    }
+
     public Order(int accountID, String fullName, String phone, String address, long totalAmount, int discount) {
         this.accountID = accountID;
         this.fullName = fullName;
@@ -73,20 +85,20 @@ public class Order {
         this.discount = discount;
     }
 
-    public int getDiscount() {
-        return discount;
-    }
-
-    public void setDiscount(int discount) {
-        this.discount = discount;
-    }
-    
     public int getOrderID() {
         return orderID;
     }
 
     public void setOrderID(int orderID) {
         this.orderID = orderID;
+    }
+
+    public int getAccountID() {
+        return accountID;
+    }
+
+    public void setAccountID(int accountID) {
+        this.accountID = accountID;
     }
 
     public String getFullName() {
@@ -121,14 +133,6 @@ public class Order {
         this.totalAmount = totalAmount;
     }
 
-    public int getAccountID() {
-        return accountID;
-    }
-
-    public void setAccountID(int accountID) {
-        this.accountID = accountID;
-    }
-
     public String getOrderDate() {
         return orderDate;
     }
@@ -153,4 +157,12 @@ public class Order {
         this.status = status;
     }
 
+    public int getDiscount() {
+        return discount;
+    }
+
+    public void setDiscount(int discount) {
+        this.discount = discount;
+    }
 }
+

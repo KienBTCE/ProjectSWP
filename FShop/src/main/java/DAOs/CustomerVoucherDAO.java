@@ -42,6 +42,36 @@ public class CustomerVoucherDAO {
         return list;
     }
 
+
+    public void assignVoucherToCustomer(int customerID, int voucherID, int quantity, String expirationDate) {
+        String sql = "INSERT INTO CustomerVoucher (CustomerID, VoucherID, Quantity, ExpirationDate) VALUES (?, ?, ?, ?)";
+        try ( PreparedStatement ps = connector.prepareStatement(sql)) {
+            ps.setInt(1, customerID);
+            ps.setInt(2, voucherID);
+            ps.setInt(3, quantity);
+            if (expirationDate != null) {
+                ps.setString(4, expirationDate);
+            } else {
+                ps.setNull(4, java.sql.Types.TIMESTAMP);
+            }
+            ps.executeUpdate();
+        } catch (SQLException e) {
+            System.out.println("Assign voucher error: " + e.getMessage());
+        }
+    }
+
+    public boolean isVoucherAlreadyAssigned(int customerID, int voucherID) {
+        String sql = "SELECT * FROM CustomerVoucher WHERE CustomerID = ? AND VoucherID = ?";
+        try ( PreparedStatement ps = connector.prepareStatement(sql)) {
+            ps.setInt(1, customerID);
+            ps.setInt(2, voucherID);
+            ResultSet rs = ps.executeQuery();
+            return rs.next();
+        } catch (SQLException e) {
+            System.out.println("Check assigned error: " + e.getMessage());
+        }
+        return false;
+    }
     public CustomerVoucher getVoucherById(int customerID, int voucherID) {
         CustomerVoucher voucher = null;
         try {
@@ -85,6 +115,7 @@ public class CustomerVoucherDAO {
         } catch (SQLException e) {
             e.printStackTrace();
         }
+
     }
 
     public void increaseVoucher( int voucherID) {
