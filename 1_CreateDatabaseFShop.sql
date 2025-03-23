@@ -191,8 +191,8 @@ CREATE TABLE OrderDetails (
 );
 
 
-CREATE TABLE ImportOrders (
-    IOID INT PRIMARY KEY IDENTITY(1,1),
+CREATE TABLE Imports ( -- ImportOrders -> Imports
+    ImportID INT PRIMARY KEY IDENTITY(1,1), -- IOID -> ImportID
     EmployeeID INT,
     SupplierID INT,
     ImportDate DATETIME,
@@ -202,15 +202,13 @@ CREATE TABLE ImportOrders (
     FOREIGN KEY (SupplierID) REFERENCES Suppliers(SupplierID)
 );
 
-CREATE TABLE ImportOrderDetails (
-    IOID INT,
-    ProductID INT,
-    Quantity INT,
-    ImportPrice BIGINT,
-    PRIMARY KEY (IOID, ProductID),
-    FOREIGN KEY (IOID) REFERENCES ImportOrders(IOID),
-    FOREIGN KEY (ProductID) REFERENCES Products(ProductID)
-);
+CREATE TABLE ImportDetails ( -- ImportOrderDetails -> ImportDetails
+    ImportID INT REFERENCES Imports(ImportID), -- IOID -> ImportID
+    ProductID INT REFERENCES Products(ProductID),
+    PRIMARY KEY (ImportID, ProductID),
+    ImportQuantity INT, -- Quantity -> ImportQuantity
+    ImportPrice BIGINT
+);SELECT * FROM Imports I JOIN Suppliers S ON I.SupplierID = S.SupplierID WHERE S.Name LIKE '%tech%'
 
 CREATE TABLE ProductRatings (
     RateID INT IDENTITY(1,1) PRIMARY KEY,

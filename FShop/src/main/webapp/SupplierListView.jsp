@@ -126,68 +126,69 @@
                 <div class="table-navigate">
                     <!--<input type="text" id="searchInput" class="form-control search-box" placeholder="Find by name ..." onkeyup="searchTable()">-->
                     <input type="text" id="searchInput" class="form-control search-box" placeholder="Find by name ..." value="${searchValue}">
-                    <button class="btn btn-detail" data-bs-toggle="modal" data-bs-target="#createSupplierModal" style="background-color: #BDF3BD; height: 100%">Create</button>
-                </div>
-
-                <!--          Start Modal Create Supplier            -->
-                <div class="modal fade" id="createSupplierModal" tabindex="-1" aria-labelledby="createSupplierModalLabel" aria-hidden="true">
-                    <div class="modal-dialog">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <h5 class="modal-title" id="createSupplierModalLabel">New Supplier</h5>
-                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                            </div>
-                            <div class="modal-body">
-                                <form id="importSupplierForm" method="POST" action="CreateSupplier">
-                                    <div class="mb-3">
-                                        <label for="taxId" class="form-label">Tax ID</label>
-                                        <input name="taxNumber" type="number" class="form-control" id="taxId" required>
-                                    </div>
-                                    <div class="mb-3">
-                                        <label for="companyName" class="form-label">Company Name</label>
-                                        <input name="name" type="text" class="form-control" id="companyName" required>
-                                    </div>
-                                    <div class="mb-3">
-                                        <label for="email" class="form-label">Email</label>
-                                        <input name="email" type="email" class="form-control" id="email" required>
-                                    </div>
-                                    <div class="mb-3">
-                                        <label for="phoneNumber" class="form-label">Phone Number</label>
-                                        <input name="phone" type="number" class="form-control" id="phoneNumber" required>
-                                    </div>
-                                    <div class="mb-3">
-                                        <label for="address" class="form-label">Address</label>
-                                        <input name="address" type="text" class="form-control" id="address" required>
-                                    </div>
-                                    <button type="submit" class="btn btn-success">Save</button>
-                                </form>
-                            </div>
+                <button class="btn btn-detail" data-bs-toggle="modal" data-bs-target="#createSupplierModal" style="background-color: #BDF3BD; height: 100%">Create</button>
+            </div>
+            <button class="btn btn-primary me-2" onclick="searchSupplier()">Search</button>
+            <button type="button" class="btn btn-secondary" onclick="resetSearch()">Reset</button>
+            <!--          Start Modal Create Supplier            -->
+            <div class="modal fade" id="createSupplierModal" tabindex="-1" aria-labelledby="createSupplierModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="createSupplierModalLabel">New Supplier</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <form id="importSupplierForm" method="POST" action="CreateSupplier">
+                                <div class="mb-3">
+                                    <label for="taxId" class="form-label">Tax ID</label>
+                                    <input name="taxNumber" type="text" class="form-control" id="taxId" pattern="[0-9]{10}" required minlength="10" maxlength="10" title="Tax ID must contain only numbers and be 10 digits">
+                                </div>
+                                <div class="mb-3">
+                                    <label for="companyName" class="form-label">Company Name</label>
+                                    <input name="name" type="text" class="form-control" id="companyName" required maxlength="255" title="The maximum length of the name is 255 characters.">
+                                </div>
+                                <div class="mb-3">
+                                    <label for="email" class="form-label">Email</label>
+                                    <input name="email" type="email" class="form-control" id="email" required>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="phoneNumber" class="form-label" require>Phone Number</label>
+                                    <input name="phone" type="tel" class="form-control" id="phoneNumber" pattern="[0-9]{10}" required minlength="10" maxlength="10" title="Phone number must contain only numbers and be 10 digits">
+                                </div>
+                                <div class="mb-3">
+                                    <label for="address" class="form-label">Address</label>
+                                    <input name="address" type="text" class="form-control" id="address" required pattern="^[^,]+,\s[^,]+,\s[^,]+$" title="Address must have 3 parts separated by commas (e.g., 123 Tech Street, District 1, Ho Chi Minh City)">
+                                </div>
+                                <button type="submit" class="btn btn-success">Save</button>
+                            </form>
                         </div>
                     </div>
                 </div>
-                <!--          End Modal Create Supplier            -->
+            </div>
+            <!--          End Modal Create Supplier            -->
 
-                <div class="table-container">
-                    <div>
-                        <h3>Suppliers</h3>
-                    </div>
-                    <table class="table table-hover">
-                        <thead>
-                            <tr>
-                                <th>Tax ID</th>
-                                <th>Name</th>
-                                <th>Phone Number</th>
-                                <th>Email</th>
-                                <th>Address</th>
-                                <th>Status</th>
-                                <th>Action</th>
-                            </tr>
-                        </thead>
-                        <tbody id="supplierTable">
+            <div class="table-container">
+                <div>
+                    <h3>Suppliers</h3>
+                </div>
+                <table class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th>Tax ID</th>
+                            <th>Name</th>
+                            <th>Phone Number</th>
+                            <th>Email</th>
+                            <th>Address</th>
+                            <th>Status</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody id="supplierTable">
                         <c:forEach items="${suppliers}" var="s">
                             <tr>
                                 <td>${s.getTaxId()}</td>
-                                <td>${s.getName()}</td>
+                                <td  style="word-wrap: break-word; white-space: normal; max-width: 200px;">${s.getName()}</td>
                                 <td>${s.getPhoneNumber()}</td>
                                 <td>${s.getEmail()}</td>
                                 <td>${s.getShortedAddress()}</td>
@@ -251,6 +252,20 @@
                     }
                 }
             });
+            function searchSupplier() {
+                let searchValue = document.getElementById("searchInput").value.trim();
+                if (searchValue !== "") {
+                    window.location.href = "SearchSupplier?name=" + encodeURIComponent(searchValue);
+                }
+            }
+        </script>
+
+
+        <script>
+            function resetSearch() {
+                document.getElementById('searchInput').value = '';
+                window.location.href = 'Supplier'; // Load lại trang mà không có tham số lọc
+            }
         </script>
 
         <%

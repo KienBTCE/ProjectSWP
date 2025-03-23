@@ -120,7 +120,7 @@ INSERT INTO Products (ProductID, BrandID, CategoryID, Model, FullName, [Descript
 (17, 10, 1, 'Razer-Blade-15', 'Razer Blade 15', 'Premium gaming laptop with high performance', 'razer-blade-15.jpg', 47900000, 0, 25),
 (18, 9, 1, 'Alienware-X17', 'Alienware X17', 'High-end gaming laptop with Intel i9 and RTX 3080', 'alienware-x17.jpg', 59999000, 0, 10),
 (19, 11, 1, 'MSI-GS66', 'MSI GS66 Stealth', 'Slim gaming laptop with Intel i7 and RTX 3070', 'msi-gs66.jpg', 44999000, 1, 50),
-(20, 5, 1, 'Asus-Zephyrus-G14', 'Asus Zephyrus G14', 'Powerful gaming laptop with AMD Ryzen 9 and RTX 3060', 'asus-zephyrus-g14.jpg', 35999000, 0, 30);
+(20, 8, 1, 'Asus-Zephyrus-G14', 'Asus Zephyrus G14', 'Powerful gaming laptop with AMD Ryzen 9 and RTX 3060', 'asus-zephyrus-g14.jpg', 35999000, 0, 30);
 
 -- Insert Products for Headphone, Charger, and Charging Cable
 -- Headphones
@@ -387,18 +387,18 @@ INSERT INTO Addresses (CustomerID, AddressDetails, IsDefault)
 VALUES 
 (1, 'Ap Tra Coi A, My Huong, My Tu, Soc Trang', 1);
 
--- Insert ImportOrders
-INSERT INTO ImportOrders (EmployeeID, SupplierID, ImportDate, TotalCost, Completed)
+-- Insert Imports
+INSERT INTO Imports (EmployeeID, SupplierID, ImportDate, TotalCost, Completed)
 VALUES
-(2, 1, GETDATE(), 100000000, 1),
-(2, 2, GETDATE(), 50000000, 1);
+(2, 1, GETDATE(), 2019500000, 1),
+(2, 2, GETDATE(), 51052500000, 1);
 
--- Insert ImportOrderDetails
-INSERT INTO ImportOrderDetails (IOID, ProductID, Quantity, ImportPrice)
+-- Insert ImportDetails
+INSERT INTO ImportDetails (ImportID, ProductID, ImportQuantity, ImportPrice)
 VALUES
-(1, 1, 10, 45000000),
-(2, 2, 20, 28000000),
-(2, 3, 15, 18000000);
+(1, 1, 50, 40390000),
+(2, 2, 50, 20120000),
+(2, 3, 50, 15050000);
 
 INSERT INTO Vouchers (VoucherCode, VoucherValue, VoucherType, StartDate, EndDate, UsedCount, MaxUsedCount, MaxDiscountAmount, MinOrderValue, Status, [Description])
 VALUES 

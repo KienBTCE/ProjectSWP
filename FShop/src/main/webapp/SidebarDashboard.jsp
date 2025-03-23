@@ -115,7 +115,7 @@
                 <h6><a href="Warehouse">Warehouse Management</a></h6>
                 <a href="ImportOrder">Import Order</a>
                 <a href="Supplier">Supplier</a>
-                <a href="#">Product Management</a>
+                <!--<a href="#">Product Management</a>-->
                 <a href="ImportStatistic">Statistic Management</a>
                 <a href="#" class="export-btn" onclick="document.getElementById('exportForm').submit(); return false;">Export to Excel</a>
 <form id="exportForm" action="ExportStock" method="POST" style="display: none;"></form>

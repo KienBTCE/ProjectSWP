@@ -188,13 +188,19 @@
                                                 </c:forEach>
                                             </div>
                                             <h6>${p.getFullName()}</h6>
-                                            <p>${p.getPriceFormatted()}</p>
+                                            <c:if test="${p.getStock() > 1}">
+                                                <p>${p.getPriceFormatted()}</p>
+                                            </c:if>
+                                            <c:if test="${p.getStock() < 0}">
+                                                <p style="color: red; font-weight: bold;">SOLD OUT</p>
+                                            </c:if>
                                         </a>
                                     </div>
 
                                     <!-- Xuống dòng sau mỗi 4 sản phẩm -->
                                     <c:if test="${(status.index + 1) % 4 == 0}">
-                                    </div><div class="row">
+                                    </div>
+                                    <div class="row">
                                     </c:if>
                                 </c:forEach>
                             </div>
@@ -296,6 +302,10 @@
                     arrow.innerHTML = "▼";
                 }
             }
+
+        </script>
+
+        <script>
 
         </script>
         <script src="assets/js/bootstrap.min.js"></script>

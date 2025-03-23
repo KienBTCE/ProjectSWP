@@ -23,23 +23,22 @@ public class StatisticDAO {
 
     public ArrayList<Statistic> getTopProduct() {
         ArrayList<Statistic> list = new ArrayList<>();
-        String sql = "SELECT \n"
-                + "    p.FullName AS ProductName,\n"
-                + "    COALESCE(SUM(od.Quantity), 0) AS SoldQuantity,   \n"
-                + "    ROUND((COALESCE(SUM(od.Quantity), 0) * 100.0) / p.Stock, 2) AS SoldPercentage\n"
-                + "FROM \n"
-                + "    Products p\n"
+        String sql = "SELECT\n"
+                + "p.FullName AS ProductName,\n"
+                + "COALESCE(SUM(od.Quantity), 0) AS SoldQuantity\n"
+                + "FROM\n"
+                + "Products p\n"
                 + "LEFT JOIN \n"
-                + "    OrderDetails od ON p.ProductID = od.ProductID\n"
+                + "OrderDetails od ON p.ProductID = od.ProductID\n"
                 + "GROUP BY \n"
-                + "    p.ProductID, p.FullName, p.Stock\n"
+                + "p.ProductID, p.FullName\n"
                 + "ORDER BY \n"
-                + "    SoldPercentage DESC;";
+                + " SoldQuantity DESC;";
         try {
             PreparedStatement pr = connector.prepareStatement(sql);
             ResultSet rs = pr.executeQuery();
             while (rs.next()) {
-                list.add(new Statistic(rs.getString(1), rs.getInt(2), rs.getDouble(3)));
+                list.add(new Statistic(rs.getString(1), rs.getInt(2), 0));
             }
             return list;
         } catch (SQLException e) {
@@ -50,22 +49,22 @@ public class StatisticDAO {
 
     public ArrayList<Statistic> getTopCustomer() {
         ArrayList<Statistic> list = new ArrayList<>();
-        String sql = "SELECT \n"
-                + "    c.FullName AS CustomerName,\n"
-                + "    c.Email AS CustomerEmail,\n"
-                + "    COUNT(o.OrderID) AS SuccessfulOrders\n"
-                + "FROM \n"
-                + "    Customers c\n"
-                + "LEFT JOIN \n"
-                + "    Orders o ON c.CustomerID = o.CustomerID\n"
-                + "JOIN \n"
-                + "    OrderStatus os ON o.Status = os.ID\n"
-                + "WHERE \n"
-                + "    os.[Status] = 'Waiting for acceptance'"
-                + "GROUP BY \n"
-                + "    c.CustomerID, c.FullName, c.Email\n"
-                + "ORDER BY \n"
-                + "    SuccessfulOrders DESC;";
+        String sql = "SELECT\n"
+                + " c.FullName AS CustomerName,\n"
+                + "               c.Email AS CustomerEmail,\n"
+                + "               COUNT(c.CustomerID) AS SuccessfulOrders\n"
+                + "                FROM\n"
+                + "                Customers c\n"
+                + "                LEFT JOIN\n"
+                + "                Orders o ON c.CustomerID = o.CustomerID\n"
+                + "                JOIN\n"
+                + "                OrderStatus os ON o.Status = os.ID\n"
+                + "                 WHERE\n"
+                + "                    os.[Status] = 'Delivered'\n"
+                + "                GROUP BY\n"
+                + "                c.CustomerID, c.FullName, c.Email\n"
+                + "                ORDER BY\n"
+                + "                SuccessfulOrders DESC;";
         try {
             PreparedStatement pr = connector.prepareStatement(sql);
             ResultSet rs = pr.executeQuery();
@@ -172,14 +171,12 @@ public class StatisticDAO {
         }
         return list;
     }
-    
-    
 
     public static void main(String[] args) {
         StatisticDAO s = new StatisticDAO();
-        ArrayList<Statistic> l = s.getRevenueLaptop();
+        ArrayList<Statistic> l = s.getTopProduct();
         for (Statistic statistic : l) {
-            System.out.println(statistic.getMonth());
+            System.out.println(statistic.getProductName());
         }
     }
 }
