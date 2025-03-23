@@ -8,59 +8,23 @@ package Models;
  *
  * @author NhutBMCE180569
  */
-public class CustomerVoucher {
+public class CustomerVoucher extends Voucher{
 
-    private int voucherID;
-    private int voucherType;
-    private String voucherCode;
-    private int voucherValue;
+    private int customerID;
     private String expirationDate;
-    private String description;
     private int quantity;
 
-    public CustomerVoucher() {
-    }
-
-    public CustomerVoucher(int voucherID, int voucherType, String voucherCode, int voucherValue, String expirationDate, String description, int quantity) {
-        this.voucherID = voucherID;
-        this.voucherType = voucherType;
-        this.voucherCode = voucherCode;
-        this.voucherValue = voucherValue;
+    public CustomerVoucher(int customerID, String expirationDate, int quantity) {
+        this.customerID = customerID;
         this.expirationDate = expirationDate;
-        this.description = description;
         this.quantity = quantity;
     }
 
-    public int getVoucherID() {
-        return voucherID;
-    }
-
-    public void setVoucherID(int voucherID) {
-        this.voucherID = voucherID;
-    }
-
-    public int getVoucherType() {
-        return voucherType;
-    }
-
-    public void setVoucherType(int voucherType) {
-        this.voucherType = voucherType;
-    }
-
-    public String getVoucherCode() {
-        return voucherCode;
-    }
-
-    public void setVoucherCode(String voucherCode) {
-        this.voucherCode = voucherCode;
-    }
-
-    public int getVoucherValue() {
-        return voucherValue;
-    }
-
-    public void setVoucherValue(int voucherValue) {
-        this.voucherValue = voucherValue;
+    public CustomerVoucher(int customerID, String expirationDate, int quantity, int voucherID, String voucherCode, int voucherValue, int voucherType, String startDate, String endDate, int usedCount, int maxUsedCount, int maxDiscountAmount, int minOrderValue, int status, String description) {
+        super(voucherID, voucherCode, voucherValue, voucherType, startDate, endDate, usedCount, maxUsedCount, maxDiscountAmount, minOrderValue, status, description);
+        this.customerID = customerID;
+        this.expirationDate = expirationDate;
+        this.quantity = quantity;
     }
 
     public String getExpirationDate() {
@@ -71,13 +35,16 @@ public class CustomerVoucher {
         this.expirationDate = expirationDate;
     }
 
-    public String getDescription() {
-        return description;
+
+    public int getCustomerID() {
+        return customerID;
     }
 
-    public void setDescription(String description) {
-        this.description = description;
+    public void setCustomerID(int customerID) {
+        this.customerID = customerID;
     }
+
+
 
     public int getQuantity() {
         return quantity;
@@ -87,4 +54,5 @@ public class CustomerVoucher {
         this.quantity = quantity;
     }
 
+   
 }

@@ -411,6 +411,6 @@ VALUES
 -- Assign vouchers to Customer with ID = 1
 INSERT INTO CustomerVoucher (CustomerID, VoucherID, ExpirationDate, Quantity)
 VALUES 
-(1, 1, '2026-01-10', 1),
-(1, 2,'2026-01-10', 1),	
-(1, 3, '2026-01-10', 1);
+(1, 1, '2026-01-10', 5),
+(1, 2,'2026-01-10', 5),	
+(1, 3, '2026-01-10', 5);

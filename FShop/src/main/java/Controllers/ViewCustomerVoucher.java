@@ -6,6 +6,7 @@ package Controllers;
 
 import DAOs.CustomerVoucherDAO;
 import Models.Customer;
+import Models.CustomerVoucher;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -14,6 +15,9 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
+import java.sql.Timestamp;
+import java.time.LocalDateTime;
+import java.util.List;
 
 /**
  *
@@ -63,7 +67,33 @@ public class ViewCustomerVoucher extends HttpServlet {
         HttpSession session = request.getSession();
         Customer cus = (Customer) session.getAttribute("customer");
         CustomerVoucherDAO c = new CustomerVoucherDAO();
-        session.setAttribute("customerVoucher", c.getVoucherOfCustomer(cus.getId()));
+        List<CustomerVoucher> list = c.getVoucherOfCustomer(cus.getId());
+        for (CustomerVoucher customerVoucher : list) {
+            String expirationDateString = customerVoucher.getExpirationDate();
+            String endDateString = customerVoucher.getEndDate();
+            Timestamp expirationDate = Timestamp.valueOf(expirationDateString);
+            Timestamp endDate = Timestamp.valueOf(endDateString);
+            LocalDateTime currentDate = LocalDateTime.now();
+            boolean isDeleted = false;
+            if (expirationDate.toLocalDateTime().isBefore(currentDate)) {
+                System.out.println("Voucher Het Han");
+                c.deleteVoucher(cus.getId(), customerVoucher.getVoucherID());
+                isDeleted = true;
+            }
+            if ((customerVoucher.getUsedCount() == customerVoucher.getMaxUsedCount()) && isDeleted == false) {
+                System.out.println("Voucher Het Luot sd");
+                c.deleteVoucher(cus.getId(), customerVoucher.getVoucherID());
+                isDeleted = true;
+            }
+
+            if (endDate.toLocalDateTime().isBefore(currentDate) && isDeleted == false) {
+                System.out.println("Voucher Het End date");
+                c.deleteVoucher(cus.getId(), customerVoucher.getVoucherID());
+                isDeleted = true;
+            }
+        }
+        list = c.getVoucherOfCustomer(cus.getId());
+        session.setAttribute("customerVoucher", list);
         request.setAttribute("profilePage", "CustomerVoucherView.jsp");
         request.getRequestDispatcher("ProfileManagementView.jsp").forward(request, response);
     }

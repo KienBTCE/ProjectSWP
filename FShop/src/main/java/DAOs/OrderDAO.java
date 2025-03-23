@@ -155,7 +155,6 @@ public Order getOrderByID(String orderID) {
         }
     }
 
-
     public void addQuantityAfterCancel(int productID, int quantity) {
         try {
             PreparedStatement pr = connector.prepareStatement("Update Products set Quantity = quantity + ? where ProductID=?");
@@ -167,7 +166,6 @@ public Order getOrderByID(String orderID) {
     }
 
     public void updateOrder(int orderID, int status) {
-
 
         String query = "Update Orders SET Orders.Status= ? WHERE Orders.OrderID=?";
         try {
@@ -182,7 +180,7 @@ public Order getOrderByID(String orderID) {
 
     }
 
-      public void deleteOrder(int month) {
+    public void deleteOrder(int month) {
 
         String query = "DECLARE @CurrentUTC DATETIME = GETUTCDATE();\n"
                 + "DECLARE @ThresholdUTC DATETIME = DATEADD(MONTH, -?, @CurrentUTC);\n"
@@ -223,7 +221,7 @@ public Order getOrderByID(String orderID) {
         }
         return list;
     }
-    
+
     public int checkHaveOrders(int id) {
         String query = "SELECT * FROM Orders WHERE "
                 + "CustomerID = ? AND Status != 4 AND Status != 5";
@@ -232,7 +230,7 @@ public Order getOrderByID(String orderID) {
             pre.setInt(1, id);
 
             ResultSet rs = pre.executeQuery();
-            if(rs.next()){
+            if (rs.next()) {
                 return 1;
             }
         } catch (Exception e) {
@@ -303,6 +301,7 @@ public Order getOrderByID(String orderID) {
 
         return null; // Không tìm thấy khách hàng
     }
+
     public List<Order> getOrdersToDelete(int month) {
         List<Order> list = new ArrayList<>();
         String sql = "SELECT * FROM Orders "
@@ -330,6 +329,7 @@ public Order getOrderByID(String orderID) {
         }
         return list;
     }
+
     public static void main(String[] args) {
         OrderDAO o = new OrderDAO();
 //        o.addOrderDetail(1, 1, 3, 34000000);
@@ -337,6 +337,7 @@ public Order getOrderByID(String orderID) {
 //        for (Order order : list) {
 //            System.out.println(order.getAddress());
 //        }
-        o.updateOrder(2, 2);
+        Order od = new Order(13, "Bui Minh Nhut", "034931105", "fjds, fds fds, sdfhds, dshfdd", 20000000, 30000);
+        o.createNewOrder(od);
     }
 }
