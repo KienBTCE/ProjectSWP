@@ -136,7 +136,7 @@
                 <div class="bg-gray-100 flex items-center justify-center">
                     <div class="bg-white p-8 rounded-2xl shadow-lg w-full max-w-md" style="margin: 50px 0 50px 0;">
                         <h2 class="text-2xl font-bold text-center text-gray-800 mb-6">Create an Account</h2>
-                        <form action="register" method="POST" class="space-y-6">
+                        <form id="register" action="register" method="POST" class="space-y-6">
                             <div class="input-group">
                                 <input type="text" name="fullname" id="fullname" required placeholder=" " class="input-field w-full p-3 border rounded-lg">
                                 <label for="fullname" class="input-label">Full Name</label>
@@ -152,10 +152,12 @@
                             <div class="input-group">
                                 <input type="password" name="password" id="password" required placeholder=" " class="input-field w-full p-3 border rounded-lg">
                                 <label for="password" class="input-label">Password</label>
+                                <p id="passwordRules" class="error-message"></p>
                             </div>
                             <div class="input-group">
                                 <input type="password" name="confirmPassword" id="confirmPassword" required placeholder=" " class="input-field w-full p-3 border rounded-lg">
                                 <label for="confirm_password" class="input-label">Confirm Password</label>
+                                <p id="passwordError" class="error-message"></p>
                             </div>
                             <button type="submit" class="w-full bg-blue-500 text-white font-semibold p-3 rounded-lg hover:bg-blue-600">Sign Up</button>
                         </form>
@@ -196,28 +198,31 @@
 
             <!-- Custom JS -->
             <script>
-                        document.getElementById("registerForm").addEventListener("submit", function (event) {
+                        document.getElementById("register").addEventListener("submit", function (event) {
                             const password = document.getElementById("password").value;
                             const confirmPassword = document.getElementById("confirmPassword").value;
                             const passwordRules = document.getElementById("passwordRules");
                             const passwordError = document.getElementById("passwordError");
 
-                            // Kiểm tra mật khẩu có đáp ứng yêu cầu không
+                            let isValid = true;
                             const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@#$%!&*?]).{8,}$/;
+
                             if (!passwordRegex.test(password)) {
-                                event.preventDefault();
                                 passwordRules.textContent = "Password must be at least 8 characters, include one uppercase, one lowercase, one number, and one special character.";
-                                return;
+                                isValid = false;
                             } else {
                                 passwordRules.textContent = "";
                             }
 
-                            // Kiểm tra Confirm Password có khớp với Password không
                             if (password !== confirmPassword) {
-                                event.preventDefault();
                                 passwordError.textContent = "Password and Confirm Password do not match.";
+                                isValid = false;
                             } else {
                                 passwordError.textContent = "";
+                            }
+
+                            if (!isValid) {
+                                event.preventDefault();
                             }
                         });
                         function showPopup() {
