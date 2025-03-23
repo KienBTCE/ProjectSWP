@@ -262,19 +262,21 @@
                                         <div class="terms mt-3">
                                             <p class="text-muted" style="font-size: 14px;">${vou.getDescription()}</p>
                                         </div>
-                                        <div style="width: 80%;">
-                                            <div class="progress mt-2" style="height: 12px;">
-                                                <div class="progress-bar bg-success" role="progressbar"
-                                                     style="width: ${vou.getUsedCount() * 100 / vou.getMaxUsedCount()}%;"
-                                                     aria-valuenow="${vou.getUsedCount()}" 
-                                                     aria-valuemin="0" 
-                                                     aria-valuemax="${vou.getMaxUsedCount()}">
+                                        <c:if test="${vou.getMaxUsedCount() != 0}">
+                                            <div style="width: 80%;">
+                                                <div class="progress mt-2" style="height: 12px;">
+                                                    <div class="progress-bar bg-success" role="progressbar"
+                                                         style="width: ${vou.getUsedCount() * 100 / vou.getMaxUsedCount()}%;"
+                                                         aria-valuenow="${vou.getUsedCount()}" 
+                                                         aria-valuemin="0" 
+                                                         aria-valuemax="${vou.getMaxUsedCount()}">
+                                                    </div>
                                                 </div>
+                                                <p class="text-muted mt-1" style="font-size: 12px;">
+                                                    ${vou.getUsedCount()} / ${vou.getMaxUsedCount()} used
+                                                </p>
                                             </div>
-                                            <p class="text-muted mt-1" style="font-size: 12px;">
-                                                ${vou.getUsedCount()} / ${vou.getMaxUsedCount()} used
-                                            </p>
-                                        </div>
+                                        </c:if>
                                         <c:set var="expirationDate" value="${vou.getExpirationDate()}" />
                                         <c:set var="formattedDate" value="${expirationDate.substring(8,10)}/${expirationDate.substring(5,7)}/${expirationDate.substring(0,4)}" />
                                         <p><b>Expiration Date:</b> ${formattedDate}</p>
