@@ -104,7 +104,7 @@ public class UpdateOrderServlet extends HttpServlet {
                 sendOrderConfirmationEmail(customer, orderID, orderStatus, orderItems);
 
                 // Redirect to order list view
-                response.sendRedirect(request.getContextPath() + "/ViewOrderListServlet");
+                response.sendRedirect( "/ViewOrderListServlet");
             }
         } catch (NumberFormatException e) {
             System.out.println(e);
@@ -156,6 +156,7 @@ public class UpdateOrderServlet extends HttpServlet {
             e.printStackTrace();
         }
     }
+    
 
     private String getOrderStatusText(int status) {
         switch (status) {

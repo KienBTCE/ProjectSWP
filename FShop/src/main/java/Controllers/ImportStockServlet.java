@@ -33,6 +33,7 @@ public class ImportStockServlet extends HttpServlet {
     ImportOrderDAO ioD = new ImportOrderDAO();
     ImportOrderDetailDAO iodD = new ImportOrderDetailDAO();
     ArrayList<Product> selectedProducts;
+    ArrayList<Product> products;
     ArrayList<ImportOrderDetail> detailList = new ArrayList<>();
     Supplier s;
     int importId;
@@ -81,6 +82,7 @@ public class ImportStockServlet extends HttpServlet {
         String status = request.getParameter("status");
         if (status != null) {
             selectedProducts = null;
+            products = null; // check
             detailList.clear();
             s = null;
             sum = 0L;
@@ -90,7 +92,8 @@ public class ImportStockServlet extends HttpServlet {
             try {
                 request.setAttribute("supplier", s);
                 request.setAttribute("suppliers", sd.getAllActivatedSuppliers());
-                request.setAttribute("products", pd.getAllProducts());
+                products = pd.getAllProducts(); // check
+                request.setAttribute("products", products);
                 request.setAttribute("selectedProducts", detailList);
                 request.getRequestDispatcher("ImportStockView.jsp").forward(request, response);
             } catch (NullPointerException e) {
@@ -134,12 +137,32 @@ public class ImportStockServlet extends HttpServlet {
 
             if (!isContained) {
                 detailList.add(d);
+                // check this block
+                int deleteIndex = -1;
+                for (int i = 0; i < products.size(); ++i) {
+                    if (products.get(i).getProductId() == d.getProduct().getProductId()) {
+                        deleteIndex = i;
+                    }
+                }
+                if (deleteIndex != -1) {
+                    System.out.println(products.remove(products.get(deleteIndex)));
+                }
             } else {
                 String error = "Duplicated Product";
                 HttpSession session = request.getSession();
                 session.setAttribute("error", error);
             }
-            response.sendRedirect("ImportStock");
+            // check this block
+            try {
+                request.setAttribute("supplier", s);
+                request.setAttribute("suppliers", sd.getAllActivatedSuppliers());
+                request.setAttribute("products", products);
+                request.setAttribute("selectedProducts", detailList);
+                request.getRequestDispatcher("ImportStockView.jsp").forward(request, response);
+            } catch (NullPointerException e) {
+                System.out.println(e);
+            }
+//            response.sendRedirect("ImportStock");
         } else if (request.getParameter("action") != null) {
             String action = request.getParameter("action");
             if ("delete".equals(action)) {
@@ -148,6 +171,9 @@ public class ImportStockServlet extends HttpServlet {
                 for (ImportOrderDetail proDet : detailList) {
                     if (proDet.getProduct().getProductId() == pId) {
                         detailList.remove(proDet);
+                        Product temp = pd.getProductByID(proDet.getProduct().getProductId());
+                        System.out.println(temp.getFullName());
+                        products.add(temp); // check
                         break;
                     }
                 }
@@ -163,7 +189,28 @@ public class ImportStockServlet extends HttpServlet {
                 }
             }
 
-            response.sendRedirect("ImportStock");
+            for (int i = 0; i < products.size() - 1; i++) {
+                for (int j = i + 1; j < products.size(); j++) {
+                    if (products.get(i).getProductId() > products.get(j).getProductId()) {
+                        Product temp = products.get(i);
+                        products.set(i, products.get(j));
+                        products.set(j, temp);
+                    }
+                }
+            }
+
+            // check this block
+            try {
+                request.setAttribute("supplier", s);
+                request.setAttribute("suppliers", sd.getAllActivatedSuppliers());
+                request.setAttribute("products", products);
+                request.setAttribute("selectedProducts", detailList);
+                request.getRequestDispatcher("ImportStockView.jsp").forward(request, response);
+            } catch (NullPointerException e) {
+                System.out.println(e);
+            }
+
+//            response.sendRedirect("ImportStock");
         } else if (s != null && !detailList.isEmpty()) {
             for (ImportOrderDetail proDet : detailList) {
                 sum += proDet.getQuantity() * proDet.getImportPrice();
@@ -179,6 +226,12 @@ public class ImportStockServlet extends HttpServlet {
                 iodD.createImportOrderDetail(proDet);
             }
             ioD.importStock(impId);
+
+            selectedProducts = null;
+            products = null; // check
+            detailList.clear();
+            s = null;
+            sum = 0L;
 
             response.sendRedirect("ImportOrder?id=" + impId);
         } else {

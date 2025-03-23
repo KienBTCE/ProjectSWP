@@ -135,8 +135,6 @@ public class ViewProductServlet extends HttpServlet {
                 ArrayList<ProductRating> stars = new ArrayList<>();
                 for (Product p : products) {
                     ProductRating star = prDAO.getStarAVG(p.getProductId());
-                    System.out.println("STAR LAPTOP: ________________________________________________________");
-                    System.out.println(star);
 
                     stars.add(star);
 
@@ -231,17 +229,32 @@ public class ViewProductServlet extends HttpServlet {
             // ================================================================== Multi Filter
 
             try {
+//                int numberRow = 0;
+//                if (products != null) {
+//                    numberRow = products.size() / 4;
+//                    if (products.size() % 4 != 0) {
+//                        numberRow++;
+//                    }
+//                }
+//
+//              ProductRatingDAO prDAO = new ProductRatingDAO();
+//                ArrayList<ProductRating> stars = new ArrayList<>();
+//            for (Product p : products) {
+//               ProductRating star = prDAO.getStarAVG(p.getProductId());
+//                System.out.println(star);
+//                
+//                stars.add(star);
+
                 ProductRatingDAO prDAO = new ProductRatingDAO();
                 ArrayList<ProductRating> stars = new ArrayList<>();
                 for (Product p : products) {
                     ProductRating star = prDAO.getStarAVG(p.getProductId());
-                    System.out.println(star);
-
                     stars.add(star);
 
                 }
 
                 ArrayList<String> brands = pd.getAllBrandByCategory("Smartphone");
+
                 Map<Object, Object> dataMap = new HashMap<>();
                 dataMap.put("stars", stars);
                 dataMap.put("products", products);
@@ -353,7 +366,6 @@ public class ViewProductServlet extends HttpServlet {
                 ArrayList<ProductRating> stars = new ArrayList<>();
                 for (Product p : products) {
                     ProductRating star = prDAO.getStarAVG(p.getProductId());
-                    System.out.println(star);
 
                     stars.add(star);
 
@@ -373,11 +385,17 @@ public class ViewProductServlet extends HttpServlet {
             }
         } else {
             products = pd.getAllProducts();
+            
+            for (int i = 0; i < products.size(); i++) {
+                if (products.get(i).getStock() < 1) {
+                    products.remove(i);
+                }
+            }
+            
             ProductRatingDAO prDAO = new ProductRatingDAO();
             ArrayList<ProductRating> stars = new ArrayList<>();
             for (Product p : products) {
                 ProductRating star = prDAO.getStarAVG(p.getProductId());
-                System.out.println(star);
 
                 stars.add(star);
 

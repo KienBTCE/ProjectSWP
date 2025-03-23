@@ -102,7 +102,7 @@
                             </tr>
                             <tr>
                                 <th>Name</th>
-                                <td>${supplier.getName()}</td>
+                                <td style="word-wrap: break-word; white-space: normal; max-width: 200px;">${supplier.getName()}</td>
                             </tr>
                             <tr>
                                 <th>Phone Number</th>
@@ -167,11 +167,11 @@
                                 <form id="updateSupplierForm" method="POST" action="UpdateSupplier?id=${s.getSupplierId()}">
                                     <div class="mb-3">
                                         <label for="taxId" class="form-label">Tax ID</label>
-                                        <input value="${s.getTaxId()}" name="taxNumber" type="number" class="form-control" id="taxId" required>
+                                        <input value="${s.getTaxId()}" name="taxNumber" type="tel" class="form-control" id="taxId" pattern="[0-9]{10}" required minlength="10" maxlength="10" title="Tax ID must contain only numbers and be 10 digits">
                                     </div>
                                     <div class="mb-3">
                                         <label for="companyName" class="form-label">Company Name</label>
-                                        <input value="${s.getName()}" name="name" type="text" class="form-control" id="companyName" required>
+                                        <input value="${s.getName()}" name="name" type="text" class="form-control" id="companyName" required maxlength="255">
                                     </div>
                                     <div class="mb-3">
                                         <label for="email" class="form-label">Email</label>
@@ -179,11 +179,11 @@
                                     </div>
                                     <div class="mb-3">
                                         <label for="phoneNumber" class="form-label">Phone Number</label>
-                                        <input value="${s.getPhoneNumber()}" name="phone" type="number" class="form-control" id="phoneNumber" required>
+                                        <input value="${s.getPhoneNumber()}" name="phone" type="tel" class="form-control" id="phoneNumber" pattern="[0-9]{10}" required minlength="10" maxlength="10" title="Phone number must contain only numbers and be 10 digits">
                                     </div>
                                     <div class="mb-3">
                                         <label for="address" class="form-label">Address</label>
-                                        <input value="${s.getAddress()}" name="address" type="text" class="form-control" id="address" required>
+                                        <input value="${s.getAddress()}" name="address" type="text" class="form-control" id="address" required pattern="^[^,]+,\s[^,]+,\s[^,]+$" title="Address must have 3 parts separated by commas (e.g., 123 Tech Street, District 1, Ho Chi Minh City)">
                                     </div>
                                     <div class="mb-3">
                                         <label for="status" class="form-label">Status</label>
@@ -224,6 +224,5 @@
                 }
             });
         </script>
-        });
     </body>
 </html>

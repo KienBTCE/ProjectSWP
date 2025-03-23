@@ -5,27 +5,23 @@
 
 package Controllers;
 
-import DAOs.CustomerDAO;
-import DAOs.ProductDAO;
-import DAOs.ProductRatingDAO;
-import DAOs.RatingRepliesDAO;
-import Models.Customer;
-import Models.ProductRating;
-import Models.Product;
-import Models.RatingReplies;
+import DAOs.EmployeeDAO;
+import Models.Employee;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
+import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import java.util.List;
+import jakarta.servlet.http.HttpSession;
 
 /**
  *
- * @author HP
+ * @author TuongMPCE180644
  */
-public class ViewFeedbackForManagerServlet extends HttpServlet {
+@WebServlet(name="EmployeeLoginServlet", urlPatterns={"/EmployeeLogin"})
+public class EmployeeLoginServlet extends HttpServlet {
    
     /** 
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code> methods.
@@ -42,10 +38,10 @@ public class ViewFeedbackForManagerServlet extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet ViewFeedbackForManager</title>");  
+            out.println("<title>Servlet EmployeeLoginServlet</title>");  
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet ViewFeedbackForManager at " + request.getContextPath () + "</h1>");
+            out.println("<h1>Servlet EmployeeLoginServlet at " + request.getContextPath () + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }
@@ -62,31 +58,9 @@ public class ViewFeedbackForManagerServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
-          int rateID =Integer.parseInt(request.getParameter("rateID"));
-          
-           
-        ProductRatingDAO pDAO = new ProductRatingDAO();
-        ProductRating productRating = pDAO.getProductRating(rateID);
-        
-        int productID = productRating.getProductID();
-        
-
-        RatingRepliesDAO rrDAO = new RatingRepliesDAO();
-        List<RatingReplies> listReplies = rrDAO.getAllRatingRepliesByRateID(productRating.getRateID());
-        
-        ProductDAO pdDAO = new ProductDAO();
-        Product  pro = pdDAO.getProductByID(productID);
-      
-        CustomerDAO cDAO = new CustomerDAO();
-        Customer cus = cDAO.getCustomerById(productRating.getCustomerID());
-        
-                
-       request.setAttribute("Product", pro);
-       request.setAttribute("cus", cus);
-        request.setAttribute("rate", productRating);
-        request.setAttribute("dataReplies", listReplies);
-
-        request.getRequestDispatcher("ViewNewFeedback.jsp").forward(request, response);
+//        HttpSession session = request.getSession();
+//        session.invalidate();
+        request.getRequestDispatcher("EmployeeLoginView.jsp").forward(request, response);
     } 
 
     /** 
@@ -99,7 +73,40 @@ public class ViewFeedbackForManagerServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
-        processRequest(request, response);
+        String email = request.getParameter("email");
+        String password = request.getParameter("password");
+        
+        HttpSession session = request.getSession();
+        EmployeeDAO emDAO = new EmployeeDAO();
+        
+        Employee em = emDAO.employeeLogin(email, password);//Emloyee có all thông tin tru di password là ko có
+        if(em != null){
+            if(em.getStatus() == 1){
+                session.setAttribute("employee", em);
+                if(em.getRoleId() == 1){
+                    response.sendRedirect("/StatisticManagementServlet");//Link qua Admin
+                } else if(em.getRoleId() == 2){
+                    //session.setAttribute("message", "Shop Managers");
+                    response.sendRedirect("/ShopDashboardServlet");//Link qua Shop Manager
+                } else if(em.getRoleId() == 3){
+                    response.sendRedirect("/ViewOrderListServlet");//Link qua Order Manager
+                } else if(em.getRoleId() == 4){
+                    response.sendRedirect("/Warehouse");//Link qua Warehouse Manager
+                } else{
+                    processRequest(request, response);//ko có roleId thì error
+                }
+            } else if(em.getStatus() == 0){
+                session.setAttribute("message", "Your account is deactive!");//deactive thì không login dc
+                response.sendRedirect("/EmployeeLogin");
+            } else{
+                session.setAttribute("message", "Status is not true!");//status nó có 2 à ngoài ra thì l?i
+                response.sendRedirect("/EmployeeLogin");
+            }
+        } else{
+            session.setAttribute("message", "Wrong password or email!");//sai tài kho?n m?t kh?u thì tr? v? null
+            response.sendRedirect("/EmployeeLogin");
+        }
+        
     }
 
     /** 

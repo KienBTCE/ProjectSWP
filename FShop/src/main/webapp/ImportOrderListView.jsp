@@ -131,7 +131,7 @@
 
                 <div class="table-navigate">
                     <div class="table-navigate">
-                        <form method="POST" action="ImportOrder" style="display: flex;">
+                        <form method="GET" action="ImportOrder" style="display: flex;">
                             <label for="startDate" class="me-2">From:</label>
                             <input name="fromDate" type="date" id="startDate" class="form-control me-3">
 
@@ -140,6 +140,7 @@
 
                             <!--<button type="submit" onclick="filterByDate()" class="btn btn-primary">Filter</button>-->
                             <button type="submit" class="btn btn-primary">Filter</button>
+                            <button type="button" class="btn btn-secondary" onclick="resetFilter()">Reset</button>
                         </form>
                     </div>
 
@@ -173,7 +174,7 @@
                                     <c:forEach items="${suppliers}" var="s">
                                         <tr>
                                             <td>${s.getTaxId()}</td>
-                                            <td>${s.getName()}</td>
+                                            <td  style="word-wrap: break-word; white-space: normal; max-width: 200px;">${s.getName()}</td>
                                             <td>${s.getEmail()}</td>
                                             <td>${s.getPhoneNumber()}</td>
                                             <td>${s.getAddress()}</td>
@@ -200,6 +201,7 @@
             <div class="table-container">
                 <div>
                     <h3>Import Order History</h3>
+                    <!--<input type="text" id="searchInput" class="form-control search-box" placeholder="Find by name ..." value="${searchValue}">-->
                 </div>
 
                 <table class="table table-hover">
@@ -218,7 +220,7 @@
                                 <td>${i.getIoid()}</td>
                                 <td>${i.getImportDate()}</td>
                                 <td>${i.getPriceFormatted()}</td>
-                                <td>${i.getSupplier().getName()}</td>
+                                <td  style="word-wrap: break-word; white-space: normal; max-width: 200px;">${i.getSupplier().getName()}</td>
                                 <td>
                                     <a href="ImportOrder?id=${i.getIoid()}" class="btn btn-detail" style="background-color: #BDF3BD">Detail</a>
                                 </td>
@@ -231,36 +233,36 @@
         </div>
     </div>
 
-<!--        <script>
-            function filterByDate() {
-                let startDate = document.getElementById("startDate").value;
-                let endDate = document.getElementById("endDate").value;
-                let table = document.getElementById("supplierTable");
-                let rows = table.getElementsByTagName("tr");
-    
-                // Chuyển đổi định dạng ngày về timestamp để so sánh
-                let startTimestamp = new Date(startDate).getTime();
-                let endTimestamp = new Date(endDate).getTime();
-                
-                console.log(startTimestamp);
-                console.log(endTimestamp);
-    
-                for (let i = 0; i < rows.length; i++) {
-                    let dateCell = rows[i].getElementsByTagName("td")[1]; // Lấy cột ngày
-                    console.log(dateCell);
-                    if (dateCell) {
-                        let rowDate = new Date(dateCell.textContent.trim()).getTime();
-    
-                        if ((!startDate || rowDate >= startTimestamp) &&
-                                (!endDate || rowDate <= endTimestamp)) {
-                            rows[i].style.display = "";
-                        } else {
-                            rows[i].style.display = "none";
+    <!--        <script>
+                function filterByDate() {
+                    let startDate = document.getElementById("startDate").value;
+                    let endDate = document.getElementById("endDate").value;
+                    let table = document.getElementById("supplierTable");
+                    let rows = table.getElementsByTagName("tr");
+        
+                    // Chuyển đổi định dạng ngày về timestamp để so sánh
+                    let startTimestamp = new Date(startDate).getTime();
+                    let endTimestamp = new Date(endDate).getTime();
+                    
+                    console.log(startTimestamp);
+                    console.log(endTimestamp);
+        
+                    for (let i = 0; i < rows.length; i++) {
+                        let dateCell = rows[i].getElementsByTagName("td")[1]; // Lấy cột ngày
+                        console.log(dateCell);
+                        if (dateCell) {
+                            let rowDate = new Date(dateCell.textContent.trim()).getTime();
+        
+                            if ((!startDate || rowDate >= startTimestamp) &&
+                                    (!endDate || rowDate <= endTimestamp)) {
+                                rows[i].style.display = "";
+                            } else {
+                                rows[i].style.display = "none";
+                            }
                         }
                     }
                 }
-            }
-        </script>-->
+            </script>-->
 
     <script>
         document.getElementById("openModalBtn").addEventListener("click", function () {
@@ -268,6 +270,38 @@
             myModal.show();
         });
     </script>
+
+    <script>
+        function resetFilter() {
+            document.getElementById('startDate').value = '';
+            document.getElementById('endDate').value = '';
+            window.location.href = 'ImportOrder'; // Load lại trang mà không có tham số lọc
+        }
+    </script>
+
+    <script>
+        // Hàm lấy giá trị tham số từ URL
+        function getQueryParam(param) {
+            const urlParams = new URLSearchParams(window.location.search);
+            return urlParams.get(param);
+        }
+
+        // Gán giá trị fromDate và toDate nếu có trong URL
+        document.getElementById("startDate").value = getQueryParam("fromDate") || "";
+        document.getElementById("endDate").value = getQueryParam("toDate") || "";
+    </script>
+
+<!--    <script>
+        document.getElementById("searchInput").addEventListener("keypress", function (event) {
+            if (event.key === "Enter") {
+                event.preventDefault();
+                let searchValue = this.value.trim();
+                if (searchValue !== "") {
+                    window.location.href = "ImportOrder?name=" + encodeURIComponent(searchValue);
+                }
+            }
+        });
+    </script>-->
 
     <script>
         document.addEventListener("DOMContentLoaded", function () {

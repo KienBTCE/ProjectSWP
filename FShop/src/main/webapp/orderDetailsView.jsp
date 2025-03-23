@@ -1,11 +1,6 @@
-<%-- 
-    Document   : oderDetailsView
-    Created on : 29-Feb-2025, 14:01:16
-    Author     : HP
---%>
-<%@ page contentType="text/html" pageEncoding="UTF-8"%>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<!DOCTYPE html>
+<%@ page contentType="text/html" pageEncoding="UTF-8"%> 
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %> 
+<!DOCTYPE html> 
 <html lang="en">
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
@@ -24,42 +19,133 @@
         <!-- CSS bổ sung để điều chỉnh thứ tự chồng -->
         <style>
             /* Bọc header với z-index thấp */
-            .header-container {
-                position: relative;
-                z-index: 1000;
+            .fixed-header {
+                position: fixed;
+                top: 0;
+                left: 250px; /* Điều chỉnh để tránh che sidebar */
+                width: calc(100% - 250px); /* Chiều rộng trừ đi sidebar */
+                /*background-color: white;*/
+                z-index: 1050;
+                padding: 10px 20px;
+                /*box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);*/
             }
+
             /* Bọc sidebar với z-index cao hơn để chồng lên header */
             .sidebar-container {
                 position: relative;
                 z-index: 2000;
             }
-            /* Nếu cần thiết, bạn có thể điều chỉnh thêm vị trí hoặc margin để bố trí lại giao diện */
+
+            .main-layout {
+                display: flex;
+            }
+
+            .main-content {
+                flex-grow: 1;
+                margin-left: 250px; /* Khoảng cách để không bị chồng lên sidebar */
+                margin-top: 120px;
+                padding: 20px;
+            }
+
+            .order-layout {
+                display: flex;
+                gap: 20px;
+            }
+
+            .left-section, .right-section {
+                flex: 1;
+            }
+
+            .order-info, .customer-info, .manage-order {
+                background-color: #fff;
+                padding: 15px;
+                border-radius: 8px;
+                box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+                margin-bottom: 20px;
+            }
+
+            .manage-order {
+                margin-top: 20px;
+            }
+
+            .manage-order select {
+                width: 100%;
+                padding: 10px;
+                margin-bottom: 20px;
+                border-radius: 5px;
+                border: 1px solid #ddd;
+                font-size: 16px;
+            }
+
+            .manage-order button {
+                width: 100%;
+                padding: 12px;
+                background-color: #28a745;
+                border: none;
+                border-radius: 5px;
+                color: white;
+                font-size: 16px;
+            }
+
+            .manage-order button:hover {
+                background-color: #218838;
+            }
+
+            /* Điều chỉnh khoảng cách giữa các thành phần */
+            .dropdown {
+                margin-bottom: 20px; /* Thêm khoảng cách giữa dropdown và nút update */
+            }
+
+            .order-details {
+                margin-top: 15px;
+            }
+
+            .order-details span {
+                display: block;
+                margin-bottom: 8px;
+            }
+
+            .status-1 {
+                color: #ffeb3b;
+            }
+
+            .status-2 {
+                color: #ff9800;
+            }
+
+            .status-3 {
+                color: #2196f3;
+            }
+
+            .status-4 {
+                color: #4caf50;
+            }
+
+            .status-5 {
+                color: #f44336;
+            }
+
         </style>
     </head>
     <body>
-
-        <div class="header-container">
-          
+        <div class="fixed-header"><jsp:include page="HeaderDashboard.jsp"></jsp:include>
+                <p></p>
+                <h2><i class="fa-solid fa-receipt"></i> Order Details</h2>
             </div>
 
             <div class="main-layout">
-                <!-- Bọc sidebar vào container có z-index cao hơn -->
                 <div class="sidebar-container">
-                <%--<jsp:include page="sidebarOrderManager.jsp" />--%>
-                 <jsp:include page="SidebarDashboard.jsp"></jsp:include>
-            </div>
+                <jsp:include page="SidebarDashboard.jsp"></jsp:include>
+                </div>
 
-            <!-- Nội dung chính -->
-            <div class="main-content">
-                <div class="container">
-                    <h2><i class="fa-solid fa-receipt"></i> Order Details</h2>
-
-                    <div class="order-layout">
-                        <!-- Left: Order Information & Items -->
-                        <div class="left-section">
-                            <div class="order-info">
-                                <h3><i class="fa-solid fa-info-circle"></i> Order Information</h3>
-                                <p><strong>Order ID:</strong> <span>${data.orderID}</span></p>
+                <div class="main-content">
+                    <div class="container">
+                        <div class="order-layout">
+                            <!-- Left: Order Information & Items -->
+                            <div class="left-section">
+                                <div class="order-info">
+                                    <h3><i class="fa-solid fa-info-circle"></i> Order Information</h3>
+                                    <p><strong>Order ID:</strong> <span>${data.orderID}</span></p>
                                 <p><strong>Order Date:</strong> <span>${data.orderDate}</span></p>
                                 <p><strong>Order Status:</strong> <span class="status-${data.status}">${data.status}</span></p>
                                 <p><strong>Total Amount:</strong> <span>${data.totalAmount}</span></p>
@@ -88,10 +174,16 @@
 
                             <div class="manage-order">
                                 <h3><i class="fa-solid fa-cogs"></i> Manage Order</h3>
+                                <c:if test="${not empty errorMessage}">
+                                    <div class="alert alert-danger">
+                                        ${errorMessage}
+                                    </div>
+                                </c:if>
+
                                 <form action="UpdateOrderServlet" method="POST">
                                     <input type="hidden" name="orderID" value="${data.orderID}" />
                                     <div class="dropdown">
-                                        <select name="update">
+                                        <select name="update" id="orderStatus" onchange="disableOptions()">
                                             <option value="1" <c:if test="${data.status == 1}">selected</c:if>>Waiting For Acceptance</option>
                                             <option value="2" <c:if test="${data.status == 2}">selected</c:if>>Packaging</option>
                                             <option value="3" <c:if test="${data.status == 3}">selected</c:if>>Waiting For Delivery</option>
@@ -101,6 +193,7 @@
                                     </div>
                                     <button type="submit" class="btn btn-success"><i class="fa-solid fa-pen"></i> Update</button>
                                 </form>
+
                             </div>
                         </div>
                     </div>
@@ -128,6 +221,43 @@
             document.getElementById("cancelBtn").onclick = function () {
                 document.getElementById("confirmationModal").style.display = "none";
             };
+
+            function disableOptions() {
+                const status = document.getElementById('orderStatus').value; // Lấy giá trị trạng thái đã chọn
+                const options = document.getElementById('orderStatus').options;
+
+                // Đảm bảo tất cả các tùy chọn đều được kích hoạt lại trước khi disable lại
+                for (let i = 0; i < options.length; i++) {
+                    options[i].disabled = false;
+                }
+
+                // Disable các trạng thái không hợp lệ
+                if (status === '3') { // Waiting For Delivery
+                    options[0].disabled = true; // Không thể chọn 'Waiting For Acceptance'
+                    options[1].disabled = true; // Không thể chọn 'Packaging'
+                    options[4].disabled = true; // Không thể chọn 'Cancel'
+                } else if (status === '2') { // Packaging
+                    options[0].disabled = true; // Không thể chọn 'Waiting For Acceptance'
+                    options[4].disabled = true; // Không thể chọn 'Cancel'
+                } else if (status === '4') { // Delivered
+                    options[0].disabled = true; // Không thể chọn 'Waiting For Acceptance'
+                    options[1].disabled = true; // Không thể chọn 'Packaging'
+                    options[2].disabled = true; // Không thể chọn 'Waiting For Delivery'
+                    options[4].disabled = true; // Không thể chọn 'Cancel'
+                } else if (status === '5') { // Cancel
+                    options[0].disabled = true; // Không thể chọn 'Waiting For Acceptance'
+                    options[1].disabled = true; // Không thể chọn 'Packaging'
+                    options[2].disabled = true; // Không thể chọn 'Waiting For Delivery'
+                    options[3].disabled = true; // Không thể chọn 'Delivered'
+                }
+            }
+
+// Gọi disableOptions() khi trang tải
+            document.addEventListener('DOMContentLoaded', function () {
+                disableOptions();
+            });
+
+
         </script>
     </body>
 </html>

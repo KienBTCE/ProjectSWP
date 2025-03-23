@@ -368,4 +368,5 @@ public class Product {
     public void setAttributeDetails(List<AttributeDetail> attributeDetails) {
         this.attributeDetails = attributeDetails;
     }
+    
 }

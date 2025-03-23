@@ -76,7 +76,23 @@ public class ViewImportOrderServlet extends HttpServlet {
             } catch (NullPointerException e) {
                 System.out.println(e);
             }
-        }
+        } //else if (request.getParameter("name") != null) {
+//            String name = request.getParameter("name");
+//            importOrders = importD.getImportOrderBySupplierName(name);
+//
+//            if (importOrders.isEmpty()) {
+//                importOrders = importD.getAllImportOrders();
+//            }
+//
+//            try {
+//                request.setAttribute("importOrders", importOrders);
+//                request.setAttribute("searchValue", name);
+//                request.setAttribute("suppliers", sd.getAllActivatedSuppliers());
+//                request.getRequestDispatcher("ImportOrderListView.jsp").forward(request, response);
+//            } catch (NullPointerException e) {
+//                System.out.println(e);
+//            }
+//        }
 
         importOrders = importD.getAllImportOrders();
         try {
