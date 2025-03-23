@@ -25,13 +25,12 @@ public class InventoryStatisticDAO {
         ArrayList<InventoryStatistic> list = new ArrayList<>();
         String sql = "SELECT \n"
                 + "     c.Name AS CategoryName,\n"
-                + " 	b.Name AS BrandName,\n"
-                + "     p.Model,\n"
+                + " b.Name AS BrandName,\n"
+                + "    p.Model,\n"
                 + "    p.FullName AS ProductName,\n"
                 + "    p.Stock AS StockQuantity,  \n"
                 + "    s.Name AS SupplierName,\n"
                 + "    i.ImportDate AS LastImportDate,\n"
-                + "    iod.Quantity AS ImportedQuantity,\n"
                 + "    iod.ImportPrice AS ProductImportPrice \n"
                 + "FROM \n"
                 + "    Products p\n"
@@ -51,7 +50,7 @@ public class InventoryStatisticDAO {
             PreparedStatement pr = connector.prepareStatement(sql);
             ResultSet rs = pr.executeQuery();
             while (rs.next()) {
-                list.add(new InventoryStatistic(rs.getString(1), rs.getString(2), rs.getString(3), rs.getString(4), rs.getInt(5), rs.getString(6), rs.getDate(7), rs.getInt(8), rs.getLong(9)));
+                list.add(new InventoryStatistic(rs.getString(1), rs.getString(2), rs.getString(3), rs.getString(4), rs.getInt(5), rs.getString(6), rs.getDate(7), rs.getLong(8)));
             }
             return list;
         } catch (SQLException e) {
@@ -99,7 +98,7 @@ public class InventoryStatisticDAO {
 
             ResultSet rs = pr.executeQuery();
             while (rs.next()) {
-                list.add(new InventoryStatistic(rs.getString(1), rs.getString(2), rs.getString(3), rs.getString(4), rs.getInt(5), rs.getString(6), rs.getDate(7), rs.getInt(8), rs.getLong(9)));
+                list.add(new InventoryStatistic(rs.getString(1), rs.getString(2), rs.getString(3), rs.getString(4), rs.getInt(5), rs.getString(6), rs.getDate(7), rs.getLong(8)));
             }
             return list;
         } catch (SQLException e) {

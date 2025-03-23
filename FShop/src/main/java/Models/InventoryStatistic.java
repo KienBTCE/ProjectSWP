@@ -18,10 +18,9 @@ public class InventoryStatistic {
     private int stockQuantity;
     private String supplierName;
     private Date importDate;
-    private int importQuantity;
     private long productImportPrice;
 
-    public InventoryStatistic(String categoryName, String brandName, String model, String fullName, int stockQuantity, String supplierName, Date importDate, int importQuantity, long productImportPrice) {
+    public InventoryStatistic(String categoryName, String brandName, String model, String fullName, int stockQuantity, String supplierName, Date importDate, long productImportPrice) {
         this.categoryName = categoryName;
         this.brandName = brandName;
         this.model = model;
@@ -29,7 +28,6 @@ public class InventoryStatistic {
         this.stockQuantity = stockQuantity;
         this.supplierName = supplierName;
         this.importDate = importDate;
-        this.importQuantity = importQuantity;
         this.productImportPrice = productImportPrice;
     }
 
@@ -87,14 +85,6 @@ public class InventoryStatistic {
 
     public void setImportDate(Date importDate) {
         this.importDate = importDate;
-    }
-
-    public int getImportQuantity() {
-        return importQuantity;
-    }
-
-    public void setImportQuantity(int importQuantity) {
-        this.importQuantity = importQuantity;
     }
 
     public long getProductImportPrice() {

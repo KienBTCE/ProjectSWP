@@ -152,7 +152,6 @@
             }
         </style>
     </head>
-
     <body>
         <jsp:include page="SidebarDashboard.jsp"></jsp:include>
             <div class="content">
@@ -179,7 +178,6 @@
                             <th>Stock Quantity</th>
                             <th>Supplier</th>
                             <th>Import Date</th>
-                            <th>Imported Quantity</th>
                             <th>Import Price</th>
                         </tr>
                     </thead>
@@ -194,7 +192,6 @@
                                     <td>${i.stockQuantity}</td>
                                     <td>${i.supplierName}</td>
                                     <td><fmt:formatDate value="${i.importDate}" pattern="dd/MM/yyyy" /></td>
-                                    <td>${i.importQuantity}</td>
                                     <td>${i.productImportPrice}</td>
                                 </tr>
                             </c:forEach>
@@ -209,7 +206,6 @@
                                     <td>${i.stockQuantity}</td>
                                     <td>${i.supplierName}</td>
                                     <td><fmt:formatDate value="${i.importDate}" pattern="dd/MM/yyyy" /></td>
-                                    <td>${i.importQuantity}</td>
                                     <td>${i.productImportPrice}</td>
                                 </tr>
                             </c:forEach>
