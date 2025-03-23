@@ -49,7 +49,7 @@
 
                 <div class="mb-3">
                     <label class="form-label">Price</label>
-                    <input type="number" class="form-control" name="price" required />
+                    <input type="number" class="form-control" name="price" required/>
                 </div>
 
                 <div class="mb-3">
@@ -107,10 +107,10 @@
                     <div class="mb-3">
                         <label class="form-label">Is Deleted</label>
                         <select class="form-select" name="isDeleted">
-                            <option value="0">No</option>
                             <option value="1">Yes</option>
                         </select>
                     </div>
+                </div>
                 </div>
 
                 <button type="submit" class="btn btn-primary">Create Product</button>
