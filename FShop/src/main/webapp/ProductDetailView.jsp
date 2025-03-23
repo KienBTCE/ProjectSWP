@@ -969,7 +969,7 @@
                                                     img.src = tempSrc;
                                                 }
                                                 function getMaxQuantity() {
-                                                    const stockQuantity = parseInt(document.getElementById('quantity').max) || 5;
+                                                    const stockQuantity = parseInt("${product.getStock()}");
                                                     return Math.min(stockQuantity, 5);
                                                 }
 
@@ -980,8 +980,9 @@
 
                                                     if (currentVal < maxQuantity) {
                                                         quantityInput.value = currentVal + 1;
+                                                        showWarning(false);
                                                     } else {
-                                                        showStockWarning(true);
+                                                        showWarning(true, maxQuantity === 5 ? 'quantityWarningModal' : 'stockLimit');
                                                     }
                                                     validateButtons();
                                                     syncHiddenInputs();
@@ -1008,9 +1009,7 @@
                                                         currentVal = 1;
                                                     } else if (currentVal > maxQuantity) {
                                                         currentVal = maxQuantity;
-                                                        showWarning(true);
-                                                    } else {
-                                                        showWarning(false);
+                                                        showWarning(true, maxQuantity === 5 ? 'quantityWarningModal' : 'stockLimit');
                                                     }
 
                                                     quantityInput.value = currentVal;
@@ -1024,37 +1023,23 @@
                                                     const addToCartBtn = document.getElementById('addToCartBtn');
                                                     const buyNowBtn = document.getElementById('buyNowBtn');
 
-                                                    if (parseInt(quantityInput.value) > maxQuantity) {
-                                                        addToCartBtn.disabled = true;
-                                                        buyNowBtn.disabled = true;
-                                                    } else {
-                                                        addToCartBtn.disabled = false;
-                                                        buyNowBtn.disabled = false;
-                                                    }
+                                                    const isDisabled = parseInt(quantityInput.value) > maxQuantity;
+                                                    addToCartBtn.disabled = isDisabled;
+                                                    buyNowBtn.disabled = isDisabled;
                                                 }
 
-                                                function showWarning(show) {
+                                                function showWarning(show, modalId = 'quantityWarningModal') {
                                                     if (show) {
-                                                        var warningModal = new bootstrap.Modal(document.getElementById('quantityWarningModal'));
+                                                        var warningModal = new bootstrap.Modal(document.getElementById(modalId));
                                                         warningModal.show();
-                                                    }
                                                 }
-                                                function showStockWarning(show) {
-                                                    if (show) {
-                                                        var warningModal = new bootstrap.Modal(document.getElementById('stockLimit'));
-                                                        warningModal.show();
-                                                    }
                                                 }
+
                                                 function syncHiddenInputs() {
                                                     const quantity = document.getElementById("quantity").value;
                                                     document.getElementById("quantityInputHidden").value = quantity;
                                                     document.getElementById("quantityInputHiddenBuyNow").value = quantity;
                                                 }
-
-                                                document.addEventListener("DOMContentLoaded", function () {
-                                                    document.getElementById('quantity').max = getMaxQuantity();
-                                                });
-
                                                 function closePopup() {
                                                     var warningModal = bootstrap.Modal.getInstance(document.getElementById('updatePopup'));
                                                     if (warningModal) {

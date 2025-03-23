@@ -39,6 +39,7 @@
                 box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
                 margin: 10px 0;
                 position: relative;
+                height: 130px;
             }
 
             .left {
@@ -68,7 +69,7 @@
                 align-items: center;
                 font-size: 15px;
                 font-weight: bold;
-                min-width: 120px;
+                width: 120px;
             }
 
             .quatity {
@@ -112,7 +113,7 @@
                         <c:forEach var="vou" items="${sessionScope.customerVoucher}">
                             <div class="col-md-6">
                                 <div class="voucher">
-                                    <!-- Phần giảm giá -->
+
                                     <div class="right">
                                         <c:if test="${vou.getVoucherType() == 0}">
                                             <fmt:formatNumber type="currency" value="${vou.getVoucherValue()}"></fmt:formatNumber> Sale off
@@ -122,7 +123,7 @@
                                         </c:if>
                                     </div>
 
-                                    <!-- Nội dung chính -->
+
                                     <div class="left">
                                         <h2>
                                             <img class="logo" src="./assets/imgs/HeaderImgs/Vector-Header-Logo.svg" alt="Logo"> GIFT VOUCHER
@@ -137,14 +138,14 @@
 
                                     </div>
 
-                                    <!-- Số lượng -->
+
                                     <div class="quatity">X${vou.getQuantity()}</div>
                                 </div>
                             </div>
                         </c:forEach>
                     </c:if>
-                    <c:if test="${sessionScope.customerVoucher == null}">
-                        <p>You have no voucher.</p>
+                    <c:if test="${empty sessionScope.customerVoucher}">
+                        <p style="text-align: center; font-size: 20px;" >You have no voucher.</p>
                     </c:if>
                 </div>
             </div>
