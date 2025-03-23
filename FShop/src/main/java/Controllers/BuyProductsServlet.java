@@ -335,18 +335,18 @@ public class BuyProductsServlet extends HttpServlet {
             Timestamp endDate = Timestamp.valueOf(endDateString);
             LocalDateTime currentDate = LocalDateTime.now();
             boolean isDeleted = false;
-            if (expirationDate.toLocalDateTime().isBefore(currentDate)) {
+            if (expirationDate.toLocalDateTime().isBefore(currentDate) && customerVoucher.getExpirationDate() != null) {
                 System.out.println("Voucher Het Han");
                 c.deleteVoucher(customerId, customerVoucher.getVoucherID());
                 isDeleted = true;
             }
-            if ((customerVoucher.getUsedCount() == customerVoucher.getMaxUsedCount()) && isDeleted == false) {
+            if (((customerVoucher.getUsedCount() == customerVoucher.getMaxUsedCount()) && isDeleted == false) && customerVoucher.getMaxUsedCount() != 0) {
                 System.out.println("Voucher Het Luot sd");
                 c.deleteVoucher(customerId, customerVoucher.getVoucherID());
                 isDeleted = true;
             }
 
-            if (endDate.toLocalDateTime().isBefore(currentDate) && isDeleted == false) {
+            if (endDate.toLocalDateTime().isBefore(currentDate) && isDeleted == false && customerVoucher.getEndDate() != null) {
                 System.out.println("Voucher Het End date");
                 c.deleteVoucher(customerId, customerVoucher.getVoucherID());
                 isDeleted = true;
