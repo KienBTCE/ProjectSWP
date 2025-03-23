@@ -32,7 +32,7 @@ public class ImportOrderDAO {
     public ArrayList<ImportOrder> getAllImportOrders() {
         ArrayList<ImportOrder> list = new ArrayList<>();
 
-        String query = "SELECT * FROM ImportOrders I JOIN Suppliers S ON I.SupplierID = S.SupplierID";
+        String query = "SELECT * FROM Imports I JOIN Suppliers S ON I.SupplierID = S.SupplierID";
 
         try {
             PreparedStatement ps = connector.prepareStatement(query);
@@ -53,7 +53,7 @@ public class ImportOrderDAO {
                 );
 
                 ImportOrder io = new ImportOrder(
-                        rs.getInt("IOID"),
+                        rs.getInt("ImportID"),
                         rs.getInt("EmployeeID"),
                         rs.getInt("SupplierID"),
                         rs.getDate("ImportDate"),
@@ -76,7 +76,7 @@ public class ImportOrderDAO {
     public ImportOrder getImportOrderByID(int id) {
         ImportOrder io = null;
 
-        String query = "SELECT * FROM ImportOrders I JOIN Suppliers S ON I.SupplierID = S.SupplierID WHERE IOID = ?";
+        String query = "SELECT * FROM Imports I JOIN Suppliers S ON I.SupplierID = S.SupplierID WHERE ImportID = ?";
 
         try {
             PreparedStatement ps = connector.prepareStatement(query);
@@ -98,7 +98,7 @@ public class ImportOrderDAO {
                 );
 
                 io = new ImportOrder(
-                        rs.getInt("IOID"),
+                        rs.getInt("ImportID"),
                         rs.getInt("EmployeeID"),
                         rs.getInt("SupplierID"),
                         rs.getDate("ImportDate"),
@@ -116,11 +116,59 @@ public class ImportOrderDAO {
 
         return io;
     }
+    
+    public ArrayList<ImportOrder> getImportOrderBySupplierName(String name) {
+        ArrayList<ImportOrder> list = new ArrayList<>();
+
+        String query = "SELECT * FROM Imports I JOIN Suppliers S ON I.SupplierID = S.SupplierID WHERE S.Name LIKE ";
+        String search = "'%" + name + "%'";
+        query += search;
+        
+        System.out.println(query);
+
+        try {
+            PreparedStatement ps = connector.prepareStatement(query);
+            ResultSet rs = ps.executeQuery();
+
+            while (rs.next()) {
+                Supplier s = new Supplier(
+                        rs.getInt("SupplierID"),
+                        rs.getString("TaxID"),
+                        rs.getString("Name"),
+                        rs.getString("Email"),
+                        rs.getString("PhoneNumber"),
+                        rs.getString("Address"),
+                        rs.getTimestamp("CreatedDate").toLocalDateTime(),
+                        rs.getTimestamp("LastModify").toLocalDateTime(),
+                        rs.getInt("IsDeleted"),
+                        rs.getInt("IsActivate")
+                );
+
+                ImportOrder io = new ImportOrder(
+                        rs.getInt("ImportID"),
+                        rs.getInt("EmployeeID"),
+                        rs.getInt("SupplierID"),
+                        rs.getDate("ImportDate"),
+                        rs.getLong("TotalCost"),
+                        rs.getInt("Completed")
+                );
+
+                io.setSupplier(s);
+
+                list.add(io);
+            }
+            return list;
+        } catch (SQLException e) {
+            System.out.println(e);
+        }
+
+        return list;
+    }
 
     public ImportOrder getImportOrderDetailsByID(int id) {
         ImportOrder io = getImportOrderByID(id);
 
-        String query = "SELECT P.Model, P.FullName, D.IOID, D.Quantity, D.ImportPrice, P.ProductID FROM ImportOrderDetails D JOIN Products P ON D.ProductID = P.ProductID WHERE D.IOID = ?";
+        String query = "SELECT P.Model, P.FullName, D.ImportID, D.ImportQuantity, D.ImportPrice, P.ProductID FROM ImportDetails D JOIN Products P ON D.ProductID = P.ProductID WHERE D.ImportID = ?";
 
         try {
             PreparedStatement ps = connector.prepareStatement(query);
@@ -134,9 +182,9 @@ public class ImportOrderDAO {
                 p.setModel(rs.getString("Model"));
                 p.setFullName(rs.getString("FullName"));
                 l.add(new ImportOrderDetail(
-                        rs.getInt("IOID"),
+                        rs.getInt("ImportID"),
                         p,
-                        rs.getInt("Quantity"),
+                        rs.getInt("ImportQuantity"),
                         rs.getLong("ImportPrice")
                 ));
             }
@@ -151,7 +199,7 @@ public class ImportOrderDAO {
     }
 
     public int createImportOrder(ImportOrder io) {
-        String query = "INSERT INTO ImportOrders (EmployeeID, SupplierID, ImportDate, TotalCost, Completed) VALUES (?, ?, GETDATE(), ?, 1)";
+        String query = "INSERT INTO Imports (EmployeeID, SupplierID, ImportDate, TotalCost, Completed) VALUES (?, ?, GETDATE(), ?, 1)";
         try {
             PreparedStatement ps = connector.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
 
@@ -177,7 +225,7 @@ public class ImportOrderDAO {
     }
 
     public int updateImportOrderSupplier(int supplierId) {
-        String query = "UPDATE ImportOrders SET SupplierID = ?";
+        String query = "UPDATE Imports SET SupplierID = ?";
         try {
             PreparedStatement ps = connector.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
 
@@ -220,7 +268,7 @@ public class ImportOrderDAO {
     }
 
     private int completedImportOrder(int importId, long total) {
-        String query = "UPDATE ImportOrders SET Completed = 1, ImportDate = GETDATE(), TotalCost = ? WHERE IOID = ?";
+        String query = "UPDATE Imports SET Completed = 1, ImportDate = GETDATE(), TotalCost = ? WHERE ImportID = ?";
 
         try {
             PreparedStatement ps = connector.prepareStatement(query);
@@ -236,7 +284,7 @@ public class ImportOrderDAO {
     }
 
     public int importStock(int importId) {
-        String query = "UPDATE P SET P.Stock = P.Stock + D.Quantity FROM Products P INNER JOIN ImportOrderDetails D ON P.ProductID = D.ProductID WHERE D.IOID = ?";
+        String query = "UPDATE P SET P.Stock = P.Stock + D.Quantity FROM Products P INNER JOIN ImportOrderDetails D ON P.ProductID = D.ProductID WHERE D.ImportID = ?";
 
         try {
             PreparedStatement ps = connector.prepareStatement(query);
@@ -253,7 +301,7 @@ public class ImportOrderDAO {
     public ArrayList<ImportOrder> filterHistoryByDate(String from, String to) {
         ArrayList<ImportOrder> list = new ArrayList<>();
 
-        String query = "SELECT * FROM ImportOrders I JOIN Suppliers S ON I.SupplierID = S.SupplierID WHERE ImportDate BETWEEN ? AND ?";
+        String query = "SELECT * FROM Imports I JOIN Suppliers S ON I.SupplierID = S.SupplierID WHERE ImportDate BETWEEN ? AND ?";
 
         try {
             PreparedStatement ps = connector.prepareStatement(query);
@@ -276,7 +324,7 @@ public class ImportOrderDAO {
                 );
 
                 ImportOrder io = new ImportOrder(
-                        rs.getInt("IOID"),
+                        rs.getInt("ImportID"),
                         rs.getInt("EmployeeID"),
                         rs.getInt("SupplierID"),
                         rs.getDate("ImportDate"),
@@ -303,11 +351,11 @@ public class ImportOrderDAO {
         String sql = "SELECT \n"
                 + "    CAST(I.ImportDate AS DATE) AS ImportDate, \n"
                 + "    SUM(D.Quantity) AS TotalQuantity\n"
-                + "FROM ImportOrders I\n"
-                + "JOIN ImportOrderDetails D ON I.IOID = D.IOID\n"
+                + "FROM Imports I\n"
+                + "JOIN ImportOrderDetails D ON I.ImportID = D.ImportID\n"
                 + "WHERE CAST(I.ImportDate AS DATE) IN (\n"
                 + "    SELECT DISTINCT TOP 5 CAST(ImportDate AS DATE)\n"
-                + "    FROM ImportOrders\n"
+                + "    FROM Imports\n"
                 + "    ORDER BY CAST(ImportDate AS DATE) DESC\n"
                 + ")\n"
                 + "GROUP BY CAST(I.ImportDate AS DATE)\n"
@@ -330,8 +378,8 @@ public class ImportOrderDAO {
     public Map<String, Integer> getImportOrdersCountByMonth() {
 
         String sql = "SELECT TOP 3 FORMAT(I.ImportDate, 'yyyy-MM') AS ImportMonth, SUM(D.Quantity) AS TotalQuantity\n"
-                + "FROM ImportOrders I\n"
-                + "JOIN ImportOrderDetails D ON I.IOID = D.IOID\n"
+                + "FROM Imports I\n"
+                + "JOIN ImportOrderDetails D ON I.ImportID = D.ImportID\n"
                 + "GROUP BY FORMAT(I.ImportDate, 'yyyy-MM')\n"
                 + "ORDER BY ImportMonth DESC";
 
@@ -351,8 +399,8 @@ public class ImportOrderDAO {
 
     // 3. Thống kê tổng số đơn nhập theo nhà cung cấp
     public Map<String, Integer> getOrdersBySupplier() {
-        String sql = "SELECT TOP 5 s.SupplierID, s.Name AS SupplierName, COUNT(io.IOID) AS OrderCount\n"
-                + "FROM ImportOrders io\n"
+        String sql = "SELECT TOP 5 s.SupplierID, s.Name AS SupplierName, COUNT(io.ImportID) AS OrderCount\n"
+                + "FROM Imports io\n"
                 + "JOIN Suppliers s ON io.SupplierID = s.SupplierID\n"
                 + "GROUP BY s.SupplierID, s.Name\n"
                 + "ORDER BY OrderCount DESC";

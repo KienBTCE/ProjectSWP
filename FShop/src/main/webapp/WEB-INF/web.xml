@@ -1,5 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <web-app version="3.1" xmlns="http://xmlns.jcp.org/xml/ns/javaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd">
+    <welcome-file-list>
+        <welcome-file>/</welcome-file>
+    </welcome-file-list>
     <servlet>
         <servlet-name>UpdateProductServlet</servlet-name>
         <servlet-class>Controllers.UpdateProductServlet</servlet-class>
@@ -204,30 +207,10 @@
         <servlet-name>OrderReportServlet</servlet-name>
         <servlet-class>Controllers.OrderReportServlet</servlet-class>
     </servlet>
-    <servlet-mapping>
-        <servlet-name>UpdateEmployeeServlet</servlet-name>
-        <url-pattern>/UpdateEmployeeServlet</url-pattern>
-    </servlet-mapping>
-    <servlet>
-        <servlet-name>AddEmployeeServlet</servlet-name>
-        <servlet-class>Controllers.AddEmployeeServlet</servlet-class>
-    </servlet>
-    <servlet-mapping>
-        <servlet-name>AddEmployeeServlet</servlet-name>
-        <url-pattern>/AddEmployeeServlet</url-pattern>
-    </servlet-mapping>
     <servlet>
         <servlet-name>ViewEmployeeServlet</servlet-name>
         <servlet-class>Controllers.ViewEmployeeServlet</servlet-class>
     </servlet>
-    <servlet-mapping>
-        <servlet-name>ViewEmployeeServlet</servlet-name>
-        <url-pattern>/ViewEmployeeServlet</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>SearchInventoryServlet</servlet-name>
-        <url-pattern>/SearchInventoryServlet</url-pattern>
-    </servlet-mapping>
     <servlet>
         <servlet-name>ImportStatisticServlet</servlet-name>
         <servlet-class>Controllers.ImportStatisticServlet</servlet-class>
@@ -236,6 +219,26 @@
         <servlet-name>NotificationServlet</servlet-name>
         <servlet-class>Controllers.NotificationServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>AddEmployeeServlet</servlet-name>
+        <servlet-class>Controllers.AddEmployeeServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>UpdateEmployeeServlet</servlet-name>
+        <url-pattern>/UpdateEmployeeServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>AddEmployeeServlet</servlet-name>
+        <url-pattern>/AddEmployeeServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ViewEmployeeServlet</servlet-name>
+        <url-pattern>/ViewEmployeeServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>SearchInventoryServlet</servlet-name>
+        <url-pattern>/SearchInventoryServlet</url-pattern>
+    </servlet-mapping>
     <servlet-mapping>
         <servlet-name>CreateProductServlet</servlet-name>
         <url-pattern>/CreateProductServlet</url-pattern>
@@ -408,9 +411,6 @@
         <servlet-name>NotificationServlet</servlet-name>
         <url-pattern>/NotificationServlet</url-pattern>
     </servlet-mapping>
-    <welcome-file-list>
-        <welcome-file>/</welcome-file>
-    </welcome-file-list>
     <servlet-mapping>
         <servlet-name>UpdateReplyServlet</servlet-name>
         <url-pattern>/UpdateReplyServlet</url-pattern>

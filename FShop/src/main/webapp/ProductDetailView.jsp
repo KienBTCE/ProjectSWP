@@ -657,6 +657,11 @@
 
             }
 
+            .hethang{
+                color: red;
+                font-weight: bold;
+            }
+
         </style>
     </head>
     <body>
@@ -665,7 +670,9 @@
                 <div class="container">
                 <c:choose>
                     <c:when test="${product != null}">
+
                         <div class="product-container row">
+
                             <!-- Image section -->
                             <div class="col-md-6 product-gallery d-flex flex-column align-items-center">
                                 <c:set var="mainImage" value="${product.image}" />
@@ -734,21 +741,25 @@
 
                                 <!-- Shipping info / Policy -->
                                 <div class="shipping-info">
+                                    <c:if test="${product.stock<=0}">
+                                        <h5 class="hethang">Product is temporarily out of stock</h5>
+                                    </c:if>
                                     <p><strong>Shipping:</strong> Free nationwide shipping</p>
                                     <p><strong>Warranty:</strong> 12 months</p>
                                     <p><strong>Return Policy:</strong> 15 days if defective</p>
                                 </div>
-
-                                <!-- Quantity Control -->
-                                <div class="my-3 d-flex align-items-center">
-                                    <label for="quantity" class="me-2 fw-bold">Quantity:</label>
-                                    <div class="quantity-controls">
-                                        <button type="button" onclick="decreaseQuantity()">-</button>
-                                        <input type="number" id="quantity" name="quantity" value="1" min="1" 
-                                               max="${product.getStock()}" oninput="validateQuantity()">
-                                        <button type="button" onclick="increaseQuantity()">+</button>
+                                <c:if test="${not empty product.stock and product.stock>0}"> 
+                                    <!-- Quantity Control -->
+                                    <div class="my-3 d-flex align-items-center">
+                                        <label for="quantity" class="me-2 fw-bold">Quantity:</label>
+                                        <div class="quantity-controls">
+                                            <button type="button" onclick="decreaseQuantity()">-</button>
+                                            <input type="number" id="quantity" name="quantity" value="1" min="1" 
+                                                   max="${product.getStock()}" oninput="validateQuantity()">
+                                            <button type="button" onclick="increaseQuantity()">+</button>
+                                        </div>
                                     </div>
-                                </div>
+                                </c:if>
                                 <!-- Bootstrap Modal -->
                                 <div class="modal fade" id="quantityWarningModal" tabindex="-1" aria-labelledby="warningModalLabel" aria-hidden="true">
                                     <div class="modal-dialog">
@@ -787,29 +798,28 @@
                                         </div>
                                     </div>
                                 </div>
-                                <!-- Action Buttons -->
-                                <div class="action-buttons">
-                                    <!-- Add to Cart form -->
-                                    <form action="AddToCart?productID=${product.productId}" method="POST">
-                                        <input type="hidden" name="quantity" id="quantityInputHidden" value="1">
-                                        <button id="addToCartBtn" type="submit" class="btn btn-add-cart">
-                                            <i class="fas fa-shopping-cart me-1"></i> Add to Cart
-                                        </button>
-                                    </form>
-                                    <!-- Buy Now form -->
-                                    <form action="order" method="POST">
-                                        <input type="hidden" name="quantity" id="quantityInputHiddenBuyNow" value="1">
-                                        <input type="hidden" name="orderUrl" value="buyNow">
-                                        <input type="hidden" name="productSelected" value="${product.productId}">
-                                        <input type="hidden" name="buyProductAction" value="checkout">
-                                        <button id="buyNowBtn" type="submit" class="btn btn-buy-now">
-                                            <i class="fas fa-bolt me-1"></i> Buy Now
-                                        </button>
-                                    </form>
-                                </div>
-
-
-
+                                <c:if test="${not empty product.stock and product.stock>0}">      
+                                    <!-- Action Buttons -->
+                                    <div class="action-buttons">
+                                        <!-- Add to Cart form -->
+                                        <form action="AddToCart?productID=${product.productId}" method="POST">
+                                            <input type="hidden" name="quantity" id="quantityInputHidden" value="1">
+                                            <button id="addToCartBtn" type="submit" class="btn btn-add-cart">
+                                                <i class="fas fa-shopping-cart me-1"></i> Add to Cart
+                                            </button>
+                                        </form>
+                                        <!-- Buy Now form -->
+                                        <form action="order" method="POST">
+                                            <input type="hidden" name="quantity" id="quantityInputHiddenBuyNow" value="1">
+                                            <input type="hidden" name="orderUrl" value="buyNow">
+                                            <input type="hidden" name="productSelected" value="${product.productId}">
+                                            <input type="hidden" name="buyProductAction" value="checkout">
+                                            <button id="buyNowBtn" type="submit" class="btn btn-buy-now">
+                                                <i class="fas fa-bolt me-1"></i> Buy Now
+                                            </button>
+                                        </form>
+                                    </div>
+                                </c:if>
 
                             </div>
                         </div>
@@ -969,7 +979,7 @@
                                                     img.src = tempSrc;
                                                 }
                                                 function getMaxQuantity() {
-                                                    const stockQuantity = parseInt(document.getElementById('quantity').max) || 5;
+                                                    const stockQuantity = parseInt("${product.getStock()}");
                                                     return Math.min(stockQuantity, 5);
                                                 }
 
@@ -980,8 +990,9 @@
 
                                                     if (currentVal < maxQuantity) {
                                                         quantityInput.value = currentVal + 1;
+                                                        showWarning(false);
                                                     } else {
-                                                        showStockWarning(true);
+                                                        showWarning(true, maxQuantity === 5 ? 'quantityWarningModal' : 'stockLimit');
                                                     }
                                                     validateButtons();
                                                     syncHiddenInputs();
@@ -1008,9 +1019,7 @@
                                                         currentVal = 1;
                                                     } else if (currentVal > maxQuantity) {
                                                         currentVal = maxQuantity;
-                                                        showWarning(true);
-                                                    } else {
-                                                        showWarning(false);
+                                                        showWarning(true, maxQuantity === 5 ? 'quantityWarningModal' : 'stockLimit');
                                                     }
 
                                                     quantityInput.value = currentVal;
@@ -1024,37 +1033,23 @@
                                                     const addToCartBtn = document.getElementById('addToCartBtn');
                                                     const buyNowBtn = document.getElementById('buyNowBtn');
 
-                                                    if (parseInt(quantityInput.value) > maxQuantity) {
-                                                        addToCartBtn.disabled = true;
-                                                        buyNowBtn.disabled = true;
-                                                    } else {
-                                                        addToCartBtn.disabled = false;
-                                                        buyNowBtn.disabled = false;
-                                                    }
+                                                    const isDisabled = parseInt(quantityInput.value) > maxQuantity;
+                                                    addToCartBtn.disabled = isDisabled;
+                                                    buyNowBtn.disabled = isDisabled;
                                                 }
 
-                                                function showWarning(show) {
+                                                function showWarning(show, modalId = 'quantityWarningModal') {
                                                     if (show) {
-                                                        var warningModal = new bootstrap.Modal(document.getElementById('quantityWarningModal'));
+                                                        var warningModal = new bootstrap.Modal(document.getElementById(modalId));
                                                         warningModal.show();
-                                                    }
                                                 }
-                                                function showStockWarning(show) {
-                                                    if (show) {
-                                                        var warningModal = new bootstrap.Modal(document.getElementById('stockLimit'));
-                                                        warningModal.show();
-                                                    }
                                                 }
+
                                                 function syncHiddenInputs() {
                                                     const quantity = document.getElementById("quantity").value;
                                                     document.getElementById("quantityInputHidden").value = quantity;
                                                     document.getElementById("quantityInputHiddenBuyNow").value = quantity;
                                                 }
-
-                                                document.addEventListener("DOMContentLoaded", function () {
-                                                    document.getElementById('quantity').max = getMaxQuantity();
-                                                });
-
                                                 function closePopup() {
                                                     var warningModal = bootstrap.Modal.getInstance(document.getElementById('updatePopup'));
                                                     if (warningModal) {

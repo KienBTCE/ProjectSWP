@@ -183,10 +183,10 @@
 
                 // Chạy khi DOM đã tải xong
                 document.addEventListener("DOMContentLoaded", function () {
-                    renderChart("orderByDayChart", Object.keys(orderCountByDay), Object.values(orderCountByDay), "Đơn nhập theo ngày");
-                    renderChart("orderByMonthChart", Object.keys(orderCountByMonth), Object.values(orderCountByMonth), "Đơn nhập theo tháng");
-                    renderChart("supplierChart", Object.keys(ordersBySupplier), Object.values(ordersBySupplier), "Nhà cung cấp", 'pie');
-                    renderChart("productChart", Object.keys(topImportedProducts), Object.values(topImportedProducts), "Sản phẩm nhập nhiều", 'bar');
+                    renderChart("orderByDayChart", Object.keys(orderCountByDay), Object.values(orderCountByDay), "Import Orders by Day");
+                    renderChart("orderByMonthChart", Object.keys(orderCountByMonth), Object.values(orderCountByMonth), "Import Orders by Month");
+                    renderChart("supplierChart", Object.keys(ordersBySupplier), Object.values(ordersBySupplier), "Suppliers", 'pie');
+                    renderChart("productChart", Object.keys(topImportedProducts), Object.values(topImportedProducts), "Top Imported Products", 'bar');
                 });
         </script>
     </body>

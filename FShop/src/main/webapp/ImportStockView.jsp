@@ -190,32 +190,38 @@
                                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                             </div>
                             <div class="modal-body">
-                                <table class="table table-striped" id="supplierListTable">
-                                    <thead>
-                                        <tr>
-                                            <th>Tax ID</th>
-                                            <th>Company Name</th>
-                                            <th>Email</th>
-                                            <th>Phone</th>
-                                            <th>Address</th>
-                                            <th>Select</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <c:forEach items="${suppliers}" var="s">
+                                <!-- Input Search -->
+                                <input type="text" id="searchSupplierInput" class="form-control mb-2" placeholder="Tìm kiếm nhà cung cấp...">
+
+                                <!-- Bảng cuộn -->
+                                <div style="max-height: 400px; overflow-y: auto;">
+                                    <table class="table table-striped" id="supplierListTable">
+                                        <thead>
                                             <tr>
-                                                <td>${s.getTaxId()}</td>
-                                                <td>${s.getName()}</td>
-                                                <td>${s.getEmail()}</td>
-                                                <td>${s.getPhoneNumber()}</td>
-                                                <td>${s.getAddress()}</td>
-                                                <td>
-                                                    <button class="btn btn-primary select-supplier" data-id="${s.getSupplierId()}">Select</button>
-                                                </td>
+                                                <th>Tax ID</th>
+                                                <th>Company Name</th>
+                                                <th>Email</th>
+                                                <th>Phone</th>
+                                                <th>Address</th>
+                                                <th>Select</th>
                                             </tr>
-                                        </c:forEach>
-                                    </tbody>
-                                </table>
+                                        </thead>
+                                        <tbody>
+                                            <c:forEach items="${suppliers}" var="s">
+                                                <tr>
+                                                    <td>${s.getTaxId()}</td>
+                                                    <td  style="word-wrap: break-word; white-space: normal; max-width: 200px;">${s.getName()}</td>
+                                                    <td  style="word-wrap: break-word; white-space: normal; max-width: 200px;">${s.getEmail()}</td>
+                                                    <td>${s.getPhoneNumber()}</td>
+                                                    <td>${s.getAddress()}</td>
+                                                    <td>
+                                                        <button class="btn btn-primary select-supplier" data-id="${s.getSupplierId()}">Select</button>
+                                                    </td>
+                                                </tr>
+                                            </c:forEach>
+                                        </tbody>
+                                    </table>
+                                </div>
                             </div>
                             <div class="modal-footer">
                                 <form id="importOrderForm" method="POST" action="ImportStock">
@@ -320,36 +326,42 @@
                                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                             </div>
                             <div class="modal-body">
-                                <table class="table table-striped" id="productListTable">
-                                    <thead>
-                                        <tr>
-                                            <th>Product ID</th>
-                                            <th>Name</th>
-                                            <th>Model</th>
-                                            <th>Import Quantity</th>
-                                            <th>Import Price</th>
-                                            <th>Select</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <c:forEach items="${products}" var="p">
+                                <!-- Input Search -->
+                                <input type="text" id="searchProductInput" class="form-control mb-2" placeholder="Tìm kiếm sản phẩm...">
+
+                                <!-- Bảng cuộn -->
+                                <div style="max-height: 400px; overflow-y: auto;">
+                                    <table class="table table-striped" id="productListTable">
+                                        <thead>
                                             <tr>
-                                                <td>${p.getProductId()}</td>
-                                                <td>${p.getFullName()}</td>
-                                                <td>${p.getModel()}</td>
-                                                <td>
-                                                    <input type="number" class="form-control product-quantity" data-id="${p.getProductId()}" min="1000" placeholder="Enter quantity">
-                                                </td>
-                                                <td>
-                                                    <input type="number" class="form-control product-price" data-id="${p.getProductId()}" min="1000" step="0.01" placeholder="Enter price">
-                                                </td>
-                                                <td>
-                                                    <button class="btn btn-primary select-product" data-id="${p.getProductId()}">Select</button>
-                                                </td>
+                                                <th>Product ID</th>
+                                                <th>Name</th>
+                                                <th>Model</th>
+                                                <th>Import Quantity</th>
+                                                <th>Import Price</th>
+                                                <th>Select</th>
                                             </tr>
-                                        </c:forEach>
-                                    </tbody>
-                                </table>
+                                        </thead>
+                                        <tbody>
+                                            <c:forEach items="${products}" var="p">
+                                                <tr>
+                                                    <td>${p.getProductId()}</td>
+                                                    <td>${p.getFullName()}</td>
+                                                    <td>${p.getModel()}</td>
+                                                    <td>
+                                                        <input type="number" class="form-control product-quantity" data-id="${p.getProductId()}" min="1000" placeholder="Enter quantity">
+                                                    </td>
+                                                    <td>
+                                                        <input type="number" class="form-control product-price" data-id="${p.getProductId()}" min="1000" step="0.01" placeholder="Enter price">
+                                                    </td>
+                                                    <td>
+                                                        <button class="btn btn-primary select-product" data-id="${p.getProductId()}">Select</button>
+                                                    </td>
+                                                </tr>
+                                            </c:forEach>
+                                        </tbody>
+                                    </table>
+                                </div>
                             </div>
                             <div class="modal-footer">
                                 <form id="productOrderForm" method="POST" action="ImportStock">
@@ -362,7 +374,7 @@
                         </div>
                     </div>
                 </div>
-                <!--          End Modal Select Supplier            -->
+                <!--          End Modal Select Product            -->
 
                 <!-- Start Edit Modal -->
                 <div class="modal fade" id="editProductModal" tabindex="-1" aria-hidden="true">
@@ -581,12 +593,12 @@
                 });
 
                 // Xóa sản phẩm
-//                document.getElementById("deleteProduct").addEventListener("click", function () {
-//                    if (confirm("Are you sure you want to delete this product?")) {
-//                        editForm.action = "ImportStock";
-//                        editForm.submit();
-//                    }
-//                });
+                //                document.getElementById("deleteProduct").addEventListener("click", function () {
+                //                    if (confirm("Are you sure you want to delete this product?")) {
+                //                        editForm.action = "ImportStock";
+                //                        editForm.submit();
+                //                    }
+                //                });
 
             });
         </script>
@@ -609,16 +621,16 @@
         </script>
         <!-- error -->
         <script>
-//            function redirectToImport() {
-//                const urlParams = new URLSearchParams(window.location.search);
-////                const id = urlParams.get('id'); // Lấy id từ URL
-//                window.location.href = `ImportStock`;
-////                if (id) {
-////                    window.location.href = `ImportStock?importStockId=\${id}`;
-////                } else {
-////                    alert("Không tìm thấy ID trong URL!");
-////                }
-//            }
+            //            function redirectToImport() {
+            //                const urlParams = new URLSearchParams(window.location.search);
+            ////                const id = urlParams.get('id'); // Lấy id từ URL
+            //                window.location.href = `ImportStock`;
+            ////                if (id) {
+            ////                    window.location.href = `ImportStock?importStockId=\${id}`;
+            ////                } else {
+            ////                    alert("Không tìm thấy ID trong URL!");
+            ////                }
+            //            }
 
             function redirectToImport() {
                 const form = document.createElement("form");
@@ -636,6 +648,43 @@
             }
         </script>
         <!-- submit final -->
+
+        <!-- giao dien danh sach -->
+        <script>
+            document.getElementById("searchProductInput").addEventListener("keyup", function () {
+                let filter = this.value.toLowerCase();
+                let rows = document.querySelectorAll("#productListTable tbody tr");
+
+                rows.forEach(row => {
+                    let name = row.cells[1].textContent.toLowerCase();
+                    let id = row.cells[0].textContent.toLowerCase();
+                    if (name.includes(filter) || id.includes(filter)) {
+                        row.style.display = "";
+                    } else {
+                        row.style.display = "none";
+                    }
+                });
+            });
+        </script>
+
+        <script>
+            document.getElementById("searchSupplierInput").addEventListener("keyup", function () {
+                let filter = this.value.toLowerCase();
+                let rows = document.querySelectorAll("#supplierListTable tbody tr");
+
+                rows.forEach(row => {
+                    let taxId = row.cells[0].textContent.toLowerCase();
+                    let companyName = row.cells[1].textContent.toLowerCase();
+                    let email = row.cells[2].textContent.toLowerCase();
+
+                    if (taxId.includes(filter) || companyName.includes(filter) || email.includes(filter)) {
+                        row.style.display = "";
+                    } else {
+                        row.style.display = "none";
+                    }
+                });
+            });
+        </script>
     </body>
 </html>
 

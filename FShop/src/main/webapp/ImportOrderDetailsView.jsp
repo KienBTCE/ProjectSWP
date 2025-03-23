@@ -140,7 +140,7 @@
                                 <th>Import ID</th>
                                 <th>Employee ID</th>
                                 <th>Employee Name</th>
-                                <th>Date & Time</th>
+                                <th>Date</th>
                                 <th>Supplier</th>
                                 <th>Amount</th>
                             </tr>
@@ -151,9 +151,9 @@
                         <tr>
                             <td>${i.getIoid()}</td>
                             <td>${i.getEmployeeId()}</td>
-                            <td>${e.getFullname()}</td>
+                            <td style="word-wrap: break-word; white-space: normal; max-width: 200px;">${e.getFullname()}</td>
                             <td>${i.getImportDate()}</td>
-                            <td>${i.getSupplier().getName()}</td>
+                            <td  style="word-wrap: break-word; white-space: normal; max-width: 200px;">${i.getSupplier().getName()}</td>
                             <td>${i.getPriceFormatted()}</td>
                         </tr>
                     </tbody>
@@ -178,8 +178,8 @@
                         <c:forEach items="${importOrder.getImportOrderDetails()}" var="d">
                             <tr>
                                 <td>${d.getProduct().getProductId()}</td>
-                                <td>${d.getProduct().getModel()}</td>
-                                <td>${d.getProduct().getFullName()}</td>
+                                <td  style="word-wrap: break-word; white-space: normal; max-width: 200px;">${d.getProduct().getModel()}</td>
+                                <td  style="word-wrap: break-word; white-space: normal; max-width: 200px;">${d.getProduct().getFullName()}</td>
                                 <td>${d.getQuantity()}</td>
                                 <td>${d.getPriceFormatted()}</td>
                             </tr>
