@@ -117,7 +117,7 @@
                             </c:if>
                             <div class="profile-container">
                                 <div class="form-container">                        
-                                        <input type="hidden" class="form-control" name="txtEmployeeId" value="${txtEmployeeId != null ? txtEmployeeId : employee.employeeId}" readonly/>
+                                    <input type="hidden" class="form-control" name="txtEmployeeId" value="${txtEmployeeId != null ? txtEmployeeId : employee.employeeId}" readonly/>
                                     <div class="mb-3 d-flex">
                                         <label class="form-label value" value>Role ID</label>
                                         <select class="form-select" name="txtRoleId" required>
@@ -176,6 +176,9 @@
                                     </div>
 
                                     <div class="d-flex gap-1" style="justify-content: left;">
+                                        <a href="ViewEmployeeServlet" style="background-color: #007bff; color: white; padding: 8px 20px; border: none; border-radius: 10px; display: inline-flex; align-items: center; gap: 5px; cursor: pointer; text-decoration: none;">
+                                            <i class='bx bx-arrow-back'></i> Cancel
+                                        </a>
                                         <button type="submit" style="background-color: #28a745; color: white; padding: 8px 20px; border: none; border-radius: 10px; display: inline-flex; align-items: center; gap: 5px; cursor: pointer;">
                                             <i class='bx bx-save'></i> Save
                                         </button>                               
