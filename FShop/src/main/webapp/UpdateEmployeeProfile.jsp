@@ -138,9 +138,10 @@
 
                                 <div class="mb-3 d-flex">
                                     <label class="form-label value">Date Of Birth</label>
-                                    <input type="date" class="form-control" name="dob" value="${sessionScope.employee.getBirthday().toString()}" required>
-                                </div>
+                                    <input type="date" class="form-control" name="dob" id="dob" value="${sessionScope.employee.getBirthday().toString()}" required>
 
+                                </div>
+                                <small id="dob-error" class="text-danger" style="display:none;">Invalid date of birth</small>
                             </div>
 
                             <div class="avatar-container">
@@ -181,9 +182,23 @@
         </c:if>
 
         <script>
+            document.getElementById("dob").addEventListener("change", function () {
+                let dobInput = document.getElementById("dob");
+                let dobError = document.getElementById("dob-error");
+                let selectedDate = new Date(dobInput.value);
+                let today = new Date();
+                today.setHours(0, 0, 0, 0);
+
+                if (selectedDate > today) {
+                    dobError.style.display = "block";
+                    dobInput.value = "";
+                    event.preventDefault();
+                } else {
+                    dobError.style.display = "none";
+                }
+            });
             function confirmLogout() {
                 if (confirm("Are you sure you want to log out?")) {
-                    // Chuyển hướng tới trang logout hoặc gọi API logout
                     window.location.href = "/Logout";
                 }
             }
