@@ -257,14 +257,15 @@ public class BuyProductsServlet extends HttpServlet {
                     }
                     if (session.getAttribute("customerVoucherUsing") != null) {
                         CustomerVoucherDAO cv = new CustomerVoucherDAO();
+                        System.out.println(customerVoucherUsing.getQuantity());
                         if (customerVoucherUsing.getQuantity() == 1) {
                             cv.deleteVoucher(cus.getId(), customerVoucherUsing.getVoucherID());
                         } else if (customerVoucherUsing.getQuantity() > 1) {
                             cv.subtractQuantityOfVoucher(cus.getId(), customerVoucherUsing.getVoucherID());
                         }
+                        cv.increaseVoucher(customerVoucherUsing.getVoucherID());
                     }
                 }
-
                 session.setAttribute("orderStatus", "success");
                 session.setAttribute("numOfProCartOfCus", ca.getNumberOfProduct(cus.getId()));
                 //gui mail xac nhan don hang thanh cong
