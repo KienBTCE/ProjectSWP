@@ -199,4 +199,19 @@ public class ProductRatingDAO {
 
         return p;
     }
+       public boolean markReplyAsUnRead(int ReplyID) {
+        String query = "UPDATE ProductRatings SET IsRead= 0 WHERE RateID = ?";
+
+        try (
+                 PreparedStatement stmt = connector.prepareStatement(query)) {
+
+            stmt.setInt(1, ReplyID);
+            return stmt.executeUpdate() > 0;
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return false;
+
+    }
 }

@@ -5,9 +5,11 @@
 
 package Controllers;
 
+import DAOs.CustomerDAO;
 import DAOs.ProductDAO;
 import DAOs.ProductRatingDAO;
 import DAOs.RatingRepliesDAO;
+import Models.Customer;
 import Models.ProductRating;
 import Models.Product;
 import Models.RatingReplies;
@@ -68,17 +70,20 @@ public class ViewFeedbackForManagerServlet extends HttpServlet {
         
         int productID = productRating.getProductID();
         
-        List<ProductRating> listPro = pDAO.getAllProductRating(productID);
-        
+
         RatingRepliesDAO rrDAO = new RatingRepliesDAO();
-        List<RatingReplies> listReplies = rrDAO.getAllRatingRepliesByProduct(productID);
+        List<RatingReplies> listReplies = rrDAO.getAllRatingRepliesByRateID(productRating.getRateID());
         
         ProductDAO pdDAO = new ProductDAO();
         Product  pro = pdDAO.getProductByID(productID);
-                
+      
+        CustomerDAO cDAO = new CustomerDAO();
+        Customer cus = cDAO.getCustomerById(productRating.getCustomerID());
+        
                 
        request.setAttribute("Product", pro);
-        request.setAttribute("dataRating", listPro);
+       request.setAttribute("cus", cus);
+        request.setAttribute("rate", productRating);
         request.setAttribute("dataReplies", listReplies);
 
         request.getRequestDispatcher("ViewNewFeedback.jsp").forward(request, response);

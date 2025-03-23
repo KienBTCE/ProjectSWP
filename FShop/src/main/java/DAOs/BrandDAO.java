@@ -22,7 +22,7 @@ public class BrandDAO {
     DBContext db = new DBContext();
     Connection connector = db.getConnection();
 
-    public List<String> getAllBrandNames() {
+    public List<String> getAllBrandName() {
         List<String> list = new ArrayList<>();
         String query = "SELECT Name FROM Brands";
         try {

@@ -20,8 +20,10 @@ public class DBContext {
             Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver"); 
             String dbURL = "jdbc:sqlserver://localhost:1433;"
                     + "databaseName=FSHOP;"
+
                     + "user=sa;" 
                     + "password=240204;"
+
                     + "encrypt=true;trustServerCertificate=true";
 
             connector = DriverManager.getConnection(dbURL);

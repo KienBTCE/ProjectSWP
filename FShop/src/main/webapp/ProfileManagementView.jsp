@@ -158,7 +158,7 @@
 
                         <div class="sidebar">
                             <ul style="list-style-type: none; padding: 0; color: black; ">
-                                <a href="#" class="menu-item">🔔 Notification</a>
+                                <a href="ViewCustomerVoucher" class="menu-item "><img src="./assets/imgs/icon/voucher.png" width="17px" height="17px" alt="alt"/> Voucher</a>
 
                                 <div class="droppeddown">
                                     <a href="#" class="menu-item droppeddown-toggle" data-url="CustomerProfileView.jsp">👤 My Information</a>
@@ -234,18 +234,25 @@
         <%
             if (message != null) {
         %>
-        <!-- Popup -->
-        <div class="popup" id="Popup">
-            <div class="popup-content">
-                <h3>${sessionScope.message}</h3>
-                <button onclick="closePopup()">Close</button>
-            </div>
+        <div id="cookiesPopup" style="position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 350px; display: flex; flex-direction: column; align-items: center; background-color: #fff; color: #000; text-align: center; border-radius: 20px; padding: 30px 30px 20px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); z-index: 1000;">
+            <button class="close" onclick="closePopup()" style="width: 30px; font-size: 20px; color: #c0c5cb; align-self: flex-end; background-color: transparent; border: none; margin-bottom: 10px; cursor: pointer;">✖</button>
+            <img src="https://cdn-icons-png.flaticon.com/512/845/845646.png" alt="success-tick" style="width: 82px; margin-bottom: 15px;" />
+            <p style="margin-bottom: 40px; font-size: 18px;">${sessionScope.message}</p>
+            <button class="accept" onclick="closePopup()" style="background-color: #28a745; border: none; border-radius: 5px; width: 200px; padding: 14px; font-size: 16px; color: white; box-shadow: 0px 6px 18px -5px rgba(40, 167, 69, 1); cursor: pointer;">OK</button>
         </div>
+
+
+        <div id="overlay" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0, 0, 0, 0.5); z-index: 999;"></div>
+
         <%
                 session.setAttribute("message", null);
             }
         %>
         <script>
+            function closePopup() {
+                document.getElementById("cookiesPopup").style.display = "none";
+                document.getElementById("overlay").style.display = "none";
+            }
             function openDeleteAccountModal() {
                 console.log("Calling servlet...");
 
@@ -280,10 +287,7 @@
                 }
             }
 
-            function closePopup() {
-                document.getElementById("Popup").style.display = "none";
-            }
-
+        
             document.getElementById('deleteAccountForm').addEventListener('submit', function (event) {
                 const password = document.getElementById('confirmPassword').value;
                 if (!password) {
@@ -363,8 +367,33 @@
                     }
                 }
             });
+            document.addEventListener("DOMContentLoaded", function () {
+                let phoneInput = document.getElementById("newPhoneNumber");
+                if (phoneInput) {
+                    phoneInput.addEventListener("input", validatePhone);
+                }
+            });
 
+            function validatePhone() {
+                console.log("validatePhone function is loaded!");
+                let phoneInput = document.getElementById("newPhoneNumber");
+                let phoneError = document.getElementById("phoneError");
+                let saveButton = document.getElementById("saveButton");
+
+                let phonePattern = /^0[2-9][0-9]{8}$/;  // Chỉ chấp nhận 10-11 số
+                if (phonePattern.test(phoneInput.value)) {
+                    console.log("none");
+                    phoneError.style.display = "none";
+                    saveButton.disabled = false;
+                } else {
+                    console.log("block");
+                    phoneError.style.display = "block";
+                    saveButton.disabled = true;
+                }
+            }
         </script>
+        <script src="./assets/js/profile.js"></script>
+
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>

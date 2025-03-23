@@ -67,7 +67,8 @@ public class UpdateCustomerProfileServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        request.setAttribute("profilePage", "UpdateCustomerProfileView.jsp");
+        request.getRequestDispatcher("ProfileManagementView.jsp").forward(request, response);
     }
 
     /**

@@ -79,14 +79,25 @@ public class ReplyFeedbackServlet extends HttpServlet {
         int rateID = Integer.parseInt(request.getParameter("rateID"));
         int emID = em.getEmployeeId();
         ProductRatingDAO prDAO = new ProductRatingDAO();
-//        int emID = 1;
         String answer = request.getParameter("Answer");
+
         RatingRepliesDAO rrDAO = new RatingRepliesDAO();
-        if (rateID > 0) {
-            rrDAO.addRatingReply(emID, rateID, answer);
-            prDAO.updateisReadComment(rateID);
+
+        try {
+
+            if (rateID > 0) {
+                rrDAO.addRatingReply(emID, rateID, answer);
+                prDAO.updateisReadComment(rateID);
+                // Show success popup and redirect
+                response.getWriter().write("Success");
+            } else {
+                response.getWriter().write("Failed");
+            }
+
+            response.sendRedirect("/ViewListNewFeedbackServlet");
+        } catch (Exception e) {
         }
-        response.sendRedirect("/ViewListNewFeedbackServlet");
+
     }
 
     /**

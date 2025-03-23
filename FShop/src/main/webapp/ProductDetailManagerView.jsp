@@ -23,19 +23,9 @@
             }
             .product-card {
                 background: #fff;
-                border-radius: 10px;
-                box-shadow: 0 4px 12px rgba(0,0,0,0.15);
                 overflow: hidden;
                 margin: 40px auto;
                 max-width: 1200px;
-            }
-            .card-header {
-                background: #7D69FF; /* Tông màu tím */
-                color: #fff;
-                text-align: center;
-                font-size: 1.75rem;
-                font-weight: 700;
-                padding: 20px;
             }
             .card-body {
                 padding: 20px 40px;
@@ -109,18 +99,27 @@
             .back-btn {
                 margin-top: 20px;
             }
+            .content {
+                flex-grow: 1;
+                padding: 12px;
+                display: flex;
+                flex-direction: column;
+
+                margin-left: 250px;
+            }
         </style>
     </head>
     <body>
-        <div class="container">
-            <div class="product-card">
-                <div class="card-header">
-                    Product Details
-                </div>
-                <div class="card-body">
-                    <div class="product-content row">
-                        <!-- Left: Product Images -->
-                        <div class="col-md-5 product-images">
+        <jsp:include page="SidebarDashboard.jsp"></jsp:include>
+
+            <div class="content">
+
+            <jsp:include page="HeaderDashboard.jsp"></jsp:include>
+                <div class="product-card">
+                    <div class="card-body">
+                        <div class="product-content row">
+                            <!-- Left: Product Images -->
+                            <div class="col-md-5 product-images">
                             <c:if test="${not empty product.image}">
                                 <img id="mainImage" class="main-image" 
                                      src="${pageContext.request.contextPath}/assets/imgs/Products/${product.image}" 
@@ -193,13 +192,9 @@
                             </div>
                         </div>
                     </div>
-                    <div class="back-btn">
-                        <a href="ProductListServlet" class="btn btn-primary">Back to List</a>
-                    </div>
                 </div>
             </div>
         </div>
-
         <!-- JavaScript: Swap Main Image -->
         <script>
             function swapImage(img) {

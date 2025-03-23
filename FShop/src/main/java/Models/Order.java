@@ -19,6 +19,7 @@ public class Order {
     private String orderDate;
     private String deliveredDate;
     private int status;
+    private int discount;
 
     public Order() {
     }
@@ -63,6 +64,23 @@ public class Order {
         this.status = status;
     }
 
+    public Order(int accountID, String fullName, String phone, String address, long totalAmount, int discount) {
+        this.accountID = accountID;
+        this.fullName = fullName;
+        this.phone = phone;
+        this.address = address;
+        this.totalAmount = totalAmount;
+        this.discount = discount;
+    }
+
+    public int getDiscount() {
+        return discount;
+    }
+
+    public void setDiscount(int discount) {
+        this.discount = discount;
+    }
+    
     public int getOrderID() {
         return orderID;
     }
