@@ -251,6 +251,8 @@
                     <label for="address" class="form-label">Detailed Address:</label>
                     <input type="text" id="addressInput" name="address" class="form-control" required
                            value="">
+                    <small id="error-message" class="form-text text-danger"></small>
+
                 </div>
                 <% boolean first = false; %>
                 <c:if test="${sessionScope.addressList.isEmpty()}">
@@ -279,6 +281,25 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.21.1/axios.min.js"></script>
 
     <script>
+                        document.getElementById('formAddress').addEventListener('submit', function (event) {
+                            const addressInput = document.getElementById('addressInput');
+                            const errorMessage = document.getElementById('error-message');
+
+                            errorMessage.textContent = '';
+
+                            if (addressInput.value.trim().length < 5) {
+                                errorMessage.textContent = 'Detailed Address must be at least 5 characters.';
+                                errorMessage.style.color = 'red';
+                                event.preventDefault();
+
+                                // Ẩn thông báo sau 5 giây
+                                setTimeout(() => {
+                                    errorMessage.textContent = '';
+                                }, 5000);
+                            }
+                        });
+
+
                         function closePopup() {
                             document.getElementById("cookiesPopup").style.display = "none";
                             document.getElementById("overlay").style.display = "none";
