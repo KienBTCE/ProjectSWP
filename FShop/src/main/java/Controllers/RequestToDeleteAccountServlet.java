@@ -71,7 +71,7 @@ public class RequestToDeleteAccountServlet extends HttpServlet {
         int orderCount = o.checkHaveOrders(cus.getId());
         System.out.println("Order count: " + orderCount);
         if (orderCount != 0) {
-            session.setAttribute("message", "You have pending orders. Account cannot be deleted.");
+            session.setAttribute("messageFail", "You have pending orders. Account cannot be deleted.");
             response.setContentType("application/json");
             response.setCharacterEncoding("UTF-8");
             try ( PrintWriter out = response.getWriter()) {
@@ -135,11 +135,11 @@ public class RequestToDeleteAccountServlet extends HttpServlet {
                 if (cusDAO.requestToDeleteAccount(cus.getId()) > 0) {
                     response.sendRedirect("/Logout");
                 } else {
-                    session.setAttribute("message", "Delete is not suscess!");
+                    session.setAttribute("messageFail", "Delete is not suscess!");
                     response.sendRedirect("/viewCustomerProfile");
                 }
             } else {
-                session.setAttribute("message", "Your cofirm password is not correct!");
+                session.setAttribute("messageFail", "Your cofirm password is not correct!");
                 response.sendRedirect("/viewCustomerProfile");
             }
         }
@@ -154,7 +154,7 @@ public class RequestToDeleteAccountServlet extends HttpServlet {
                     response.sendRedirect("/viewCustomerProfile");
                 }
             } else {
-                session.setAttribute("message", "Your confirm OTP is incorrect!");
+                session.setAttribute("messageFail", "Your confirm OTP is incorrect!");
                 response.sendRedirect("/viewCustomerProfile");
             }
 

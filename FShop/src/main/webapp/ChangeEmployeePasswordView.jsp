@@ -167,6 +167,11 @@
                     passwordError.textContent = "Password must be at least 8 characters, include one uppercase letter, one number, and one special character.";
                     return false;
                 }
+                
+                if (newPassword.length > 50) {
+                    passwordError.textContent = "Password is too long, password must be shorter than 50 characters.";
+                    return false;
+                }
 
                 if (newPassword !== confirmPassword) {
                     confirmError.textContent = "Passwords do not match.";

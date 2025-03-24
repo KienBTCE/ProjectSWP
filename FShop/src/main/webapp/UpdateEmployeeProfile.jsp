@@ -209,9 +209,9 @@
 
             function validateForm() {
                 var phone = document.getElementsByName('phone')[0].value;
-                var phonePattern = /^0[2-9][0-9]{8}$/;
+                var phonePattern = /^0[1-9][0-9]{8}$/;
                 if (!phonePattern.test(phone)) {
-                    alert('Phone number must be exactly 10 digits and start with 0.');
+                    alert('Phone number must be exactly 10 digits and start with 0. Ex: 0946771397');
                     return false;
                 }
                 return true;
