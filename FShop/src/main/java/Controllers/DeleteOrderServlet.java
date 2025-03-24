@@ -63,25 +63,23 @@ public class DeleteOrderServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-    String monthStr = request.getParameter("delete");
-    int month = 0;
-    try {
-        month = Integer.parseInt(monthStr);
-    } catch (NumberFormatException e) {
+        String monthStr = request.getParameter("delete");
+        int month = 0;
+        try {
+            month = Integer.parseInt(monthStr);
+        } catch (NumberFormatException e) {
 
-        month = 6;
-    }
-    
+            month = 6;
+        }
 
-    OrderDAO orderDAO = new OrderDAO();
-    List<Order> ordersToDelete = orderDAO.getOrdersToDelete(month);
-    
+        OrderDAO orderDAO = new OrderDAO();
+        List<Order> ordersToDelete = orderDAO.getOrdersToDelete(month);
+        int count = ordersToDelete.size();
+       
+        request.setAttribute("ordersToDelete", ordersToDelete);
+        request.setAttribute("deleteMonth", month);
 
-    request.setAttribute("ordersToDelete", ordersToDelete);
-    request.setAttribute("deleteMonth", month);
-    
-
-  request.getRequestDispatcher("PreviewDeleteOrder.jsp").forward(request, response);
+        request.getRequestDispatcher("PreviewDeleteOrder.jsp").forward(request, response);
 
     }
 
@@ -93,25 +91,25 @@ public class DeleteOrderServlet extends HttpServlet {
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
      */
-    @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        //new code
-        try {
-              OrderDAO oDAO = new OrderDAO();
+   @Override
+protected void doPost(HttpServletRequest request, HttpServletResponse response)
+        throws ServletException, IOException {
+    response.setContentType("text/plain");
+    try (PrintWriter out = response.getWriter()) {
+        OrderDAO oDAO = new OrderDAO();
         String month = request.getParameter("delete");
-        oDAO.deleteOrder(Integer.parseInt(month));
-        } catch (NumberFormatException e) {
-            System.out.println(e);
-        }
-      
-        
-        
-        
-        
-        
 
+        int count = oDAO.deleteOrder(Integer.parseInt(month));
+        if (count > 0) {
+            out.print("success");
+        } else {
+            out.print("fail");
+        }
+    } catch (NumberFormatException e) {
+        response.getWriter().print("fail");
     }
+}
+
 
     private void sendCancellationEmail(Customer customer, String orderID, List<OrderDetail> orderItems) {
         try {

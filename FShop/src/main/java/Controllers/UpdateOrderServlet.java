@@ -9,6 +9,7 @@ import DAOs.OrderDetailDAO;
 import Models.Customer;
 import Models.Email;
 import Models.EmailUtils;
+import Models.Order;
 import Models.OrderDetail;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -62,7 +63,20 @@ public class UpdateOrderServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+          String orderID = request.getParameter("orderID");
+        OrderDAO oDAO = new OrderDAO();
+        Order o = oDAO.getOrderByID(orderID);
+
+        OrderDetailDAO odDAO = new OrderDetailDAO();
+        List<OrderDetail> list = odDAO.getOrderDetail(orderID);
+        if (o.getFullName() != "") {
+            request.setAttribute("dataDetail", list);
+            request.setAttribute("data", o);
+            request.getRequestDispatcher("UpdateOrderView.jsp").forward(request, response);
+
+        } else {
+            response.sendRedirect(request.getContextPath() + "/ViewOrderListServlet");
+        }
     }
 
     /**
@@ -76,15 +90,16 @@ public class UpdateOrderServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        try {
-            String status = request.getParameter("update");
+         String status = request.getParameter("update");
             String orderID = request.getParameter("orderID");
+        try {
+           
             OrderDAO oDAO = new OrderDAO();
 
             if (status != null && orderID != null) {
                 int orderIdInt = Integer.parseInt(orderID);
                 int orderStatus = Integer.parseInt(status);
-                oDAO.updateOrder(Integer.parseInt(orderID), Integer.parseInt(status));
+              int count =  oDAO.updateOrder(Integer.parseInt(orderID), Integer.parseInt(status));
                 // Retrieve customer details
                 Customer customer = oDAO.getCustomerByOrderId(orderIdInt);
                 if (customer == null || customer.getEmail() == null || customer.getEmail().isEmpty()) {
@@ -104,7 +119,15 @@ public class UpdateOrderServlet extends HttpServlet {
                 sendOrderConfirmationEmail(customer, orderID, orderStatus, orderItems);
 
                 // Redirect to order list view
-                response.sendRedirect( "/ViewOrderListServlet");
+                if(count>0){
+                
+                response.sendRedirect( "/UpdateOrderServlet?orderID="+orderID+ "&success=created");
+                }else{
+            response.sendRedirect( "/UpdateOrderServlet?orderID="+orderID+ "&success=deleted");
+                
+                }
+            }else{
+            response.sendRedirect( "/UpdateOrderServlet?orderID="+orderID+ "&success=deleted");
             }
         } catch (NumberFormatException e) {
             System.out.println(e);

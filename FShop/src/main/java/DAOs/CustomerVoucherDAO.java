@@ -43,7 +43,8 @@ public class CustomerVoucherDAO {
     }
 
 
-    public void assignVoucherToCustomer(int customerID, int voucherID, int quantity, String expirationDate) {
+    public int assignVoucherToCustomer(int customerID, int voucherID, int quantity, String expirationDate) {
+        int count =0 ;
         String sql = "INSERT INTO CustomerVoucher (CustomerID, VoucherID, Quantity, ExpirationDate) VALUES (?, ?, ?, ?)";
         try ( PreparedStatement ps = connector.prepareStatement(sql)) {
             ps.setInt(1, customerID);
@@ -54,10 +55,11 @@ public class CustomerVoucherDAO {
             } else {
                 ps.setNull(4, java.sql.Types.TIMESTAMP);
             }
-            ps.executeUpdate();
+           count = ps.executeUpdate();
         } catch (SQLException e) {
             System.out.println("Assign voucher error: " + e.getMessage());
         }
+        return count;
     }
 
     public boolean isVoucherAlreadyAssigned(int customerID, int voucherID) {

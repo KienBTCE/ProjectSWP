@@ -1,3 +1,9 @@
+<%-- 
+    Document   : UpdateOrderView
+    Created on : Mar 24, 2025, 6:37:16 AM
+    Author     : HP
+--%>
+
 <%@ page contentType="text/html" pageEncoding="UTF-8"%> 
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %> 
 <!DOCTYPE html> 
@@ -130,7 +136,7 @@
     <body>
         <div class="fixed-header"><jsp:include page="HeaderDashboard.jsp"></jsp:include>
                 <p></p>
-                <h2><i class="fa-solid fa-receipt"></i> Order Details</h2>
+                
             </div>
 
             <div class="main-layout">
@@ -139,17 +145,30 @@
                 </div>
 
                 <div class="main-content">
+                    <h2><i class="fa-solid fa-receipt"></i> Update Order</h2>
                     <div class="container">
-                        <div class="order-layout">
-                            <!-- Left: Order Information & Items -->
-                            <div class="left-section">
-                                <div class="order-info">
-                                    <h3><i class="fa-solid fa-info-circle"></i> Order Information</h3>
-                                    <p><strong>Order ID:</strong> <span>${data.orderID}</span></p>
+                    <c:if test="${param.success == 'created'}">
+                        <div class="alert alert-success alert-dismissible fade show" role="alert">
+                            <i class="fa-solid fa-circle-check me-2"></i> Update Order successfully!
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>
+                    </c:if>
+                    <c:if test="${param.success == 'deleted'}">
+                        <div class="alert alert-success alert-dismissible fade show" role="alert">
+                            <i class="fa-solid fa-circle-check me-2"></i> Update Order Unsuccessfully
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>
+                    </c:if>
+                    <div class="order-layout">
+                        <!-- Left: Order Information & Items -->
+                        <div class="left-section">
+                            <div class="order-info">
+                                <h3><i class="fa-solid fa-info-circle"></i> Order Information</h3>
+                                <p><strong>Order ID:</strong> <span>${data.orderID}</span></p>
                                 <p><strong>Order Date:</strong> <span>${data.orderDate}</span></p>
                                 <p><strong>Order Status:</strong> <span class="status-${data.status}">${data.status}</span></p>
                                 <p><strong>Total Amount:</strong> <span>${data.totalAmount}</span></p>
-                                 <p><strong>Discount:</strong> <span>${data.discount}</span></p>
+                                <p><strong>Discount:</strong> <span>${data.discount}</span></p>
                             </div>
 
                             <h3><i class="fa-solid fa-box"></i> Order Items</h3>
@@ -173,7 +192,7 @@
                                 <p><strong>Address:</strong> <span>${data.address}</span></p>
                             </div>
 
-<!--                            <div class="manage-order">
+                            <div class="manage-order">
                                 <h3><i class="fa-solid fa-cogs"></i> Manage Order</h3>
                                 <c:if test="${not empty errorMessage}">
                                     <div class="alert alert-danger">
@@ -195,21 +214,14 @@
                                     <button type="submit" class="btn btn-success"><i class="fa-solid fa-pen"></i> Update</button>
                                 </form>
 
-                            </div>-->
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
 
-        <!-- Modal Confirm Delete -->
-        <div id="confirmationModal" class="modal">
-            <div class="modal-content">
-                <h3>Are you sure you want to delete this order?</h3>
-                <button id="confirmBtn" class="btn btn-danger">Yes, Delete</button>
-                <button id="cancelBtn" class="btn btn-secondary">Cancel</button>
-            </div>
-        </div>
+
 
         <!-- JavaScript -->
         <script>
@@ -262,3 +274,4 @@
         </script>
     </body>
 </html>
+

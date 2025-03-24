@@ -85,16 +85,17 @@ public class ReplyFeedbackServlet extends HttpServlet {
 
         try {
 
-            if (rateID > 0) {
-                rrDAO.addRatingReply(emID, rateID, answer);
+           
+                
+                int count = rrDAO.addRatingReply(emID, rateID, answer);
                 prDAO.updateisReadComment(rateID);
-                // Show success popup and redirect
-                response.getWriter().write("Success");
-            } else {
-                response.getWriter().write("Failed");
-            }
+                 if(count>0){
+                    response.sendRedirect("/ViewListNewFeedbackServlet?&success=created");
+                 }else{
+                    response.sendRedirect("/ViewListNewFeedbackServlet?&success=deleted");
+                 }
+          
 
-            response.sendRedirect("/ViewListNewFeedbackServlet");
         } catch (Exception e) {
         }
 

@@ -204,6 +204,10 @@
         <servlet-name>OrderReportServlet</servlet-name>
         <servlet-class>Controllers.OrderReportServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>PreviewDeleteOrderServlet</servlet-name>
+        <servlet-class>Controllers.PreviewDeleteOrderServlet</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>UpdateEmployeeServlet</servlet-name>
         <url-pattern>/UpdateEmployeeServlet</url-pattern>
@@ -446,6 +450,10 @@
     <servlet-mapping>
         <servlet-name>OrderReportServlet</servlet-name>
         <url-pattern>/OrderReportServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>PreviewDeleteOrderServlet</servlet-name>
+        <url-pattern>/PreviewDeleteOrderServlet</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>30</session-timeout>

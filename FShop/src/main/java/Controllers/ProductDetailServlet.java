@@ -86,12 +86,12 @@ public class ProductDetailServlet extends HttpServlet {
             boolean isOk = false;
             float star = prRateDAO.getStarAverage(id);
             Models.Product product = pr.getProductByID(id);
-        
+
             List<AttributeDetail> attributes = ad.getAttributesByProductID(id);
             List<ProductRating> listPro = prRateDAO.getAllProductRating(id);
             List<RatingReplies> listReplies = rrDAO.getAllRatingRepliesByProduct(id);
             if (cus != null) {
-             isOk = odDAO.getCustomerByProductID(cus.getId(), id);
+                isOk = odDAO.getCustomerByProductID(cus.getId(), id);
             }
             try {
 
@@ -137,9 +137,14 @@ public class ProductDetailServlet extends HttpServlet {
         String comment = request.getParameter("comment");
 
         ProductRatingDAO pDAO = new ProductRatingDAO();
-        pDAO.addProductRating(customerId, productId, star, comment);
+        int count = pDAO.addProductRating(customerId, productId, star, comment);
+        if (count > 0) {
+            response.sendRedirect("ProductDetailServlet?id=" + productId + "&success=created");
 
-        response.sendRedirect("ProductDetailServlet?id=" + productId);
+        } else {
+            response.sendRedirect("ProductDetailServlet?id=" + productId + "&success=deleted");
+
+        }
     }
 
     /**

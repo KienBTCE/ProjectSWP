@@ -63,7 +63,7 @@ public class ViewFeedbackForManagerServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
           int rateID =Integer.parseInt(request.getParameter("rateID"));
-          
+          String isOK = request.getParameter("isOk");
            
         ProductRatingDAO pDAO = new ProductRatingDAO();
         ProductRating productRating = pDAO.getProductRating(rateID);

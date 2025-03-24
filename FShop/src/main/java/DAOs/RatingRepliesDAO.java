@@ -65,17 +65,19 @@ public class RatingRepliesDAO {
         }
         return list;
     }
-    public void addRatingReply(int employeeId, int rateId, String answer) {
+    public int addRatingReply(int employeeId, int rateId, String answer) {
+        int count = 0;
         String query = "INSERT INTO RatingReplies (EmployeeID, RateID, Answer, IsRead) VALUES (?, ?, ?, 0)";
         try {
             PreparedStatement pre = connector.prepareStatement(query);
             pre.setInt(1, employeeId);
             pre.setInt(2, rateId);
             pre.setString(3, answer);
-            pre.executeUpdate();
+       count =  pre.executeUpdate();
         } catch (Exception e) {
             e.printStackTrace();
         }
+        return count;
     }
 
     public List<RatingReplies> getCustomerReplies(int customerID) {
@@ -101,14 +103,35 @@ public class RatingRepliesDAO {
         }
         return list;
     }
+  public RatingReplies getReplyByRepyID(int replyID) {
+        List<RatingReplies> list = new ArrayList<>();
+        RatingReplies r = null ;
+//        String query = "SELECT r.* FROM RatingReplies r JOIN ProductRatings pr ON r.rateID = pr.rateID WHERE pr.customerID = ? AND r.isRead = 0";
+        String query = "SELECT rr.* FROM RatingReplies rr WHERE rr.ReplyID =?";
+        try (
+                 PreparedStatement stmt = connector.prepareStatement(query)) {
+            stmt.setInt(1, replyID);
+            ResultSet rs = stmt.executeQuery();
 
-    public  int UpdateReply(int replyID, String Answer){
+            while (rs.next()) {
+         r=   new RatingReplies(rs.getInt("ReplyID"),
+                        rs.getInt("EmployeeID"),
+                        rs.getInt("RateID"),
+                        rs.getString("Answer"),
+                        rs.getBoolean("IsRead"));
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return r ;
+    }
+    public  int UpdateReply(RatingReplies reply, String Answer){
     String query = "UPDATE RatingReplies SET Answer = ? WHERE ReplyID = ?";
 
         try (
                  PreparedStatement stmt = connector.prepareStatement(query)) {
 
-            stmt.setInt(2, replyID);
+            stmt.setInt(2, reply.getReplyID());
             stmt.setString(1, Answer);
             return stmt.executeUpdate() ;
 
@@ -147,5 +170,10 @@ public class RatingRepliesDAO {
         }
         return false;
 
+    }
+     public static void main(String[] args) {
+        RatingRepliesDAO r = new RatingRepliesDAO();
+         System.out.println("RATING REPLY_______________________");
+         System.out.println(r.getReplyByRepyID(1).getAnswer());
     }
 }

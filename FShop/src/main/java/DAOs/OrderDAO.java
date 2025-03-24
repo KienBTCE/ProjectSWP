@@ -51,7 +51,7 @@ public class OrderDAO {
         return list;
     }
 
-public Order getOrderByID(String orderID) {
+    public Order getOrderByID(String orderID) {
         Order o = new Order();
         String query = "select * from Orders where Orders.OrderID = ?";
         try {
@@ -73,6 +73,7 @@ public Order getOrderByID(String orderID) {
         }
         return o;
     }
+
     public int getNewestOrderID() {
         int id = 0;
         try {
@@ -113,7 +114,7 @@ public Order getOrderByID(String orderID) {
             data += o.getTotalAmount() + "";
 
             PreparedStatement pre = connector.prepareStatement("Insert into [Orders] (CustomerID, FullName, PhoneNumber, [Address], TotalAmount, [Status], OrderedDate, Discount)"
-                    + " values (" + data + ", 1, GETDATE(), ?)");
+                    + " values (" + data + ", 1, GETUTCDATE(), ?)");
             pre.setInt(1, o.getDiscount());
             pre.executeUpdate();
         } catch (SQLException e) {
@@ -165,23 +166,35 @@ public Order getOrderByID(String orderID) {
         }
     }
 
-    public void updateOrder(int orderID, int status) {
-
+    public int updateOrder(int orderID, int status) {
+        int count = 0;
         String query = "Update Orders SET Orders.Status= ? WHERE Orders.OrderID=?";
+          String query2 = "UPDATE Orders\n"
+                + "SET Status = ?,\n"
+                + "    DeliveredDate = GETUTCDATE()\n"
+                + "WHERE OrderID = ?;";
         try {
+            if(status == 4){
+             PreparedStatement pre = connector.prepareStatement(query2);
+            pre.setInt(1, status);
+            pre.setInt(2, orderID);
+                    
+             count = pre.executeUpdate();
+            }else{
             PreparedStatement pre = connector.prepareStatement(query);
             pre.setInt(1, status);
             pre.setInt(2, orderID);
-
-            pre.executeUpdate();
+                    
+             count = pre.executeUpdate();
+                    }
         } catch (Exception e) {
             Logger.getLogger(OrderDAO.class.getName()).log(Level.SEVERE, null, e);
         }
-
+        return count;
     }
 
-    public void deleteOrder(int month) {
-
+    public int deleteOrder(int month) {
+        int count = 0;
         String query = "DECLARE @CurrentUTC DATETIME = GETUTCDATE();\n"
                 + "DECLARE @ThresholdUTC DATETIME = DATEADD(MONTH, -?, @CurrentUTC);\n"
                 + "\n"
@@ -199,11 +212,12 @@ public Order getOrderByID(String orderID) {
             PreparedStatement pre = connector.prepareStatement(query);
 
             pre.setInt(1, month);
-            pre.executeUpdate();
+            count = pre.executeUpdate();
 
         } catch (Exception e) {
             Logger.getLogger(OrderDAO.class.getName()).log(Level.SEVERE, null, e);
         }
+        return count;
     }
 
     public List<Order> getAllOrderOfCustomer(int customerID) {

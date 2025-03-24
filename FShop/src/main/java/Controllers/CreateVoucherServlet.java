@@ -121,8 +121,12 @@ public class CreateVoucherServlet extends HttpServlet {
             Voucher newVoucher = new Voucher(0, code, value, type, startDate, endDate,
                     0, maxUsed, maxDiscount, minOrder, status, desc);
 
-            dao.insertVoucher(newVoucher);
-            response.sendRedirect("ViewVoucherListServlet?success=created");
+            int count = dao.insertVoucher(newVoucher);
+            if(count>0){
+            response.sendRedirect("ViewVoucherListServlet?success=success");
+            }else{
+            response.sendRedirect("ViewVoucherListServlet?success=failed");
+            }
 
         } catch (Exception e) {
             e.printStackTrace();
