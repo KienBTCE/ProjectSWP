@@ -188,7 +188,6 @@
                                         <tr>
                                             <th>Product</th>
                                             <th>Sales</th>
-                                            <th>Percentage</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -197,7 +196,6 @@
                                             <tr>
                                                 <td>${p.productName}</td>
                                                 <td>${p.soldQuantity}</td>
-                                                <td>${p.soldPercentage}%</td>
                                             </tr>
                                         </c:forEach>
                                     </c:if>

@@ -48,6 +48,20 @@ public class AddEmployeeServlet extends HttpServlet {
             String fileName = Paths.get(part.getSubmittedFileName()).getFileName().toString();
             String avatar = request.getParameter("currentAvatar");
 
+            if (!isValidName(name)) {
+                request.setAttribute("errorMsg", "Name must not exceed 255 characters and only contain letters.");
+                request.setAttribute("txtRoleId", roleId);
+                request.setAttribute("txtName", name);
+                request.setAttribute("txtPass", password);
+                request.setAttribute("txtPhoneNumber", phone);
+                request.setAttribute("txtEmail", email);
+                request.setAttribute("txtCreatedDate", createdDate);
+                request.setAttribute("txtStatus", status);
+                request.setAttribute("currentAvatar", avatar);
+                request.getRequestDispatcher("AddEmployeeView.jsp").forward(request, response);
+                return;
+            }
+
             if (empDAO.isEmailExists(email)) {
                 request.setAttribute("errorMsg", "Email already exists! Please choose another email.");
                 request.setAttribute("txtRoleId", roleId);
@@ -125,6 +139,10 @@ public class AddEmployeeServlet extends HttpServlet {
 
     private boolean isValidPhoneNumber(String phoneNumber) {
         return phoneNumber.matches("\\d{10}");
+    }
+
+    private boolean isValidName(String name) {
+        return name != null && name.length() <= 255 && name.matches("[a-zA-Z\\s]+");
     }
 
 }

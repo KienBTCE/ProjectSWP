@@ -256,8 +256,8 @@
                         </c:forEach>
                     </tbody>
                 </table>
-                <a href="StatisticManagementServlet" style="background-color: orange; color: white; text-decoration: none; padding: 5px 15px; border-radius: 5px; display: inline-block; cursor: pointer;">
-                    <i class='bx bx-edit'></i> Back
+                <a href="StatisticManagementServlet" style="background-color: #007bff; color: white; padding: 8px 20px; border: none; border-radius: 10px; display: inline-flex; align-items: center; gap: 5px; cursor: pointer; text-decoration: none;">
+                    <i class='bx bx-arrow-back'></i> Back
                 </a>
             </div>
         </div>

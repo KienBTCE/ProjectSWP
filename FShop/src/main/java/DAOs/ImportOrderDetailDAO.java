@@ -23,7 +23,7 @@ public class ImportOrderDetailDAO {
     Connection connector = db.getConnection();
 
     public int createImportOrderDetails(ArrayList<ImportOrderDetail> detailList) {
-        String query = "INSERT INTO ImportOrderDetails (IOID, ProductID, Quantity, ImportPrice) VALUES";
+        String query = "INSERT INTO ImportDetails (ImportID, ProductID, ImportQuantity, ImportPrice) VALUES";
         ArrayList<String> values = new ArrayList<>();
 
         for (ImportOrderDetail d : detailList) {
@@ -55,7 +55,7 @@ public class ImportOrderDetailDAO {
     }
 
     public int createImportOrderDetail(ImportOrderDetail detail) {
-        String query = "INSERT INTO ImportOrderDetails (IOID, ProductID, Quantity, ImportPrice) VALUES (?, ?, ?, ?)";
+        String query = "INSERT INTO ImportDetails (ImportID, ProductID, ImportQuantity, ImportPrice) VALUES (?, ?, ?, ?)";
 
         try {
             PreparedStatement ps = connector.prepareStatement(query);
@@ -74,7 +74,7 @@ public class ImportOrderDetailDAO {
     }
 
     public ArrayList<ImportOrderDetail> getDetailsById(int detailId) {
-        String query = "SELECT * FROM ImportOrderDetails WHERE IOID = ?";
+        String query = "SELECT * FROM ImportDetails WHERE ImportID = ?";
         ArrayList<ImportOrderDetail> list = null;
         try {
             PreparedStatement ps = connector.prepareStatement(query);
@@ -85,7 +85,7 @@ public class ImportOrderDetailDAO {
             while (rs.next()) {
                 Product p = new Product();
                 p.setProductId(rs.getInt("ProductID"));
-                list.add(new ImportOrderDetail(rs.getInt("IOID"), p, rs.getInt("Quantity"), rs.getLong("ImportPrice")));
+                list.add(new ImportOrderDetail(rs.getInt("ImportID"), p, rs.getInt("ImportQuantity"), rs.getLong("ImportPrice")));
             }
             return list;
         } catch (SQLException e) {
@@ -96,7 +96,7 @@ public class ImportOrderDetailDAO {
     }
 
     public int updateDetailById(ImportOrderDetail d) {
-        String query = "UPDATE ImportOrderDetails SET Quantity = ?, ImportPrice = ? WHERE ProductID = ?";
+        String query = "UPDATE ImportDetails SET ImportQuantity = ?, ImportPrice = ? WHERE ProductID = ?";
 
         try {
             PreparedStatement ps = connector.prepareStatement(query);
@@ -113,7 +113,7 @@ public class ImportOrderDetailDAO {
     }
 
     public int deleteDetailById(int productId, int importId) {
-        String query = "DELETE FROM ImportOrderDetails WHERE ProductID = ? AND IOID = ?";
+        String query = "DELETE FROM ImportDetails WHERE ProductID = ? AND ImportID = ?";
 
         try {
             PreparedStatement ps = connector.prepareStatement(query);
@@ -129,7 +129,7 @@ public class ImportOrderDetailDAO {
     }
 
     public long calculateTotalPrice(int importId) {
-        String query = "SELECT SUM(ImportPrice) AS TotalPrice FROM ImportOrderDetails WHERE IOID = ?";
+        String query = "SELECT SUM(ImportPrice) AS TotalPrice FROM ImportDetails WHERE ImportID = ?";
 
         try {
             PreparedStatement ps = connector.prepareStatement(query);
@@ -150,8 +150,8 @@ public class ImportOrderDetailDAO {
         ArrayList<ImportOrderDetail> list = new ArrayList<>();
 
         String query = "SELECT *\n"
-                + "FROM ImportOrderDetails IOD\n"
-                + "JOIN ImportOrders IO ON IOD.IOID = IO.IOID\n"
+                + "FROM ImportDetails IOD\n"
+                + "JOIN ImportOrders IO ON IOD.ImportID = IO.ImportID\n"
                 + "JOIN Products P ON IOD.ProductID = P.ProductID\n"
                 + "WHERE CAST(IO.ImportDate AS DATE) = CAST(GETDATE() AS DATE)\n"
                 + "ORDER BY P.ProductID ASC";
@@ -165,7 +165,7 @@ public class ImportOrderDetailDAO {
                 Product p = new Product();
                 p.setProductId(rs.getInt("ProductID"));
                 p.setModel(rs.getString("Model"));
-                list.add(new ImportOrderDetail(rs.getInt("IOID"), p, rs.getInt("Quantity"), rs.getLong("ImportPrice")));
+                list.add(new ImportOrderDetail(rs.getInt("ImportID"), p, rs.getInt("ImportQuantity"), rs.getLong("ImportPrice")));
             }
             return list;
         } catch (SQLException e) {

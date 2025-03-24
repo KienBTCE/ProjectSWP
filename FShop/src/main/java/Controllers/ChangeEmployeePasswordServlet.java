@@ -102,6 +102,11 @@ public class ChangeEmployeePasswordServlet extends HttpServlet {
         } else {
             EmployeeDAO emDAO = new EmployeeDAO();
             if (emDAO.checkPassword(em.getEmployeeId(), currentPassword) == 1) {
+                if (currentPassword.equals(newPassword)) {
+                    session.setAttribute("empromess", "Current Password is not same with New Password!");
+                    request.getRequestDispatcher("ChangeEmployeePasswordView.jsp").forward(request, response);
+                    return;
+                }
                 if (emDAO.changePassword(em.getEmployeeId(), newPassword) == 1) {
                     session.setAttribute("empromess", "Change Password Success");
                     response.sendRedirect("/ViewEmployeeProfile");

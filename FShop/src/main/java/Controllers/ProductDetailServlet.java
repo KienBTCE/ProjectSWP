@@ -95,7 +95,7 @@ public class ProductDetailServlet extends HttpServlet {
             }
             try {
 
-                request.setAttribute("isOk", Boolean.valueOf(isOk));
+//                request.setAttribute("isOk", isOk);
                 request.setAttribute("dataRating", listPro);
                 request.setAttribute("dataReplies", listReplies);
                 request.setAttribute("star", star);

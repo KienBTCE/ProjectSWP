@@ -84,15 +84,22 @@ public class ChangeCustomerPasswordServlet extends HttpServlet {
 //            out.println(newPassword);
 //            out.println(confirmPassword);
 //        }
+
         CustomerDAO cusDAO = new CustomerDAO();
         if (cusDAO.cofirmPassword(cus.getId(), currentPassword) > 0) {
+            if (currentPassword.equals(newPassword)) {
+                session.setAttribute("messageFail", "Current Password is not same with New Password!");
+                request.setAttribute("profilePage", "ChangeCustomerPasswordView.jsp");
+                request.getRequestDispatcher("ProfileManagementView.jsp").forward(request, response);
+                return;
+            }
             if (cusDAO.changeCustomerPassword(cus.getId(), newPassword) > 0) {
                 session.setAttribute("message", "Change Password Success!");
             } else {
-                session.setAttribute("message", "Change Password Fail!");
+                session.setAttribute("messageFail", "Change Password Fail!");
             }
         } else {
-            session.setAttribute("message", "Your Current Password Is Not Correct!");
+            session.setAttribute("messageFail", "Your Current Password Is Not Correct!");
         }
 
         request.setAttribute("profilePage", "ChangeCustomerPasswordView.jsp");

@@ -80,7 +80,7 @@ public class ViewCustomerVoucher extends HttpServlet {
                 c.deleteVoucher(cus.getId(), customerVoucher.getVoucherID());
                 isDeleted = true;
             }
-            if ((customerVoucher.getUsedCount() == customerVoucher.getMaxUsedCount()) && isDeleted == false) {
+            if (((customerVoucher.getUsedCount() == customerVoucher.getMaxUsedCount()) && isDeleted == false) && customerVoucher.getMaxUsedCount() != 0) {
                 System.out.println("Voucher Het Luot sd");
                 c.deleteVoucher(cus.getId(), customerVoucher.getVoucherID());
                 isDeleted = true;

@@ -35,7 +35,7 @@ public class CustomerVoucherDAO {
                 //int voucherValue, int voucherType, String startDate, String endDate, int usedCount, 
                 // int maxUsedCount, int maxDiscountAmount, int minOrderValue, int status, String description
                 list.add(new CustomerVoucher(rs.getInt(1), rs.getString(3), rs.getInt(4), rs.getInt(5), rs.getString(6), rs.getInt(7), rs.getInt(8), rs.getString(9), rs.getString(10),
-                         rs.getInt(11), rs.getInt(12), rs.getInt(13), rs.getInt(14), rs.getInt(15), rs.getString(16)));
+                        rs.getInt(11), rs.getInt(12), rs.getInt(13), rs.getInt(14), rs.getInt(15), rs.getString(16)));
             }
         } catch (SQLException e) {
         }
@@ -87,7 +87,7 @@ public class CustomerVoucherDAO {
             ResultSet rs = pre.executeQuery();
             if (rs.next()) {
                 voucher = new CustomerVoucher(rs.getInt(1), rs.getString(3), rs.getInt(4), rs.getInt(5), rs.getString(6), rs.getInt(7), rs.getInt(8), rs.getString(9), rs.getString(10),
-                         rs.getInt(11), rs.getInt(12), rs.getInt(13), rs.getInt(14), rs.getInt(15), rs.getString(16));
+                        rs.getInt(11), rs.getInt(12), rs.getInt(13), rs.getInt(14), rs.getInt(15), rs.getString(16));
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -118,6 +118,17 @@ public class CustomerVoucherDAO {
             e.printStackTrace();
         }
 
+    }
+
+    public void increaseVoucher( int voucherID) {
+        try {
+            String sql = "Update Vouchers SET UsedCount = UsedCount + 1 WHERE VoucherID = ?";
+            PreparedStatement pre = connector.prepareStatement(sql);
+            pre.setInt(1, voucherID);
+            pre.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
     public static void main(String[] args) {
