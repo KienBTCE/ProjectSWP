@@ -247,7 +247,7 @@ public class BuyProductsServlet extends HttpServlet {
                 o.setDiscount(discount);
                 o.setAccountID(cus.getId());
                 o.setTotalAmount(totalAmount);
-                od.createNewOrder(o);
+                od.createOrder(o);
                 List<Cart> cartSelected = (List<Cart>) session.getAttribute("cartSelected");
                 for (Cart c : cartSelected) {
                     od.addOrderDetail(od.getNewestOrderID(), c.getProductID(), c.getQuantity(), c.getPrice());

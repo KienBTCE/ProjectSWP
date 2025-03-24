@@ -103,7 +103,7 @@ public Order getOrderByID(String orderID) {
 //            System.out.println(e);
 //        }
 //    }
-    public void createNewOrder(Order o) {
+    public void createOrder(Order o) {
         try {
             String data = "";
             data = "'" + o.getAccountID() + "',";
@@ -338,6 +338,6 @@ public Order getOrderByID(String orderID) {
 //            System.out.println(order.getAddress());
 //        }
         Order od = new Order(13, "Bui Minh Nhut", "034931105", "fjds, fds fds, sdfhds, dshfdd", 20000000, 30000);
-        o.createNewOrder(od);
+        
     }
 }
