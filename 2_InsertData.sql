@@ -403,7 +403,6 @@ VALUES
 INSERT INTO Vouchers (VoucherCode, VoucherValue, VoucherType, StartDate, EndDate, UsedCount, MaxUsedCount, MaxDiscountAmount, MinOrderValue, Status, [Description])
 VALUES 
 ('DISCOUNT10', 10, 1, '2025-03-01', '2025-03-31', 0, 100, 50000, 200000, 1, N'10% discount up to 50,000 VND for orders from 200,000 VND'),
-('FREESHIP', 30000, 0, '2025-03-05', '2025-04-05', 0, 500, NULL, 150000, 1, N'30,000 VND off shipping fee for orders from 150,000 VND'),
 ('VIP50', 50000, 0, '2025-03-10', '2025-04-10', 0, 50, NULL, 500000, 1, N'50,000 VND discount for orders from 500,000 VND'),
 ('FLASHSALE', 20, 1, '2025-03-15', '2025-03-20', 0, 200, 70000, 300000, 1, N'20% discount up to 70,000 VND for orders from 300,000 VND'),
 ('NEWUSER', 50000, 0, '2025-03-01', '2025-12-31', 0, NULL, NULL, 100000, 1, N'50,000 VND discount for new customers on orders from 100,000 VND');
