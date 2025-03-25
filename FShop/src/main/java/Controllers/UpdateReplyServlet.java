@@ -5,6 +5,7 @@
 package Controllers;
 
 import DAOs.RatingRepliesDAO;
+import Models.RatingReplies;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -26,11 +27,15 @@ public class UpdateReplyServlet extends HttpServlet {
         int replyID = Integer.parseInt(request.getParameter("replyID"));
         try {
             if (replyID > 0 && answerUpdate != null && !answerUpdate.isEmpty()) {
-                int result = rrDAO.UpdateReply(replyID, answerUpdate);
+                RatingReplies reply = rrDAO.getReplyByRepyID(replyID);
+                int result = rrDAO.UpdateReply(reply, answerUpdate);
                 if (result > 0) {
                     response.getWriter().write("Success");
+//                    response.sendRedirect("ViewFeedbackForManagerServlet?rateID=" + reply.getRateID() + "&success=success");
+
                 } else {
                     response.getWriter().write("Failed");
+//                    response.sendRedirect("ViewFeedbackForManagerServlet?rateID=" + reply.getRateID() + "&success=failed");
                 }
             } else {
                 response.getWriter().write("Invalid Input");

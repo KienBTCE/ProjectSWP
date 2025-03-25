@@ -77,7 +77,8 @@ public class VoucherDAO {
         return voucher;
     }
 
- public void updateVoucher(Voucher updated) {
+ public int updateVoucher(Voucher updated) {
+     int count = 0;
     String sql = "UPDATE Vouchers SET "
             + "VoucherCode = ?, "
             + "VoucherValue = ?, "
@@ -106,20 +107,22 @@ public class VoucherDAO {
         pr.setString(11, updated.getDescription());
         pr.setInt(12, updated.getVoucherID());
 
-        pr.executeUpdate();
+      count =  pr.executeUpdate();
     } catch (SQLException e) {
         System.out.println("Error updating voucher: " + e.getMessage());
-    }
+    } return count;
 }
 
-public void deleteVoucher(int voucherID) {
+public int deleteVoucher(int voucherID) {
+    int count = 0;
     String sql = "DELETE FROM Vouchers WHERE VoucherID = ?";
     try (PreparedStatement ps = connector.prepareStatement(sql)) {
         ps.setInt(1, voucherID);
-        ps.executeUpdate();
+       count = ps.executeUpdate();
     } catch (SQLException e) {
         System.out.println("Delete error: " + e.getMessage());
     }
+    return count;
 }
 public boolean checkVoucherCodeExists(String code) {
     String sql = "SELECT 1 FROM Vouchers WHERE VoucherCode = ?";
@@ -132,11 +135,11 @@ public boolean checkVoucherCodeExists(String code) {
     }
     return false;
 }
-public void insertVoucher(Voucher v) {
+public int insertVoucher(Voucher v) {
     String sql = "INSERT INTO Vouchers (VoucherCode, VoucherValue, VoucherType, StartDate, EndDate, "
             + "UsedCount, MaxUsedCount, MaxDiscountAmount, MinOrderValue, Status, Description) "
             + "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
-
+int count = 0;
     try (PreparedStatement pr = connector.prepareStatement(sql)) {
         pr.setString(1, v.getVoucherCode());
         pr.setInt(2, v.getVoucherValue());
@@ -150,10 +153,11 @@ public void insertVoucher(Voucher v) {
         pr.setInt(10, v.getStatus());
         pr.setString(11, v.getDescription());
 
-        pr.executeUpdate();
+      count =  pr.executeUpdate();
     } catch (SQLException e) {
         System.out.println("Error inserting voucher: " + e.getMessage());
     }
+    return count;
 }
 
 }

@@ -141,6 +141,10 @@
                 padding: 10px 20px;
                 /*box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);*/
             }
+            .banner{
+                margin-top: 50px;
+
+            }
         </style>
     </head>
     <body>
@@ -148,8 +152,24 @@
         <jsp:include page="SidebarDashboard.jsp"></jsp:include>
         <div class="fixed-header"><jsp:include page="HeaderDashboard.jsp"></jsp:include> </div>
             <div class="main-content">
-                <h2 class="text-center mb-4">Customer Reviews</h2>
+                <div class="banner">
+                    <h2 class="text-center mb-4"  >Customer Reviews</h2>
+                <c:if test="${param.success == 'success'}">
+                    <div class="alert alert-success alert-dismissible fade show" role="alert">
+                        <i class="fa-solid fa-circle-check me-2"></i> Action Successfully!
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                </c:if>
+
+                <c:if test="${param.success == 'failed'}">
+                    <div class="alert alert-success alert-dismissible fade show" role="alert">
+                        <i class="fa-solid fa-circle-check me-2"></i> Action unsuccessfully!
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                </c:if>
                 <h3>"${Product.fullName}" - "${Product.model}"</h3>
+
+            </div>
 
             <%--<c:forEach var="rate" items="${dataRating}">--%>
             <div class="review-card">

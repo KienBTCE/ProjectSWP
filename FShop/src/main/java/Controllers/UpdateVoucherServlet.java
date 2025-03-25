@@ -77,68 +77,70 @@ public class UpdateVoucherServlet extends HttpServlet {
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
      */
-  @Override
-protected void doPost(HttpServletRequest request, HttpServletResponse response)
-        throws ServletException, IOException {
-    try {
-        // Lấy input
-        int voucherID = Integer.parseInt(request.getParameter("voucherID"));
-        String code = request.getParameter("voucherCode").trim();
-        int type = Integer.parseInt(request.getParameter("voucherType"));
-        int value = Integer.parseInt(request.getParameter("voucherValue"));
-        int maxDiscount = Integer.parseInt(request.getParameter("maxDiscountAmount"));
-        int minOrder = Integer.parseInt(request.getParameter("minOrderValue"));
+    @Override
+    protected void doPost(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        try {
+            // Lấy input
+            int voucherID = Integer.parseInt(request.getParameter("voucherID"));
+            String code = request.getParameter("voucherCode").trim();
+            int type = Integer.parseInt(request.getParameter("voucherType"));
+            int value = Integer.parseInt(request.getParameter("voucherValue"));
+            int maxDiscount = Integer.parseInt(request.getParameter("maxDiscountAmount"));
+            int minOrder = Integer.parseInt(request.getParameter("minOrderValue"));
 
-        String rawStart = request.getParameter("startDate");
-        String rawEnd = request.getParameter("endDate");
+            String rawStart = request.getParameter("startDate");
+            String rawEnd = request.getParameter("endDate");
 
-        int used = Integer.parseInt(request.getParameter("usedCount"));
-        int maxUsed = Integer.parseInt(request.getParameter("maxUsedCount"));
-        int status = Integer.parseInt(request.getParameter("status"));
-        String desc = request.getParameter("description");
+            int used = Integer.parseInt(request.getParameter("usedCount"));
+            int maxUsed = Integer.parseInt(request.getParameter("maxUsedCount"));
+            int status = Integer.parseInt(request.getParameter("status"));
+            String desc = request.getParameter("description");
 
-        // Parse ngày
-        DateTimeFormatter inputFormat = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm");
-        DateTimeFormatter sqlFormat = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-        LocalDateTime start = LocalDateTime.parse(rawStart, inputFormat);
-        LocalDateTime end = LocalDateTime.parse(rawEnd, inputFormat);
-        String startDate = start.format(sqlFormat);
-        String endDate = end.format(sqlFormat);
+            // Parse ngày
+            DateTimeFormatter inputFormat = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm");
+            DateTimeFormatter sqlFormat = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+            LocalDateTime start = LocalDateTime.parse(rawStart, inputFormat);
+            LocalDateTime end = LocalDateTime.parse(rawEnd, inputFormat);
+            String startDate = start.format(sqlFormat);
+            String endDate = end.format(sqlFormat);
 
-        // ===== VALIDATE =====
-        if (code.length() > 10) {
-            request.setAttribute("error", "Voucher Code must not exceed 10 characters.");
-        } else if (start.isAfter(end)) {
-            request.setAttribute("error", "End date must be after start date.");
-        } else if (value < 0 || maxDiscount < 0 || minOrder < 0 || used < 0 || maxUsed < 0) {
-            request.setAttribute("error", "Numeric values must be non-negative.");
-        }
+            // ===== VALIDATE =====
+            if (code.length() > 10) {
+                request.setAttribute("error", "Voucher Code must not exceed 10 characters.");
+            } else if (start.isAfter(end)) {
+                request.setAttribute("error", "End date must be after start date.");
+            } else if (value < 0 || maxDiscount < 0 || minOrder < 0 || used < 0 || maxUsed < 0) {
+                request.setAttribute("error", "Numeric values must be non-negative.");
+            }
 
-        // Nếu có lỗi → quay lại form
-        if (request.getAttribute("error") != null) {
-            Voucher errorVoucher = new Voucher(voucherID, code, value, type,
-                    rawStart, rawEnd, used, maxUsed, maxDiscount, minOrder, status, desc);
-            request.setAttribute("voucher", errorVoucher);
+            // Nếu có lỗi → quay lại form
+            if (request.getAttribute("error") != null) {
+                Voucher errorVoucher = new Voucher(voucherID, code, value, type,
+                        rawStart, rawEnd, used, maxUsed, maxDiscount, minOrder, status, desc);
+                request.setAttribute("voucher", errorVoucher);
+                request.getRequestDispatcher("UpdateVoucherView.jsp").forward(request, response);
+                return;
+            }
+
+            // Nếu hợp lệ → tiếp tục update
+            Voucher updated = new Voucher(voucherID, code, value, type, startDate, endDate,
+                    used, maxUsed, maxDiscount, minOrder, status, desc);
+
+            VoucherDAO dao = new VoucherDAO();
+            int count = dao.updateVoucher(updated);
+            if (count > 0) {
+                response.sendRedirect("ViewVoucherListServlet?success=success");
+            } else {
+                response.sendRedirect("ViewVoucherListServlet?success=failed");
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            request.setAttribute("error", "Something went wrong! Please check your inputs.");
             request.getRequestDispatcher("UpdateVoucherView.jsp").forward(request, response);
-            return;
         }
-
-        // Nếu hợp lệ → tiếp tục update
-        Voucher updated = new Voucher(voucherID, code, value, type, startDate, endDate,
-                used, maxUsed, maxDiscount, minOrder, status, desc);
-
-        VoucherDAO dao = new VoucherDAO();
-        dao.updateVoucher(updated);
-
-        response.sendRedirect("ViewVoucherListServlet?success=updated");
-
-    } catch (Exception e) {
-        e.printStackTrace();
-        request.setAttribute("error", "Something went wrong! Please check your inputs.");
-        request.getRequestDispatcher("UpdateVoucherView.jsp").forward(request, response);
     }
-}
-
 
     /**
      * Returns a short description of the servlet.
