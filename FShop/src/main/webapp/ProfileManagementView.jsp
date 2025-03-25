@@ -173,7 +173,7 @@
 
                                     </div>
                                 </div>
-                                <a href="ViewOrderHistory" class="menu-item">📦 Orders</a>
+                                <a href="ViewOrderHistory" class="menu-item">📦 Order</a>
                             </ul>
                         </div>
                     </div>
@@ -248,7 +248,7 @@
                 session.setAttribute("message", null);
             }
         %>
-        
+
         <%
             String messageFail = (String) session.getAttribute("messageFail");
             System.out.println("Session message: " + message + request.getRequestURI());
@@ -312,7 +312,7 @@
                 }
             }
 
-        
+
             document.getElementById('deleteAccountForm').addEventListener('submit', function (event) {
                 const password = document.getElementById('confirmPassword').value;
                 if (!password) {
