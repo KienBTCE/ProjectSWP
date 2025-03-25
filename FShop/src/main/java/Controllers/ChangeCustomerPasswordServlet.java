@@ -93,12 +93,6 @@ public class ChangeCustomerPasswordServlet extends HttpServlet {
                 request.getRequestDispatcher("ProfileManagementView.jsp").forward(request, response);
                 return;
             }
-            if (newPassword.length() > 50) {
-                session.setAttribute("messageFail", "New Password must not exceed 50 characters!");
-                request.setAttribute("profilePage", "ChangeCustomerPasswordView.jsp");
-                request.getRequestDispatcher("ProfileManagementView.jsp").forward(request, response);
-                return;
-            }
 
             if (cusDAO.changeCustomerPassword(cus.getId(), newPassword) > 0) {
                 session.setAttribute("message", "Change Password Success!");
