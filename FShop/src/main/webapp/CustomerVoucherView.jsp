@@ -131,10 +131,11 @@
                                         <div class="terms">
                                             <p>${vou.getDescription()}</p>
                                         </div>
-                                        <c:set var="expirationDate" value="${vou.getExpirationDate()}" />
-                                        <c:set var="formattedDate" value="${expirationDate.substring(8,10)}/${expirationDate.substring(5,7)}/${expirationDate.substring(0,4)}" />
-                                        <p><b>Expiration Date:</b> ${formattedDate}</p>
-
+                                        <c:if test="${vou.getExpirationDate() != null}">
+                                            <c:set var="expirationDate" value="${vou.getExpirationDate()}" />
+                                            <c:set var="formattedDate" value="${expirationDate.substring(8,10)}/${expirationDate.substring(5,7)}/${expirationDate.substring(0,4)}" />
+                                            <p><b>Expiration Date:</b> ${formattedDate}</p>
+                                        </c:if>
 
                                     </div>
 
