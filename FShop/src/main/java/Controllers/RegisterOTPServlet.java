@@ -5,6 +5,8 @@
 package Controllers;
 
 import DAOs.CustomerDAO;
+import DAOs.CustomerVoucherDAO;
+import DAOs.VoucherDAO;
 import Models.Customer;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -91,6 +93,9 @@ public class RegisterOTPServlet extends HttpServlet {
                     // Registration successful, remove session attributes
                     session.removeAttribute("otp");
                     session.removeAttribute("registerCustomer");
+                    CustomerVoucherDAO cv = new CustomerVoucherDAO();
+                    Customer cus = ctmDAO.getCustomerLogin(customer.getEmail(), customer.getPassword());
+                    cv.assignVoucherToCustomer(cus.getId(), 1, 1, null);
 
                     // Redirect to login page
                     response.sendRedirect("/customerLogin");
