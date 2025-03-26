@@ -192,8 +192,14 @@
                                     </c:if>
                                 </h6>
                                 <h4 style="text-align: right;">
-                                    <c:set var="total" value="${totalAmount - discount}" />
-                                    <fmt:formatNumber value="${total}" type="currency" />
+                                    <c:if test="${totalAmount - discount <= 0}">
+                                        <c:set var="total" value="0" />
+                                        <fmt:formatNumber value="${total}" type="currency" />
+                                    </c:if>
+                                    <c:if test="${totalAmount - discount > 0}">
+                                        <c:set var="total" value="${totalAmount - discount}" />
+                                        <fmt:formatNumber value="${total}" type="currency" />
+                                    </c:if>
                                 </h4>
                             </div>
 
@@ -224,7 +230,7 @@
                     <p>Your order is waiting for acceptance by the shop.</p>
                     <div style="display: flex; justify-content: center; column-gap: 10px">
                         <a  class="btn btn-primary"
-                            href="ViewOrderHistory">OK</a>
+                            href="odetailforcus?id=${sessionScope.newOrder}">OK</a>
                         <a class="btn btn-secondary"
                            href="ProductListView">Back to home</a>
                     </div>
@@ -277,9 +283,11 @@
                                                 </p>
                                             </div>
                                         </c:if>
-                                        <c:set var="expirationDate" value="${vou.getExpirationDate()}" />
-                                        <c:set var="formattedDate" value="${expirationDate.substring(8,10)}/${expirationDate.substring(5,7)}/${expirationDate.substring(0,4)}" />
-                                        <p><b>Expiration Date:</b> ${formattedDate}</p>
+                                        <c:if test="${vou.getExpirationDate() != null}">
+                                            <c:set var="expirationDate" value="${vou.getExpirationDate()}" />
+                                            <c:set var="formattedDate" value="${expirationDate.substring(8,10)}/${expirationDate.substring(5,7)}/${expirationDate.substring(0,4)}" />
+                                            <p><b>Expiration Date:</b> ${formattedDate}</p>
+                                        </c:if>
                                     </div>
                                     <!-- Select Button -->
                                     <a href="order?action=useVoucher&id=${vou.getVoucherID()}" class="btn btn-primary" style="height: 40px; align-self: center;">Select</a>
@@ -371,5 +379,8 @@
     </body>
     <c:if test="${not empty sessionScope.message}">
         <c:remove var="message" scope="session"/>
+    </c:if>
+    <c:if test="${not empty sessionScope.newOrder}">
+        <c:remove var="newOrder" scope="session"/>
     </c:if>
 </html>

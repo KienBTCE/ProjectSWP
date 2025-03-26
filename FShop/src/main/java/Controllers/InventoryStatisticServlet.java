@@ -6,7 +6,9 @@
 package Controllers;
 
 import DAOs.InventoryStatisticDAO;
+import DAOs.StatisticDAO;
 import Models.InventoryStatistic;
+import Models.Statistic;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -49,8 +51,12 @@ public class InventoryStatisticServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
         InventoryStatisticDAO inventoryStatisticDAO = new InventoryStatisticDAO();
+        ArrayList<InventoryStatistic> listInventoryPhone = inventoryStatisticDAO.getInventoryforSmartPhone();
+        ArrayList<InventoryStatistic> listInventoryLaptop = inventoryStatisticDAO.getInventoryforLaptop();
         ArrayList<InventoryStatistic> list = inventoryStatisticDAO.getAllInventory();
         request.setAttribute("listI", list);
+        request.setAttribute("listInventoryPhone", listInventoryPhone);
+        request.setAttribute("listInventoryLaptop", listInventoryLaptop);
         request.getRequestDispatcher("InventoryStatisticView.jsp").forward(request, response);
     } 
 

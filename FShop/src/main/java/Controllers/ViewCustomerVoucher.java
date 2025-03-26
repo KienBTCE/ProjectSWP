@@ -69,27 +69,29 @@ public class ViewCustomerVoucher extends HttpServlet {
         CustomerVoucherDAO c = new CustomerVoucherDAO();
         List<CustomerVoucher> list = c.getVoucherOfCustomer(cus.getId());
         for (CustomerVoucher customerVoucher : list) {
-            String expirationDateString = customerVoucher.getExpirationDate();
-            String endDateString = customerVoucher.getEndDate();
-            Timestamp expirationDate = Timestamp.valueOf(expirationDateString);
-            Timestamp endDate = Timestamp.valueOf(endDateString);
-            LocalDateTime currentDate = LocalDateTime.now();
-            boolean isDeleted = false;
-            if (expirationDate.toLocalDateTime().isBefore(currentDate)) {
-                System.out.println("Voucher Het Han");
-                c.deleteVoucher(cus.getId(), customerVoucher.getVoucherID());
-                isDeleted = true;
-            }
-            if (((customerVoucher.getUsedCount() == customerVoucher.getMaxUsedCount()) && isDeleted == false) && customerVoucher.getMaxUsedCount() != 0) {
-                System.out.println("Voucher Het Luot sd");
-                c.deleteVoucher(cus.getId(), customerVoucher.getVoucherID());
-                isDeleted = true;
-            }
+            if (customerVoucher.getExpirationDate() != null) {
+                String expirationDateString = customerVoucher.getExpirationDate();
+                String endDateString = customerVoucher.getEndDate();
+                Timestamp expirationDate = Timestamp.valueOf(expirationDateString);
+                Timestamp endDate = Timestamp.valueOf(endDateString);
+                LocalDateTime currentDate = LocalDateTime.now();
+                boolean isDeleted = false;
+                if (expirationDate.toLocalDateTime().isBefore(currentDate)) {
+                    System.out.println("Voucher Het Han");
+                    c.deleteVoucher(cus.getId(), customerVoucher.getVoucherID());
+                    isDeleted = true;
+                }
+                if (((customerVoucher.getUsedCount() == customerVoucher.getMaxUsedCount()) && isDeleted == false) && customerVoucher.getMaxUsedCount() != 0) {
+                    System.out.println("Voucher Het Luot sd");
+                    c.deleteVoucher(cus.getId(), customerVoucher.getVoucherID());
+                    isDeleted = true;
+                }
 
-            if (endDate.toLocalDateTime().isBefore(currentDate) && isDeleted == false) {
-                System.out.println("Voucher Het End date");
-                c.deleteVoucher(cus.getId(), customerVoucher.getVoucherID());
-                isDeleted = true;
+                if (endDate.toLocalDateTime().isBefore(currentDate) && isDeleted == false) {
+                    System.out.println("Voucher Het End date");
+                    c.deleteVoucher(cus.getId(), customerVoucher.getVoucherID());
+                    isDeleted = true;
+                }
             }
         }
         list = c.getVoucherOfCustomer(cus.getId());

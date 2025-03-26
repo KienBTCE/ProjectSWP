@@ -334,18 +334,21 @@ VALUES
 -- Insert Orders
 INSERT INTO Orders (CustomerID, FullName, [Address], PhoneNumber, OrderedDate, DeliveredDate, Status, TotalAmount)
 VALUES 
-(1, 'Nguyen Van A', '123 Tech Street, District 1, Ho Chi Minh City', '0901234567', '2024-01-01', NULL, 1, 50000000),
-(2, 'Tran Thi B', '456 Nguyen Du Street, District 3, Ho Chi Minh City', '0909876543', '2024-02-15', NULL, 1, 75000000),
-(3, 'Le Minh C', '789 Le Lai Street, District 5, Ho Chi Minh City', '0912345678', '2024-03-20', NULL, 2, 25000000),
+(1, 'Nguyen Van A', '123 Tech Street, District 1, Ho Chi Minh City', '0901234567', '2024-01-01', NULL, 4, 50000000),
+(2, 'Tran Thi B', '456 Nguyen Du Street, District 3, Ho Chi Minh City', '0909876543', '2024-02-15', NULL, 4, 75000000),
+(3, 'Le Minh C', '789 Le Lai Street, District 5, Ho Chi Minh City', '0912345678', '2024-03-20', NULL, 4, 25000000),
 (4, 'Pham Thi D', '321 Pham Ngoc Thach, District 1, Ho Chi Minh City', '0923456789', '2024-04-05', NULL, 3, 12000000),
-(5, 'Hoang Minh E', '654 Ha Noi Street, Hai Ba Trung, Hanoi', '0934567890', '2024-05-10', NULL, 1, 30000000),
-(6, 'Nguyen Thi F', '112 Mai Thi Luu, District 3, Ho Chi Minh City', '0945678901', '2024-06-15', NULL, 1, 40000000),
+(5, 'Hoang Minh E', '654 Ha Noi Street, Hai Ba Trung, Hanoi', '0934567890', '2024-05-10', NULL, 4, 30000000),
+(6, 'Nguyen Thi F', '112 Mai Thi Luu, District 3, Ho Chi Minh City', '0945678901', '2024-06-15', NULL, 4, 40000000),
 (7, 'Pham Minh G', '234 Ly Tu Trong, District 1, Ho Chi Minh City', '0956789012', '2024-07-01', NULL, 2, 60000000),
-(8, 'Hoang Thi H', '567 Le Duan, District 5, Ho Chi Minh City', '0967890123', '2024-08-12', NULL, 1, 15000000),
-(9, 'Le Thi I', '678 Bach Dang, District 7, Ho Chi Minh City', '0978901234', '2024-09-08', NULL, 1, 55000000),
-(10, 'Nguyen Minh J', '890 Pham Hung, District 8, Ho Chi Minh City', '0989012345', '2024-10-22', NULL, 3, 20000000),
-(11, 'Pham Thi K', '123 Bui Thi Xuan, District 1, Ho Chi Minh City', '0990123456', '2024-11-18', NULL, 2, 45000000),
-(12, 'Le Minh L', '456 Huynh Tan Phat, District 7, Ho Chi Minh City', '0902345678', '2024-12-05', NULL, 1, 35000000);
+(8, 'Hoang Thi H', '567 Le Duan, District 5, Ho Chi Minh City', '0967890123', '2024-08-12', NULL, 4, 15000000),
+(9, 'Le Thi I', '678 Bach Dang, District 7, Ho Chi Minh City', '0978901234', '2024-09-08', NULL, 4, 55000000),
+(10, 'Nguyen Minh J', '890 Pham Hung, District 8, Ho Chi Minh City', '0989012345', '2024-10-22', NULL, 4, 20000000),
+(11, 'Pham Thi K', '123 Bui Thi Xuan, District 1, Ho Chi Minh City', '0990123456', '2024-11-18', NULL, 4, 45000000),
+(12, 'Le Minh Hoo', '456 Huynh Tan Phat, District 7, Ho Chi Minh City', '0902345678', '2024-12-05', NULL, 4, 35000000),
+(12, 'Le Minh Hoo', '456 Huynh Tan Phat, District 7, Ho Chi Minh City', '0902345678', '2024-12-05', NULL, 4, 35000000),
+(12, 'Le Minh Hoo', '456 Huynh Tan Phat, District 7, Ho Chi Minh City', '0902345678', '2024-12-05', NULL, 4, 35000000),
+(12, 'Le Minh Hoo', '456 Huynh Tan Phat, District 7, Ho Chi Minh City', '0902345678', '2024-12-05', NULL, 4, 35000000);
 
 
 INSERT INTO OrderDetails (OrderID, ProductID, Quantity, Price)
@@ -361,7 +364,10 @@ VALUES
 (9, 9, 3, 55000000),
 (10, 10, 2, 20000000),
 (11, 11, 5, 45000000),
-(12, 12, 2, 35000000);
+(12, 12, 2, 35000000),
+(13, 12, 2, 35000000),
+(14, 12, 2, 35000000),
+(15, 12, 2, 35000000);
 
 
 -- Insert Employees
@@ -402,11 +408,11 @@ VALUES
 
 INSERT INTO Vouchers (VoucherCode, VoucherValue, VoucherType, StartDate, EndDate, UsedCount, MaxUsedCount, MaxDiscountAmount, MinOrderValue, Status, [Description])
 VALUES 
+('NEWUSER', 50000, 0, '2025-03-01', '2025-12-31', 0, NULL, NULL, 100000, 1, N'50,000 VND discount for new customers on orders from 100,000 VND'),
 ('DISCOUNT10', 10, 1, '2025-03-01', '2025-03-31', 0, 100, 50000, 200000, 1, N'10% discount up to 50,000 VND for orders from 200,000 VND'),
-('FREESHIP', 30000, 0, '2025-03-05', '2025-04-05', 0, 500, NULL, 150000, 1, N'30,000 VND off shipping fee for orders from 150,000 VND'),
 ('VIP50', 50000, 0, '2025-03-10', '2025-04-10', 0, 50, NULL, 500000, 1, N'50,000 VND discount for orders from 500,000 VND'),
-('FLASHSALE', 20, 1, '2025-03-15', '2025-03-20', 0, 200, 70000, 300000, 1, N'20% discount up to 70,000 VND for orders from 300,000 VND'),
-('NEWUSER', 50000, 0, '2025-03-01', '2025-12-31', 0, NULL, NULL, 100000, 1, N'50,000 VND discount for new customers on orders from 100,000 VND');
+('FLASHSALE', 20, 1, '2025-03-15', '2025-03-20', 0, 200, 70000, 300000, 1, N'20% discount up to 70,000 VND for orders from 300,000 VND');
+
 
 -- Assign vouchers to Customer with ID = 1
 INSERT INTO CustomerVoucher (CustomerID, VoucherID, ExpirationDate, Quantity)

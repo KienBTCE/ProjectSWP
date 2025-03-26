@@ -132,7 +132,9 @@ public class CustomerVoucherDAO {
             e.printStackTrace();
         }
 
+
     }
+
 
     public void increaseVoucher(int voucherID) {
         try {
@@ -144,6 +146,7 @@ public class CustomerVoucherDAO {
             e.printStackTrace();
         }
     }
+
         public int deleteCustomerVoucher(int voucherID) {
         int count = 0;
         String sql = "DELETE FROM CustomerVoucher WHERE VoucherID = ?;";
@@ -154,6 +157,16 @@ public class CustomerVoucherDAO {
             System.out.println("Delete error: " + e.getMessage());
         }
         return count;
+        }
+
+    public static void main(String[] args) {
+        CustomerVoucherDAO cv = new CustomerVoucherDAO();
+        List<CustomerVoucher> list = cv.getVoucherOfCustomer(13);
+        for (CustomerVoucher customerVoucher : list) {
+            System.out.println(customerVoucher.getVoucherCode() + " " + customerVoucher.getExpirationDate());
+        }
+       // cv.assignVoucherToCustomer(13, 1, 1, null);
+
     }
 
 //    public static void main(String[] args) {

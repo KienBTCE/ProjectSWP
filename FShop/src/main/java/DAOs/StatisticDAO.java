@@ -38,8 +38,9 @@ public class StatisticDAO {
             PreparedStatement pr = connector.prepareStatement(sql);
             ResultSet rs = pr.executeQuery();
             while (rs.next()) {
-                list.add(new Statistic(rs.getString(1), rs.getInt(2), 0));
+                list.add(new Statistic(rs.getString(1), rs.getInt(2)));
             }
+            
             return list;
         } catch (SQLException e) {
             System.out.println(e);
@@ -72,100 +73,6 @@ public class StatisticDAO {
                 list.add(new Statistic(rs.getString(1), rs.getString(2), rs.getInt(3)));
             }
             return list;
-        } catch (SQLException e) {
-            System.out.println(e);
-        }
-        return list;
-    }
-
-    public ArrayList<Statistic> getInventoryforSmartPhone() {
-        ArrayList<Statistic> list = new ArrayList<>();
-        String sql = "SELECT p.Model AS Model, p.Stock AS StockQuantity\n"
-                + "FROM Products p\n"
-                + "WHERE p.CategoryID = 2 ;";
-        try {
-            PreparedStatement pr = connector.prepareStatement(sql);
-            ResultSet rs = pr.executeQuery();
-            while (rs.next()) {
-                list.add(new Statistic(rs.getString(1), rs.getInt(2)));
-            }
-        } catch (SQLException e) {
-            System.out.println(e);
-        }
-        return list;
-    }
-
-    public ArrayList<Statistic> getInventoryforLaptop() {
-        ArrayList<Statistic> list = new ArrayList<>();
-        String sql = "SELECT p.Model AS Model, p.Stock AS StockQuantity\n"
-                + "FROM Products p\n"
-                + "WHERE p.CategoryID = 1 ;";
-        try {
-            PreparedStatement pr = connector.prepareStatement(sql);
-            ResultSet rs = pr.executeQuery();
-            while (rs.next()) {
-                list.add(new Statistic(rs.getString(1), rs.getInt(2)));
-            }
-        } catch (SQLException e) {
-            System.out.println(e);
-        }
-        return list;
-    }
-
-    public ArrayList<Statistic> getRevenuePhone() {
-        ArrayList<Statistic> list = new ArrayList<>();
-        String sql = "SELECT \n"
-                + "    MONTH(o.OrderedDate) AS Month,\n"
-                + "    SUM(od.Quantity * od.Price) AS Revenue\n"
-                + "FROM \n"
-                + "    Products p\n"
-                + "JOIN \n"
-                + "    OrderDetails od ON p.ProductID = od.ProductID\n"
-                + "JOIN \n"
-                + "    Orders o ON od.OrderID = o.OrderID\n"
-                + "WHERE \n"
-                + "    p.CategoryID = 2\n"
-                + "  \n"
-                + "GROUP BY \n"
-                + "    p.Model,  MONTH(o.OrderedDate)\n"
-                + "ORDER BY \n"
-                + "    Month Asc";
-        try {
-            PreparedStatement pr = connector.prepareStatement(sql);
-            ResultSet rs = pr.executeQuery();
-            while (rs.next()) {
-                list.add(new Statistic(rs.getInt(1), rs.getLong(2)));
-            }
-        } catch (SQLException e) {
-            System.out.println(e);
-        }
-        return list;
-    }
-
-    public ArrayList<Statistic> getRevenueLaptop() {
-        ArrayList<Statistic> list = new ArrayList<>();
-        String sql = "SELECT \n"
-                + "    MONTH(o.OrderedDate) AS Month,\n"
-                + "    SUM(od.Quantity * od.Price) AS Revenue\n"
-                + "FROM \n"
-                + "    Products p\n"
-                + "JOIN \n"
-                + "    OrderDetails od ON p.ProductID = od.ProductID\n"
-                + "JOIN \n"
-                + "    Orders o ON od.OrderID = o.OrderID\n"
-                + "WHERE \n"
-                + "    p.CategoryID = 1\n"
-                + "  \n"
-                + "GROUP BY \n"
-                + "    p.Model,  MONTH(o.OrderedDate)\n"
-                + "ORDER BY \n"
-                + "    Month Asc";
-        try {
-            PreparedStatement pr = connector.prepareStatement(sql);
-            ResultSet rs = pr.executeQuery();
-            while (rs.next()) {
-                list.add(new Statistic(rs.getInt(1), rs.getLong(2)));
-            }
         } catch (SQLException e) {
             System.out.println(e);
         }
