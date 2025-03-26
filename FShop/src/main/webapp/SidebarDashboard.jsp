@@ -102,14 +102,14 @@
 
             <c:if test="${sessionScope.employee.getRoleId() == 3}">
                 <h6><a href="ViewOrderListServlet"> <i class="fas fa-box-open"></i>Order Management</a></h6>
-                <a href="ViewListNewFeedbackServlet"><i class="bi bi-chat-left-text"></i>Feedback</a>
-                <a href="ViewOrderListServlet">
-                    <i class="fas fa-box-open"></i>Order</a>
+                <a href="ViewListNewFeedbackServlet"><i class="bi bi-chat-left-text"></i>Feedback Manegement</a>
+<!--                <a href="ViewOrderListServlet">
+                    <i class="fas fa-box-open"></i>Order</a>-->
                     <a href="ViewVoucherListServlet"> <i class="fa-solid fa-ticket"></i>
-                    Voucher</a>
+                    Voucher Manegement</a>
                 <a href="CustomerListServlet"> <i class="bi bi-person"></i>
-                    Customer</a>
-                <a href="DeleteOrder.jsp"><i class="bi bi-trash"></i> Delete</a>
+                    Customer Manegement</a>
+                <a href="DeleteOrder.jsp"><i class="bi bi-trash"></i> Delete Order</a>
             </c:if>
             <c:if test="${sessionScope.employee.getRoleId() == 4}">
                 <h6><a href="Warehouse">Warehouse Management</a></h6>

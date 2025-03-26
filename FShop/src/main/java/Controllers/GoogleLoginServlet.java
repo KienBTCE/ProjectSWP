@@ -5,6 +5,7 @@
 package Controllers;
 
 import DAOs.CustomerDAO;
+import DAOs.CustomerVoucherDAO;
 import DAOs.GoogleLogin;
 import Models.Customer;
 import Models.GoogleAccount;
@@ -79,6 +80,8 @@ public class GoogleLoginServlet extends HttpServlet {
                 if (cusDAO.checkGoogleEmailExisted(acc.getEmail()) == 0) {
                     if (cusDAO.addNewGoogleCustomer(cus) == 1) {
                         cus = cusDAO.getGoogleCustomer(acc.getEmail(), acc.getId());
+                        CustomerVoucherDAO cv = new CustomerVoucherDAO();
+                        cv.assignVoucherToCustomer(cus.getId(), 1, 1, null);
                     }
                 } else {
                     cus = cusDAO.getGoogleCustomer(acc.getEmail(), acc.getId());

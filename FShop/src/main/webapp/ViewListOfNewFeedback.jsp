@@ -81,6 +81,21 @@
             <div class="container-feedback">
                 <h2 class="text-center mb-4"><jsp:include page="HeaderDashboard.jsp"></jsp:include></h2>
              <h3  font-weight="Bold">FEEDBACK</h3>
+            <c:if test="${empty ProductRating}">
+             <h3  font-weight="Bold">Have No Feedback.</h3>
+            </c:if>
+             <c:if test="${param.success == 'created'}">
+                        <div class="alert alert-success alert-dismissible fade show" role="alert">
+                            <i class="fa-solid fa-circle-check me-2"></i> Create Reply successfully!
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>
+                    </c:if>
+                    <c:if test="${param.success == 'deleted'}">
+                        <div class="alert alert-success alert-dismissible fade show" role="alert">
+                            <i class="fa-solid fa-circle-check me-2"></i> Create Reply Unsuccessfully
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>
+                    </c:if>
                 <div class="card card-shadow p-4">
                     <div class="table-responsive">
                         <table class="table table-hover align-middle">

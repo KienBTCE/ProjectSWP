@@ -120,15 +120,18 @@ public class AssignVoucherServlet extends HttpServlet {
                 throw new Exception("The customer has been issued this voucher.");
             }
 
-            cvDAO.assignVoucherToCustomer(customerID, voucherID, quantity, expirationDate);
-
+           int count = cvDAO.assignVoucherToCustomer(customerID, voucherID, quantity, expirationDate);
+           if(count>0){
             response.sendRedirect("CustomerListServlet?success=assigned");
+           }else{
+            response.sendRedirect("CustomerListServlet?success=failed");
+           }
 
         } catch (Exception e) {
             e.printStackTrace();
             request.setAttribute("error", e.getMessage());
 
-            // Nạp lại thông tin customer + voucher
+           
             CustomerDAO cDAO = new CustomerDAO();
             VoucherDAO vDAO = new VoucherDAO();
 

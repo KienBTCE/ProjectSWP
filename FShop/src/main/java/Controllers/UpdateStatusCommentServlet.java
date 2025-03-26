@@ -70,13 +70,12 @@ public class UpdateStatusCommentServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        
+
         int rateID = Integer.parseInt(request.getParameter("rateID"));
         int isRead = Integer.parseInt(request.getParameter("isDeleted"));
-    
+
         ProductRatingDAO prDAO = new ProductRatingDAO();
-        prDAO.updateStatusComment(rateID, isRead);
-    
+        boolean isOk = prDAO.updateStatusComment(rateID, isRead);
     }
 
     /**

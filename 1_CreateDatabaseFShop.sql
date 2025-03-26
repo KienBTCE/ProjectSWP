@@ -208,7 +208,7 @@ CREATE TABLE ImportDetails ( -- ImportOrderDetails -> ImportDetails
     PRIMARY KEY (ImportID, ProductID),
     ImportQuantity INT, -- Quantity -> ImportQuantity
     ImportPrice BIGINT
-);SELECT * FROM Imports I JOIN Suppliers S ON I.SupplierID = S.SupplierID WHERE S.Name LIKE '%tech%'
+)
 
 CREATE TABLE ProductRatings (
     RateID INT IDENTITY(1,1) PRIMARY KEY,

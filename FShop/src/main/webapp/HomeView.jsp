@@ -60,16 +60,22 @@
 
                 text-decoration: none;
                 color: inherit;
-                transition: 0.3s;
+                box-shadow: 0.5px 0.5px 0.5px 0.5px #f2e9e9;
             }
 
             .frame-represent:hover {
                 opacity: 0.8;
                 text-decoration: none;
                 color: inherit;
-                transition: 0.3s;
-            }
+                transform: 0.3s;
 
+            }
+            .productImg:hover{
+                transform: scale(1.05);
+            }
+            .productImg{
+                transition: transform 0.3s ease;
+            }
             .title-content a{
                 text-decoration: none;
                 color: black;
@@ -204,7 +210,7 @@
                         <c:if test="${count < 5 and p.getCategoryId() == 1}">
                             <c:set var="count" value="${count + 1}" scope="page"></c:set>
                             <a class="frame-represent" href="ProductDetailServlet?id=${p.getProductId()}">
-                                <img src="assets/imgs/Products/${p.getImage()}" width="150px" height="150px" alt="alt"/>
+                                <img class="productImg" src="assets/imgs/Products/${p.getImage()}" width="150px" height="150px" alt="alt"/>
                                 <div class="star-rating">
                                     <c:forEach var="i" begin="1" end="5">
                                         <c:choose>
@@ -235,7 +241,7 @@
                         <c:if test="${count < 5 and p.getCategoryId() == 2}">
                             <c:set var="count" value="${count + 1}" scope="page"></c:set>
                             <a class="frame-represent" href="ProductDetailServlet?id=${p.getProductId()}">
-                                <img src="assets/imgs/Products/${p.getImage()}" width="150px" height="150px" alt="alt"/>
+                                <img class="productImg" src="assets/imgs/Products/${p.getImage()}" width="150px" height="150px" alt="alt"/>
                                 <div class="star-rating">
                                     <c:forEach var="i" begin="1" end="5">
                                         <c:choose>
@@ -270,7 +276,7 @@
 
                             <c:set var="count" value="${count + 1}" scope="page"></c:set>
                             <a class="frame-represent" href="ProductDetailServlet?id=${p.getProductId()}">
-                                <img src="assets/imgs/Products/${p.getImage()}" width="150px" height="150px" alt="alt"/>
+                                <img class="productImg" src="assets/imgs/Products/${p.getImage()}" width="150px" height="150px" alt="alt"/>
                                 <div class="star-rating">
                                     <c:forEach var="i" begin="1" end="5">
                                         <c:choose>
@@ -292,7 +298,7 @@
                     </c:forEach>
                 </div>
             </div>
-         
+
 
             <div class="row">
                 <h4 class="title-content"><a href="Accessory Charger">Charger</a></h4>
@@ -303,7 +309,7 @@
                         <c:if test="${count < 5 and p.getCategoryId() == 5}">
                             <c:set var="count" value="${count + 1}" scope="page"></c:set>
                             <a class="frame-represent" href="ProductDetailServlet?id=${p.getProductId()}">
-                                <img src="assets/imgs/Products/${p.getImage()}" width="150px" height="150px" alt="alt"/>
+                                <img class="productImg" src="assets/imgs/Products/${p.getImage()}" width="150px" height="150px" alt="alt"/>
                                 <div class="star-rating">
                                     <c:forEach var="i" begin="1" end="5">
                                         <c:choose>
@@ -333,7 +339,7 @@
                         <c:if test="${count < 5 and p.getCategoryId() == 6}">
                             <c:set var="count" value="${count + 1}" scope="page"></c:set>
                             <a class="frame-represent" href="ProductDetailServlet?id=${p.getProductId()}">
-                                <img src="assets/imgs/Products/${p.getImage()}" width="150px" height="150px" alt="alt"/>
+                                <img class="productImg" src="assets/imgs/Products/${p.getImage()}" width="150px" height="150px" alt="alt"/>
                                 <div class="star-rating">
                                     <c:forEach var="i" begin="1" end="5">
                                         <c:choose>
