@@ -20,6 +20,42 @@ public class InventoryStatisticDAO {
 
     DBContext db = new DBContext();
     Connection connector = db.getConnection();
+    
+    
+    public ArrayList<InventoryStatistic> getInventoryforSmartPhone() {
+        ArrayList<InventoryStatistic> list = new ArrayList<>();
+        String sql = "SELECT p.Model AS Model, p.Stock AS StockQuantity\n"
+                + "FROM Products p\n"
+                + "WHERE p.CategoryID = 2 ;";
+        try {
+            PreparedStatement pr = connector.prepareStatement(sql);
+            ResultSet rs = pr.executeQuery();
+            while (rs.next()) {
+                list.add(new InventoryStatistic(rs.getString(1), rs.getInt(2)));
+            }
+        } catch (SQLException e) {
+            System.out.println(e);
+        }
+        return list;
+    }
+    
+    public ArrayList<InventoryStatistic> getInventoryforLaptop() {
+        ArrayList<InventoryStatistic> list = new ArrayList<>();
+        String sql = "SELECT p.Model AS Model, p.Stock AS StockQuantity\n"
+                + "FROM Products p\n"
+                + "WHERE p.CategoryID = 1 ;";
+        try {
+            PreparedStatement pr = connector.prepareStatement(sql);
+            ResultSet rs = pr.executeQuery();
+            while (rs.next()) {
+                list.add(new InventoryStatistic(rs.getString(1), rs.getInt(2)));
+            }
+        } catch (SQLException e) {
+            System.out.println(e);
+        }
+        return list;
+    }
+
 
     public ArrayList<InventoryStatistic> getAllInventory() {
         ArrayList<InventoryStatistic> list = new ArrayList<>();
@@ -39,9 +75,9 @@ public class InventoryStatisticDAO {
                 + "JOIN \n"
                 + "    Brands b ON p.BrandID = b.BrandID\n"
                 + "LEFT JOIN \n"
-                + "    ImportOrderDetails iod ON p.ProductID = iod.ProductID\n"
+                + "    ImportDetails iod ON p.ProductID = iod.ProductID\n"
                 + "LEFT JOIN \n"
-                + "    ImportOrders i ON iod.IOID = i.IOID\n"
+                + "    Imports i ON iod.ImportID = i.ImportID\n"
                 + "LEFT JOIN \n"
                 + "    Suppliers s ON i.SupplierID = s.SupplierID\n"
                 + "ORDER BY \n"
@@ -63,26 +99,25 @@ public class InventoryStatisticDAO {
         ArrayList<InventoryStatistic> list = new ArrayList<>();
         String sql = "SELECT \n"
                 + "     c.Name AS CategoryName,\n"
-                + "     b.Name AS BrandName,\n"
-                + "     p.Model,\n"
-                + "     p.FullName AS ProductName,\n"
-                + "     p.Stock AS StockQuantity,  \n"
-                + "     s.Name AS SupplierName,\n"
-                + "     i.ImportDate AS LastImportDate,\n"
-                + "     iod.Quantity AS ImportedQuantity,\n"
-                + "     iod.ImportPrice AS ProductImportPrice \n"
+                + " b.Name AS BrandName,\n"
+                + "    p.Model,\n"
+                + "    p.FullName AS ProductName,\n"
+                + "    p.Stock AS StockQuantity,  \n"
+                + "    s.Name AS SupplierName,\n"
+                + "    i.ImportDate AS LastImportDate,\n"
+                + "    iod.ImportPrice AS ProductImportPrice \n"
                 + "FROM \n"
-                + "     Products p\n"
+                + "    Products p\n"
                 + "JOIN \n"
-                + "     Categories c ON p.CategoryID = c.CategoryID\n"
+                + "    Categories c ON p.CategoryID = c.CategoryID\n"
                 + "JOIN \n"
-                + "     Brands b ON p.BrandID = b.BrandID\n"
+                + "    Brands b ON p.BrandID = b.BrandID\n"
                 + "LEFT JOIN \n"
-                + "     ImportOrderDetails iod ON p.ProductID = iod.ProductID\n"
+                + "    ImportDetails iod ON p.ProductID = iod.ProductID\n"
                 + "LEFT JOIN \n"
-                + "     ImportOrders i ON iod.IOID = i.IOID\n"
+                + "    Imports i ON iod.ImportID = i.ImportID\n"
                 + "LEFT JOIN \n"
-                + "     Suppliers s ON i.SupplierID = s.SupplierID\n"
+                + "    Suppliers s ON i.SupplierID = s.SupplierID\n"
                 + "WHERE \n"
                 + "     (p.FullName LIKE ? OR c.Name LIKE ? OR b.Name LIKE ? OR s.Name LIKE ?)\n"
                 + "ORDER BY \n"

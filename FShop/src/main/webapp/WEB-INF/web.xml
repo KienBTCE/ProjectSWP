@@ -223,6 +223,14 @@
         <servlet-name>AddEmployeeServlet</servlet-name>
         <servlet-class>Controllers.AddEmployeeServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>SearchEmployeeServlet</servlet-name>
+        <servlet-class>Controllers.SearchEmployeeServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>SearchEmployeeServlet</servlet-name>
+        <url-pattern>/SearchEmployeeServlet</url-pattern>
+    </servlet-mapping>
     <servlet-mapping>
         <servlet-name>UpdateEmployeeServlet</servlet-name>
         <url-pattern>/UpdateEmployeeServlet</url-pattern>
