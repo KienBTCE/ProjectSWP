@@ -72,14 +72,18 @@ public class ViewCartServlet extends HttpServlet {
             session.setAttribute("numOfProCartOfCus", c.getNumberOfProduct(cus.getId()));
             List<Cart> cartList = c.getCartOfAccountID(cus.getId());
             System.out.println(cus.getId());
-            List<Product> pList = p.getAllProducts();
+            //List<Product> pList = p.getAllProducts();
             for (Cart cart : cartList) {
                 Product product = p.getProductByID(cart.getProductID());
-                if (product.getStock() == 0) {
-                    cart.setQuantity(0);
-                } else if (product.getStock() > 0 && (product.getStock() < cart.getQuantity())) {
-                    cart.setQuantity(product.getStock());
-                    c.updateProductQuantity(cart.getProductID(), product.getStock(), cus.getId());
+                if (product.getDeleted() != 1) {
+                    if (product.getStock() == 0) {
+                        cart.setQuantity(0);
+                    } else if (product.getStock() > 0 && (product.getStock() < cart.getQuantity())) {
+                        cart.setQuantity(product.getStock());
+                        c.updateProductQuantity(cart.getProductID(), product.getStock(), cus.getId());
+                    }
+                } else {
+                    c.deleteProductOnCart(cart.getProductID(), cus.getId());
                 }
             }
 
