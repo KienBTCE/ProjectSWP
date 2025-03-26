@@ -23,17 +23,21 @@ public class SearchInventoryServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        InventoryStatisticDAO inventoryDAO = new InventoryStatisticDAO();
-        ArrayList<InventoryStatistic> listI;
         String query = request.getParameter("query");
-        if (query == null || query.trim().isEmpty()) {
-            listI = inventoryDAO.getAllInventory();
+        InventoryStatisticDAO inventoryStatisticDAO = new InventoryStatisticDAO();
+        ArrayList<InventoryStatistic> listInventoryPhone = inventoryStatisticDAO.getInventoryforSmartPhone();
+        ArrayList<InventoryStatistic> listInventoryLaptop = inventoryStatisticDAO.getInventoryforLaptop();
+        if (query != null && !query.trim().isEmpty()) {
+            ArrayList<InventoryStatistic> listI = inventoryStatisticDAO.searchInventory(query);
+            request.setAttribute("listInventoryPhone", listInventoryPhone);
+            request.setAttribute("listInventoryLaptop", listInventoryLaptop);
+            request.setAttribute("listI", listI);
+            request.setAttribute("searchQuery", query);
+            request.getRequestDispatcher("SearchInventoryStatistic.jsp").forward(request, response);
         } else {
-            listI = inventoryDAO.searchInventory(query);
+            response.sendRedirect("InventoryStatisticServlet");
         }
-        request.setAttribute("listI", listI);
-        request.setAttribute("searchQuery", query);
-        request.getRequestDispatcher("InventoryStatisticView.jsp").forward(request, response);
+
     }
 
     @Override
