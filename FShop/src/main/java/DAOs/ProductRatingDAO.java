@@ -143,16 +143,19 @@ public class ProductRatingDAO {
         return list;
     }
 
-    public void updateStatusComment(int rateID, int status) {
+    public boolean updateStatusComment(int rateID, int status) {
+        boolean isOk = false;
         String query = "Update ProductRatings SET IsDeleted = ? WHERE RateID =?";
         try {
             PreparedStatement pre = connector.prepareStatement(query);
             pre.setInt(1, status);
             pre.setInt(2, rateID);
             pre.executeUpdate();
+            isOk = true;
         } catch (Exception e) {
             e.printStackTrace();
         }
+        return isOk;
     }
 
     public void updateisReadComment(int rateID) {
@@ -166,7 +169,8 @@ public class ProductRatingDAO {
         }
     }
 
-    public void addProductRating(int customerId, int productId, int star, String comment) {
+    public int addProductRating(int customerId, int productId, int star, String comment) {
+        int count = 0;
         String query = "INSERT INTO ProductRatings (CustomerID, ProductID, CreatedDate, Star, Comment, isDeleted, isRead) VALUES (?, ?, GETDATE(), ?, ?, 0, 0)";
         try {
             PreparedStatement pre = connector.prepareStatement(query);
@@ -174,10 +178,11 @@ public class ProductRatingDAO {
             pre.setInt(2, productId);
             pre.setInt(3, star);
             pre.setString(4, comment);
-            pre.executeUpdate();
+           count = pre.executeUpdate();
         } catch (Exception e) {
             e.printStackTrace();
         }
+        return count;
     }
 
     public Product getProductID(int rateID) {

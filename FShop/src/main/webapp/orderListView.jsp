@@ -27,7 +27,7 @@
                 background-color: white;
                 z-index: 1050;
                 padding: 10px 20px;
-                box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+                /*box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);*/
             }
 
             /* Cố định Sidebar */
@@ -50,7 +50,7 @@
             .content {
                 flex-grow: 1;
                 margin-left: 250px; /* Khoảng cách để không bị chồng lên sidebar */
-                margin-top: 150px; 
+                margin-top: 150px;
                 padding: 20px;
             }
 
@@ -173,22 +173,34 @@
     <body>
         <div class="sidebar-container">
             <jsp:include page="SidebarDashboard.jsp"></jsp:include>
-        </div>
+            </div>
 
-        <div class="main-layout">
-            <div class="fixed-header">
+            <div class="main-layout">
+                <div class="fixed-header">
                 <jsp:include page="HeaderDashboard.jsp"></jsp:include>
-                <form action="ViewOrderListServlet" method="GET" class="search-container">
-                    <input type="text" name="search" id="searchInput" value="${searchQuery}" 
-                        placeholder="Search by Name, Phone..." class="search-input">
+                    <form action="ViewOrderListServlet" method="GET" class="search-container">
+                        <input type="text" name="search" id="searchInput" value="${searchQuery}" 
+                           placeholder="Search by Name, Phone..." class="search-input">
                     <button type="submit" class="search-button">
                         🔍
                     </button>
                 </form>
-                        <h3  font-weight="Bold">ORDER</h3>
+                <h3  font-weight="Bold">ORDER</h3>
             </div>
 
             <div class="content">
+                <c:if test="${param.success == 'created'}">
+                        <div class="alert alert-success alert-dismissible fade show" role="alert">
+                            <i class="fa-solid fa-circle-check me-2"></i> Updating Order successfully!
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>
+                    </c:if>
+
+               
+                <c:if test="${empty data}">
+                    <h3  font-weight="Bold">Have No Order</h3>
+                </c:if>
+
                 <div class="order-container">
                     <table class="order-table">
                         <thead>
@@ -242,9 +254,15 @@
                                         </c:choose>
                                     </td>
                                     <td>
-                                        <a href="ViewOrderDetailServlet?orderID=${order.orderID}" class="btn btn-primary">
-                                            <i class="fa-solid fa-eye"></i> View Details
-                                        </a>
+                                        <div class="d-flex gap-2">
+                                            <a href="ViewOrderDetailServlet?orderID=${order.orderID}" class="btn btn-outline-info btn-sm">
+                                                <i class="fa-solid fa-eye"></i> View Details
+                                            </a>
+                                            <a href="UpdateOrderServlet?orderID=${order.orderID}" class="btn btn-primary btn-sm">
+                                                <i class="fa-solid fa-pen-to-square"></i> Update Order
+                                            </a>
+                                        </div>
+
                                     </td>
                                 </tr>
                             </c:forEach>

@@ -6,6 +6,7 @@ package Controllers;
 
 import DAOs.ProductRatingDAO;
 import DAOs.RatingRepliesDAO;
+import Models.RatingReplies;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -77,13 +78,13 @@ public class DeleteReplyServlet extends HttpServlet {
             int id = Integer.parseInt(replyID);
             ProductRatingDAO prDAO = new ProductRatingDAO();
             RatingRepliesDAO rrDAO = new RatingRepliesDAO();
-
+            RatingReplies r = rrDAO.getReplyByRepyID(id);
             prDAO.markReplyAsUnRead(id);
             boolean isdelete = rrDAO.DeleteRatingReply(id);
             if (isdelete) {
-                response.getWriter().write("Success");
+                response.sendRedirect("ViewFeedbackForManagerServlet?rateID="+r.getRateID()+"&success=success");
             } else {
-                response.getWriter().write("Failed");
+                  response.sendRedirect("ViewFeedbackForManagerServlet?rateID="+r.getRateID()+"&success=failed");
             }
 
         } catch (Exception e) {

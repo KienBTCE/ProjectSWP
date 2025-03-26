@@ -93,6 +93,7 @@ public class ChangeCustomerPasswordServlet extends HttpServlet {
                 request.getRequestDispatcher("ProfileManagementView.jsp").forward(request, response);
                 return;
             }
+
             if (cusDAO.changeCustomerPassword(cus.getId(), newPassword) > 0) {
                 session.setAttribute("message", "Change Password Success!");
             } else {
