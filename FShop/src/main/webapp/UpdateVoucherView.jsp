@@ -43,7 +43,7 @@
 
         .content {
             flex-grow: 1;
-            margin-left: 650px;
+            margin-left: 750px;
             margin-top: 120px;
             padding: 20px;
         }
