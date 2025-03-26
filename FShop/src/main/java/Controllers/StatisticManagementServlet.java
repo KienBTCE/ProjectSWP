@@ -43,17 +43,9 @@ public class StatisticManagementServlet extends HttpServlet {
 
         StatisticDAO statisticDAO = new StatisticDAO();
         ArrayList<Statistic> listP = statisticDAO.getTopProduct();
-        ArrayList<Statistic> listC = statisticDAO.getTopCustomer();
-        ArrayList<Statistic> listInventoryPhone = statisticDAO.getInventoryforSmartPhone();
-        ArrayList<Statistic> listInventoryLaptop = statisticDAO.getInventoryforLaptop();
-        ArrayList<Statistic> listRevenuePhone = statisticDAO.getRevenuePhone();
-        ArrayList<Statistic> listRevenueLaptop = statisticDAO.getRevenueLaptop();
+        ArrayList<Statistic> listC = statisticDAO.getTopCustomer();   
         request.setAttribute("listP", listP);
         request.setAttribute("listC", listC);
-        request.setAttribute("listInventoryPhone", listInventoryPhone);
-        request.setAttribute("listInventoryLaptop", listInventoryLaptop);
-        request.setAttribute("listRevenuePhone", listRevenuePhone);
-        request.setAttribute("listRevenueLaptop", listRevenueLaptop);
         request.getRequestDispatcher("StatisticManagementView.jsp").forward(request, response);
     }
 

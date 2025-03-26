@@ -41,7 +41,6 @@ public class CreateProductServlet extends HttpServlet {
         List<String> categories = categoryDAO.getAllCategoryNames();
         BrandDAO brandDAO = new BrandDAO();
         List<String> brands = brandDAO.getAllBrandName();
-
         request.setAttribute("categories", categories);
         request.setAttribute("brands", brands);
         request.getRequestDispatcher("CreateProductView.jsp").forward(request, response);

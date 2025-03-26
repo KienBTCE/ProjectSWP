@@ -11,26 +11,14 @@ package Models;
 public class Statistic {
     private String productName;
     private int soldQuantity;
-    private double soldPercentage;
     private String customerName;
     private String customerEmail;
     private int successfulOrders;
     private String modelName;
     private int stockQuantity;
-    private int month;
-    private long revenue;
+ 
 
-    public Statistic(int month, long revenue) {
-        this.month = month;
-        this.revenue = revenue;
-    }
-    
-
-    public Statistic(String modelName, int stockQuantity) {
-        this.modelName = modelName;
-        this.stockQuantity = stockQuantity;
-    }
-    
+ 
    
     public Statistic(String customerName, String customerEmail, int successfulOrders) {
         this.customerName = customerName;
@@ -40,10 +28,9 @@ public class Statistic {
 
  
 
-    public Statistic(String productName, int soldQuantity, double soldPercentage) {
+    public Statistic(String productName, int soldQuantity) {
         this.productName = productName;
         this.soldQuantity = soldQuantity;
-        this.soldPercentage = soldPercentage;
     }
 
     public String getProductName() {
@@ -60,14 +47,6 @@ public class Statistic {
 
     public void setSoldQuantity(int soldQuantity) {
         this.soldQuantity = soldQuantity;
-    }
-
-    public double getSoldPercentage() {
-        return soldPercentage;
-    }
-
-    public void setSoldPercentage(double soldPercentage) {
-        this.soldPercentage = soldPercentage;
     }
 
     public String getCustomerName() {
@@ -108,25 +87,6 @@ public class Statistic {
 
     public void setStockQuantity(int stockQuantity) {
         this.stockQuantity = stockQuantity;
-    }
-
-    public int getMonth() {
-        return month;
-    }
-
-    public void setMonth(int month) {
-        this.month = month;
-    }
-
-    public long getRevenue() {
-        return revenue;
-    }
-
-    public void setRevenue(long revenue) {
-        this.revenue = revenue;
-    }
-    
-    
-    
+    }    
     
 }

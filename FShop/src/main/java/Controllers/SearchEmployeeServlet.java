@@ -11,7 +11,6 @@ import Models.Role;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
-import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -21,7 +20,6 @@ import java.util.ArrayList;
  *
  * @author NguyenPVT-CE181835
  */
-@WebServlet(name = "SearchEmployeeServlet", urlPatterns = {"/SearchEmployee"})
 public class SearchEmployeeServlet extends HttpServlet {
 
     /**
@@ -66,14 +64,14 @@ public class SearchEmployeeServlet extends HttpServlet {
          EmployeeDAO employeeDAO = new EmployeeDAO();
         String query = request.getParameter("query");
         ArrayList<Role> listR1 = roleDAO.getAllRoles();
-        if (query != null && !query.trim().isEmpty()) {
-           
+        if (query != null && !query.trim().isEmpty()) {           
             ArrayList<Employee> searchResults = employeeDAO.searchEmployeesByName(query);
-
             request.setAttribute("employees", searchResults);
             request.setAttribute("listR1", listR1);
             request.setAttribute("searchQuery", query);
-            request.getRequestDispatcher("EmployeeListView.jsp").forward(request, response);
+            request.getRequestDispatcher("SearchEmployeeList.jsp").forward(request, response);
+        }else{
+            response.sendRedirect("ViewEmployeeServlet");
         }
     }
 
