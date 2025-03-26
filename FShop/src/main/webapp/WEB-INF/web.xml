@@ -211,10 +211,6 @@
         <servlet-name>PreviewDeleteOrderServlet</servlet-name>
         <servlet-class>Controllers.PreviewDeleteOrderServlet</servlet-class>
     </servlet>
-    <servlet-mapping>
-        <servlet-name>UpdateEmployeeServlet</servlet-name>
-        <url-pattern>/UpdateEmployeeServlet</url-pattern>
-    </servlet-mapping>
     <servlet>
         <servlet-name>AddEmployeeServlet</servlet-name>
         <servlet-class>Controllers.AddEmployeeServlet</servlet-class>
@@ -286,6 +282,10 @@
     <servlet-mapping>
         <servlet-name>ViewOrderDetailServlet</servlet-name>
         <url-pattern>/ViewOrderDetailServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ViewProductServlet</servlet-name>
+        <url-pattern>/</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>UpdateOrderServlet</servlet-name>
@@ -455,6 +455,11 @@
         <servlet-name>PreviewDeleteOrderServlet</servlet-name>
         <url-pattern>/PreviewDeleteOrderServlet</url-pattern>
     </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ViewEmployeeServlet</servlet-name>
+        <url-pattern>/ViewEmployee</url-pattern>
+    </servlet-mapping>
+
     <session-config>
         <session-timeout>30</session-timeout>
     </session-config>
