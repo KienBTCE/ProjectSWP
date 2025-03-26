@@ -468,3 +468,28 @@ WHERE CAST(IO.ImportDate AS DATE) = CAST(GETDATE() AS DATE);
 select * from ImportOrderDetails
 select * from ImportOrders
 select * from Products
+
+
+SELECT 
+  c.Name AS CategoryName,
+  b.Name AS BrandName,
+ p.Model,
+ p.FullName AS ProductName,
+             p.Stock AS StockQuantity, 
+                s.Name AS SupplierName,
+      i.ImportDate AS LastImportDate,
+     iod.ImportPrice AS ProductImportPrice
+      FROM 
+            Products p
+           JOIN 
+              Categories c ON p.CategoryID = c.CategoryID
+              JOIN
+             Brands b ON p.BrandID = b.BrandID
+                LEFT JOIN 
+               ImportOrderDetails iod ON p.ProductID = iod.ProductID
+                LEFT JOIN
+               ImportOrders i ON iod.IOID = i.IOID
+               LEFT JOIN 
+              Suppliers s ON i.SupplierID = s.SupplierID
+               ORDER BY
+                c.CategoryID

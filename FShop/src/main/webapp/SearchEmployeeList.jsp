@@ -12,7 +12,7 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>Employee Management</title>
+        <title>Employee List</title>
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
         <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
@@ -180,40 +180,51 @@
                             <th>Action</th>
                         </tr>
                     </thead>
-                    <tbody>   
-                        <c:forEach items="${listE}" var="e">
-                            <tr>
-                                <td>${e.employeeId}</td>
-                                <c:forEach items="${listR}" var="r">
-                                    <c:if test="${e.roleId == r.roleId}">
-                                        <td>${r.roleName}</td>
-                                    </c:if>
-                                </c:forEach>
-                                <td>${e.fullname}</td>
-                                <td>${e.email}</td>
-                                <c:choose>
-                                    <c:when test="${e.status == 1}">
-                                        <td><span style="background-color: #28a745; color: white; padding: 5px 12px; border-radius: 15px; font-size: 12px; display: inline-flex; align-items: center; gap: 5px; text-align: center;">
-                                                <i class='bx bx-check-circle' style="font-size: 14px;"></i> Available
-                                            </span></td>
-                                        </c:when>
-                                        <c:otherwise>
-                                        <td><span style="background-color: #dc3545; color: white; padding: 5px 18px; border-radius: 15px; font-size: 12px; display: inline-flex; align-items: center; gap: 5px; text-align: center;">
-                                                <i class='bx bx-x-circle' style="font-size: 14px;"></i> Disable
-                                            </span></td>
-                                        </c:otherwise>
-                                    </c:choose>
-                                <td>
-                                    <a href="UpdateEmployeeServlet?id=${e.employeeId}" style="background-color: orange; color: white; text-decoration: none; padding: 3px 9px; border-radius: 5px; display: inline-block; cursor: pointer;">
-                                        <i class='bx bx-edit'></i> Update
-                                    </a>
+                    <tbody>
+                        <c:if test="${not empty searchQuery}">
+                            <c:choose>
+                                <c:when test="${not empty employees}">
+                                    <c:forEach items="${employees}" var="e">
+                                        <tr>
+                                            <td>${e.employeeId}</td>
+                                            <c:forEach items="${listR1}" var="r">
+                                                <c:if test="${e.roleId == r.roleId}">
+                                                    <td>${r.roleName}</td>
+                                                </c:if>
+                                            </c:forEach>
+                                            <td>${e.fullname}</td>
+                                            <td>${e.email}</td>
+                                            <c:choose>
+                                                <c:when test="${e.status == 1}">
+                                                    <td><span style="background-color: #28a745; color: white; padding: 5px 12px; border-radius: 15px; font-size: 12px;">
+                                                            <i class='bx bx-check-circle' style="font-size: 14px;"></i> Available
+                                                        </span></td>
+                                                    </c:when>
+                                                    <c:otherwise>
+                                                    <td><span style="background-color: #dc3545; color: white; padding: 5px 18px; border-radius: 15px; font-size: 12px;">
+                                                            <i class='bx bx-x-circle' style="font-size: 14px;"></i> Disable
+                                                        </span></td>
+                                                    </c:otherwise>
+                                                </c:choose>
+                                            <td>
+                                                <a href="UpdateEmployeeServlet?id=${e.employeeId}" style="background-color: orange; color: white; text-decoration: none; padding: 3px 9px; border-radius: 5px; display: inline-block; cursor: pointer;">
+                                                    <i class='bx bx-edit'></i> Update
+                                                </a>
 
-                                    <a href="ViewEmployeeServlet?id=${e.employeeId}" style="background-color: red; color: white; text-decoration: none; padding: 3px 9px; border-radius: 5px; display: inline-block; cursor: pointer;">
-                                        <i class='bx bx-detail'></i> Detail
-                                    </a>
-                                </td>
-                            </tr>
-                        </c:forEach>
+                                                <a href="ViewEmployeeServlet?id=${e.employeeId}" style="background-color: red; color: white; text-decoration: none; padding: 3px 9px; border-radius: 5px; display: inline-block; cursor: pointer;">
+                                                    <i class='bx bx-detail'></i> Detail
+                                                </a>
+                                            </td>
+                                        </tr>
+                                    </c:forEach>
+                                </c:when>
+                                <c:otherwise>
+                                    <tr>
+                                        <td colspan="6" style="text-align: center; color: red; font-weight: bold;">No employees found!</td>
+                                    </tr>
+                                </c:otherwise>
+                            </c:choose>
+                        </c:if>                   
                     </tbody>
                 </table>
             </div>

@@ -358,23 +358,6 @@ public class ProductDAO {
         return result;
     }
 
-    public void addProductAttributes(Product product) {
-        String query = "INSERT INTO AttributeDetails (AttributeID, ProductID, AttributeInfor) "
-                + "VALUES (?, ?, ?)";
-
-        try ( PreparedStatement ps = connector.prepareStatement(query)) {
-            for (AttributeDetail attribute : product.getAttributeDetails()) {
-                ps.setInt(1, attribute.getAttributeId());
-                ps.setInt(2, product.getProductId());
-                ps.setString(3, attribute.getAttributeInfor());
-                ps.addBatch();
-            }
-            ps.executeBatch();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-    }
-
     public int updateProduct(Product p) {
         // Câu lệnh cập nhật sản phẩm
         String query = "UPDATE Products SET Model=?, FullName=?, Description=?, Price=?, Image=?, Image1=?, Image2=?, Image3=?, IsDeleted=?, "
