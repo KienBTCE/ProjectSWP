@@ -182,7 +182,7 @@ public class CustomerDAO {
             pr.setString(1, email);
             ResultSet rs = pr.executeQuery();
             if (rs.next()) {
-                return 1;
+                return rs.getInt("CustomerID");
             }
         } catch (SQLException e) {
             System.out.println(e + " ");

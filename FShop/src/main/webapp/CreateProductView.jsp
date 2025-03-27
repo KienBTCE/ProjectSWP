@@ -14,13 +14,57 @@
                 flex-direction: column;
                 gap: 20px;
                 margin-left: 250px;
+                margin-top: 80px;
+            }
+
+            .header {
+                position: fixed;
+                top: 0;
+                left: 260px;
+                right: 10px;
+                margin-top: 10px;
+                z-index: 1000;
+            }
+
+
+            .icon {
+                width: 40px;
+                height: 40px;
+                border-radius: 50%;
+                object-fit: cover;
+            }
+
+            .logo-side-bar {
+                margin-left: 5%;
+                margin-bottom: 3%;
+            }
+            /* ========================================================= */
+            .hi {
+
+                position: fixed;
+                top: 0;
+                left: 267px;
+                right: 0;
+                background: white;
+                z-index: 1000;
+                display: flex;
+                align-items: flex-start;
+                padding: 15px;
+                border: 5px;
+            }
+            
+            .error{
+                color: red;
+                font-weight: bold;
             }
         </style>
     </head>
     <body>
         <jsp:include page="SidebarDashboard.jsp"></jsp:include>
             <div class="content">
-            <jsp:include page="HeaderDashboard.jsp"></jsp:include>
+                <div class="hi">
+                <jsp:include page="HeaderDashboard.jsp"></jsp:include>
+                </div>
                 <div class="container-fluid">
                     <div class="card shadow border-primary">
                         <div class="card-header">
@@ -39,8 +83,9 @@
                                         <select class="form-select" name="categoryName" id="categoryName" required>
                                             <c:forEach var="category" items="${categories}">
                                                 <option value="CreateProductServlet?name=${category}" ${category == categoryName ? 'selected' : ''}>${category}</option>
-                                            </c:forEach>
+                                            </c:forEach>                                         
                                         </select>
+                                         <p></p>
                                     </div>
                                     <div class="col-md-4">
                                         <label class="form-label">Brand</label>
@@ -49,10 +94,12 @@
                                                 <option value="${brand}">${brand}</option>
                                             </c:forEach>
                                         </select>
+                                        <p></p>
                                     </div>
                                     <div class="col-md-4">
                                         <label class="form-label">Model</label>
                                         <input type="text" class="form-control" name="model" required />
+                                        <p class="error" >${errorMsg1}</p>
                                     </div>
                                 </div>
                                 <!-- Row 2: Full Name, Price, Is Deleted -->
@@ -60,16 +107,19 @@
                                     <div class="col-md-4">
                                         <label class="form-label">Full Name</label>
                                         <input type="text" class="form-control" name="fullName" required />
+                                        <p class="error" >${errorMsg2}</p>
                                     </div>
                                     <div class="col-md-4">
                                         <label class="form-label">Price</label>
                                         <input type="number" class="form-control" name="price" required />
+                                        <p class="error" >${errorMsg3}</p>
                                     </div>
                                     <div class="col-md-4">
                                         <label class="form-label">Disable</label>
                                         <select class="form-select" name="isDeleted">
                                             <option value="1">Yes</option>
                                         </select>
+                                        <p></p>
                                     </div>
                                 </div>
                                 <!-- Row 3: Description -->
