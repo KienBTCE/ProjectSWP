@@ -84,8 +84,8 @@
                                         <div class="col-md-6 mb-3">
                                             <label class="form-label">Voucher Type</label>
                                             <select class="form-select" name="voucherType" required>
-                                                <option value="0" ${voucher.voucherType == 0 ? 'selected' : ''}>Percent (%)</option>
-                                                <option value="1" ${voucher.voucherType == 1 ? 'selected' : ''}>Fixed Price</option>
+                                                <option value="1" ${voucher.voucherType == 1 ? 'selected' : ''}>Percent (%)</option>
+                                                <option value="0" ${voucher.voucherType == 0 ? 'selected' : ''}>Fixed Price</option>
                                             </select>
                                         </div>
 

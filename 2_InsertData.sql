@@ -104,49 +104,57 @@ INSERT INTO Products (ProductID, BrandID, CategoryID, Model, FullName, [Descript
 (1, 1, 1, 'Macbook Pro 14', 'Apple Macbook Pro 14 inch M1 Pro chip', 'New model from Apple', '250-7038-macbook-pro-2021-apple-m1-1.jpg', 50000000, 0, 50),
 (2, 2, 2, 'Galaxy S23 Ultra', 'Samsung Galaxy S23 Ultra 5G 256GB', 'Latest flagship from Samsung', 'samsung-galaxy-s23-xanh-600x600-1.jpg', 30000000, 1, 50),
 (3, 3, 1, 'Sony Vaio Z900', 'Sony Vaio Z900 Core i7 16GB RAM', 'High-performance laptop', 'vaio-z900.jpg', 20000000, 0, 50),
-(4, 8, 1, 'ASUS-FA706', 'ASUS TUF Gaming A17', 'Durable gaming laptop with high performance', '250-8562-line-laptop.png', 28909000, 1, 50),
-(5, 1, 2, 'iPhone-16-Pro-Max', 'iPhone 16 Pro Max', 'Premium smartphone with advanced camera and powerful performance', 'iphone-16-pro-max-black-thumb-600x600.jpg', 32529000, 0, 30),
-(6, 2, 2, 'Galaxy-S23', 'Samsung Galaxy S23', 'Samsung flagship phone with stunning design and excellent camera', 'samsung-galaxy-s23-xanh-600x600-1.jpg', 25899000, 1, 50),
-(7, 9, 1, 'Legion-Pro-5', 'Lenovo Legion Pro 5', 'High-end gaming laptop with powerful specs and 240Hz display', '0yp3jx9d-1090-lenovo-legion-pro-5-y9000p-2023-core-i9-13900hx-16gb-1tb-rtx-4050-6gb-16-wqxga-240hz-new.jpg', 38909000, 0, 50),
-(8, 8, 1, 'ASUS-TUF-A17', 'ASUS TUF Gaming A17', 'Durable gaming laptop with strong performance and modern design', 'ASUS-TUF-Gaming-A17-FA706-600x600.jpg', 31909000, 1, 50),
-(9, 11, 1, 'MSI-Katana-A15', 'MSI Katana Gaming A15', 'Gaming laptop powered by AMD Ryzen 9 and RTX 4060 GPU', '5e0dkkrb-1411-msi-katana-gaming-a15-ai-b8vf-406ca-amd-ryzen-r9-8945hs-32gb-1tb-rtx-4060-8gb-15-6-144hz-fhd-new.jpg', 33909000, 1, 50),
-(10, 6, 1, 'Dell-G5511', 'Dell Gaming G5511', 'Gaming laptop with strong design and high performance', '45606_dell_gaming_5511_dark_grey_ha3.jpg', 35909000, 0, 50),
-(11, 4, 2, 'Xperia-1-III', 'Sony Xperia 1 III', 'Sony flagship phone with stunning OLED 4K display', 'sony-xperia-1-iii.png', 35999000, 0, 40),
-(12, 5, 2, 'Pixel-6-Pro', 'Google Pixel 6 Pro', 'Google flagship phone with Google Tensor chip', '678582_684274_04_front_comping.jpg', 28999000, 0, 60),
-(13, 6, 1, 'HP-Omen-15', 'HP Omen 15', 'Powerful gaming laptop with AMD Ryzen 9', 'hp-omen-15.jpg', 42900000, 0, 35),
-(14, 3, 1, 'Acer-Predator-Helios-300', 'Acer Predator Helios 300', 'Gaming laptop with Intel i7 and RTX 3070', 'acer-predator-helios-300.jpg', 37999000, 1, 20),
-(15, 4, 2, 'Xiaomi-Redmi-Note-11', 'Xiaomi Redmi Note 11', 'Affordable smartphone with great performance', 'Xiaomi-Redmi-11.jpg', 7990000, 0, 100),
-(16, 2, 2, 'Samsung-Galaxy-A53', 'Samsung Galaxy A53', 'Mid-range smartphone with 5G and powerful camera', 'samsung-galaxy-a53.png', 18999000, 0, 75),
-(17, 10, 1, 'Razer-Blade-15', 'Razer Blade 15', 'Premium gaming laptop with high performance', 'razer-blade-15.jpg', 47900000, 0, 25),
-(18, 9, 1, 'Alienware-X17', 'Alienware X17', 'High-end gaming laptop with Intel i9 and RTX 3080', 'alienware-x17.jpg', 59999000, 0, 10),
-(19, 11, 1, 'MSI-GS66', 'MSI GS66 Stealth', 'Slim gaming laptop with Intel i7 and RTX 3070', 'msi-gs66.jpg', 44999000, 1, 50),
-(20, 8, 1, 'Asus-Zephyrus-G14', 'Asus Zephyrus G14', 'Powerful gaming laptop with AMD Ryzen 9 and RTX 3060', 'asus-zephyrus-g14.jpg', 35999000, 0, 30);
+(4, 8, 1, 'ASUS-FA706', 'ASUS TUF Gaming A17', 'Durable gaming laptop with high performance', '250-8562-line-laptop.png', 28909000, 1, 5),
+(5, 1, 2, 'iPhone-16-Pro-Max', 'iPhone 16 Pro Max', 'Premium smartphone with advanced camera and powerful performance', 'iphone-16-pro-max-black-thumb-600x600.jpg', 32529000, 0, 3),
+(6, 2, 2, 'Galaxy-S23', 'Samsung Galaxy S23', 'Samsung flagship phone with stunning design and excellent camera', 'samsung-galaxy-s23-xanh-600x600-1.jpg', 25899000, 1, 4),
+(7, 9, 1, 'Legion-Pro-5', 'Lenovo Legion Pro 5', 'High-end gaming laptop with powerful specs and 240Hz display', '0yp3jx9d-1090-lenovo-legion-pro-5-y9000p-2023-core-i9-13900hx-16gb-1tb-rtx-4050-6gb-16-wqxga-240hz-new.jpg', 38909000, 0, 2),
+(8, 8, 1, 'ASUS-TUF-A17', 'ASUS TUF Gaming A17', 'Durable gaming laptop with strong performance and modern design', 'ASUS-TUF-Gaming-A17-FA706-600x600.jpg', 31909000, 1, 3),
+(9, 11, 1, 'MSI-Katana-A15', 'MSI Katana Gaming A15', 'Gaming laptop powered by AMD Ryzen 9 and RTX 4060 GPU', '5e0dkkrb-1411-msi-katana-gaming-a15-ai-b8vf-406ca-amd-ryzen-r9-8945hs-32gb-1tb-rtx-4060-8gb-15-6-144hz-fhd-new.jpg', 33909000, 1, 5),
+(10, 6, 1, 'Dell-G5511', 'Dell Gaming G5511', 'Gaming laptop with strong design and high performance', '45606_dell_gaming_5511_dark_grey_ha3.jpg', 35909000, 0, 4),
+(11, 4, 2, 'Xperia-1-III', 'Sony Xperia 1 III', 'Sony flagship phone with stunning OLED 4K display', 'sony-xperia-1-iii.png', 35999000, 0, 3),
+(12, 5, 2, 'Pixel-6-Pro', 'Google Pixel 6 Pro', 'Google flagship phone with Google Tensor chip', '678582_684274_04_front_comping.jpg', 28999000, 0, 6),
+(13, 6, 1, 'HP-Omen-15', 'HP Omen 15', 'Powerful gaming laptop with AMD Ryzen 9', 'hp-omen-15.jpg', 42900000, 0, 2),
+(14, 3, 1, 'Acer-Predator-Helios-300', 'Acer Predator Helios 300', 'Gaming laptop with Intel i7 and RTX 3070', 'acer-predator-helios-300.jpg', 37999000, 1, 4),
+(15, 4, 2, 'Xiaomi-Redmi-Note-11', 'Xiaomi Redmi Note 11', 'Affordable smartphone with great performance', 'Xiaomi-Redmi-11.jpg', 7990000, 0, 3),
+(16, 2, 2, 'Samsung-Galaxy-A53', 'Samsung Galaxy A53', 'Mid-range smartphone with 5G and powerful camera', 'samsung-galaxy-a53.png', 18999000, 0, 5),
+(17, 10, 1, 'Razer-Blade-15', 'Razer Blade 15', 'Premium gaming laptop with high performance', 'razer-blade-15.jpg', 47900000, 0, 2),
+(18, 9, 1, 'Alienware-X17', 'Alienware X17', 'High-end gaming laptop with Intel i9 and RTX 3080', 'alienware-x17.jpg', 59999000, 0, 3),
+(19, 11, 1, 'MSI-GS66', 'MSI GS66 Stealth', 'Slim gaming laptop with Intel i7 and RTX 3070', 'msi-gs66.jpg', 44999000, 1, 4),
+(20, 8, 1, 'Asus-Zephyrus-G14', 'Asus Zephyrus G14', 'Powerful gaming laptop with AMD Ryzen 9 and RTX 3060', 'asus-zephyrus-g14.jpg', 35999000, 0, 2);
+
 
 -- Insert Products for Headphone, Charger, and Charging Cable
 -- Headphones
 INSERT INTO Products (ProductID, BrandID, CategoryID, Model, FullName, [Description], [Image], Price, IsDeleted, Stock) VALUES 
-(21, 3, 4, 'Sony-WH-1000XM5', 'Sony WH-1000XM5', 'Premium noise-canceling wireless headphones', 'sony-wh-1000xm5.jpg', 8490000, 0, 30),
-(22, 5, 4, 'Xiaomi-FlipBuds-Pro', 'Xiaomi FlipBuds Pro', 'True wireless earbuds with ANC', 'xiaomi-flipbuds-pro.jpg', 2990000, 0, 50),
-(23, 14, 4, 'LG-Tone-Free-FP9', 'LG Tone Free FP9', 'Wireless earbuds with UV cleaning case', 'lg-tone-free-fp9.jpg', 3290000, 0, 40),
-(24, 4, 4, 'Huawei-FreeBuds-Pro-2', 'Huawei FreeBuds Pro 2', 'High-quality sound with dynamic drivers', 'huawei-freebuds-pro-2.jpg', 3990000, 0, 35),
-(25, 10, 4, 'Acer-Predator-Galea-350', 'Acer Predator Galea 350', 'Gaming headset with surround sound', 'acer-predator-galea-350.jpg', 2590000, 0, 20);
+(21, 3, 4, 'Sony-WH-1000XM5', 'Sony WH-1000XM5', 'Premium noise-canceling wireless headphones', 'sony-wh-1000xm5.jpg', 8490000, 0, 6),
+(22, 5, 4, 'Xiaomi-FlipBuds-Pro', 'Xiaomi FlipBuds Pro', 'True wireless earbuds with ANC', 'xiaomi-flipbuds-pro.jpg', 2990000, 0, 5),
+(23, 14, 4, 'LG-Tone-Free-FP9', 'LG Tone Free FP9', 'Wireless earbuds with UV cleaning case', 'lg-tone-free-fp9.jpg', 3290000, 0, 3),
+(24, 4, 4, 'Huawei-FreeBuds-Pro-2', 'Huawei FreeBuds Pro 2', 'High-quality sound with dynamic drivers', 'huawei-freebuds-pro-2.jpg', 3990000, 0, 4),
+(25, 10, 4, 'Acer-Predator-Galea-350', 'Acer Predator Galea 350', 'Gaming headset with surround sound', 'acer-predator-galea-350.jpg', 2590000, 0, 2);
 
 -- Chargers
 INSERT INTO Products (ProductID, BrandID, CategoryID, Model, FullName, [Description], [Image], [Image1], [Image2], Price, IsDeleted, Stock) VALUES 
-(26, 1, 5, 'Apple-20W-USB-C', 'Apple 20W USB-C Charger', 'Fast charging for iPhone and iPad', 'apple-20w-usb-c.jpg', 'adapter-20w-apple-5_1.png', 'adapter-20w-apple-5_1_1.png', 590000, 0, 100),
-(27, 2, 5, 'Samsung-25W-USB-C', 'Samsung 25W USB-C Charger', 'Super Fast Charging adapter', 'samsung-25w-usb-c.jpg', 'cu-sac-nhanh-samsung-25w-ep-t2510nbegww-2.png', 'cu-sac-nhanh-samsung-25w-ep-t2510nbegww-4.png', 690000, 0, 80),
-(28, 5, 5, 'Xiaomi-67W-SuperCharge', 'Xiaomi 67W Super Charge', 'High-speed charging adapter', 'xiaomi-67w.jpg','cu-sac-xiaomi-usb-a-gan-67w-kem-cap-type-c_3_.png', 'cu-sac-xiaomi-usb-a-gan-67w-kem-cap-type-c_4_.png', 890000, 0, 70),
-(29, 4, 5, 'Huawei-40W-SuperCharge', 'Huawei 40W Super Charge', 'Fast charging technology', 'huawei-40w.jpg','','', 790000, 0, 60),
-(30, 9, 5, 'Lenovo-65W-Charger', 'Lenovo 65W Laptop Charger', 'Fast charging for Lenovo laptops', 'lenovo-65w.jpg', '4X20M26268-560x450-02.61f5a0696c22551d.png','6hz00evh8lohwi8iag5nh0yoq8jh4t069238.png',1290000, 0, 50);
+(26, 1, 5, 'Apple-20W-USB-C', 'Apple 20W USB-C Charger', 'Fast charging for iPhone and iPad', 'apple-20w-usb-c.jpg', 'adapter-20w-apple-5_1.png', 'adapter-20w-apple-5_1_1.png', 590000, 0, 6),
+(27, 2, 5, 'Samsung-25W-USB-C', 'Samsung 25W USB-C Charger', 'Super Fast Charging adapter', 'samsung-25w-usb-c.jpg', 'cu-sac-nhanh-samsung-25w-ep-t2510nbegww-2.png', 'cu-sac-nhanh-samsung-25w-ep-t2510nbegww-4.png', 690000, 0, 5),
+(28, 5, 5, 'Xiaomi-67W-SuperCharge', 'Xiaomi 67W Super Charge', 'High-speed charging adapter', 'xiaomi-67w.jpg','cu-sac-xiaomi-usb-a-gan-67w-kem-cap-type-c_3_.png', 'cu-sac-xiaomi-usb-a-gan-67w-kem-cap-type-c_4_.png', 890000, 0, 4),
+(29, 4, 5, 'Huawei-40W-SuperCharge', 'Huawei 40W Super Charge', 'Fast charging technology', 'huawei-40w.jpg','','', 790000, 0, 3),
+(30, 9, 5, 'Lenovo-65W-Charger', 'Lenovo 65W Laptop Charger', 'Fast charging for Lenovo laptops', 'lenovo-65w.jpg', '4X20M26268-560x450-02.61f5a0696c22551d.png','6hz00evh8lohwi8iag5nh0yoq8jh4t069238.png',1290000, 0, 2);
 
 -- Charging Cables
 INSERT INTO Products (ProductID, BrandID, CategoryID, Model, FullName, [Description], [Image],  Price, IsDeleted, Stock) VALUES 
-(31, 1, 6, 'Apple-USB-C-Lightning', 'Apple USB-C to Lightning Cable', 'Official Apple charging cable', 'apple-usb-c-lightning.jpg', 490000, 0, 200),
-(32, 2, 6, 'Samsung-USB-C-Cable', 'Samsung USB-C Cable 1m', 'Durable and fast-charging', 'samsung-usb-c.jpg', 290000, 0, 180),
-(33, 5, 6, 'Xiaomi-Braided-USB-C', 'Xiaomi Braided USB-C Cable', 'Reinforced and tangle-free', 'xiaomi-braided-usb-c.jpg', 390000, 0, 160),
-(34, 4, 6, 'Huawei-SuperCharge-Cable', 'Huawei SuperCharge USB-C Cable', 'Supports high-speed charging', 'huawei-supercharge.jpg', 450000, 0, 140),
-(35, 9, 6, 'Lenovo-Thunderbolt-4', 'Lenovo Thunderbolt 4 Cable', 'High-speed data and charging', 'lenovo-thunderbolt-4.jpg', 990000, 0, 120);
+(31, 1, 6, 'Apple-USB-C-Lightning', 'Apple USB-C to Lightning Cable', 'Official Apple charging cable', 'apple-usb-c-lightning.jpg', 490000, 0, 4),
+(32, 2, 6, 'Samsung-USB-C-Cable', 'Samsung USB-C Cable 1m', 'Durable and fast-charging', 'samsung-usb-c.jpg', 290000, 0, 3),
+(33, 5, 6, 'Xiaomi-Braided-USB-C', 'Xiaomi Braided USB-C Cable', 'Reinforced and tangle-free', 'xiaomi-braided-usb-c.jpg', 390000, 0, 5),
+(34, 4, 6, 'Huawei-SuperCharge-Cable', 'Huawei SuperCharge USB-C Cable', 'Supports high-speed charging', 'huawei-supercharge.jpg', 450000, 0, 2),
+(35, 9, 6, 'Lenovo-Thunderbolt-4', 'Lenovo Thunderbolt 4 Cable', 'High-speed data and charging', 'lenovo-thunderbolt-4.jpg', 990000, 0, 6);
 
+
+--Mouse---
+INSERT INTO Products (ProductID, BrandID, CategoryID, Model, FullName, [Description], [Image],  Price, IsDeleted, Stock) VALUES
+(36, 8, 3, 'Asus TUF M3', 'Asus TUF M3 Gen 2', 'Equipped with an 8,000 DPI optical sensor for gaming, easily customizable with four different DPI levels', 'tuf-m3-gen-2-1.jpg', 420000, 0, 100),
+(37, 8, 3, 'Asus TUF M4', 'Asus TUF M4', 'Asus TUF M4 Wireless Gaming Mouse – Super light, smooth and sensitive', 'chuot-gaming-asus-tuf-m4_1_.jpg', 790000, 0, 80),
+(38, 1, 3, ' Apple Magic Mouse', 'Apple Magic Mouse 3 2024', 'Magic Mouse wireless with long-lasting rechargeable battery, more than a month of use per charge', 'chuot-apple-magic-mouse-3_1__2.jpg', 1990000, 0, 100),
+(39, 1, 3, ' Apple Magic Mouse', 'Apple Magic Mouse 2 2022', 'Modern, slim design creates a luxurious feel', 'magic_mouse_2022.jpg', 1500000, 0, 100);
 SET IDENTITY_INSERT Products OFF;
 
 -- Insert AttributeDetails for Headphone
@@ -175,6 +183,14 @@ VALUES
 (31, 23, 'USB-C to USB-C'), (32, 23, '1.5m'), (33, 23, 'Braided Nylon'),
 (31, 24, 'USB-C to USB-C'), (32, 24, '1m'), (33, 24, 'Fast-Charge Certified'),
 (31, 25, 'Thunderbolt 4'), (32, 25, '1.2m'), (33, 25, 'High-Speed Data Transfer');
+
+---- Insert AttributeDetails for Mouse
+INSERT INTO AttributeDetails (AttributeID, ProductID, AttributeInfor)
+VALUES
+(48, 36, 'USB to Type-C Cable'), (49, 36, 'Have'),
+(48, 37, 'USB Receiver, Bluetooth'), (49, 37, 'No'),
+(48, 38, 'Bluetooth'), (49, 38, 'No'),
+(48, 39, 'Bluetooth'), (49, 39, 'No');
 
 SET IDENTITY_INSERT Products OFF;
 
@@ -387,17 +403,18 @@ VALUES
 (1, 1, 1),
 (1, 2, 5);
 
-
 -- Insert Addresses
 INSERT INTO Addresses (CustomerID, AddressDetails, IsDefault)
 VALUES 
 (1, 'Ap Tra Coi A, My Huong, My Tu, Soc Trang', 1);
 
 -- Insert Imports
-INSERT INTO ImportStocks (EmployeeID, SupplierID, ImportDate, TotalCost, Completed)
+SET IDENTITY_INSERT ImportStocks ON;
+INSERT INTO ImportStocks (ImportID, EmployeeID, SupplierID, ImportDate, TotalCost, Completed)
 VALUES
-(2, 1, GETDATE(), 2019500000, 1),
-(2, 2, GETDATE(), 51052500000, 1);
+(1, 4, 1, '2025-03-25 3:00:00', 2019500000, 1),
+(2, 4, 2, GetDate(), 752500000, 1);
+SET IDENTITY_INSERT ImportStocks OFF;
 
 -- Insert ImportDetails
 INSERT INTO ImportStockDetails (ImportID, ProductID, ImportQuantity, ImportPrice)
@@ -405,6 +422,63 @@ VALUES
 (1, 1, 50, 40390000),
 (2, 2, 50, 20120000),
 (2, 3, 50, 15050000);
+
+
+
+-- ////////////////////////////////////////////////////////////////////////////////////////////////////
+SET IDENTITY_INSERT ImportStocks ON;
+INSERT INTO ImportStocks (ImportID, EmployeeID, SupplierID, ImportDate, TotalCost, Completed) VALUES
+(3, 4, 1, '2025-03-20', 466000000, 1),
+(4, 4, 2, '2025-03-21', 632000000, 1),
+(5, 4, 3, '2025-03-22', 337500000, 1),
+(6, 4, 1, '2025-03-23', 455000000, 1),
+(7, 4, 2, '2025-03-24', 42400000, 1),
+(8, 4, 3, '2025-03-25', 14600000, 1),
+(9, 4, 1, '2025-03-26', 10840000, 1);
+SET IDENTITY_INSERT ImportStocks OFF;
+
+INSERT INTO ImportStockDetails (ImportID, ProductID, ImportQuantity, ImportPrice) VALUES
+(3, 4, 5, 25000000),
+(3, 5, 3, 30000000),
+(3, 6, 4, 23000000),
+(3, 7, 2, 36000000),
+(3, 8, 3, 29000000),
+
+(4, 9, 5, 31000000),
+(4, 10, 4, 34000000),
+(4, 11, 3, 33000000),
+(4, 12, 6, 27000000),
+(4, 13, 2, 40000000),
+
+(5, 14, 4, 35000000),
+(5, 15, 3, 7500000),
+(5, 16, 5, 17000000),
+(5, 17, 2, 45000000),
+
+(6, 18, 3, 57000000),
+(6, 19, 4, 42000000),
+(6, 20, 2, 34000000),
+(6, 21, 6, 8000000),
+
+(7, 22, 5, 2800000),
+(7, 23, 3, 3000000),
+(7, 24, 4, 3700000),
+(7, 25, 2, 2300000),
+
+(8, 26, 6, 550000),
+(8, 27, 5, 650000),
+(8, 28, 4, 850000),
+(8, 29, 3, 750000),
+(8, 30, 2, 1200000),
+
+(9, 31, 4, 450000),
+(9, 32, 3, 250000),
+(9, 33, 5, 350000),
+(9, 34, 2, 420000),
+(9, 35, 6, 950000);
+
+--/////////////////////////////////////////////////////////////////////////////////////////////////////
+
 
 INSERT INTO Vouchers (VoucherCode, VoucherValue, VoucherType, StartDate, EndDate, UsedCount, MaxUsedCount, MaxDiscountAmount, MinOrderValue, Status, [Description])
 VALUES 
