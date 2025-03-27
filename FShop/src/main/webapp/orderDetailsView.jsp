@@ -23,7 +23,7 @@
                 position: fixed;
                 top: 0;
                 left: 250px; /* Điều chỉnh để tránh che sidebar */
-                width: calc(100% - 250px); /* Chiều rộng trừ đi sidebar */
+                width: calc(100% - 250px);  
                 /*background-color: white;*/
                 z-index: 1050;
                 padding: 10px 20px;
@@ -147,9 +147,15 @@
                                     <h3><i class="fa-solid fa-info-circle"></i> Order Information</h3>
                                     <p><strong>Order ID:</strong> <span>${data.orderID}</span></p>
                                 <p><strong>Order Date:</strong> <span>${data.orderDate}</span></p>
-                                <p><strong>Order Status:</strong> <span class="status-${data.status}">${data.status}</span></p>
-                                <p><strong>Total Amount:</strong> <span>${data.totalAmount}</span></p>
-                                 <p><strong>Discount:</strong> <span>${data.discount}</span></p>
+                                <p><strong>Order Status:</strong> <span class="status-${data.status}">
+                                        <c:if test="${data.status == 1}">Waiting For Acceptance</c:if>
+                                        <c:if test="${data.status == 2}">Packaging</c:if>
+                                        <c:if test="${data.status == 3}">Waiting For Delivery</c:if>
+                                        <c:if test="${data.status == 4}">Delivered</c:if>
+                                        <c:if test="${data.status == 5}">Cancel</c:if>
+                                        </span></p>
+                                    <p><strong>Total Amount:</strong> <span>${data.totalAmount}</span></p>
+                                <p><strong>Discount:</strong> <span>${data.discount}</span></p>
                             </div>
 
                             <h3><i class="fa-solid fa-box"></i> Order Items</h3>
@@ -173,29 +179,15 @@
                                 <p><strong>Address:</strong> <span>${data.address}</span></p>
                             </div>
 
-<!--                            <div class="manage-order">
-                                <h3><i class="fa-solid fa-cogs"></i> Manage Order</h3>
-                                <c:if test="${not empty errorMessage}">
-                                    <div class="alert alert-danger">
-                                        ${errorMessage}
-                                    </div>
-                                </c:if>
+                            <!--                            <div class="manage-order">
+                                                            <h3><i class="fa-solid fa-cogs"></i> Manage Order</h3>
+                            <c:if test="${not empty errorMessage}">
+                                <div class="alert alert-danger">
+                                ${errorMessage}
+                            </div>
+                            </c:if>
 
-                                <form action="UpdateOrderServlet" method="POST">
-                                    <input type="hidden" name="orderID" value="${data.orderID}" />
-                                    <div class="dropdown">
-                                        <select name="update" id="orderStatus" onchange="disableOptions()">
-                                            <option value="1" <c:if test="${data.status == 1}">selected</c:if>>Waiting For Acceptance</option>
-                                            <option value="2" <c:if test="${data.status == 2}">selected</c:if>>Packaging</option>
-                                            <option value="3" <c:if test="${data.status == 3}">selected</c:if>>Waiting For Delivery</option>
-                                            <option value="4" <c:if test="${data.status == 4}">selected</c:if>>Delivered</option>
-                                            <option value="5" <c:if test="${data.status == 5}">selected</c:if>>Cancel</option>
-                                        </select>
-                                    </div>
-                                    <button type="submit" class="btn btn-success"><i class="fa-solid fa-pen"></i> Update</button>
-                                </form>
-
-                            </div>-->
+                    
                         </div>
                     </div>
                 </div>

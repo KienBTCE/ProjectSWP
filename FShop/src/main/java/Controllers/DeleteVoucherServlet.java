@@ -74,12 +74,18 @@ public class DeleteVoucherServlet extends HttpServlet {
         int voucherID = Integer.parseInt(request.getParameter("voucherID"));
         VoucherDAO dao = new VoucherDAO();
         CustomerVoucherDAO cdao = new CustomerVoucherDAO();
-        cdao.deleteCustomerVoucher(voucherID);
-        int count = dao.deleteVoucher(voucherID);
-        if(count>0){
-       response.sendRedirect("ViewVoucherListServlet?success=success");
-        }else{
-       response.sendRedirect("ViewVoucherListServlet?success=failed");
+        
+        if (dao.checkDateToDelete(voucherID)) {
+            cdao.deleteCustomerVoucher(voucherID);
+            int count = dao.deleteVoucher(voucherID);
+            if (count > 0) {
+                response.sendRedirect("ViewVoucherListServlet?success=deletesuccess");
+            } else {
+                response.sendRedirect("ViewVoucherListServlet?success=deletefailed");
+            }
+        } else {
+
+            response.sendRedirect("ViewVoucherListServlet?success=deletefailedfordate");
         }
 
     }

@@ -146,19 +146,15 @@
             <div class="content">
             <jsp:include page="HeaderDashboard.jsp"></jsp:include>
                 <div class="container mt-4">
-                <c:set value="${supplier}" var="sup"></c:set>
+                <%--<c:set value="${supplier}" var="sup"></c:set>--%>
+                <c:set value="${sessionScope.supplier}" var="sup"></c:set>
                 <c:set value="${importOrder}" var="importOrder"></c:set>
                 <c:set value="0" var="sum"></c:set>
-                    <div class="table-navigate">
-                    </div>
-                    <div class="table-container">
-                        <div class="card-header d-flex justify-content-between align-items-center">
-                            <div>
-                                <h3>Selected Supplier</h3>
-                                <div class="table-navigate">
-                                    <button id="openModalBtn" class="btn btn-detail" style="background-color: #BDF3BD; height: 100%">Select Supplier</button>
-                                </div>
-                            </div>
+                    <!-- Start List Selected Suppliers -->
+                    <div class="table-container style"margin-top: 20px"">
+                        <div class="table-navigate">
+                            <h3>Selected Supplier</h3>
+                            <button id="openModalBtn" class="btn btn-detail" style="background-color: #BDF3BD; height: 100%">Select Supplier</button>
                         </div>
                         <table class="table table-hover">
                             <thead>
@@ -181,102 +177,15 @@
                         </tbody>
                     </table>
                 </div>
-                <!--          Start Modal Select Supplier            -->
-                <div class="modal fade" id="createImportOrder" tabindex="-1" aria-labelledby="createImportOrderLabel" aria-hidden="true">
-                    <div class="modal-dialog modal-lg">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <h5 class="modal-title" id="createImportOrderLabel">Select Supplier</h5>
-                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                            </div>
-                            <div class="modal-body">
-                                <!-- Input Search -->
-                                <input type="text" id="searchSupplierInput" class="form-control mb-2" placeholder="Search supplier...">
+                <!-- End List Selected Suppliers -->
 
-                                <!-- Bảng cuộn -->
-                                <div style="max-height: 400px; overflow-y: auto;">
-                                    <table class="table table-striped" id="supplierListTable">
-                                        <thead>
-                                            <tr>
-                                                <th>Tax ID</th>
-                                                <th>Company Name</th>
-                                                <th>Email</th>
-                                                <th>Phone</th>
-                                                <th>Address</th>
-                                                <th>Select</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <c:forEach items="${suppliers}" var="s">
-                                                <tr>
-                                                    <td>${s.getTaxId()}</td>
-                                                    <td  style="word-wrap: break-word; white-space: normal; max-width: 200px;">${s.getName()}</td>
-                                                    <td  style="word-wrap: break-word; white-space: normal; max-width: 200px;">${s.getEmail()}</td>
-                                                    <td>${s.getPhoneNumber()}</td>
-                                                    <td>${s.getAddress()}</td>
-                                                    <td>
-                                                        <button class="btn btn-primary select-supplier" data-id="${s.getSupplierId()}">Select</button>
-                                                    </td>
-                                                </tr>
-                                            </c:forEach>
-                                        </tbody>
-                                    </table>
-                                </div>
-                            </div>
-                            <div class="modal-footer">
-                                <form id="importOrderForm" method="POST" action="ImportStock">
-                                    <input type="hidden" name="supplierId" id="selectedSupplierId">
-                                    <button type="submit" class="btn btn-success" id="confirmSelection" disabled>Confirm</button>
-                                </form>
-                            </div>
-                        </div>
+                <!-- Start List Selected Suppliers -->
+                <div class="table-container" style="margin-top: 20px">
+                    <div class="table-navigate">
+                        <h3>Selected Products</h3>
+                        <button id="openProductModalBtn" class="btn btn-detail" style="background-color: #BDF3BD; height: 100%">Select Product</button>
                     </div>
-                </div>
-                <!--          End Modal Select Supplier            -->
 
-                <!-- Start Popup import price and quantity -->
-                <div class="modal fade" id="productInputModal" tabindex="-1" aria-labelledby="productInputLabel" aria-hidden="true">
-                    <div class="modal-dialog">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <h5 class="modal-title" id="productInputLabel">Enter Quantity & Price</h5>
-                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                            </div>
-                            <div class="modal-body">
-                                <form id="productInputForm">
-                                    <input type="hidden" id="selectedSupplierId">
-
-                                    <div class="mb-3">
-                                        <label for="inputQuantity" class="form-label">Quantity</label>
-                                        <input type="number" class="form-control" id="inputQuantity" min="1" required>
-                                    </div>
-
-                                    <div class="mb-3">
-                                        <label for="inputPrice" class="form-label">Price</label>
-                                        <input type="number" class="form-control" id="inputPrice" min="1" required>
-                                    </div>
-
-                                    <button type="button" class="btn btn-success" id="confirmProduct">Confirm</button>
-                                </form>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <!-- End Popup import price and quantity -->
-
-
-                <!-- ================================================================================================================================================================================================================================= -->
-
-                <!-- Selected Products -->
-                <div class="table-container">
-                    <div class="card-header d-flex justify-content-between align-items-center">
-                        <div>
-                            <h3>Selected Products</h3>
-                            <button id="openProductModalBtn" class="btn btn-detail" style="background-color: #BDF3BD; height: 100%">
-                                Select Product
-                            </button>
-                        </div>
-                    </div>
                     <table class="table table-hover">
                         <thead>
                             <tr>
@@ -289,7 +198,8 @@
                             </tr>
                         </thead>
                         <tbody id="productTable">
-                            <c:forEach items="${selectedProducts}" var="d">
+                            <%--<c:forEach items="${selectedProducts}" var="d">--%>
+                            <c:forEach items="${sessionScope.selectedProducts}" var="d">
                                 <tr>
                                     <td>${d.getProduct().getProductId()}</td>
                                     <td>${d.getProduct().getModel()}</td>
@@ -312,111 +222,200 @@
                             <tr>
                                 <td colspan="3"></td>
                                 <td class="text-end fw-bold" style="text-align: left">Total:</td>
-                                <td class="text-start fw-bold">${sum} VND</td>
+                                <td class="text-start fw-bold" id="totalAmount">${sum} VND</td>
                             </tr>
                         </tbody>
                     </table>
+                    <button type="button" class="btn btn-success" onclick="cancelImportOrder()">Cancel</button>
+                    <button type="button" class="btn btn-success" onclick="redirectToImport()">Import</button>
                 </div>
-                <!--          Start Modal Select Product            -->
-                <div class="modal fade" id="selectProductModal" tabindex="-1" aria-labelledby="selectProductLabel" aria-hidden="true">
-                    <div class="modal-dialog modal-lg">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <h5 class="modal-title" id="selectProductLabel">Select Product</h5>
-                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                            </div>
-                            <div class="modal-body">
-                                <!-- Input Search -->
-                                <input type="text" id="searchProductInput" class="form-control mb-2" placeholder="Search product...">
-
-                                <!-- Bảng cuộn -->
-                                <div style="max-height: 400px; overflow-y: auto;">
-                                    <table class="table table-striped" id="productListTable">
-                                        <thead>
-                                            <tr>
-                                                <th>Product ID</th>
-                                                <th>Name</th>
-                                                <th>Model</th>
-                                                <th>Import Quantity</th>
-                                                <th>Import Price</th>
-                                                <th>Select</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <c:forEach items="${products}" var="p">
-                                                <tr>
-                                                    <td>${p.getProductId()}</td>
-                                                    <td>${p.getFullName()}</td>
-                                                    <td>${p.getModel()}</td>
-                                                    <td>
-                                                        <input type="number" class="form-control product-quantity" data-id="${p.getProductId()}" min="1000" placeholder="Enter quantity">
-                                                    </td>
-                                                    <td>
-                                                        <input type="number" class="form-control product-price" data-id="${p.getProductId()}" min="1000" step="0.01" placeholder="Enter price">
-                                                    </td>
-                                                    <td>
-                                                        <button class="btn btn-primary select-product" data-id="${p.getProductId()}">Select</button>
-                                                    </td>
-                                                </tr>
-                                            </c:forEach>
-                                        </tbody>
-                                    </table>
-                                </div>
-                            </div>
-                            <div class="modal-footer">
-                                <form id="productOrderForm" method="POST" action="ImportStock">
-                                    <input type="hidden" name="productId" id="selectedProductId" value="${p.getProductId()}">
-                                    <input type="hidden" name="importQuantity" id="selectedProductQuantity">
-                                    <input type="hidden" name="importPrice" id="selectedProductPrice">
-                                    <button type="submit" class="btn btn-success" id="confirmProductSelection" disabled>Confirm</button>
-                                </form>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <!--          End Modal Select Product            -->
-
-                <!-- Start Edit Modal -->
-                <div class="modal fade" id="editProductModal" tabindex="-1" aria-hidden="true">
-                    <div class="modal-dialog">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <h5 class="modal-title">Edit Imported Product</h5>
-                                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-                            </div>
-                            <div class="modal-body">
-                                <form id="editProductForm" method="POST" action="ImportStock">
-                                    <input type="hidden" id="editProductId" name="productEditedId">
-
-                                    <div class="mb-3">
-                                        <label class="form-label">Product Name:</label>
-                                        <input type="text" class="form-control" id="editProductName" readonly>
-                                    </div>
-                                    <div class="mb-3">
-                                        <label class="form-label">Model:</label>
-                                        <input type="text" class="form-control" id="editProductModel" readonly>
-                                    </div>
-                                    <div class="mb-3">
-                                        <label class="form-label">Import Quantity:</label>
-                                        <input type="number" class="form-control" id="editProductQuantity" name="quantity" min="1">
-                                    </div>
-                                    <div class="mb-3">
-                                        <label class="form-label">Import Price:</label>
-                                        <input type="number" class="form-control" id="editProductPrice" name="price" min="1" step="0.01">
-                                    </div>
-                                </form>
-                            </div>
-                            <div class="modal-footer">
-                                <button name="action" value="delete" type="submit" class="btn btn-danger" form="editProductForm" id="deleteProduct">Delete</button>
-                                <button name="action" value="save" type="submit" class="btn btn-success" form="editProductForm">Save</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <!-- End Edit Modal -->
-                <button type="button" class="btn btn-success" onclick="cancelImportOrder()">Cancel</button>
-                <button type="button" class="btn btn-success" onclick="redirectToImport()">Import</button>
             </div>
+            <!-- End List Selected Suppliers -->
+
+            <!--          Start Modal Select Supplier            -->
+            <div class="modal fade" id="createImportOrder" tabindex="-1" aria-labelledby="createImportOrderLabel" aria-hidden="true">
+                <div class="modal-dialog modal-lg">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="createImportOrderLabel">Select Supplier</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <!-- Input Search -->
+                            <input type="text" id="searchSupplierInput" class="form-control mb-2" placeholder="Search supplier...">
+
+                            <!-- Bảng cuộn -->
+                            <div style="max-height: 400px; overflow-y: auto;">
+                                <table class="table table-striped" id="supplierListTable">
+                                    <thead>
+                                        <tr>
+                                            <th>Tax ID</th>
+                                            <th>Company Name</th>
+                                            <th>Email</th>
+                                            <th>Phone</th>
+                                            <th>Address</th>
+                                            <th>Select</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <c:forEach items="${suppliers}" var="s">
+                                            <tr>
+                                                <td>${s.getTaxId()}</td>
+                                                <td  style="word-wrap: break-word; white-space: normal; max-width: 200px;">${s.getName()}</td>
+                                                <td  style="word-wrap: break-word; white-space: normal; max-width: 200px;">${s.getEmail()}</td>
+                                                <td>${s.getPhoneNumber()}</td>
+                                                <td>${s.getAddress()}</td>
+                                                <td>
+                                                    <button class="btn btn-primary select-supplier" data-id="${s.getSupplierId()}">Select</button>
+                                                </td>
+                                            </tr>
+                                        </c:forEach>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <form id="importOrderForm" method="POST" action="ImportStock">
+                                <input type="hidden" name="supplierId" id="selectedSupplierId">
+                                <button type="submit" class="btn btn-success" id="confirmSelection" disabled>Confirm</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!--          End Modal Select Supplier            -->
+
+            <!-- Start Modal import price and quantity -->
+            <div class="modal fade" id="productInputModal" tabindex="-1" aria-labelledby="productInputLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="productInputLabel">Enter Quantity & Price</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <form id="productInputForm">
+                                <input type="hidden" id="selectedSupplierId">
+
+                                <div class="mb-3">
+                                    <label for="inputQuantity" class="form-label">Quantity</label>
+                                    <input type="number" class="form-control" id="inputQuantity" min="1" required>
+                                </div>
+
+                                <div class="mb-3">
+                                    <label for="inputPrice" class="form-label">Price</label>
+                                    <input type="number" class="form-control" id="inputPrice" min="1" required>
+                                </div>
+
+                                <button type="button" class="btn btn-success" id="confirmProduct">Confirm</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- End Modal import price and quantity -->
+
+            <!-- ================================================================================================================================================================================================================================= -->
+
+            <!--          Start Modal Select Product            -->
+            <div class="modal fade" id="selectProductModal" tabindex="-1" aria-labelledby="selectProductLabel" aria-hidden="true">
+                <div class="modal-dialog modal-lg">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="selectProductLabel">Select Product</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <!-- Input Search -->
+                            <input type="text" id="searchProductInput" class="form-control mb-2" placeholder="Search product...">
+
+                            <!-- Bảng cuộn -->
+                            <div style="max-height: 400px; overflow-y: auto;">
+                                <table class="table table-striped" id="productListTable">
+                                    <thead>
+                                        <tr>
+                                            <th>Product ID</th>
+                                            <th>Name</th>
+                                            <th>Model</th>
+                                            <th>Import Quantity</th>
+                                            <th>Import Price</th>
+                                            <th>Select</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <%--<c:forEach items="${products}" var="p">--%>
+                                        <c:if test="${sessionScope.products == null}">a</c:if>
+                                        <c:forEach items="${sessionScope.products}" var="p">
+                                            <tr>
+                                                <td>${p.getProductId()}</td>
+                                                <td>${p.getFullName()}</td>
+                                                <td>${p.getModel()}</td>
+                                                <td>
+                                                    <input type="number" class="form-control product-quantity" data-id="${p.getProductId()}" min="1" placeholder="Enter quantity">
+                                                </td>
+                                                <td>
+                                                    <input type="number" class="form-control product-price" data-id="${p.getProductId()}" min="1000" step="0.01" placeholder="Enter price">
+                                                </td>
+                                                <td>
+                                                    <button class="btn btn-primary select-product" data-id="${p.getProductId()}">Select</button>
+                                                </td>
+                                            </tr>
+                                        </c:forEach>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <form id="productOrderForm" method="POST" action="ImportStock">
+                                <input type="hidden" name="productId" id="selectedProductId" value="${p.getProductId()}">
+                                <input type="hidden" name="importQuantity" id="selectedProductQuantity">
+                                <input type="hidden" name="importPrice" id="selectedProductPrice">
+                                <button type="submit" class="btn btn-success" id="confirmProductSelection" disabled>Confirm</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!--          End Modal Select Product            -->
+
+            <!-- Start Edit Modal -->
+            <div class="modal fade" id="editProductModal" tabindex="-1" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title">Edit Imported Product</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                        </div>
+                        <div class="modal-body">
+                            <form id="editProductForm" method="POST" action="ImportStock">
+                                <input type="hidden" id="editProductId" name="productEditedId">
+
+                                <div class="mb-3">
+                                    <label class="form-label">Product Name:</label>
+                                    <input type="text" class="form-control" id="editProductName" readonly>
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label">Model:</label>
+                                    <input type="text" class="form-control" id="editProductModel" readonly>
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label">Import Quantity:</label>
+                                    <input type="number" class="form-control" id="editProductQuantity" name="quantity" min="1">
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label">Import Price:</label>
+                                    <input type="number" class="form-control" id="editProductPrice" name="price" min="1000" step="1">
+                                </div>
+                            </form>
+                        </div>
+                        <div class="modal-footer">
+                            <button name="action" value="delete" type="submit" class="btn btn-danger" form="editProductForm" id="deleteProduct">Delete</button>
+                            <button name="action" value="save" type="submit" class="btn btn-success" form="editProductForm">Save</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- End Edit Modal -->
         </div>
 
         <!-- Toast Thông báo -->
@@ -431,6 +430,17 @@
                 </div>
             </div>
         </div>
+
+        <script>
+            document.addEventListener("DOMContentLoaded", function () {
+                let totalAmountElement = document.getElementById("totalAmount");
+                let amount = parseFloat(totalAmountElement.innerText.replace(/[^\d.-]/g, '')); // Lấy số từ chuỗi
+
+                if (!isNaN(amount)) {
+                    totalAmountElement.innerText = amount.toLocaleString('vi-VN', {style: 'currency', currency: 'VND'});
+                }
+            });
+        </script>
 
         <script>
             function searchSupplier() {
@@ -535,12 +545,16 @@
                         const productQuantity = parseInt(quantityInput.value);
                         const productPrice = parseFloat(priceInput.value);
 
-                        if (isNaN(productQuantity) || productQuantity == 0) {
-                            alert("Please enter a valid quantity (min: 1000).");
+                        if (isNaN(productQuantity) || productQuantity < 1) {
+                            alert("Please enter a valid quantity (min: 1).");
+                            quantityInput.value = "";
+                            quantityInput.focus();
                             return;
                         }
                         if (isNaN(productPrice) || productPrice < 1000) {
                             alert("Please enter a valid price (min: 1000).");
+                            priceInput.value = "";
+                            priceInput.focus();
                             return;
                         }
 

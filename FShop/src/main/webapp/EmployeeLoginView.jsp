@@ -9,7 +9,7 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>JSP Page</title>
+        <title>Employee Login</title>
         <link rel="stylesheet" href="assets/css/bootstrap.css"/>
         <link href="assets/fonts/themify-icons/themify-icons.css" rel="stylesheet">
         <style>
@@ -20,71 +20,18 @@
                 box-sizing: border-box;
                 background-color: #f8f9fa;
             }
-            .container {
-                max-width: 1200px;
-                margin: 0 auto;
-                padding: 20px;
-            }
-            h1 {
-                font-weight: bold;
-                margin-bottom: 20px;
-                color: #333;
-            }
-            .login-form {
-                display: flex;
-                flex-wrap: wrap;
-                justify-content: center;
-                gap: 20px;
-                margin: 20px 0px;
-            }
-            .form-box {
-                background-color: #f5f7ff;
-                display: inline-block;
-                padding: 20px;
-                width: 80%;
-                min-width: 400px;
-                border: 1px solid #ddd;
-                border-radius: 8px;
-                box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-            }
-            .form-box h2 {
-                margin-bottom: 15px;
-                color: #333;
+            .bg-image-vertical {
+                position: relative;
+                overflow: hidden;
+                background-repeat: no-repeat;
+                background-position: right center;
+                background-size: auto 100%;
             }
 
-            form label{
-                font-weight: bold;
-            }
-
-            .form-box input {
-                width: 100%;
-                padding: 10px;
-                border: 1px solid #ccc;
-                border-radius: 5px;
-                font-size: 12px;
-            }
-            .summit {
-                margin: 10px 0px;
-                width: 100%;
-                background-color: #007bff;
-                color: white;
-                border: none;
-                padding: 12px 50px;
-                border-radius: 10px;
-                display: block;
-                text-decoration: none;
-            }
-            .summit:hover {
-                background-color: #0056b3;
-                color: white;
-            }
-            ul {
-                padding-left: 20px;
-            }
-            ul li {
-                margin-bottom: 10px;
-                font-size: 14px;
-                color: #555;
+            @media (min-width: 1025px) {
+                .h-custom-2 {
+                    height: 100%;
+                }
             }
 
             /* Popup styles */
@@ -120,25 +67,45 @@
         </style>
     </head>
     <body>
-        <div class="container">
+        <section class="vh-100">
+            <div class="container">
+                <div class="row">
 
-            <div class="login-form">
-                <h1>Employee Login</h1>
+                    <div class="col-md-6 text-black">
+                        <div class="d-flex align-items-center h-custom-2 px-5 ms-xl-4 pt-5 pt-xl-0 mt-xl-n5">
 
-                <div class="form-box">
-                    <p>If you have an account, sign in with your email address.</p>
-                    <form action="EmployeeLogin" method="post">
-                        <label for="email">Email</label>
-                        <input type="email" id="email" name="email" placeholder="Your Email" required>
+                            <form style="width: 23rem;" action="EmployeeLogin" method="POST">
 
-                        <label for="password">Password</label>
-                        <input type="password" id="password" name="password" placeholder="Your Password" required>
+                                <h3 class="fw-normal mb-3 pb-3" style="letter-spacing: 1px; font-size: 40px; font-weight: bold;">Login</h3>
 
-                        <button class="summit" type="submit">Sign In</button>
-                    </form>
+                                <div data-mdb-input-init class="form-outline mb-4">
+                                    <label class="form-label" for="form2Example18">Email address</label>
+                                    <input name="email" type="email" id="form2Example18" class="form-control form-control-lg" required/>
+
+                                </div>
+
+                                <div data-mdb-input-init class="form-outline mb-4">
+                                    <label class="form-label" for="form2Example28">Password</label>
+                                    <input name="password" type="password" id="form2Example28" class="form-control form-control-lg" required/>
+
+                                </div>
+
+                                <div class="pt-1 mb-4">
+                                    <button data-mdb-button-init data-mdb-ripple-init class="btn btn-info btn-lg btn-block" type="submit">Login</button>
+                                </div>
+
+                            </form>
+
+                        </div>
+
+                    </div>
+                    <div class="col-md-6" style="padding: 200px 0px 200px 0px;">
+                        <img src="./assets/imgs/Dashboard/Group 1521.svg"
+                             alt="Login image" width="100%" height="auto" style="object-fit: cover; object-position: left; margin-top: 10px; border-radius: 10px;">
+                    </div>
                 </div>
             </div>
-        </div>
+        </section>
 
 
         <!-- Popup -->

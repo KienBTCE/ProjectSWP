@@ -17,46 +17,48 @@ import java.util.List;
  *
  * @author HP
  */
-public class StockDAO{
+public class StockDAO {
+
     DBContext db = new DBContext();
     Connection connector = db.getConnection();
+
     public List<Stock> GetAll() {
         List<Stock> list = new ArrayList<>();
-        String query = "SELECT \n" +
-"    io.IOID,\n" +
-"    e.FullName AS EmployeeName,\n" +
-"    s.[Name] AS SupplierName,\n" +
-"    io.ImportDate,\n" +
-"    io.TotalCost,\n" +
-"    p.ProductID,\n" +
-"    p.FullName AS ProductName,\n" +
-"    b.[Name] AS BrandName,\n" +
-"    c.[Name] AS CategoryName,\n" +
-"    iod.Quantity,\n" +
-"    iod.ImportPrice,\n" +
-"    p.Price AS RetailPrice, \n" +
-"    (p.Price - iod.ImportPrice) AS ProfitMargin\n" +
-"FROM ImportOrders io\n" +
-"JOIN Employees e ON io.EmployeeID = e.EmployeeID\n" +
-"JOIN Suppliers s ON io.SupplierID = s.SupplierID\n" +
-"JOIN ImportOrderDetails iod ON io.IOID = iod.IOID\n" +
-"JOIN Products p ON iod.ProductID = p.ProductID\n" +
-"JOIN Brands b ON p.BrandID = b.BrandID\n" +
-"JOIN Categories c ON p.CategoryID = c.CategoryID\n" +
-"ORDER BY io.ImportDate DESC;";
+        String query = "SELECT \n"
+                + "    io.ImportID,\n"
+                + "    e.FullName AS EmployeeName,\n"
+                + "    s.[Name] AS SupplierName,\n"
+                + "    io.ImportDate,\n"
+                + "    io.TotalCost,\n"
+                + "    p.ProductID,\n"
+                + "    p.FullName AS ProductName,\n"
+                + "    b.[Name] AS BrandName,\n"
+                + "    c.[Name] AS CategoryName,\n"
+                + "    iod.ImportQuantity,\n"
+                + "    iod.ImportPrice,\n"
+                + "    p.Price AS RetailPrice, \n"
+                + "    (p.Price - iod.ImportPrice) AS ProfitMargin\n"
+                + "FROM ImportStocks io\n"
+                + "JOIN Employees e ON io.EmployeeID = e.EmployeeID\n"
+                + "JOIN Suppliers s ON io.SupplierID = s.SupplierID\n"
+                + "JOIN ImportStockDetails iod ON io.ImportID = iod.ImportID\n"
+                + "JOIN Products p ON iod.ProductID = p.ProductID\n"
+                + "JOIN Brands b ON p.BrandID = b.BrandID\n"
+                + "JOIN Categories c ON p.CategoryID = c.CategoryID\n"
+                + "ORDER BY io.ImportDate DESC;";
         try {
             PreparedStatement ps = connector.prepareStatement(query);
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {
 
                 Stock stock = new Stock(
-                        rs.getInt("IOID"),
+                        rs.getInt("ImportID"),
                         rs.getString("EmployeeName"),
                         rs.getString("SupplierName"),
                         rs.getTimestamp("ImportDate"),
-                        rs.getLong("TotalCost"), 
+                        rs.getLong("TotalCost"),
                         rs.getString("ProductName"),
-                        rs.getInt("Quantity"),
+                        rs.getInt("ImportQuantity"),
                         rs.getLong("ImportPrice"),
                         rs.getInt("ProductID"),
                         rs.getString("BrandName"),

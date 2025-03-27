@@ -82,17 +82,19 @@
                         <table style="width: 100%; border-collapse: collapse; text-align: left; font-family: Arial, sans-serif; color: #333;">
                             <tr style="height: 50px; border-bottom: 2px solid #eee; font-weight: bold; font-size: 16px;">
                                 <th style="width: 17%; padding: 12px 8px;">Item</th>
-                                <th style="width: 30%; padding: 12px 8px;"></th>
+                                <th style="width: 25%; padding: 12px 8px;"></th>
                                 <th style="width: 20%; padding: 12px 8px; text-align: right;">Price</th>
                                 <th style="width: 12%; padding: 12px 8px; text-align: center;">Qty</th>
                                 <th style="width: 21%; padding: 12px 8px; text-align: right;">Subtotal</th>
+                                    <c:if test="${sessionScope.order.getStatus() == 4}">
+                                    <th style="width: 5%; padding: 12px 8px; text-align: right;">Review</th>
+                                    </c:if>
                             </tr>
                             <c:set var="subtotal" value="0"></c:set>
                             <c:forEach items="${sessionScope.orderDetail}" var="od">
                                 <tr style="border-bottom: 1px solid #f2f2f2;">
                                     <td style="padding: 12px 8px;"> <a style="text-decoration: none; color: black;" href="ProductDetailServlet?id=${od.getProductID()}" ><img src="./assets/imgs/Products/${od.getImage()}" alt="" style="width: 85px; border-radius: 8px;">  </a></td>
                                     <td style="padding: 12px 8px; font-size: 15px;"><a style="text-decoration: none; color: black;"  href="ProductDetailServlet?id=${od.getProductID()}" >${od.getProductName()}</a></td>
-
                                     <td style="padding: 12px 8px; text-align: right; font-weight: 500; color: #444;">
                                         <fmt:formatNumber value="${od.getPrice()}" type="currency"/>
                                     </td>
@@ -100,6 +102,14 @@
                                     <td style="padding: 12px 8px; text-align: right; font-weight: 600; color: #2a9d8f;">
                                         <fmt:formatNumber value="${od.getPrice() * od.getQuantity()}" type="currency"/>
                                     </td>
+                                    <c:if test="${sessionScope.order.getStatus() == 4}">
+
+                                        <td style="padding: 12px 8px;">
+                                            <a style="text-decoration: none; color: black;" href="ProductDetailServlet?id=${od.getProductID()}" >
+                                                <img src="./assets/imgs/icon/review.png"} alt="" style="width: 35px; border-radius: 1px;">  
+                                            </a>
+                                        </td>
+                                    </c:if>
                                 </tr>
                                 <c:set var="subtotal" value="${subtotal + (od.getPrice() * od.getQuantity())}"></c:set>
                             </c:forEach>

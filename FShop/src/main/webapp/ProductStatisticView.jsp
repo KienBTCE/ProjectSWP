@@ -21,7 +21,8 @@
         <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
         <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
         <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
-        
+        <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-annotation"></script>
+
         <style>
             .container {
                 display: flex;
@@ -31,7 +32,6 @@
                 padding: 20px;
                 text-align: center;
                 font-family: Arial, sans-serif;
-                background-color: #f8f9fa;
             }
             .chart-box {
                 background: white;
@@ -39,7 +39,7 @@
                 border-radius: 10px;
                 box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
                 width: 40%;
-                min-width: 400px; /* Đảm bảo không bị bó hẹp */
+                min-width: 530px; /* Đảm bảo không bị bó hẹp */
             }
 
             canvas {
@@ -97,20 +97,22 @@
             }
 
             .content {
-                flex-grow: 1;
-                padding: 12px;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                margin-top: 60px;
                 margin-left: 250px;
+                padding: 20px;
             }
 
+            /* Giữ header cố định */
             .header {
-                display: flex;
-                justify-content: right;
-                align-items: center;
-                padding: 10px;
-                background: #FFFFFF;
-                box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.3);
-                border-radius: 10px;
-                height: 85px;
+                position: fixed;
+                top: 0;
+                left: 260px; /* vì sidebar chiếm 250px */
+                right: 10px;
+                margin-top: 10px;
+                z-index: 1000;
             }
 
             .icon {
@@ -230,88 +232,134 @@
                 display: inline-block;
                 padding: 5px 10px;
             }
-
-
+            .hi {
+                position: fixed;
+                top: 0;
+                left: 267px;
+                right: 0;
+                background: white;
+                z-index: 1000;
+                display: flex;
+                flex-direction: column;
+                align-items: flex-start;
+                padding: 18px;
+                border: 5px;
+            }
         </style>
     </head>
     <body>
         <jsp:include page="SidebarDashboard.jsp"></jsp:include>
             <div class="content">
-            <jsp:include page="HeaderDashboard.jsp"></jsp:include>
-            <div class ="container">
-                <div class="chart-box">
-                    <h3>Weekly Sales</h3>
-                    <canvas id="salesChart"></canvas>
+                <div class="hi">
+                <jsp:include page="HeaderDashboard.jsp"></jsp:include>
                 </div>
-                <div class="chart-box">
-                    <h3>Top Selling Products</h3>
-                    <canvas id="topProductsChart"></canvas>
-                </div>
-                <div class="chart-box">
-                    <h3>Low Stock Products</h3>
-                    <canvas id="lowStockChart"></canvas>
-                </div>
-                <div class="chart-box">
-                    <h3>Sales by Category</h3>
-                    <canvas id="categorySalesChart"></canvas>
-                </div>
-                
-            </div>
-        </div>
+                <div class ="container">
+                    <div class="chart-box">
+                        <h3>Weekly Sales</h3>
+                        <canvas id="salesChart"></canvas>
+                    </div>
+                    <div class="chart-box">
+                        <h3>Top Selling Products</h3>
+                        <canvas id="topProductsChart"></canvas>
+                    </div>
+                    <div class="chart-box">
+                        <h3>Low Stock Products</h3>
+                        <canvas id="lowStockChart"></canvas>
+                        <div id="lowStockLegend" class="chart-legend"></div> <!-- Chú thích màu sắc -->
+                    </div>
 
-        <script>
-            fetch('ProductStatisticServlet?action=data')
-                    .then(response => response.json())
-                    .then(data => {
-                        renderChart('salesChart', 'bar', 'Weekly Sales', data.weeklySales.map(d => d.date), data.weeklySales.map(d => d.total));
-                        renderChart('topProductsChart', 'bar', 'Top Selling Products', data.topProducts.map(d => d.FullName), data.topProducts.map(d => d.totalSold));
-                        renderChart('lowStockChart', 'doughnut', 'Low Stock Products', data.lowStock.map(d => d.FullName), data.lowStock.map(d => d.Stock));
-                        renderChart('categorySalesChart', 'pie', 'Sales by Category', data.categorySales.map(d => d.Name), data.categorySales.map(d => d.totalSold));
+                    <div class="chart-box">
+                        <h3>Sales by Category</h3>
+                        <canvas id="categorySalesChart"></canvas>
+                        <div id="categoryLegend" class="chart-legend"></div> <!-- Chú thích màu sắc -->
+                    </div>
+
+
+                </div>
+            </div>
+
+            <script>
+                fetch('ProductStatisticServlet?action=data')
+                        .then(response => response.json())
+                        .then(data => {
+                            renderChart('salesChart', 'bar', 'Weekly Sales', data.weeklySales.map(d => d.date), data.weeklySales.map(d => d.total));
+                            renderChart('topProductsChart', 'bar', 'Top Selling Products', data.topProducts.map(d => d.FullName), data.topProducts.map(d => d.totalSold));
+                            renderChart('lowStockChart', 'doughnut', 'Low Stock Products', data.lowStock.map(d => d.FullName), data.lowStock.map(d => d.Stock));
+                            renderChart('categorySalesChart', 'pie', 'Sales by Category', data.categorySales.map(d => d.Name), data.categorySales.map(d => d.totalSold));
+                        });
+
+                function renderChart(canvasId, type, label, labels, values) {
+                    new Chart(document.getElementById(canvasId), {
+                        type: type,
+                        data: {labels: labels, datasets: [{label: label, data: values, backgroundColor: getRandomColors(values.length)}]},
+                        options: {responsive: true, maintainAspectRatio: false, scales: type === 'bar' || type === 'line' ? {y: {beginAtZero: true}} : {}}
+                    });
+                }
+
+                function getRandomColors(count) {
+                    const colors = ['rgba(255, 99, 132, 0.6)', 'rgba(54, 162, 235, 0.6)', 'rgba(255, 206, 86, 0.6)', 'rgba(75, 192, 192, 0.6)', 'rgba(153, 102, 255, 0.6)', 'rgba(255, 159, 64, 0.6)'];
+                    return Array.from({length: count}, (_, i) => colors[i % colors.length]);
+                }
+
+                function renderChart(canvasId, type, label, labels, values) {
+                    const colors = getRandomColors(values.length);
+                    const maxLength = 20;
+                    const formattedLabels = labels.map(name => name.length > maxLength ? name.substring(0, maxLength) + "..." : name);
+
+                    new Chart(document.getElementById(canvasId), {
+                        type: type,
+                        data: {
+                            labels: formattedLabels,
+                            datasets: [{
+                                    label: label,
+                                    data: values,
+                                    backgroundColor: colors
+                                }]
+                        },
+                        options: {
+                            responsive: true,
+                            maintainAspectRatio: false,
+                            scales: type === 'bar' || type === 'line' ? {y: {beginAtZero: true}} : {}
+                        }
                     });
 
-            function renderChart(canvasId, type, label, labels, values) {
-                new Chart(document.getElementById(canvasId), {
-                    type: type,
-                    data: {labels: labels, datasets: [{label: label, data: values, backgroundColor: getRandomColors(values.length)}]},
-                    options: {responsive: true, maintainAspectRatio: false, scales: type === 'bar' || type === 'line' ? {y: {beginAtZero: true}} : {}}
-                });
-            }
-
-            function getRandomColors(count) {
-                const colors = ['rgba(255, 99, 132, 0.6)', 'rgba(54, 162, 235, 0.6)', 'rgba(255, 206, 86, 0.6)', 'rgba(75, 192, 192, 0.6)', 'rgba(153, 102, 255, 0.6)', 'rgba(255, 159, 64, 0.6)'];
-                return Array.from({length: count}, (_, i) => colors[i % colors.length]);
-            }
-
-            function renderChart(canvasId, type, label, labels, values) {
-                // Giới hạn số ký tự tối đa hiển thị trên biểu đồ
-                const maxLength = 20;
-                const formattedLabels = labels.map(name => name.length > maxLength ? name.substring(0, maxLength) + "..." : name);
-
-                new Chart(document.getElementById(canvasId), {
-                    type: type,
-                    data: {
-                        labels: formattedLabels,
-                        datasets: [{
-                                label: label,
-                                data: values,
-                                backgroundColor: getRandomColors(values.length)
-                            }]
-                    },
-                    options: {
-                        responsive: true,
-                        maintainAspectRatio: false,
-                        scales: type === 'bar' || type === 'line' ? {y: {beginAtZero: true}} : {},
-                        plugins: {
-                            legend: {display: false},
-                            tooltip: {
-                                callbacks: {
-                                    title: (tooltipItems) => labels[tooltipItems[0].dataIndex] // Hiển thị tên đầy đủ khi hover
-                                }
-                            }
-                        }
+                    // Hiển thị chú thích màu sắc dưới biểu đồ
+                    if (canvasId === "categorySalesChart" || canvasId === "lowStockChart") {
+                        let legendId = canvasId === "categorySalesChart" ? "categoryLegend" : "lowStockLegend";
+                        let legendDiv = document.getElementById(legendId);
+                        legendDiv.innerHTML = labels.map((name, index) => `
+            <div class="legend-item">
+                <span class="color-box" style="background-color: ${colors[index]};"></span>
+            ${name}
+            </div>
+        `).join('');
                     }
-                });
-            }
+                }
+
+                // CSS để hiển thị chú thích màu sắc đẹp mắt
+                const style = document.createElement('style');
+                style.innerHTML = `
+    .chart-legend {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        margin-top: 10px;
+    }
+    .legend-item {
+        display: flex;
+        align-items: center;
+        margin: 5px 10px;
+        font-size: 14px;
+    }
+    .color-box {
+        width: 12px;
+        height: 12px;
+        display: inline-block;
+        margin-right: 5px;
+        border-radius: 3px;
+    }
+`;
+                document.head.appendChild(style);
 
 
         </script>

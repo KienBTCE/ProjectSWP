@@ -132,15 +132,15 @@ INSERT INTO Products (ProductID, BrandID, CategoryID, Model, FullName, [Descript
 (25, 10, 4, 'Acer-Predator-Galea-350', 'Acer Predator Galea 350', 'Gaming headset with surround sound', 'acer-predator-galea-350.jpg', 2590000, 0, 20);
 
 -- Chargers
-INSERT INTO Products (ProductID, BrandID, CategoryID, Model, FullName, [Description], [Image], Price, IsDeleted, Stock) VALUES 
-(26, 1, 5, 'Apple-20W-USB-C', 'Apple 20W USB-C Charger', 'Fast charging for iPhone and iPad', 'apple-20w-usb-c.jpg', 590000, 0, 100),
-(27, 2, 5, 'Samsung-25W-USB-C', 'Samsung 25W USB-C Charger', 'Super Fast Charging adapter', 'samsung-25w-usb-c.jpg', 690000, 0, 80),
-(28, 5, 5, 'Xiaomi-67W-SuperCharge', 'Xiaomi 67W Super Charge', 'High-speed charging adapter', 'xiaomi-67w.jpg', 890000, 0, 70),
-(29, 4, 5, 'Huawei-40W-SuperCharge', 'Huawei 40W Super Charge', 'Fast charging technology', 'huawei-40w.jpg', 790000, 0, 60),
-(30, 9, 5, 'Lenovo-65W-Charger', 'Lenovo 65W Laptop Charger', 'Fast charging for Lenovo laptops', 'lenovo-65w.jpg', 1290000, 0, 50);
+INSERT INTO Products (ProductID, BrandID, CategoryID, Model, FullName, [Description], [Image], [Image1], [Image2], Price, IsDeleted, Stock) VALUES 
+(26, 1, 5, 'Apple-20W-USB-C', 'Apple 20W USB-C Charger', 'Fast charging for iPhone and iPad', 'apple-20w-usb-c.jpg', 'adapter-20w-apple-5_1.png', 'adapter-20w-apple-5_1_1.png', 590000, 0, 100),
+(27, 2, 5, 'Samsung-25W-USB-C', 'Samsung 25W USB-C Charger', 'Super Fast Charging adapter', 'samsung-25w-usb-c.jpg', 'cu-sac-nhanh-samsung-25w-ep-t2510nbegww-2.png', 'cu-sac-nhanh-samsung-25w-ep-t2510nbegww-4.png', 690000, 0, 80),
+(28, 5, 5, 'Xiaomi-67W-SuperCharge', 'Xiaomi 67W Super Charge', 'High-speed charging adapter', 'xiaomi-67w.jpg','cu-sac-xiaomi-usb-a-gan-67w-kem-cap-type-c_3_.png', 'cu-sac-xiaomi-usb-a-gan-67w-kem-cap-type-c_4_.png', 890000, 0, 70),
+(29, 4, 5, 'Huawei-40W-SuperCharge', 'Huawei 40W Super Charge', 'Fast charging technology', 'huawei-40w.jpg','','', 790000, 0, 60),
+(30, 9, 5, 'Lenovo-65W-Charger', 'Lenovo 65W Laptop Charger', 'Fast charging for Lenovo laptops', 'lenovo-65w.jpg', '4X20M26268-560x450-02.61f5a0696c22551d.png','6hz00evh8lohwi8iag5nh0yoq8jh4t069238.png',1290000, 0, 50);
 
 -- Charging Cables
-INSERT INTO Products (ProductID, BrandID, CategoryID, Model, FullName, [Description], [Image], Price, IsDeleted, Stock) VALUES 
+INSERT INTO Products (ProductID, BrandID, CategoryID, Model, FullName, [Description], [Image],  Price, IsDeleted, Stock) VALUES 
 (31, 1, 6, 'Apple-USB-C-Lightning', 'Apple USB-C to Lightning Cable', 'Official Apple charging cable', 'apple-usb-c-lightning.jpg', 490000, 0, 200),
 (32, 2, 6, 'Samsung-USB-C-Cable', 'Samsung USB-C Cable 1m', 'Durable and fast-charging', 'samsung-usb-c.jpg', 290000, 0, 180),
 (33, 5, 6, 'Xiaomi-Braided-USB-C', 'Xiaomi Braided USB-C Cable', 'Reinforced and tangle-free', 'xiaomi-braided-usb-c.jpg', 390000, 0, 160),
@@ -420,3 +420,71 @@ VALUES
 (1, 1, '2026-01-10', 5),
 (1, 2,'2026-01-10', 5),	
 (1, 3, '2026-01-10', 5);
+
+--Insert Product Rating
+INSERT INTO ProductRatings (CustomerID, ProductID, OrderID, CreatedDate, Star, Comment, IsDeleted, IsRead)
+VALUES
+(1, 1, 1, GETDATE(), 5, N'Excellent performance and build quality!', 0, 1),
+(2, 2, 2, GETDATE(), 4, N'Great phone but gets warm during gaming.', 0, 1),
+(3, 3, 3, GETDATE(), 3, N'Decent battery life, could be better.', 0, 1),
+(5, 5, 5, GETDATE(), 5, N'Highly satisfied with the product quality.', 0, 1),
+(6, 6, 6, GETDATE(), 2, N'The item had some scratches upon arrival.', 0, 1),
+(8, 8, 8, GETDATE(), 4, N'Sleek design and solid gaming performance.', 0, 1),
+(9, 9, 9, GETDATE(), 5, N'Smooth experience and fast delivery.', 0, 1),
+(10, 10, 10, GETDATE(), 3, N'Average performance for the price.', 0, 1);
+
+--Insert RatingReplies
+INSERT INTO RatingReplies (EmployeeID, RateID, Answer, IsRead)
+VALUES
+(3, 1, N'Thank you for your feedback! We appreciate your support.', 0),
+(3, 2, N'Sorry for the heating issue. We will look into it.', 0),
+(3, 3, N'Thank you! We’ll work on improving battery life.', 0),
+(3, 4, N'Glad to hear you’re happy with the product!', 1),
+(3, 5, N'Sorry for the inconvenience. We’ll review our packaging process.', 0),
+(3, 6, N'Thanks for your review. Enjoy your new device!', 1),
+(3, 7, N'We appreciate your trust and hope to serve you again.', 0),
+(3, 8, N'Thank you! We’re happy it met your expectations.', 1);
+
+-- Thêm đơn hàng 1 tháng trước
+INSERT INTO Orders (CustomerID, FullName, [Address], PhoneNumber, OrderedDate, DeliveredDate, Status, TotalAmount)
+VALUES 
+(1, 'Nguyen Van A', '123 Tech Street, District 1, Ho Chi Minh City', '0901234567', DATEADD(MONTH, -1, GETUTCDATE()), NULL, 5, 50000000);
+
+-- Chi tiết đơn hàng 1 tháng trước
+INSERT INTO OrderDetails (OrderID, ProductID, Quantity, Price)
+VALUES 
+(16, 1, 2, 50000000),  -- 2 Macbook Pro 14
+(16, 2, 3, 75000000);  -- 3 Galaxy S23 Ultra
+
+-- Thêm đơn hàng 3 tháng trước
+INSERT INTO Orders (CustomerID, FullName, [Address], PhoneNumber, OrderedDate, DeliveredDate, Status, TotalAmount)
+VALUES 
+(2, 'Tran Thi B', '456 Nguyen Du Street, District 3, Ho Chi Minh City', '0909876543', DATEADD(MONTH, -3, GETUTCDATE()), NULL, 5, 75000000);
+
+-- Chi tiết đơn hàng 3 tháng trước
+INSERT INTO OrderDetails (OrderID, ProductID, Quantity, Price)
+VALUES 
+(17, 3, 2, 20000000),  -- 2 Sony Vaio Z900
+(17, 4, 1, 12000000);  -- 1 ASUS TUF Gaming A17
+
+-- Thêm đơn hàng 6 tháng trước
+INSERT INTO Orders (CustomerID, FullName, [Address], PhoneNumber, OrderedDate, DeliveredDate, Status, TotalAmount)
+VALUES 
+(3, 'Le Minh C', '789 Le Lai Street, District 5, Ho Chi Minh City', '0912345678', DATEADD(MONTH, -6, GETUTCDATE()), NULL, 5, 25000000);
+
+-- Chi tiết đơn hàng 6 tháng trước
+INSERT INTO OrderDetails (OrderID, ProductID, Quantity, Price)
+VALUES 
+(18, 5, 2, 30000000),  -- 2 iPhone-16-Pro-Max
+(18, 6, 4, 40000000);  -- 4 Galaxy-S23
+
+-- Thêm đơn hàng 12 tháng trước
+INSERT INTO Orders (CustomerID, FullName, [Address], PhoneNumber, OrderedDate, DeliveredDate, Status, TotalAmount)
+VALUES 
+(4, 'Pham Thi D', '321 Pham Ngoc Thach, District 1, Ho Chi Minh City', '0923456789', DATEADD(MONTH, -12, GETUTCDATE()), NULL, 5, 12000000);
+
+-- Chi tiết đơn hàng 12 tháng trước
+INSERT INTO OrderDetails (OrderID, ProductID, Quantity, Price)
+VALUES 
+(19, 7, 3, 60000000),  -- 3 Lenovo Legion Pro 5
+(19, 8, 1, 15000000);  -- 1 ASUS-TUF-A17

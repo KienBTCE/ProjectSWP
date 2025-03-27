@@ -235,7 +235,7 @@ public class ProductDAO {
                 + "sp.FullName, sp.Price, sp.Stock, sp.isDeleted "
                 + "FROM Products sp "
                 + "JOIN Categories c ON sp.CategoryID = c.CategoryID "
-                + "JOIN Brands b ON sp.BrandID = b.BrandID";
+                + "JOIN Brands b ON sp.BrandID = b.BrandID ORDER BY IsDeleted";
 
         try ( PreparedStatement ps = connector.prepareStatement(query);  ResultSet rs = ps.executeQuery()) {
 
@@ -492,7 +492,7 @@ public class ProductDAO {
     public List<Product> sortProduct(String keyword, String sort) {
         List<Product> list = new ArrayList<>();
         String orderBy = "ASC";
-        if ("DESC".equalsIgnoreCase(sort)){
+        if ("DESC".equalsIgnoreCase(sort)) {
             orderBy = "DESC";
         }
         String query = "SELECT sp.ProductID, c.Name AS CategoryName, b.Name AS BrandName, "
@@ -637,8 +637,8 @@ public class ProductDAO {
         String query
                 = "SELECT TOP 10 p.ProductID, p.FullName, c.Name AS Category, p.Price, io.ImportDate "
                 + "FROM Products p "
-                + "JOIN ImportDetails iod ON p.ProductID = iod.ProductID "
-                + "JOIN Imports io ON iod.ImportID = io.ImportID "
+                + "JOIN ImportStockDetails iod ON p.ProductID = iod.ProductID "
+                + "JOIN ImportStocks io ON iod.ImportID = io.ImportID "
                 + "JOIN Categories c ON p.CategoryID = c.CategoryID "
                 + "ORDER BY io.ImportDate DESC";
 
@@ -707,9 +707,9 @@ public class ProductDAO {
                 + "FROM Products p "
                 + "JOIN Categories c ON p.CategoryID = c.CategoryID "
                 + "JOIN Brands b ON p.BrandID = b.BrandID "
-                + "WHERE p.ProductID IN (SELECT DISTINCT ProductID FROM ImportDetails "
-                + "JOIN Imports ON ImportDetails.ImportID = Imports.ImportID "
-                + "WHERE Imports.ImportDate >= DATEADD(DAY, -7, GETDATE()))";
+                + "WHERE p.ProductID IN (SELECT DISTINCT ProductID FROM ImportStockDetails "
+                + "JOIN ImportStocks ON ImportStockDetails.ImportID = ImportStocks.ImportID "
+                + "WHERE ImportStocks.ImportDate >= DATEADD(DAY, -7, GETDATE()))";
 
         try ( PreparedStatement ps = connector.prepareStatement(query)) {
             ResultSet rs = ps.executeQuery();
@@ -730,6 +730,24 @@ public class ProductDAO {
             e.printStackTrace();
         }
         return products;
+    }
+
+    public boolean checkDuplicateProduct(String fullName, String model, int productId) {
+        boolean exists = false;
+        String sql = "SELECT COUNT(*) FROM Products WHERE (fullName = ? OR model = ?) AND productId <> ?";
+        try ( PreparedStatement ps = connector.prepareStatement(sql)) {
+            ps.setString(1, fullName);
+            ps.setString(2, model);
+            ps.setInt(3, productId);
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                int count = rs.getInt(1);
+                exists = count > 0;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return exists;
     }
 
 }

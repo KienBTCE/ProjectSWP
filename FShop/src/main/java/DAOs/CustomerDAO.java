@@ -182,7 +182,7 @@ public class CustomerDAO {
             pr.setString(1, email);
             ResultSet rs = pr.executeQuery();
             if (rs.next()) {
-                return 1;
+                return rs.getInt("CustomerID");
             }
         } catch (SQLException e) {
             System.out.println(e + " ");
@@ -281,7 +281,7 @@ public class CustomerDAO {
     public ArrayList<Customer> getCustomerList() {
         ArrayList<Customer> list = new ArrayList<>();
 
-        String query = "SELECT CustomerID, FullName, Email, PhoneNumber, IsBlock FROM Customers;";
+        String query = "SELECT CustomerID, FullName, Email, PhoneNumber, IsBlock FROM Customers ORDER BY IsBlock;";
 
         try {
             PreparedStatement ps = connector.prepareStatement(query);
@@ -309,6 +309,19 @@ public class CustomerDAO {
             String sql = "UPDATE Customers SET IsBlock = 1 WHERE CustomerID = ?";
             PreparedStatement pst = connector.prepareStatement(sql);
             pst.setInt(1, Id);
+            count = pst.executeUpdate();
+        } catch (SQLException ex) {
+            Logger.getLogger(CustomerDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return count;
+    }
+    
+    public int blockCustomer(String email) {
+        int count = 0;
+        try {
+            String sql = "UPDATE Customers SET IsBlock = 1 WHERE Email = ? AND IsDeleted = 0";
+            PreparedStatement pst = connector.prepareStatement(sql);
+            pst.setString(1, email);
             count = pst.executeUpdate();
         } catch (SQLException ex) {
             Logger.getLogger(CustomerDAO.class.getName()).log(Level.SEVERE, null, ex);
