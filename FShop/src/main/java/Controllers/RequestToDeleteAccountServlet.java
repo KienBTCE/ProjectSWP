@@ -5,7 +5,10 @@
 package Controllers;
 
 import DAOs.CustomerDAO;
+import DAOs.OrderDAO;
 import Models.Customer;
+import Models.Email;
+import Models.EmailUtils;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -14,6 +17,7 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
+import java.security.SecureRandom;
 
 /**
  *
@@ -60,7 +64,52 @@ public class RequestToDeleteAccountServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        HttpSession session = request.getSession();
+        Customer cus = (Customer) session.getAttribute("customer");
+
+        OrderDAO o = new OrderDAO();
+        int orderCount = o.checkHaveOrders(cus.getId());
+        System.out.println("Order count: " + orderCount);
+        if (orderCount != 0) {
+            session.setAttribute("messageFail", "You have pending orders. Account cannot be deleted.");
+            response.setContentType("application/json");
+            response.setCharacterEncoding("UTF-8");
+            try ( PrintWriter out = response.getWriter()) {
+                out.write("{\"status\": \"fail\", \"message\": \"You have pending orders. Account cannot be deleted.\"}");
+                out.flush();
+            }
+            return;
+        }
+
+        if (cus.getGoogleId() == null || cus.getGoogleId().trim().isEmpty()) {
+            response.setContentType("application/json");
+            response.setCharacterEncoding("UTF-8");
+            try ( PrintWriter out = response.getWriter()) {
+                out.write("{\"status\": \"success\"}");
+                out.flush();
+            }
+            return;
+        }
+
+        String otp = generateOTP();
+        session.setAttribute("otp", otp);
+
+        try {
+            sendOTPEmail(cus.getEmail(), otp, cus.getFullName());
+            response.setContentType("application/json");
+            response.setCharacterEncoding("UTF-8");
+            try ( PrintWriter out = response.getWriter()) {
+                out.write("{\"status\": \"success\"}");
+                out.flush();
+            }
+        } catch (Exception e) {
+            response.setContentType("application/json");
+            response.setCharacterEncoding("UTF-8");
+            try ( PrintWriter out = response.getWriter()) {
+                out.write("{\"status\": \"fail\", \"message\": \"Failed to send OTP email.\"}");
+                out.flush();
+            }
+        }
     }
 
     /**
@@ -75,25 +124,75 @@ public class RequestToDeleteAccountServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         String password = request.getParameter("confirmPassword");
+        String confirmOTP = request.getParameter("OTP");
 
         HttpSession session = request.getSession();
         CustomerDAO cusDAO = new CustomerDAO();
         Customer cus = (Customer) session.getAttribute("customer");
 
-        if (cusDAO.cofirmPassword(cus.getId(), password) > 0) {
-            if (cusDAO.requestToDeleteAccount(cus.getId()) > 0) {
-                response.sendRedirect("/Logout");
+        if (password != null) {
+            if (cusDAO.cofirmPassword(cus.getId(), password) > 0) {
+                if (cusDAO.requestToDeleteAccount(cus.getId()) > 0) {
+                    response.sendRedirect("/Logout");
+                } else {
+                    session.setAttribute("messageFail", "Delete is not suscess!");
+                    response.sendRedirect("/viewCustomerProfile");
+                }
             } else {
-                session.setAttribute("message", "Delete is not suscess!");
-                request.setAttribute("profilePage", "CustomerProfile.jsp");
-                request.getRequestDispatcher("ProfileManagementView.jsp").forward(request, response);
+                session.setAttribute("messageFail", "Your cofirm password is not correct!");
+                response.sendRedirect("/viewCustomerProfile");
             }
-        } else {
-            session.setAttribute("message", "Your cofirm password is not correct!");
-            request.setAttribute("profilePage", "CustomerProfile.jsp");
-            request.getRequestDispatcher("ProfileManagementView.jsp").forward(request, response);
         }
 
+        if (confirmOTP != null) {
+            String OTP = (String) session.getAttribute("otp");
+            if (confirmOTP.equals(OTP)) {
+                if (cusDAO.requestToDeleteAccount(cus.getId()) > 0) {
+                    response.sendRedirect("/Logout");
+                } else {
+                    session.setAttribute("message", "Delete was not successful!");
+                    response.sendRedirect("/viewCustomerProfile");
+                }
+            } else {
+                session.setAttribute("messageFail", "Your confirm OTP is incorrect!");
+                response.sendRedirect("/viewCustomerProfile");
+            }
+
+        }
+        processRequest(request, response);
+    }
+
+    private String generateOTP() {
+        SecureRandom random = new SecureRandom();
+        int otp = 100000 + random.nextInt(900000); // Generates a 6-digit number
+        return String.valueOf(otp);
+    }
+
+    private void sendOTPEmail(String recipientEmail, String otp, String fullName) {
+        try {
+            Email email = new Email();
+            email.setFrom("kieuthy2004@gmail.com"); // Sender email
+            email.setFromPassword("xkkc ohwn aesf arqm"); // App Password for email
+            email.setTo(recipientEmail);
+            email.setSubject("Email Verification OTP");
+
+            StringBuilder sb = new StringBuilder();
+            sb.append("Dear ").append(fullName).append(",<br><br>");
+            sb.append(". Please use the OTP below to verify your email:<br>");
+            sb.append("<h2>").append(otp).append("</h2>");
+            sb.append("This OTP is valid for 5 minutes.<br>");
+            sb.append("If you did not request this, please ignore this email.<br><br>");
+            sb.append("Best Regards,<br>");
+            sb.append("<b>FShop Team</b>");
+
+            email.setContent(sb.toString());
+
+            // Send the email
+            EmailUtils.send(email);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     /**
@@ -105,5 +204,9 @@ public class RequestToDeleteAccountServlet extends HttpServlet {
     public String getServletInfo() {
         return "Short description";
     }// </editor-fold>
+
+    private OrderDAO OrderDAO() {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
 
 }

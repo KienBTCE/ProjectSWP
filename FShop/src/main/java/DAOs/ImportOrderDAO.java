@@ -10,11 +10,13 @@ import Models.ImportOrderDetail;
 import Models.Product;
 import Models.Supplier;
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -30,7 +32,7 @@ public class ImportOrderDAO {
     public ArrayList<ImportOrder> getAllImportOrders() {
         ArrayList<ImportOrder> list = new ArrayList<>();
 
-        String query = "SELECT * FROM ImportOrders I JOIN Suppliers S ON I.SupplierID = S.SupplierID";
+        String query = "SELECT * FROM ImportStocks I JOIN Suppliers S ON I.SupplierID = S.SupplierID";
 
         try {
             PreparedStatement ps = connector.prepareStatement(query);
@@ -51,7 +53,7 @@ public class ImportOrderDAO {
                 );
 
                 ImportOrder io = new ImportOrder(
-                        rs.getInt("IOID"),
+                        rs.getInt("ImportID"),
                         rs.getInt("EmployeeID"),
                         rs.getInt("SupplierID"),
                         rs.getDate("ImportDate"),
@@ -74,7 +76,7 @@ public class ImportOrderDAO {
     public ImportOrder getImportOrderByID(int id) {
         ImportOrder io = null;
 
-        String query = "SELECT * FROM ImportOrders I JOIN Suppliers S ON I.SupplierID = S.SupplierID WHERE IOID = ?";
+        String query = "SELECT * FROM ImportStocks I JOIN Suppliers S ON I.SupplierID = S.SupplierID WHERE ImportID = ?";
 
         try {
             PreparedStatement ps = connector.prepareStatement(query);
@@ -96,7 +98,7 @@ public class ImportOrderDAO {
                 );
 
                 io = new ImportOrder(
-                        rs.getInt("IOID"),
+                        rs.getInt("ImportID"),
                         rs.getInt("EmployeeID"),
                         rs.getInt("SupplierID"),
                         rs.getDate("ImportDate"),
@@ -114,11 +116,59 @@ public class ImportOrderDAO {
 
         return io;
     }
+    
+    public ArrayList<ImportOrder> getImportOrderBySupplierName(String name) {
+        ArrayList<ImportOrder> list = new ArrayList<>();
+
+        String query = "SELECT * FROM ImportStocks I JOIN Suppliers S ON I.SupplierID = S.SupplierID WHERE S.Name LIKE ";
+        String search = "'%" + name + "%'";
+        query += search;
+        
+        System.out.println(query);
+
+        try {
+            PreparedStatement ps = connector.prepareStatement(query);
+            ResultSet rs = ps.executeQuery();
+
+            while (rs.next()) {
+                Supplier s = new Supplier(
+                        rs.getInt("SupplierID"),
+                        rs.getString("TaxID"),
+                        rs.getString("Name"),
+                        rs.getString("Email"),
+                        rs.getString("PhoneNumber"),
+                        rs.getString("Address"),
+                        rs.getTimestamp("CreatedDate").toLocalDateTime(),
+                        rs.getTimestamp("LastModify").toLocalDateTime(),
+                        rs.getInt("IsDeleted"),
+                        rs.getInt("IsActivate")
+                );
+
+                ImportOrder io = new ImportOrder(
+                        rs.getInt("ImportID"),
+                        rs.getInt("EmployeeID"),
+                        rs.getInt("SupplierID"),
+                        rs.getDate("ImportDate"),
+                        rs.getLong("TotalCost"),
+                        rs.getInt("Completed")
+                );
+
+                io.setSupplier(s);
+
+                list.add(io);
+            }
+            return list;
+        } catch (SQLException e) {
+            System.out.println(e);
+        }
+
+        return list;
+    }
 
     public ImportOrder getImportOrderDetailsByID(int id) {
         ImportOrder io = getImportOrderByID(id);
 
-        String query = "SELECT P.Model, P.FullName, D.IOID, D.Quantity, D.ImportPrice, P.ProductID FROM ImportOrderDetails D JOIN Products P ON D.ProductID = P.ProductID WHERE D.IOID = ?";
+        String query = "SELECT P.Model, P.FullName, D.ImportID, D.ImportQuantity, D.ImportPrice, P.ProductID FROM ImportStockDetails D JOIN Products P ON D.ProductID = P.ProductID WHERE D.ImportID = ?";
 
         try {
             PreparedStatement ps = connector.prepareStatement(query);
@@ -132,9 +182,9 @@ public class ImportOrderDAO {
                 p.setModel(rs.getString("Model"));
                 p.setFullName(rs.getString("FullName"));
                 l.add(new ImportOrderDetail(
-                        rs.getInt("IOID"),
+                        rs.getInt("ImportID"),
                         p,
-                        rs.getInt("Quantity"),
+                        rs.getInt("ImportQuantity"),
                         rs.getLong("ImportPrice")
                 ));
             }
@@ -149,7 +199,7 @@ public class ImportOrderDAO {
     }
 
     public int createImportOrder(ImportOrder io) {
-        String query = "INSERT INTO ImportOrders (EmployeeID, SupplierID, ImportDate, TotalCost, Completed) VALUES (?, ?, GETDATE(), ?, 0)";
+        String query = "INSERT INTO ImportStocks (EmployeeID, SupplierID, ImportDate, TotalCost, Completed) VALUES (?, ?, GETDATE(), ?, 1)";
         try {
             PreparedStatement ps = connector.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
 
@@ -175,7 +225,7 @@ public class ImportOrderDAO {
     }
 
     public int updateImportOrderSupplier(int supplierId) {
-        String query = "UPDATE ImportOrders SET SupplierID = ?";
+        String query = "UPDATE ImportStocks SET SupplierID = ?";
         try {
             PreparedStatement ps = connector.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
 
@@ -218,7 +268,7 @@ public class ImportOrderDAO {
     }
 
     private int completedImportOrder(int importId, long total) {
-        String query = "UPDATE ImportOrders SET Completed = 1, ImportDate = GETDATE(), TotalCost = ? WHERE IOID = ?";
+        String query = "UPDATE ImportStocks SET Completed = 1, ImportDate = GETDATE(), TotalCost = ? WHERE ImportID = ?";
 
         try {
             PreparedStatement ps = connector.prepareStatement(query);
@@ -233,23 +283,160 @@ public class ImportOrderDAO {
         return -1;
     }
 
-    public int importStock(int importId, long total) {
-        String query = "UPDATE P SET P.Stock = P.Stock + D.Quantity FROM Products P INNER JOIN ImportOrderDetails D ON P.ProductID = D.ProductID WHERE D.IOID = ?";
+    public int importStock(int importId) {
+        String query = "UPDATE P SET P.Stock = P.Stock + D.ImportQuantity FROM Products P INNER JOIN ImportStockDetails D ON P.ProductID = D.ProductID WHERE D.ImportID = ?";
 
         try {
             PreparedStatement ps = connector.prepareStatement(query);
             ps.setInt(1, importId);
 
-            int count = ps.executeUpdate();
-            int c = completedImportOrder(importId, total);
-            if (count != -1 && c != -1) {
-                return count;
-            }
+            return ps.executeUpdate();
         } catch (SQLException e) {
             System.out.println(e);
         }
 
         return -1;
+    }
+
+    public ArrayList<ImportOrder> filterHistoryByDate(String from, String to) {
+        ArrayList<ImportOrder> list = new ArrayList<>();
+
+        String query = "SELECT * FROM ImportStocks I JOIN Suppliers S ON I.SupplierID = S.SupplierID WHERE ImportDate BETWEEN ? AND ?";
+
+        try {
+            PreparedStatement ps = connector.prepareStatement(query);
+            ps.setString(1, from + " 00:00:00");
+            ps.setString(2, to + " 23:59:59");
+            ResultSet rs = ps.executeQuery();
+
+            while (rs.next()) {
+                Supplier s = new Supplier(
+                        rs.getInt("SupplierID"),
+                        rs.getString("TaxID"),
+                        rs.getString("Name"),
+                        rs.getString("Email"),
+                        rs.getString("PhoneNumber"),
+                        rs.getString("Address"),
+                        rs.getTimestamp("CreatedDate").toLocalDateTime(),
+                        rs.getTimestamp("LastModify").toLocalDateTime(),
+                        rs.getInt("IsDeleted"),
+                        rs.getInt("IsActivate")
+                );
+
+                ImportOrder io = new ImportOrder(
+                        rs.getInt("ImportID"),
+                        rs.getInt("EmployeeID"),
+                        rs.getInt("SupplierID"),
+                        rs.getDate("ImportDate"),
+                        rs.getLong("TotalCost"),
+                        rs.getInt("Completed")
+                );
+
+                io.setSupplier(s);
+
+                list.add(io);
+            }
+            return list;
+        } catch (SQLException e) {
+            System.out.println(e);
+        }
+
+        return list;
+    }
+
+    // =========================================================================
+    // 1. Thống kê tổng số đơn nhập theo ngày/tháng/năm
+    public Map<String, Integer> getImportOrdersCountByDate() {
+
+        String sql = "SELECT \n"
+                + "    CAST(I.ImportDate AS DATE) AS ImportDate, \n"
+                + "    SUM(D.ImportQuantity) AS TotalQuantity\n"
+                + "FROM ImportStocks I\n"
+                + "JOIN ImportStockDetails D ON I.ImportID = D.ImportID\n"
+                + "WHERE CAST(I.ImportDate AS DATE) IN (\n"
+                + "    SELECT DISTINCT TOP 5 CAST(ImportDate AS DATE)\n"
+                + "    FROM ImportStocks\n"
+                + "    ORDER BY CAST(ImportDate AS DATE) DESC\n"
+                + ")\n"
+                + "GROUP BY CAST(I.ImportDate AS DATE)\n"
+                + "ORDER BY ImportDate DESC";
+
+        Map<String, Integer> result = new LinkedHashMap<>();
+        try {
+            PreparedStatement ps = connector.prepareStatement(sql);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                result.put(rs.getString("ImportDate"),
+                        rs.getInt("TotalQuantity"));
+            }
+        } catch (SQLException e) {
+            System.out.println(e);
+        }
+        return result;
+    }
+
+    public Map<String, Integer> getImportOrdersCountByMonth() {
+
+        String sql = "SELECT FORMAT(I.ImportDate, 'yyyy-MM') AS ImportMonth, SUM(D.ImportQuantity) AS TotalQuantity\n"
+                + "FROM ImportStocks I\n"
+                + "JOIN ImportStockDetails D ON I.ImportID = D.ImportID\n"
+                + "GROUP BY FORMAT(I.ImportDate, 'yyyy-MM')\n"
+                + "ORDER BY ImportMonth DESC";
+
+        Map<String, Integer> result = new LinkedHashMap<>();
+        try {
+            PreparedStatement ps = connector.prepareStatement(sql);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                result.put(rs.getString("ImportMonth"),
+                        rs.getInt("TotalQuantity"));
+            }
+        } catch (SQLException e) {
+            System.out.println(e);
+        }
+        return result;
+    }
+
+    // 3. Thống kê tổng số đơn nhập theo nhà cung cấp
+    public Map<String, Integer> getOrdersBySupplier() {
+        String sql = "SELECT TOP 5 s.SupplierID, s.Name AS SupplierName, COUNT(io.ImportID) AS OrderCount\n"
+                + "FROM ImportStocks io\n"
+                + "JOIN Suppliers s ON io.SupplierID = s.SupplierID\n"
+                + "GROUP BY s.SupplierID, s.Name\n"
+                + "ORDER BY OrderCount DESC";
+
+        Map<String, Integer> result = new LinkedHashMap<>();
+        try {
+            PreparedStatement ps = connector.prepareStatement(sql);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                result.put(rs.getString("SupplierName"), rs.getInt("OrderCount"));
+            }
+        } catch (SQLException e) {
+            System.out.println(e);
+        }
+        return result;
+    }
+
+    // 4. Thống kê top sản phẩm nhập nhiều nhất
+    public Map<String, Integer> getTopImportedProducts() throws SQLException {
+        String sql = "SELECT TOP 5 D.ProductID, P.Model, SUM(D.ImportQuantity) AS TotalQuantity\n"
+                + "FROM ImportStockDetails D\n"
+                + "JOIN Products P ON D.ProductID = P.ProductID\n"
+                + "GROUP BY D.ProductID, P.Model\n"
+                + "ORDER BY TotalQuantity DESC";
+
+        Map<String, Integer> result = new LinkedHashMap<>();
+        try {
+            PreparedStatement ps = connector.prepareStatement(sql);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                result.put(rs.getString("Model"), rs.getInt("TotalQuantity"));
+            }
+        } catch (SQLException e) {
+            System.out.println(e);
+        }
+        return result;
     }
 
 }

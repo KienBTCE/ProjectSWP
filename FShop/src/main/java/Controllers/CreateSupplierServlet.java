@@ -6,9 +6,7 @@ package Controllers;
 
 import DAOs.SupplierDAO;
 import Models.Supplier;
-import jakarta.servlet.RequestDispatcher;
 import java.io.IOException;
-import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
@@ -80,8 +78,11 @@ public class CreateSupplierServlet extends HttpServlet {
         String email = request.getParameter("email");
         String phoneNumber = request.getParameter("phone");
         String address = request.getParameter("address");
+        String status = request.getParameter("status");
+        
+        System.out.println("stat"+status);
 
-        Supplier s = new Supplier(0, taxId, companyName, email, phoneNumber, address, LocalDateTime.now(), LocalDateTime.now(), 0, 1);
+        Supplier s = new Supplier(0, taxId, companyName, email, phoneNumber, address, LocalDateTime.now(), LocalDateTime.now(), 0, Integer.parseInt(status));
 
         if (sd.createSupplier(s) != 0) {
             response.sendRedirect("Supplier");

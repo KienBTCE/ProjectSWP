@@ -24,11 +24,10 @@
 
             .sidebar {
                 width: 250px;
-                height: 97vh;
+                height: auto;
                 background: #FFFFFF;
                 color: black;
                 padding-top: 20px;
-                box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.3);
                 transform: translateZ(0);
                 position: relative;
                 z-index: 10;
@@ -58,19 +57,20 @@
 
             .content {
                 flex-grow: 1;
-                padding: 12px;
+                margin-left: 250px; /* Khoảng cách để không bị chồng lên sidebar */
+                margin-top: 150px;
+                padding: 20px;
+            }
+            /* Giữ header cố định */
+            .header {
+                position: fixed;
+                top: 0;
+                left: 260px; /* vì sidebar chiếm 250px */
+                right: 10px;
+                margin-top: 10px;
+                z-index: 1000;
             }
 
-            .header {
-                display: flex;
-                justify-content: right;
-                align-items: center;
-                padding: 10px;
-                background: #FFFFFF;
-                box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.3);
-                border-radius: 10px;
-                height: 85px;
-            }
 
             .icon {
                 width: 40px;
@@ -88,9 +88,9 @@
             .table-container {
                 background: white;
                 padding: 20px;
-                border-radius: 10px;
-                box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.1);
+                border-radius: 5px;
             }
+
 
             table {
                 border-radius: 10px;
@@ -108,8 +108,8 @@
             }
 
             .search-box {
-                max-width: 300px;
-                margin-bottom: 10px;
+                max-width: 500px;
+                margin-bottom: 5px;
             }
 
             .table-navigate{
@@ -137,33 +137,116 @@
                 display: inline-block;
                 padding: 5px 10px;
             }
+            .search-section {
+                position: fixed;
+                top: 85px;       /* Điều chỉnh theo chiều cao header nếu cần */
+                left: 280px;     /* Điều chỉnh theo chiều rộng sidebar */
+                right: 0;
+                background: white;
+                z-index: 999;
+                padding: 10px;
+            }
+
+            .hi {
+                position: fixed;
+                top: 0;
+                left: 267px; 
+                right: 0;
+                background: white;
+                z-index: 1000;
+                display: flex;
+                flex-direction: column;  
+                align-items: flex-start;
+                padding: 18px;
+                border: 5px;
+            }
+
+            .top-section {
+                display: flex;
+                gap: 10px;  /* khoảng cách giữa header và search */
+                align-items: center;
+                width: 100%;
+            }
+
+            .search-container {
+                display: flex;
+                align-items: center;
+                width: 90%;
+                max-width: 250px;  /* giới hạn kích thước tối đa */
+                background: white;
+                border-radius: 13px;
+                overflow: hidden;
+                border: 2px solid #7D69FF;
+                margin-top: 65px;
+                margin-bottom: 20px;
+            }
+
+            .search-input {
+                flex: 1;
+                border: none;
+                outline: none;
+                padding: 8px 12px; /* Giảm padding để nhỏ hơn */
+                font-size: 14px; /* Giảm kích thước chữ */
+                color: #555;
+            }
+
+            .search-button {
+                border: none;
+                padding: 8px 12px; /* Giảm padding của nút */
+                cursor: pointer;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                color: white;
+                font-size: 14px;
+            }
+
+            .search-button:hover {
+                background: #6454cc;
+            }
+            
+            .h3{
+                margin-left: 2px;
+            }
         </style>
     </head>
     <body>
-        <div class="sidebar">
-            <img src="assets/imgs/Dashboard/Group 1521.svg" class="logo-side-bar">
-            <h6><a href="#">Shop Management</a></h6>
-            <a href="CustomerListServlet">Customer Management</a>
-            <a href="ProductListServlet">Product Management</a>
-            <a href="#">Product Statistic</a>
-        </div>
-        <div class="content">
-            <!--            <div class="header">
-                            <div style="margin-right: 30px">
-                                <img style="float: left; margin-right: 15px;"
-                                     src="assets/imgs/Dashboard/FF8D5F6D-1708-4455-81D8-5F4456F83F52_LE_auto_x2-min.png" alt="User Icon" class="icon">
-                                <p style="display: flex; margin: 12px 0 0 0;">Hi, Kien</p>
-                            </div>
-                        </div>-->
-            <div class="table-navigate">
-                <input type="text" id="searchInput" class="form-control search-box" placeholder="Find by name ..." onkeyup="filterTable()">
+        <jsp:include page="SidebarDashboard.jsp"></jsp:include>
+            <div class="content">
+                <div class="hi">
+                <jsp:include page="HeaderDashboard.jsp"></jsp:include>
+                    <form action="CustomerListServlet" method="get" class="search-container">
+                        <input type="text" name="txt" value="${param.txt}" placeholder="Search by name..." class="search-input">
+                    <button type="submit" class="search-button">
+                        🔍
+                    </button>
+                </form>
+                <h3 class="h3" font-weight="Bold">CUSTOMER</h3>
             </div>
+            <c:if test="${not empty message}">
+                <div class="alert alert-info" role="alert">
+                    ${message}
+                </div>
+            </c:if>
+            <c:if test="${param.success == 'assigned'}">
+                <div class="alert alert-success alert-dismissible fade show" role="alert">
+                    <i class="fa-solid fa-circle-check me-2"></i> Assigned voucher successfully!
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            </c:if>
+            <c:if test="${param.success == 'failed'}">
+                <div class="alert alert-success alert-dismissible fade show" role="alert">
+                    <i class="fa-solid fa-circle-check me-2"></i> Assigned voucher unsuccessfully!
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            </c:if>
+
 
             <div class="table-container">
                 <table class="table table-hover">
                     <thead>
                         <tr>
-                            <th>Customer ID</th>
+                            <th>ID</th>
                             <th>Name</th>
                             <th>Email</th>
                             <th>Phone</th>
@@ -183,12 +266,21 @@
                                         ${s.getStatus()}
                                     </span>
                                 </td>
+
                                 <td>
-                                    <a href="CustomerListServlet?${s.getIsBlock() == 1 ? 'Activate' : 'Blocked'}=${s.getId()}" 
-                                       class="btn ${s.getIsBlock() == 1 ? 'btn-success' : 'btn-danger'}" 
-                                       onclick="return confirm('Are you sure?');">
-                                        ${s.getIsBlock() == 0 ? 'Blocked' : 'Activate'}
-                                    </a>
+                                    <c:if test="${sessionScope.employee.getRoleId() == 3}">
+                                        <a href="AssignVoucherServlet?Id=${s.getId()}" 
+                                           class="btn btn-warning">
+                                            Voucher
+                                        </a>
+                                    </c:if>
+                                    <c:if test="${sessionScope.employee.getRoleId() == 2 }">
+                                        <a href="CustomerListServlet?${s.getIsBlock() == 1 ? 'Activate' : 'Blocked'}=${s.getId()}" 
+                                           class="btn ${s.getIsBlock() == 1 ? 'btn-success' : 'btn-danger'}" 
+                                           onclick="return confirm('Are you sure?');">
+                                            ${s.getIsBlock() == 0 ? 'Blocked' : 'Activate'}
+                                        </a>
+                                    </c:if>
                                     <a href="CustomerListServlet?id=${s.getId()}" class="btn btn-detail" style="background-color: #BDF3BD">Detail</a>
                                 </td>
                             </tr>

@@ -125,12 +125,12 @@
         <jsp:include page="SidebarDashboard.jsp"></jsp:include>
             <div class="content">
             <jsp:include page="HeaderDashboard.jsp"></jsp:include>
+                <!--
                 <div class="table-navigate">
-                    <div class="table-navigate">
-                    </div>
-                </div>
+                    <div class="table-navigate"></div>
+                </div>-->
 
-                <div class="table-container">
+                <div class="table-container" style="margin-top: 20px">
                     <div>
                         <h3></h3>
                     </div>
@@ -140,26 +140,27 @@
                                 <th>Import ID</th>
                                 <th>Employee ID</th>
                                 <th>Employee Name</th>
-                                <th>Date & Time</th>
+                                <th>Date</th>
                                 <th>Supplier</th>
                                 <th>Amount</th>
                             </tr>
                         </thead>
                         <tbody id="supplierTable">
                         <c:set var="i" value="${importOrder}"/>
+                        <c:set var="e" value="${employee}"/>
                         <tr>
                             <td>${i.getIoid()}</td>
-                            <td>(later)</td>
-                            <td>(later)</td>
+                            <td>${i.getEmployeeId()}</td>
+                            <td style="word-wrap: break-word; white-space: normal; max-width: 200px;">${e.getFullname()}</td>
                             <td>${i.getImportDate()}</td>
-                            <td>${i.getSupplier().getName()}</td>
+                            <td  style="word-wrap: break-word; white-space: normal; max-width: 200px;">${i.getSupplier().getName()}</td>
                             <td>${i.getPriceFormatted()}</td>
                         </tr>
                     </tbody>
                 </table>
             </div>
 
-            <div class="table-container">
+            <div class="table-container" style="margin-top: 20px">
                 <div>
                     <h3>Details</h3>
                 </div>
@@ -177,8 +178,8 @@
                         <c:forEach items="${importOrder.getImportOrderDetails()}" var="d">
                             <tr>
                                 <td>${d.getProduct().getProductId()}</td>
-                                <td>${d.getProduct().getModel()}</td>
-                                <td>${d.getProduct().getFullName()}</td>
+                                <td  style="word-wrap: break-word; white-space: normal; max-width: 200px;">${d.getProduct().getModel()}</td>
+                                <td  style="word-wrap: break-word; white-space: normal; max-width: 200px;">${d.getProduct().getFullName()}</td>
                                 <td>${d.getQuantity()}</td>
                                 <td>${d.getPriceFormatted()}</td>
                             </tr>

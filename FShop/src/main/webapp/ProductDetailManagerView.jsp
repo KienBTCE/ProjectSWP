@@ -5,142 +5,205 @@
 --%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <!DOCTYPE html>
-<html>
+<html lang="en">
     <head>
         <meta charset="UTF-8">
         <title>Product Detail</title>
+        <!-- Bootstrap CSS -->
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+        <!-- Font Awesome & Google Fonts -->
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+        <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
         <style>
             body {
+                background-color: #f8f9fa;
+                font-family: 'Montserrat', sans-serif;
+            }
+            .product-card {
+                background: #fff;
+                overflow: hidden;
+                margin: 40px auto;
+                max-width: 1200px;
+            }
+            .card-body {
+                padding: 20px 40px;
+            }
+            .product-content {
                 display: flex;
+                flex-wrap: wrap;
             }
-            .sidebar {
-                width: 250px;
-                height: 97vh;
-                background: #FFFFFF;
-                color: black;
-                padding-top: 20px;
-                box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.3);
-                border-radius: 10px;
-                margin-top: 10px;
+            /* Left: Product Images */
+            .product-images {
+                flex: 1 1 40%;
+                padding: 20px;
+                text-align: center;
             }
-            .sidebar a {
-                color: #7A7D90;
-                text-decoration: none;
-                padding: 10px;
-                display: block;
+            .main-image {
+                width: 100%;
+                max-width: 500px;
+                border: 3px solid #7D69FF;
+                border-radius: 8px;
+                margin-bottom: 20px;
+                transition: transform 0.3s;
             }
-            .sidebar a:hover {
-                background: #7D69FF;
-                color: white;
-                width: 90%;
-                font-weight: bold;
-                border-radius: 10px;
+            .main-image:hover {
+                transform: scale(1.03);
+            }
+            .product-gallery {
+                display: flex;
+                justify-content: center;
+                gap: 10px;
+                flex-wrap: wrap;
+            }
+            .product-gallery img {
+                width: 70px;
+                height: 70px;
+                object-fit: cover;
+                border: 2px solid #ccc;
+                border-radius: 4px;
+                cursor: pointer;
+                transition: transform 0.2s, border-color 0.2s;
+            }
+            .product-gallery img:hover {
+                transform: scale(1.1);
+                border-color: #7D69FF;
+            }
+            /* Right: Product Information */
+            .product-info {
+                flex: 1 1 60%;
+                padding: 20px;
+            }
+            .product-info h2 {
+                font-size: 2.2rem;
+                font-weight: 700;
+                color: #7D69FF;
+                margin-bottom: 20px;
+            }
+            .info-item {
+                margin-bottom: 15px;
+                font-size: 1rem;
+            }
+            .info-label {
+                font-weight: 700;
+                color: #6c757d;
+            }
+            .info-value {
+                color: #333;
+            }
+            .badge {
+                font-size: 1rem;
+                padding: 0.5em 0.75em;
+            }
+            .back-btn {
+                margin-top: 20px;
             }
             .content {
                 flex-grow: 1;
-                padding: 20px;
+                padding: 12px;
                 display: flex;
                 flex-direction: column;
-                gap: 20px;
-            }
-            .header {
-                display: flex;
-                justify-content: right;
-                align-items: center;
-                padding: 10px;
-                background: #FFFFFF;
-                box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.3);
-                border-radius: 10px;
-                height: 85px;
-            }
-            .icon {
-                width: 40px;
-                height: 40px;
-                border-radius: 50%;
-                object-fit: cover;
-            }
-            .table-container {
-                background: white;
-                padding: 20px;
-                border-radius: 10px;
-                box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.1);
-                width: 100%; /* Kéo dài bảng ra hết chiều ngang trống */
-            }
-            .table th {
-                background: #7D69FF;
-                color: white;
-                width: 20%;
-                text-align: left;
-            }
-            .btn-back {
-                background-color: #7D69FF;
-                color: white;
-                border: none;
-                padding: 10px 20px;
-                border-radius: 5px;
-                text-decoration: none;
-                margin-top: 20px;
-            }
-            .btn-back:hover {
-                background-color: #5a4edc;
+
+                margin-left: 250px;
             }
         </style>
     </head>
     <body>
+        <jsp:include page="SidebarDashboard.jsp"></jsp:include>
 
-        <div class="content">
+            <div class="content">
 
-            <div class="table-container">
-                <h3>Product Detail</h3>
-                <table class="table table-bordered">
-                    <c:choose>
-                        <c:when test="${product != null}">
-                            <tr>
-                                <th>Product ID</th>
-                                <td>${product.getProductId()}</td>
-                            </tr>
-                            <tr>
-                                <th>Category</th>
-                                <td>${product.getCategoryName()}</td>
-                            </tr>
-                            <tr>
-                                <th>Brand</th>
-                                <td>${product.getBrandName()}</td>
-                            </tr>
-                            <tr>
-                                <th>Product Name</th>
-                                <td>${product.getFullName()}</td>
-                            </tr>
-                            <tr>
-                                <th>Price</th>
-                                <td>${product.getPrice()}</td>
-                            </tr>
-                            <tr>
-                                <th>Quantity</th>
-                                <td>${product.getQuantity()}</td>
-                            </tr>
-                            <tr>
-                                <th>Status</th>
-                                <td>
-                                    <span class="badge ${product.getDeleted() == 1 ? 'bg-success' : 'bg-danger'}">
-                                        ${product.getDeleted() == 1 ? 'Deleted' : 'Activate'}
-                                    </span>
-                                </td>
-                            </tr>
-                        </c:when>
-                        <c:otherwise>
-                            <tr>
-                                <td colspan="2" class="text-danger text-center">Product not found!</td>
-                            </tr>
-                        </c:otherwise>
-                    </c:choose>
-                </table>
-                <a href="ProductListServlet" class="btn-back">Back to List</a>
+            <jsp:include page="HeaderDashboard.jsp"></jsp:include>
+                <div class="product-card">
+                    <div class="card-body">
+                        <div class="product-content row">
+                            <!-- Left: Product Images -->
+                            <div class="col-md-5 product-images">
+                            <c:if test="${not empty product.image}">
+                                <img id="mainImage" class="main-image" 
+                                     src="${pageContext.request.contextPath}/assets/imgs/Products/${product.image}" 
+                                     alt="${product.fullName} - Main Image">
+                            </c:if>
+                            <div class="product-gallery">
+                                <c:if test="${not empty product.image1}">
+                                    <img src="${pageContext.request.contextPath}/assets/imgs/Products/${product.image1}" 
+                                         alt="${product.fullName} - Image 1" onclick="swapImage(this)">
+                                </c:if>
+                                <c:if test="${not empty product.image2}">
+                                    <img src="${pageContext.request.contextPath}/assets/imgs/Products/${product.image2}" 
+                                         alt="${product.fullName} - Image 2" onclick="swapImage(this)">
+                                </c:if>
+                                <c:if test="${not empty product.image3}">
+                                    <img src="${pageContext.request.contextPath}/assets/imgs/Products/${product.image3}" 
+                                         alt="${product.fullName} - Image 3" onclick="swapImage(this)">
+                                </c:if>
+                            </div>
+                        </div>
+                        <!-- Right: Product Information -->
+                        <div class="col-md-7 product-info">
+                            <h2>${product.fullName}</h2>
+                            <div class="info-item">
+                                <span class="info-label">Product ID:</span>
+                                <span class="info-value">${product.productId}</span>
+                            </div>
+                            <div class="info-item">
+                                <span class="info-label">Category:</span>
+                                <span class="info-value">${product.categoryName}</span>
+                            </div>
+                            <div class="info-item">
+                                <span class="info-label">Brand:</span>
+                                <span class="info-value">${product.brandName}</span>
+                            </div>
+                            <div class="info-item">
+                                <span class="info-label">Model:</span>
+                                <span class="info-value">${product.model}</span>
+                            </div>
+                            <div class="info-item">
+                                <span class="info-label">Attributes:</span>
+                                <c:if test="${not empty product.attributeDetails}">
+                                    <ul class="list-unstyled">
+                                        <c:forEach var="attr" items="${product.attributeDetails}">
+                                            <li><strong>${attr.attributeName}:</strong> ${attr.attributeInfor}</li>
+                                            </c:forEach>
+                                    </ul>
+                                </c:if>
+                                <c:if test="${empty product.attributeDetails}">
+                                    <span class="text-danger">No attributes found</span>
+                                </c:if>
+                            </div>
+                            <div class="info-item">
+                                <span class="info-label">Stock:</span>
+                                <span class="info-value">${product.stock}</span>
+                            </div>
+                            <div class="info-item">
+                                <span class="info-label">Price:</span>
+                                <span class="info-value">${product.price}</span>
+                            </div>
+                            <div class="info-item">
+                                <span class="info-label">Description:</span>
+                                <span class="info-value">${product.description}</span>
+                            </div>
+                            <div class="info-item">
+                                <span class="info-label">Status:</span>
+                                <span class="badge ${product.deleted == 1 ? 'bg-danger' : 'bg-success'}">
+                                    ${product.deleted == 1 ? 'Deleted' : 'Active'}
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
+        <!-- JavaScript: Swap Main Image -->
+        <script>
+            function swapImage(img) {
+                const mainImg = document.getElementById("mainImage");
+                const tempSrc = mainImg.src;
+                mainImg.src = img.src;
+                img.src = tempSrc;
+            }
+        </script>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     </body>
 </html>

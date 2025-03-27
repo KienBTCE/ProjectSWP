@@ -51,7 +51,7 @@
             /* Dropdown */
             .droppeddown-menu {
                 display: none;
-                padding-left: 15px;
+                padding-left: 30px;
             }
 
             .droppeddown-menu a {
@@ -110,7 +110,7 @@
                 padding: 30px;
                 border-radius: 8px;
                 text-align: center;
-                width: 300px;
+                width: 350px;
                 margin: 150px auto;
             }
             .popup button {
@@ -124,7 +124,7 @@
             .popup button:hover {
                 background-color: #0056b3;
             }
-            .avatar-preview {
+            #avatar {
                 width: 150px;
                 height: 150px;
                 border-radius: 50%;
@@ -132,6 +132,8 @@
             }
         </style>
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+
     </head>
 
     <body>
@@ -142,32 +144,36 @@
                     <div class="row">
                         <div class="sidebar col-md-3" style=" height: auto; padding: 20px;">
                             <div class="text-center">
-                            <c:if test="${sessionScope.customer.getAvatar().equals('')}">
-                                <img id="avatarPreview" class="avatar-preview mb-3" src="assets/imgs/icon/person.jpg" alt="Avatar2">
+                            <c:if test="${sessionScope.customer.getAvatar().equals('') == true}">
+                                <img id="avatar" src="assets/imgs/icon/user (3).png" alt="default">
                             </c:if>   
-                            <c:if test="${!sessionScope.customer.getAvatar().equals('')}">
-                                <img id="avatarPreview" class="avatar-preview mb-3" src="assets/imgs/CustomerAvatar/${sessionScope.customer.getAvatar()}" alt="Avatar1">
+                            <c:if test="${sessionScope.customer.getAvatar().equals('') == false}">
+                                <img id="avatar" src="assets/imgs/CustomerAvatar/${sessionScope.customer.getAvatar()}" alt="default">
                             </c:if>
 
+
                             <h4>${sessionScope.customer.getFullName()}</h4>
-                            <a class="text-center" href="Logout">Logout</a>
+                            <a class="text-center text-danger" href="Logout" onclick="return confirm('Are you sure to logout?')"><i class="bi bi-box-arrow-right"></i> Logout</a>
                         </div>
 
                         <div class="sidebar">
                             <ul style="list-style-type: none; padding: 0; color: black; ">
-                                <a href="#" class="menu-item">🔔 Notification</a>
+                                <a href="ViewCustomerVoucher" class="menu-item "><img src="./assets/imgs/icon/voucher.png" width="17px" height="17px" alt="alt"/> Voucher</a>
 
                                 <div class="droppeddown">
                                     <a href="#" class="menu-item droppeddown-toggle" data-url="CustomerProfileView.jsp">👤 My Information</a>
                                     <div class="droppeddown-menu">
                                         <a href="#" class="menu-item load-content" data-url="CustomerProfileView.jsp">My profile</a>
-                                        <a href="#" class="menu-item load-content" data-url="AddressView.jsp">Address</a>
-                                        <a href="#" class="menu-item load-content" data-url="ChangeCustomerPasswordView.jsp">Change password</a>
-                                        <a href="#" class="menu-item text-danger" data-bs-toggle="modal" data-bs-target="#confirmDeleteAccount">Request To Delete Account</a>
+                                        <a href="ViewShippingAddress?profilePage=AddressView.jsp" class="menu-item">Address</a>
+                                        <c:if test="${empty sessionScope.customer.getGoogleId()}">
+                                            <a href="#" class="menu-item load-content" data-url="ChangeCustomerPasswordView.jsp">Change password</a>
+                                        </c:if>
+                                        <a href="#" class="menu-item text-danger" onclick="openDeleteAccountModal()">Request To Delete Account</a>
+
 
                                     </div>
                                 </div>
-                                <a href="viewOrderHistory?profilePage=OrdersHistoryView.jsp" class="menu-item">📦 Orders</a>
+                                <a href="ViewOrderHistory" class="menu-item">📦 Order</a>
                             </ul>
                         </div>
                     </div>
@@ -178,14 +184,19 @@
                 </div>
             </main>
 
+            <div id="loadingScreen" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background-color:rgba(255, 255, 255, 0.8); justify-content:center; align-items:center; font-size:24px; color:#007bff; z-index:1050;">Loading...</div>
             <div class="modal fade" id="confirmDeleteAccount" tabindex="-1" aria-labelledby="confirmDeleteAccountLabel" aria-hidden="true">
                 <div class="modal-dialog">
                     <div class="modal-content">
+
+
                         <div class="modal-header">
                             <h5 class="modal-title" id="confirmDeleteAccountLabel">Confirm Account Deletion</h5>
                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
+
                         <div class="modal-body">
+                        <c:if test="${empty sessionScope.customer.googleId}">
                             <p>Are you sure you want to delete your account? This action cannot be undone.</p>
                             <form id="deleteAccountForm" method="POST" action="requestToDeleteAccount">
                                 <div class="mb-3">
@@ -194,13 +205,28 @@
                                 </div>
                                 <div class="modal-footer">
                                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                                    <button type="submit" class="btn btn-danger">Delete Account</button>
+                                    <button type="submit" class="btn btn-danger" id="deleteButton">Delete Account</button>
                                 </div>
                             </form>
-                        </div>
+                        </c:if>
+                        <c:if test="${not empty sessionScope.customer.googleId}">
+                            <p>Are you sure you want to delete your account? Please enter OTP. Please check your email.</p>
+                            <form id="deleteAccountForm" method="POST" action="requestToDeleteAccount">
+                                <div class="mb-3">
+                                    <label for="confirmPassword" class="form-label">Enter OTP:</label>
+                                    <input type="text" class="form-control" id="OTP" name="OTP" required>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                                    <button type="submit" class="btn btn-danger" id="deleteButton">Delete Account</button>
+                                </div>
+                            </form>
+                        </c:if>
                     </div>
                 </div>
             </div>
+        </div>
+
         <%
             String message = (String) session.getAttribute("message");
             System.out.println("Session message: " + message + request.getRequestURI());
@@ -208,21 +234,84 @@
         <%
             if (message != null) {
         %>
-        <!-- Popup -->
-        <div class="popup" id="Popup">
-            <div class="popup-content">
-                <h3>${sessionScope.message}</h3>
-                <button onclick="closePopup()">Close</button>
-            </div>
+        <div id="cookiesPopup" style="position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 350px; display: flex; flex-direction: column; align-items: center; background-color: #fff; color: #000; text-align: center; border-radius: 20px; padding: 30px 30px 20px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); z-index: 1000;">
+            <button class="close" onclick="closePopup()" style="width: 30px; font-size: 20px; color: #c0c5cb; align-self: flex-end; background-color: transparent; border: none; margin-bottom: 10px; cursor: pointer;">✖</button>
+            <img src="https://cdn-icons-png.flaticon.com/512/845/845646.png" alt="success-tick" style="width: 82px; margin-bottom: 15px;" />
+            <p style="margin-bottom: 40px; font-size: 18px;">${sessionScope.message}</p>
+            <button class="accept" onclick="closePopup()" style="background-color: #28a745; border: none; border-radius: 5px; width: 200px; padding: 14px; font-size: 16px; color: white; box-shadow: 0px 6px 18px -5px rgba(40, 167, 69, 1); cursor: pointer;">OK</button>
         </div>
+
+
+        <div id="overlay" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0, 0, 0, 0.5); z-index: 999;"></div>
+
         <%
                 session.setAttribute("message", null);
             }
         %>
+
+        <%
+            String messageFail = (String) session.getAttribute("messageFail");
+            System.out.println("Session message: " + message + request.getRequestURI());
+        %>
+        <%
+            if (messageFail != null) {
+        %>
+        <div id="cookiesPopup1" style="position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 350px; display: flex; flex-direction: column; align-items: center; background-color: #fff; color: #000; text-align: center; border-radius: 20px; padding: 30px 30px 20px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); z-index: 1000;">
+            <button class="close" onclick="closePopup1()" style="width: 30px; font-size: 20px; color: #c0c5cb; align-self: flex-end; background-color: transparent; border: none; margin-bottom: 10px; cursor: pointer;">✖</button>
+            <img src="./assets/imgs/icon/fail.jpg" alt="fail-tick" style="width: 82px; margin-bottom: 15px; border-radius: 50%;" />
+            <p style="margin-bottom: 40px; font-size: 18px;">${sessionScope.messageFail}</p>
+            <button class="accept" onclick="closePopup1()" style="background-color: red; border: none; border-radius: 5px; width: 200px; padding: 14px; font-size: 16px; color: white; box-shadow: 0px 6px 18px -5px red; cursor: pointer;">OK</button>
+        </div>
+
+
+        <div id="overlay" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0, 0, 0, 0.5); z-index: 999;"></div>
+        <%
+                session.setAttribute("messageFail", null);
+            }
+        %>
         <script>
             function closePopup() {
-                document.getElementById("Popup").style.display = "none";
+                document.getElementById("cookiesPopup").style.display = "none";
+                document.getElementById("overlay").style.display = "none";
             }
+            function closePopup1() {
+                document.getElementById("cookiesPopup1").style.display = "none";
+                document.getElementById("overlay").style.display = "none";
+            }
+            function openDeleteAccountModal() {
+                console.log("Calling servlet...");
+
+                const loadingScreen = document.getElementById('loadingScreen');
+                loadingScreen.style.display = 'flex';
+
+                $.ajax({
+                    url: 'requestToDeleteAccount',
+                    type: 'GET',
+                    success: function (response) {
+                        console.log(response);
+                        loadingScreen.style.display = 'none';
+                        if (response.status === 'success') {
+                            $('#confirmDeleteAccount').modal('show');
+                        } else {
+                            loadingScreen.style.display = 'none';
+                            window.location.reload();
+                        }
+                    },
+                    error: function (xhr, status, error) {
+                        loadingScreen.style.display = 'none';
+                        console.log("Error:", error);
+                    }
+                });
+            }
+
+
+            function confirmLogout() {
+                if (confirm("Are you sure you want to log out?")) {
+                    // Chuyển hướng tới trang logout hoặc gọi API logout
+                    window.location.href = "/Logout";
+                }
+            }
+
 
             document.getElementById('deleteAccountForm').addEventListener('submit', function (event) {
                 const password = document.getElementById('confirmPassword').value;
@@ -303,8 +392,35 @@
                     }
                 }
             });
+            document.addEventListener("DOMContentLoaded", function () {
+                let phoneInput = document.getElementById("newPhoneNumber");
+                if (phoneInput) {
+                    phoneInput.addEventListener("input", validatePhone);
+                }
+            });
 
+            function validatePhone() {
+                console.log("validatePhone function is loaded!");
+                let phoneInput = document.getElementById("newPhoneNumber");
+                let phoneError = document.getElementById("phoneError");
+                let saveButton = document.getElementById("saveButton");
+
+                let phonePattern = /^0[2-9][0-9]{8}$/;  // Chỉ chấp nhận 10-11 số
+                if (phonePattern.test(phoneInput.value)) {
+                    console.log("none");
+                    phoneError.style.display = "none";
+                    saveButton.disabled = false;
+                } else {
+                    console.log("block");
+                    phoneError.style.display = "block";
+                    saveButton.disabled = true;
+                }
+            }
         </script>
+        <script src="./assets/js/profile.js"></script>
+
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>

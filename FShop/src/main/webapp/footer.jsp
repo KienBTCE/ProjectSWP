@@ -21,18 +21,8 @@
             <div class="container" style="color: white;">
                 <div class="row" style="display: flex; align-items: center; justify-content: space-between;">
                     <div class="col-md-6" style="padding: 10px;">
-                        <h1>Sign Up To Our Newsletter.</h1>
-                        <p>Be the first to hear about the latest offers.</p>
-                    </div>
-                    <div class="col-md-6" style="padding: 10px;">
-                        <form action="" style="display: flex; column-gap: 20px; align-items: center;">
-                            <input type="text" placeholder="Your Email" 
-                                   style="width: 380px; height: 40px; border: solid white 1px; background-color: black; color: white; padding-left: 10px; opacity: 0.8;">
-                            <button type="submit" 
-                                    style="background-color: #0156ff; color: white; border-radius: 20px; width: 140px; height: 40px; border: #0156ff 1px;">
-                                Subscribe
-                            </button>
-                        </form>
+                        <h1>FShop Leading technology</h1>
+                        <p>Be the first to experience the latest technology with us</p>
                     </div>
                 </div>
             </div>
@@ -64,7 +54,7 @@
                         <td>Hard Drives (Internal)</td>
                         <td>MSI All-In-One PCs</td>
                         <td>MSI Prestige Series</td>
-                        <td>We are open: Monday–Thursday: 9:00 AM - 5:30 PM</td>
+                        <td>We open: Mon–Thu: 9:00 AM - 5:30 PM</td>
                     </tr>
                     <tr>
                         <td>Search</td>
@@ -87,34 +77,7 @@
                         <td>Infinity Gaming Notebooks</td>
                         <td>E-mail: <a href="" style="text-decoration: none;">shop@email.com</a></td>
                     </tr>
-                    <tr>
-                        <td>Contact Us</td>
-                        <td>RAM (Memory)</td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                    </tr>
-                    <tr>
-                        <td>Advanced Search</td>
-                        <td>Software</td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                    </tr>
-                    <tr>
-                        <td>Newsletter Subscription</td>
-                        <td>Speakers / Headsets</td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                    </tr>
-                    <tr>
-                        <td></td>
-                        <td>Motherboard</td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                    </tr>
+
                     <tr style="height: 30px;">
                         <td colspan="5" style="border: 1px solid #1f1a1a; border-bottom: gray solid 1px;"></td>
                     </tr>
@@ -122,21 +85,8 @@
             </div>
             <div class="container" style="color: white;">
                 <div class="row lastFooter" style="display: flex; align-items: center; padding: 20px 0;">
-                    <div class="col-md-4 footer-icons" style="display: flex; align-items: center;">
-                        <img src="assets/imgs/FooterImg/z6116371726666_cbbf6ee34516c774226f5f87890a30e4.jpg" alt="" style="width: 27px; margin-right: 5px;">
-                        <img src="assets/imgs/FooterImg/z6116372812657_8765105253e69e58580e781208f33a24.jpg" alt="" style="width: 30px; margin-right: 5px;">
-                    </div>
-                    <div class="col-md-4 text-center" style="text-align: center;">
-                        <div class="payment" style="display: flex; justify-content: center; column-gap: 10px;">
-                            <img src="./assets/imgs/FooterImg/paypal.jpg" alt="" style="border-radius: 5px; width: 50px; height: auto; margin: 0 5px;">
-                            <img src="./assets/imgs/FooterImg/visa.jpg" alt="" style="border-radius: 5px; width: 50px; height: auto; margin: 0 5px;">
-                            <img src="./assets/imgs/FooterImg/2Tron.jpg" alt="" style="border-radius: 5px; width: 50px; height: auto; margin: 0 5px;">
-                            <img src="./assets/imgs/FooterImg/dissco.jpg" alt="" style="border-radius: 5px; width: 50px; height: auto; margin: 0 5px;">
-                            <img src="./assets/imgs/FooterImg/ame.jpg" alt="" style="border-radius: 5px; width: 50px; height: auto; margin: 0 5px;">
-                        </div>
-                    </div>
-                    <div class="col-md-4" style="text-align: right;">
-                        <p class="copyright" style="color: gray; font-size: 13px;">Copyright © 2020 Shop Pty. Ltd.</p>
+                    <div class="col-md-4" style="text-align: left;">
+                        <p class="copyright" style="color: gray; font-size: 13px;">Copyright © 2025 FShop</p>
                     </div>
                 </div>
             </div>

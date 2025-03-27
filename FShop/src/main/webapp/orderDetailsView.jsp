@@ -1,241 +1,256 @@
-<%@ page contentType="text/html" pageEncoding="UTF-8"%>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<!DOCTYPE html>
+<%@ page contentType="text/html" pageEncoding="UTF-8"%> 
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %> 
+<!DOCTYPE html> 
 <html lang="en">
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>Order Details</title>
+
+        <!-- Bootstrap -->
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css">
+
+        <!-- Font Awesome -->
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+
+        <!-- Custom CSS -->
+        <link rel="stylesheet" href="assets/css/orderDetail.css">
+
+        <!-- CSS bổ sung để điều chỉnh thứ tự chồng -->
         <style>
-            body {
-                font-family: Arial, sans-serif;
-                margin: 0;
-                padding: 0;
-                background-color: #f1f1f1;
+            /* Bọc header với z-index thấp */
+            .fixed-header {
+                position: fixed;
+                top: 0;
+                left: 250px; /* Điều chỉnh để tránh che sidebar */
+                width: calc(100% - 250px); /* Chiều rộng trừ đi sidebar */
+                /*background-color: white;*/
+                z-index: 1050;
+                padding: 10px 20px;
+                /*box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);*/
+            }
+
+            /* Bọc sidebar với z-index cao hơn để chồng lên header */
+            .sidebar-container {
+                position: relative;
+                z-index: 2000;
+            }
+
+            .main-layout {
                 display: flex;
             }
 
-            .sidebar {
-                width: 250px;
-                background: #343a40;
-                color: white;
+            .main-content {
+                flex-grow: 1;
+                margin-left: 250px; /* Khoảng cách để không bị chồng lên sidebar */
+                margin-top: 120px;
                 padding: 20px;
-                min-height: 100vh;
-                display: flex;
-                flex-direction: column;
-                align-items: center;
             }
 
-            .container {
-                flex: 1;
-                max-width: 900px;
-                background: #fff;
-                padding: 30px;
-                border-radius: 10px;
-                box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-                margin: 20px;
+            .order-layout {
                 display: flex;
-                flex-direction: column;
                 gap: 20px;
             }
 
-            h2, h3 {
-                color: #343a40;
-                text-align: center;
+            .left-section, .right-section {
+                flex: 1;
             }
 
-            .order-info, .customer-info {
-                padding: 20px;
-                background: #fafafa;
+            .order-info, .customer-info, .manage-order {
+                background-color: #fff;
+                padding: 15px;
+                border-radius: 8px;
+                box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+                margin-bottom: 20px;
+            }
+
+            .manage-order {
+                margin-top: 20px;
+            }
+
+            .manage-order select {
+                width: 100%;
+                padding: 10px;
+                margin-bottom: 20px;
                 border-radius: 5px;
-                box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+                border: 1px solid #ddd;
+                font-size: 16px;
             }
 
-            .order-info div, .customer-info div {
-                display: flex;
-                justify-content: space-between;
-                padding: 10px 0;
+            .manage-order button {
+                width: 100%;
+                padding: 12px;
+                background-color: #28a745;
+                border: none;
+                border-radius: 5px;
+                color: white;
+                font-size: 16px;
+            }
+
+            .manage-order button:hover {
+                background-color: #218838;
+            }
+
+            /* Điều chỉnh khoảng cách giữa các thành phần */
+            .dropdown {
+                margin-bottom: 20px; /* Thêm khoảng cách giữa dropdown và nút update */
             }
 
             .order-details {
-                background: #f9f9f9;
-                padding: 15px;
-                border-radius: 5px;
-                box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-            }
-
-            .order-details div {
-                display: flex;
-                justify-content: space-between;
-                padding: 10px;
-                background: white;
-                margin-bottom: 10px;
-                border-radius: 5px;
-                border: 1px solid #ddd;
-            }
-
-            .status {
-                font-weight: bold;
-                color: #007bff;
-            }
-
-            .dropdown select {
-                width: 100%;
-                padding: 12px 15px;
-                border-radius: 5px;
-                border: 1px solid #ddd;
-                font-size: 16px;
-                transition: all 0.3s ease;
-            }
-
-            input[type="submit"] {
-                padding: 10px 20px;
-                background-color: #007bff;
-                color: white;
-                border: none;
-                border-radius: 5px;
-                font-size: 16px;
-                cursor: pointer;
-                transition: all 0.3s ease;
-                margin-top: 10px;
-            }
-
-            input[type="submit"]:hover {
-                background-color: #0056b3;
-            }
-
-            /* Popup modal */
-            .modal {
-                display: none;
-                position: fixed;
-                z-index: 1000;
-                left: 0;
-                top: 0;
-                width: 100%;
-                height: 100%;
-                background-color: rgba(0, 0, 0, 0.4);
-/*                display: flex;*/
-                justify-content: center;
-                align-items: center;
-            }
-
-            .modal-content {
-                background-color: white;
-                padding: 20px;
-                border-radius: 5px;
-                text-align: center;
-                box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-            }
-
-            .modal-buttons {
-                display: flex;
-                justify-content: space-around;
                 margin-top: 15px;
             }
 
-            .modal-btn {
-                padding: 10px 15px;
-                border: none;
-                cursor: pointer;
-                border-radius: 5px;
+            .order-details span {
+                display: block;
+                margin-bottom: 8px;
             }
 
-            .modal-btn:first-child {
-                background-color: red;
-                color: white;
+            .status-1 {
+                color: #ffeb3b;
             }
 
-            .modal-btn:last-child {
-                background-color: gray;
-                color: white;
+            .status-2 {
+                color: #ff9800;
             }
+
+            .status-3 {
+                color: #2196f3;
+            }
+
+            .status-4 {
+                color: #4caf50;
+            }
+
+            .status-5 {
+                color: #f44336;
+            }
+
         </style>
     </head>
     <body>
+        <div class="fixed-header"><jsp:include page="HeaderDashboard.jsp"></jsp:include>
+                <p></p>
+                <h2><i class="fa-solid fa-receipt"></i> Order Details</h2>
+            </div>
 
-        <div class="sidebar">
-            <jsp:include page="leftshopmanager.jsp" />
-        </div>
-
-        <div class="container">
-            <h2>Order Details</h2>
-
-            <div class="order-info">
-                <div><strong>Order ID:</strong> <span>${data.orderID}</span></div>
-                <div><strong>Order Date:</strong> <span>${data.orderDate}</span></div>
-                <div><strong>Order Status:</strong> 
-                    <span class="status">
-                        <c:choose>
-                            <c:when test="${data.status == 1}">Waiting For Acceptance</c:when>
-                            <c:when test="${data.status == 2}">Packaging</c:when>
-                            <c:when test="${data.status == 3}">Waiting For Delivery</c:when>
-                            <c:when test="${data.status == 4}">Delivered</c:when>
-                            <c:otherwise>Cancelled</c:otherwise>
-                        </c:choose>
-                    </span>
+            <div class="main-layout">
+                <div class="sidebar-container">
+                <jsp:include page="SidebarDashboard.jsp"></jsp:include>
                 </div>
-                <div><strong>Total Amount:</strong> <span>${data.totalAmount}</span></div>
-            </div>
 
-            <h3>Order Items</h3>
-            <div class="order-details">
-                <div><strong>Product</strong> <strong>Quantity</strong> <strong>Price</strong></div>
-                <c:forEach items="${dataDetail}" var="detail">
-                    <div>
-                        <span>${detail.productName}</span>
-                        <span>${detail.quantity}</span>
-                        <span>${detail.price}</span>
-                    </div>
-                </c:forEach>
-            </div>
+                <div class="main-content">
+                    <div class="container">
+                        <div class="order-layout">
+                            <!-- Left: Order Information & Items -->
+                            <div class="left-section">
+                                <div class="order-info">
+                                    <h3><i class="fa-solid fa-info-circle"></i> Order Information</h3>
+                                    <p><strong>Order ID:</strong> <span>${data.orderID}</span></p>
+                                <p><strong>Order Date:</strong> <span>${data.orderDate}</span></p>
+                                <p><strong>Order Status:</strong> <span class="status-${data.status}">
+                                        <c:if test="${data.status == 1}">Waiting For Acceptance</c:if>
+                                        <c:if test="${data.status == 2}">Packaging</c:if>
+                                        <c:if test="${data.status == 3}">Waiting For Delivery</c:if>
+                                        <c:if test="${data.status == 4}">Delivered</c:if>
+                                        <c:if test="${data.status == 5}">Cancel</c:if>
+                                        </span></p>
+                                    <p><strong>Total Amount:</strong> <span>${data.totalAmount}</span></p>
+                                <p><strong>Discount:</strong> <span>${data.discount}</span></p>
+                            </div>
 
-            <h3>Customer Information</h3>
-            <div class="customer-info">
-                <div><strong>Name:</strong> <span>${data.fullName}</span></div>
-                <div><strong>Phone:</strong> <span>${data.phone}</span></div>
-                <div><strong>Address:</strong> <span>${data.address}</span></div>
-            </div>
-             <form action="UpdateOrderServlet" method="POST">
-                <input type="hidden" name="orderID" value="${data.orderID}" />
-                <div class="dropdown">
-                    <select name="update" size="1">
-                        <option value="1" <c:if test="${data.status == 1}">selected</c:if>>Waiting For Acceptance</option>
-                        <option value="2" <c:if test="${data.status == 2}">selected</c:if>>Packaging</option>
-                        <option value="3" <c:if test="${data.status == 3}">selected</c:if>>Waiting For Delivery</option>
-                        <option value="4" <c:if test="${data.status == 4}">selected</c:if>>Delivered</option>
-                        </select>
+                            <h3><i class="fa-solid fa-box"></i> Order Items</h3>
+                            <div class="order-details">
+                                <c:forEach items="${dataDetail}" var="detail">
+                                    <div>
+                                        <span><i class="fa-solid fa-cube"></i> ${detail.productName}</span>
+                                        <span><i class="fa-solid fa-cart-plus"></i> ${detail.quantity}</span>
+                                        <span><i class="fa-solid fa-dollar-sign"></i> ${detail.price}</span>
+                                    </div>
+                                </c:forEach>
+                            </div>
+                        </div>
+
+                        <!-- Right: Customer Info & Manage Order -->
+                        <div class="right-section">
+                            <div class="customer-info">
+                                <h3><i class="fa-solid fa-user"></i> Customer Information</h3>
+                                <p><strong>Name:</strong> <span>${data.fullName}</span></p>
+                                <p><strong>Phone:</strong> <span>${data.phone}</span></p>
+                                <p><strong>Address:</strong> <span>${data.address}</span></p>
+                            </div>
+
+                            <!--                            <div class="manage-order">
+                                                            <h3><i class="fa-solid fa-cogs"></i> Manage Order</h3>
+                            <c:if test="${not empty errorMessage}">
+                                <div class="alert alert-danger">
+                                ${errorMessage}
+                            </div>
+                            </c:if>
+
+                    
+                        </div>
                     </div>
-                    <input type="submit" value="Update" />
-                </form>
-            <form id="deleteForm" action="DeleteOrderServlet" method="POST">
-                <input type="hidden" name="orderID" value="${data.orderID}" />
-                <input type="submit" value="Delete" onclick="return confirmDelete();" />
-            </form>
+                </div>
+            </div>
         </div>
 
+        <!-- Modal Confirm Delete -->
         <div id="confirmationModal" class="modal">
             <div class="modal-content">
                 <h3>Are you sure you want to delete this order?</h3>
-                <div class="modal-buttons">
-                    <button id="confirmBtn" class="modal-btn">Yes, Delete</button>
-                    <button id="cancelBtn" class="modal-btn">Cancel</button>
-                </div>
+                <button id="confirmBtn" class="btn btn-danger">Yes, Delete</button>
+                <button id="cancelBtn" class="btn btn-secondary">Cancel</button>
             </div>
         </div>
 
+        <!-- JavaScript -->
         <script>
             function confirmDelete() {
                 document.getElementById("confirmationModal").style.display = "flex";
-                return false;
             }
-
             document.getElementById("confirmBtn").onclick = function () {
                 document.getElementById("deleteForm").submit();
             };
-
             document.getElementById("cancelBtn").onclick = function () {
                 document.getElementById("confirmationModal").style.display = "none";
             };
+
+            function disableOptions() {
+                const status = document.getElementById('orderStatus').value; // Lấy giá trị trạng thái đã chọn
+                const options = document.getElementById('orderStatus').options;
+
+                // Đảm bảo tất cả các tùy chọn đều được kích hoạt lại trước khi disable lại
+                for (let i = 0; i < options.length; i++) {
+                    options[i].disabled = false;
+                }
+
+                // Disable các trạng thái không hợp lệ
+                if (status === '3') { // Waiting For Delivery
+                    options[0].disabled = true; // Không thể chọn 'Waiting For Acceptance'
+                    options[1].disabled = true; // Không thể chọn 'Packaging'
+                    options[4].disabled = true; // Không thể chọn 'Cancel'
+                } else if (status === '2') { // Packaging
+                    options[0].disabled = true; // Không thể chọn 'Waiting For Acceptance'
+                    options[4].disabled = true; // Không thể chọn 'Cancel'
+                } else if (status === '4') { // Delivered
+                    options[0].disabled = true; // Không thể chọn 'Waiting For Acceptance'
+                    options[1].disabled = true; // Không thể chọn 'Packaging'
+                    options[2].disabled = true; // Không thể chọn 'Waiting For Delivery'
+                    options[4].disabled = true; // Không thể chọn 'Cancel'
+                } else if (status === '5') { // Cancel
+                    options[0].disabled = true; // Không thể chọn 'Waiting For Acceptance'
+                    options[1].disabled = true; // Không thể chọn 'Packaging'
+                    options[2].disabled = true; // Không thể chọn 'Waiting For Delivery'
+                    options[3].disabled = true; // Không thể chọn 'Delivered'
+                }
+            }
+
+// Gọi disableOptions() khi trang tải
+            document.addEventListener('DOMContentLoaded', function () {
+                disableOptions();
+            });
+
+
         </script>
     </body>
 </html>

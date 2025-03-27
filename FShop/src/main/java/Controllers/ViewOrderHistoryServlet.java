@@ -24,7 +24,7 @@ import java.util.List;
  *
  * @author nhutb
  */
-@WebServlet(name = "ViewOrderHistoryServlet", urlPatterns = {"/viewOrderHistory"})
+@WebServlet(name = "ViewOrderHistoryServlet", urlPatterns = {"/ViewOrderHistory"})
 public class ViewOrderHistoryServlet extends HttpServlet {
 
     /**
@@ -69,18 +69,19 @@ public class ViewOrderHistoryServlet extends HttpServlet {
         OrderDAO o = new OrderDAO();
         OrderDetailDAO od = new OrderDetailDAO();
         Customer cus = (Customer) session.getAttribute("customer");
-        List<Order> list = o.getAllOrderOfCustomer(cus.getId());
-        List<OrderDetail> listOD = new ArrayList<>();
-        for (Order order : list) {
-            listOD.add(od.getOrderDetailOfEachOrder(order.getOrderID()));
+        if (cus != null) {
+            List<Order> list = o.getAllOrderOfCustomer(cus.getId());
+            List<OrderDetail> listOD = new ArrayList<>();
+            for (Order order : list) {
+                listOD.add(od.getOrderDetailOfEachOrder(order.getOrderID()));
+            }
+            session.setAttribute("orderList", list);
+            session.setAttribute("orderDetailList", listOD);
+            request.setAttribute("profilePage", "OrdersHistoryView.jsp");
+            request.getRequestDispatcher("ProfileManagementView.jsp").forward(request, response);
+        } else {
+            response.sendRedirect("customerLogin");
         }
-        for (OrderDetail orderDetail : listOD) {
-            System.out.println(orderDetail.getImage());
-        }
-        session.setAttribute("orderList", list);
-        session.setAttribute("orderDetailList", listOD);
-        request.setAttribute("profilePage", "OrdersHistoryView.jsp");
-        request.getRequestDispatcher("ProfileManagementView.jsp").forward(request, response);
     }
 
     /**

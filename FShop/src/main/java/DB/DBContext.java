@@ -5,7 +5,6 @@
 package DB;
 
 import java.sql.Connection;
-import java.sql.DatabaseMetaData;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
@@ -18,30 +17,22 @@ public class DBContext {
     public Connection getConnection() {
         Connection connector = null;
         try {
-            Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver"); // regist a class Database of Microsoft to memory
+            Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver"); 
             String dbURL = "jdbc:sqlserver://localhost:1433;"
                     + "databaseName=FSHOP;"
-                    + "user=;" // Enter your user SQL Server
-                    + "password=;" // Enter your password SQL Server
+                    + "user=sa;" 
+                    + "password=12345;"
                     + "encrypt=true;trustServerCertificate=true";
 
-            connector = DriverManager.getConnection(dbURL); // connect to database server follow the dbURL string
-
-            if (connector != null) {
-                DatabaseMetaData dm = (DatabaseMetaData) connector.getMetaData();
-                System.out.println("Driver name: " + dm.getDriverName());
-                System.out.println("Driver version: " + dm.getDriverVersion());
-                System.out.println("Product name: " + dm.getDatabaseProductName());
-                System.out.println("Product version: " + dm.getDatabaseProductVersion());
-            }
+            connector = DriverManager.getConnection(dbURL);
         } catch (ClassNotFoundException | SQLException ex) {
             System.out.println(ex);
         }
         return connector;
     }
+
     public static void main(String[] args) {
-        
-       DBContext db = new DBContext();
-       db.getConnection();
+        DBContext db = new DBContext();
+        db.getConnection();
     }
 }

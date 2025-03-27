@@ -41,7 +41,7 @@
                 justify-content: center;
             }
             .text-header{
-               color: white;
+                color: white;
             }
             .infor-content p{
                 margin: 0;
@@ -92,10 +92,13 @@
                 flex-basis: 50%;
             }
             .nav-infor-content:nth-child(3){
-                flex-basis: 100px;
+                flex-basis: 400px;
             }
             .nav-infor-content:nth-child(3) *{
                 margin-left: 5px
+            }
+            .list-cat{
+                flex-direction: column;
             }
             .list-categories{
                 margin: 0;
@@ -116,6 +119,40 @@
                 opacity: 0.7;
                 text-decoration: none;
             }
+            .search-box {
+                width: 100%; /* Để thanh tìm kiếm rộng bằng danh mục */
+                margin-top: 12px;
+            }
+            #searchIcon{
+                cursor: pointer;
+            }
+            nav.navbar-custom .nav-icons .btn-notif {
+                background: none;
+                border: none;
+                padding: 0;
+                cursor: pointer;
+            }
+            .btn-notif {
+                background: none !important;
+                border: none !important;
+                padding: 5px;
+                cursor: pointer;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+            }
+
+            .btn-notif i {
+                font-size: 20px;
+                color: #333;
+                transition: color 0.3s ease-in-out;
+            }
+
+            .btn-notif:hover i {
+                color: #d10000;
+            }
+
+
             @media all and (max-width: 1000px) {
                 .header-container .time-head, .phone-head {
                     display: none;
@@ -167,38 +204,170 @@
                                 <a href="Smartphone">Smartphone</a>
                             </li>
                             <li>
-                                <a href="#">Accessories</a>
+                                <a href="Accessory">Accessories</a>
                             </li>
                         </ul>
+                        <!--<input type="text" id="searchInput" class="form-control search-box" placeholder="Find by name ..." value="${searchValue}">-->
                     </div>
                     <div class="nav-infor-content col-md-4">
-                        <i class="ti-search" style="font-size: 150%; color: black;"></i>    
-                        <div style="display: flex; align-items: center">
-                            <c:if test="${sessionScope.customer == null}">
-                                <a href="cart"><i class="ti-shopping-cart" style="font-size: 150%; color: black;"></i></a>
+                        <a><i class="ti-search" style="font-size: 150%; color: black;" id="searchIcon"></i></a>
+                        <input style="display: flex; align-items: center; margin: 0" type="text" id="searchInput" class="form-control search-box" placeholder="Find by name ..." value="">
+                        <div style="display: flex; align-items: center" onclick="">
+                            <button type="button" class="btn-notif" data-bs-toggle="modal" data-bs-target="#notificationModal">
+                                <i class="ti-bell"></i>
+                            </button>
+                            <!--<i class="ti-search" style="font-size: 150%; color: black;"></i>-->
+                            <div style="display: flex; align-items: center">
+                                <c:if test="${sessionScope.customer == null}">
+                                    <a href="cart"><i class="ti-shopping-cart" style="font-size: 150%; color: black;"></i></a>
+                                    </c:if>
+                                    <c:if test="${sessionScope.customer != null}">
+                                    <a href="cart"><i class="ti-shopping-cart" style="font-size: 150%; color: black;"></i></a>
+                                    <p>${sessionScope.numOfProCartOfCus}</p>
                                 </c:if>
+                            </div>
+                            <div style="display: flex; align-items: center; font-size: 12px">
                                 <c:if test="${sessionScope.customer != null}">
-                                <a href="cart"><i class="ti-shopping-cart" style="font-size: 150%; color: black;"></i></a>
-                                <p>${sessionScope.numOfProCartOfCus}</p>
-                            </c:if>
-                        </div>
-                        <div style="display: flex; align-items: center; font-size: 12px">
-                            <c:if test="${sessionScope.customer != null}">
-                                <c:if test="${sessionScope.customer.getAvatar() != ''}">
-                                    <a href="viewCustomerProfile"><i class="ti-user" style="font-size: 150%; color: black; margin-left: 20px;"></i></a>
-                                    </c:if>
-                                    <c:if test="${sessionScope.customer.getAvatar() == ''}">
-                                    <a href="viewCustomerProfile"><img style="border-radius: 50%; border: 1px solid gray;" width="30px" height="30px" src="./assets/imgs/icon/person.jpg" alt="alt"/></a>
-                                    </c:if>
+                                    <a href="viewCustomerProfile">
+                                        <c:if test="${sessionScope.customer.getAvatar().equals('') == true}">
+                                            <img width="30px" src="assets/imgs/CustomerAvatar/defaut.jpg" alt="default">
+                                        </c:if>   
+                                        <c:if test="${sessionScope.customer.getAvatar().equals('') == false}">
+                                            <img style="border-radius: 50%;" width="40px" height="40px" src="assets/imgs/CustomerAvatar/${sessionScope.customer.getAvatar()}" alt="default">
+                                        </c:if>
+                                    </a>
                                 </c:if>
                                 <c:if test="${sessionScope.customer == null}">
-                                <a href="customerLogin"><i class="ti-user" style="font-size: 150%; color: black; margin-left: 20px;"></i></a>
+                                    <a class="btn btn-primary text-white" href="customerLogin">Login
+                                    </a>
                                 </c:if>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
         </nav>
+        <div class="modal fade" id="notificationModal" tabindex="-1" aria-labelledby="notificationModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="notificationModalLabel">New Reply From FShop</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="list-group" id="notificationList">
+                            <p class="text-muted">Loading...</p>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
         <script src="assets/js/bootstrap.min.js"></script>
+
+        <script>
+            document.addEventListener("DOMContentLoaded", function () {
+                // Hàm xử lý tìm kiếm
+                function searchProduct() {
+                    let searchValue = document.getElementById("searchInput").value.trim();
+                    if (searchValue !== "") {
+                        window.location.href = "SearchProduct?name=" + encodeURIComponent(searchValue);
+                    }
+                }
+
+                // Khi nhấn Enter trong input
+                document.getElementById("searchInput").addEventListener("keypress", function (event) {
+                    if (event.key === "Enter") {
+                        event.preventDefault();
+                        searchProduct();
+                    }
+                });
+
+                // Khi nhấn vào icon tìm kiếm
+                document.getElementById("searchIcon").addEventListener("click", function () {
+                    searchProduct();
+                });
+            });
+
+            document.addEventListener("DOMContentLoaded", function () {
+                // Hàm lấy giá trị của tham số từ URL
+                function getParameterByName(name) {
+                    let urlParams = new URLSearchParams(window.location.search);
+                    return urlParams.get(name) || "";
+                }
+
+                // Lấy giá trị của tham số "name" và đặt vào input
+                document.getElementById("searchInput").value = getParameterByName("name");
+            });
+        </script>
+        <script src="assets/js/bootstrap.bundle.min.js"></script>
+        <script>
+            document.addEventListener("DOMContentLoaded", function () {
+                const notifBtn = document.querySelector('.btn-notif');
+                notifBtn.addEventListener('click', function () {
+                    fetch('NotificationServlet?ajax=true')
+                            .then(response => response.json())
+                            .then(data => {
+                                console.log("Received data:", data); // Kiểm tra JSON trong console
+                                const notificationList = document.getElementById("notificationList");
+                                notificationList.innerHTML = "";
+
+                                if (data.replies && Array.isArray(data.replies) && data.replies.length > 0) {
+                                    data.replies.forEach((reply, index) => {
+                                        let product = data.product[index] || "";
+                                        console.log("Product data:", product.fullName);
+
+                                        // Tạo thẻ <a> để hiển thị thông báo
+                                        const aElem = document.createElement('a');
+                                        aElem.href = "ProductDetailServlet?id=" + product.productId;
+                                        aElem.classList.add('list-group-item', 'list-group-item-action');
+                                        aElem.innerHTML = `
+                            <div class="d-flex w-100 justify-content-between">
+                                <h6 class="mb-1">New reply on ` + product.fullName + `</h6>
+          
+
+                            </div>
+                            <p class="mb-1">${reply.answer}</p>
+                        `;
+
+                                        aElem.addEventListener('click', function (event) {
+                                            event.preventDefault();
+
+                                            fetch("NotificationServlet", {
+                                                method: "POST",
+                                                headers: {"Content-Type": "application/x-www-form-urlencoded"},
+                                                body: "repliesID=" + reply.replyID
+                                            }).then(response => response.text())
+                                                    .then(() => {
+                                                        window.location.href = "ProductDetailServlet?id=" + product.productId;
+                                                    })
+                                                    .catch(error => console.error("Error updating reply status:", error));
+                                        });
+
+                                        notificationList.appendChild(aElem);
+                                    });
+                                } else {
+                                    notificationList.innerHTML = '<p class="text-muted">No new comments.</p>';
+                                }
+                            })
+                            .catch(error => {
+                                console.error('Error fetching unread replies:', error);
+                                document.getElementById("notificationList").innerHTML = '<p class="text-muted">Error loading data</p>';
+                            });
+                });
+            });
+            document.addEventListener("DOMContentLoaded", function () {
+                // Hàm lấy giá trị của tham số từ URL
+                function getParameterByName(name) {
+                    let urlParams = new URLSearchParams(window.location.search);
+                    return urlParams.get(name) || "";
+                }
+
+                // Lấy giá trị của tham số "name" và đặt vào input
+                document.getElementById("searchInput").value = getParameterByName("name");
+            });
+        </script>
     </body>
 </html>

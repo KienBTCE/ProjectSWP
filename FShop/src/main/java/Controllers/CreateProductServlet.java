@@ -1,106 +1,98 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
- */
 package Controllers;
 
+import DAOs.CategoryDAO;
+import DAOs.AttributeDAO;
+import DAOs.BrandDAO;
 import DAOs.ProductDAO;
-import java.io.IOException;
-import java.io.PrintWriter;
+import Models.Product;
+import Models.Attribute;
+import Models.AttributeDetail;
 import jakarta.servlet.ServletException;
+import jakarta.servlet.annotation.MultipartConfig;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.Part;
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Paths;
+import java.util.List;
 
-/**
- *
- * @author kiuth
- */
+
+@MultipartConfig(fileSizeThreshold = 1024 * 1024 * 2, // 2MB
+        maxFileSize = 1024 * 1024 * 10, // 10MB
+        maxRequestSize = 1024 * 1024 * 50)   // 50MB
 public class CreateProductServlet extends HttpServlet {
 
-    /**
-     * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
-     * methods.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
-    protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        response.setContentType("text/html;charset=UTF-8");
-        try ( PrintWriter out = response.getWriter()) {
-            /* TODO output your page here. You may use following sample code. */
-            out.println("<!DOCTYPE html>");
-            out.println("<html>");
-            out.println("<head>");
-            out.println("<title>Servlet CreateProductServlet</title>");
-            out.println("</head>");
-            out.println("<body>");
-            out.println("<h1>Servlet CreateProductServlet at " + request.getContextPath() + "</h1>");
-            out.println("</body>");
-            out.println("</html>");
-        }
-    }
-
-    // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
-    /**
-     * Handles the HTTP <code>GET</code> method.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
     @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        String categoryName = request.getParameter("name");
+
+        if (categoryName != null && !categoryName.isEmpty()) {
+            CategoryDAO categoryDAO = new CategoryDAO();
+            int categoryId = categoryDAO.getCategoryIdByName(categoryName);
+
+            AttributeDAO attributeDAO = new AttributeDAO();
+            List<Attribute> attributes = attributeDAO.getAttributesByCategoryID(categoryId);
+            request.setAttribute("attributes", attributes);
+        }
+        request.setAttribute("categoryName", categoryName);
+        CategoryDAO categoryDAO = new CategoryDAO();
+        List<String> categories = categoryDAO.getAllCategoryNames();
+        BrandDAO brandDAO = new BrandDAO();
+        List<String> brands = brandDAO.getAllBrandName();
+        request.setAttribute("categories", categories);
+        request.setAttribute("brands", brands);
         request.getRequestDispatcher("CreateProductView.jsp").forward(request, response);
     }
 
-    /**
-     * Handles the HTTP <code>POST</code> method.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-
-        // Lấy dữ liệu từ form
-        int categoryId = Integer.parseInt(request.getParameter("categoryId"));
-        int brandId = Integer.parseInt(request.getParameter("brandId"));
-        String fullName = request.getParameter("fullName");
-        String model = request.getParameter("model");
-        String description = request.getParameter("description");
-        String image = request.getParameter("image");
-        long price = Long.parseLong(request.getParameter("price"));
-        int quantity = Integer.parseInt(request.getParameter("quantity"));
-
-        // Gọi DAO để tạo sản phẩm
         ProductDAO productDAO = new ProductDAO();
-//        boolean success = productDAO.createProduct(categoryId, brandId, fullName, model, description, image, price, quantity);
+        String categoryName = request.getParameter("categoryName");
+        String brandName = request.getParameter("brandName");
+        String model = request.getParameter("model");
+        String fullName = request.getParameter("fullName");
+        String description = request.getParameter("description");
+        Long price = Long.parseLong(request.getParameter("price"));
+        String image1 = processImageUpload(request, "txtP1");
+        String image2 = processImageUpload(request, "txtP2");
+        String image3 = processImageUpload(request, "txtP3");
+        String image4 = processImageUpload(request, "txtP4");
+        int isDeleted = Integer.parseInt(request.getParameter("isDeleted"));
 
-        // Điều hướng kết quả
-//        if (success) {
-//            response.sendRedirect("ManageProductView.jsp?success=true");
-//        } else {
-//            response.sendRedirect("ManageProductView.jsp?success=false");
-//        }
+        Product product = new Product(categoryName, brandName, model, fullName, description, isDeleted, price, image1, image2, image3, image4);
+        int productId = productDAO.createProduct(product); 
+        if (productId > 0) {
+            String[] attributeIdList = request.getParameterValues("attributeId");
+            for (String attributeId : attributeIdList) {
+                int attrId = Integer.parseInt(attributeId);
+                String attributeInfor = request.getParameter("attributeInfor_" + attrId);
+                AttributeDetail attributeDetail = new AttributeDetail(attrId, productId, attributeInfor, null);
+                productDAO.addAttributeDetail(attributeDetail);
+            }
+            response.sendRedirect("ProductListServlet?success=Product created successfully");
+        } else {
+            request.setAttribute("errorMsg", "Product creation failed");
+            request.getRequestDispatcher("CreateProductView.jsp").forward(request, response);
+        }
+
     }
 
-    /**
-     * Returns a short description of the servlet.
-     *
-     * @return a String containing servlet description
-     */
-    @Override
-    public String getServletInfo() {
-        return "Short description";
-    }// </editor-fold>
+    private String processImageUpload(HttpServletRequest request, String imageName) throws IOException, ServletException {
+        Part imagePart = request.getPart(imageName);
+        String fileName = Paths.get(imagePart.getSubmittedFileName()).getFileName().toString();
 
+        if (fileName != null && !fileName.isEmpty()) {
+            String uploadPath = getServletContext().getRealPath("/") + "assets/imgs/Products";
+            File uploadDir = new File(uploadPath);
+            if (!uploadDir.exists()) {
+                uploadDir.mkdir();
+            }
+            imagePart.write(uploadPath + File.separator + fileName);
+            return fileName;
+        }
+        return null;
+    }
 }

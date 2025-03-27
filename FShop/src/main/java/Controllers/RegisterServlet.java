@@ -6,6 +6,8 @@ package Controllers;
 
 import DAOs.CustomerDAO;
 import Models.Customer;
+import Models.Email;
+import Models.EmailUtils;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -14,6 +16,7 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
+import java.security.SecureRandom;
 
 /**
  *
@@ -74,10 +77,8 @@ public class RegisterServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        String fullName = request.getParameter("fullName");
-        String birthday = request.getParameter("birthday");
-        String gender = request.getParameter("gender");
-        String phoneNumber = request.getParameter("phoneNumber");
+        String fullName = request.getParameter("fullname");
+//        String phoneNumber = request.getParameter("phone");
         String email = request.getParameter("email");
         String password = request.getParameter("password");
 
@@ -87,16 +88,51 @@ public class RegisterServlet extends HttpServlet {
         if (ctmDAO.checkEmailExisted(email) == 1) {
             session.setAttribute("message", "This email already exists!");
             request.getRequestDispatcher("RegisterView.jsp").forward(request, response);
-        } else {
-            if (ctmDAO.addNewCustomer(new Customer(0, fullName, password, birthday, gender, phoneNumber, email, "", 0, 0, "")) != 0) {
-                session.setAttribute("message", "Registation Success!");
-                response.sendRedirect("/customerLogin");
-            } else {
-                session.setAttribute("message", "Registation Failed!");
-                request.getRequestDispatcher("RegisterView.jsp").forward(request, response);
-            }
+            return;
         }
+        // Generate OTP
+        String otp = generateOTP();
+        session.setAttribute("otp", otp);
+        session.setAttribute("registerCustomer", new Customer(0, fullName, password, "", "", "", email, "", 0, 0, ""));
 
+        // Send OTP via email
+        sendOTPEmail(email, otp, fullName);
+
+        // Redirect to OTP verification page
+        response.sendRedirect("OTPView.jsp");
+    }
+
+    private String generateOTP() {
+        SecureRandom random = new SecureRandom();
+        int otp = 100000 + random.nextInt(900000); // Generates a 6-digit number
+        return String.valueOf(otp);
+    }
+
+    private void sendOTPEmail(String recipientEmail, String otp, String fullName) {
+        try {
+            Email email = new Email();
+            email.setFrom("kieuthy2004@gmail.com"); // Sender email
+            email.setFromPassword("xkkc ohwn aesf arqm"); // App Password for email
+            email.setTo(recipientEmail);
+            email.setSubject("Email Verification OTP");
+
+            StringBuilder sb = new StringBuilder();
+            sb.append("Dear ").append(fullName).append(",<br><br>");
+            sb.append("Thank you for registering on our platform. Please use the OTP below to verify your email:<br>");
+            sb.append("<h2>").append(otp).append("</h2>");
+            sb.append("This OTP is valid for 5 minutes.<br>");
+            sb.append("If you did not request this, please ignore this email.<br><br>");
+            sb.append("Best Regards,<br>");
+            sb.append("<b>FShop Team</b>");
+
+            email.setContent(sb.toString());
+
+            // Send the email
+            EmailUtils.send(email);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     /**

@@ -128,49 +128,81 @@
         <jsp:include page="SidebarDashboard.jsp"></jsp:include>
             <div class="content">
             <jsp:include page="HeaderDashboard.jsp"></jsp:include>
-
-                <div class="table-navigate">
+                <div class="table-container" style="margin-top: 20px">
                     <div class="table-navigate">
-                        <label for="startDate" class="me-2">From:</label>
-                        <input type="date" id="startDate" class="form-control me-3">
-
-                        <label for="endDate" class="me-2">To:</label>
-                        <input type="date" id="endDate" class="form-control me-3">
-
-                        <button onclick="filterByDate()" class="btn btn-primary">Filter</button>
+                        <h3>Import Stock History</h3>
+                        <button class="btn btn-detail" data-bs-toggle="modal" data-bs-target="#importOrderModal" style="background-color: #BDF3BD; height: 100%;" onclick="window.location.href = 'ImportStock'">Create</button>
+                        <!--<button id="openModalBtn" class="btn btn-detail" style="background-color: #BDF3BD; height: 100%">Create</button>-->
                     </div>
-
+                    <!--
+                    <input type="text" id="searchInput" class="form-control search-box" placeholder="Find by name ..." value="${searchValue}">-->
+                <div class="table-navigate" style="margin-top: 20px">
                     <div class="table-navigate">
-                        <!--<button class="btn btn-detail" data-bs-toggle="modal" data-bs-target="#importOrderModal" style="background-color: #BDF3BD; height: 100%" onclick="window.location.href = 'ImportStock'">Create</button>-->
-                        <button id="openModalBtn" class="btn btn-detail" style="background-color: #BDF3BD; height: 100%">Create</button>
+                        <form method="GET" action="ImportOrder" style="display: flex;">
+                            <label for="startDate" class="me-2">From:</label>
+                            <input name="fromDate" type="date" id="startDate" class="form-control me-3">
+
+                            <label for="endDate" class="me-2">To:</label>
+                            <input name="toDate" type="date" id="endDate" class="form-control me-3">
+
+                            <!--<button type="submit" onclick="filterByDate()" class="btn btn-primary">Filter</button>-->
+                            <button type="submit" class="btn btn-primary">Filter</button>
+                            <button type="button" class="btn btn-secondary" onclick="resetFilter()">Reset</button>
+                        </form>
                     </div>
                 </div>
 
-                <!--          Start Modal Select Supplier            -->
-                <div class="modal fade" id="createImportOrder" tabindex="-1" aria-labelledby="createImportOrderLabel" aria-hidden="true">
-                    <div class="modal-dialog modal-lg">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <h5 class="modal-title" id="createImportOrderLabel">Select Supplier</h5>
-                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                            </div>
-                            <div class="modal-body">
-                                <table class="table table-striped" id="supplierListTable">
-                                    <thead>
-                                        <tr>
-                                            <th>Tax ID</th>
-                                            <th>Company Name</th>
-                                            <th>Email</th>
-                                            <th>Phone</th>
-                                            <th>Address</th>
-                                            <th>Select</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
+                <table class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th>Import ID</th>
+                            <th>Date</th>
+                            <th>Amount</th>
+                            <th>Supplier</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody id="supplierTable">
+                        <c:forEach items="${importOrders}" var="i">
+                            <tr>
+                                <td>${i.getIoid()}</td>
+                                <td>${i.getImportDate()}</td>
+                                <td>${i.getPriceFormatted()}</td>
+                                <td  style="word-wrap: break-word; white-space: normal; max-width: 200px;">${i.getSupplier().getName()}</td>
+                                <td>
+                                    <a href="ImportOrder?id=${i.getIoid()}" class="btn btn-detail" style="background-color: #BDF3BD">Detail</a>
+                                </td>
+                            </tr>
+                        </c:forEach>
+                    </tbody>
+                </table>
+            </div>
+
+            <!--          Start Modal Select Supplier            -->
+            <div class="modal fade" id="createImportOrder" tabindex="-1" aria-labelledby="createImportOrderLabel" aria-hidden="true">
+                <div class="modal-dialog modal-lg">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="createImportOrderLabel">Select Supplier</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <table class="table table-striped" id="supplierListTable">
+                                <thead>
+                                    <tr>
+                                        <th>Tax ID</th>
+                                        <th>Company Name</th>
+                                        <th>Email</th>
+                                        <th>Phone</th>
+                                        <th>Address</th>
+                                        <th>Select</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
                                     <c:forEach items="${suppliers}" var="s">
                                         <tr>
                                             <td>${s.getTaxId()}</td>
-                                            <td>${s.getName()}</td>
+                                            <td  style="word-wrap: break-word; white-space: normal; max-width: 200px;">${s.getName()}</td>
                                             <td>${s.getEmail()}</td>
                                             <td>${s.getPhoneNumber()}</td>
                                             <td>${s.getAddress()}</td>
@@ -193,69 +225,39 @@
             </div>
 
             <!--          End Modal Select Supplier            -->
-
-            <div class="table-container">
-                <div>
-                    <h3>Import Order History</h3>
-                </div>
-
-                <table class="table table-hover">
-                    <thead>
-                        <tr>
-                            <th>Import ID</th>
-                            <th>Date & Time</th>
-                            <th>Amount</th>
-                            <th>Supplier</th>
-                            <th>Status</th>
-                            <th>Action</th>
-                        </tr>
-                    </thead>
-                    <tbody id="supplierTable">
-                        <c:forEach items="${importOrders}" var="i">
-                            <tr>
-                                <td>${i.getIoid()}</td>
-                                <td>${i.getImportDate()}</td>
-                                <td>${i.getPriceFormatted()}</td>
-                                <td>${i.getSupplier().getName()}</td>
-                                <td>${i.getStatus()}</td>
-                                <td>
-                                    <a href="ImportOrder?id=${i.getIoid()}" class="btn btn-detail" style="background-color: #BDF3BD">Detail</a>
-                                </td>
-                            </tr>
-                        </c:forEach>
-                    </tbody>
-                </table>
-            </div>
-
         </div>
     </div>
 
-    <script>
-        function filterByDate() {
-            let startDate = document.getElementById("startDate").value;
-            let endDate = document.getElementById("endDate").value;
-            let table = document.getElementById("supplierTable");
-            let rows = table.getElementsByTagName("tr");
-
-            // Chuyển đổi định dạng ngày về timestamp để so sánh
-            let startTimestamp = new Date(startDate).getTime();
-            let endTimestamp = new Date(endDate).getTime();
-
-            for (let i = 0; i < rows.length; i++) {
-                let dateCell = rows[i].getElementsByTagName("td")[1]; // Lấy cột ngày
-                if (dateCell) {
-                    let rowDate = new Date(dateCell.textContent.trim()).getTime();
-
-                    if ((!startDate || rowDate >= startTimestamp) &&
-                            (!endDate || rowDate <= endTimestamp)) {
-                        rows[i].style.display = "";
-                    } else {
-                        rows[i].style.display = "none";
+    <!--        <script>
+                function filterByDate() {
+                    let startDate = document.getElementById("startDate").value;
+                    let endDate = document.getElementById("endDate").value;
+                    let table = document.getElementById("supplierTable");
+                    let rows = table.getElementsByTagName("tr");
+        
+                    // Chuyển đổi định dạng ngày về timestamp để so sánh
+                    let startTimestamp = new Date(startDate).getTime();
+                    let endTimestamp = new Date(endDate).getTime();
+                    
+                    console.log(startTimestamp);
+                    console.log(endTimestamp);
+        
+                    for (let i = 0; i < rows.length; i++) {
+                        let dateCell = rows[i].getElementsByTagName("td")[1]; // Lấy cột ngày
+                        console.log(dateCell);
+                        if (dateCell) {
+                            let rowDate = new Date(dateCell.textContent.trim()).getTime();
+        
+                            if ((!startDate || rowDate >= startTimestamp) &&
+                                    (!endDate || rowDate <= endTimestamp)) {
+                                rows[i].style.display = "";
+                            } else {
+                                rows[i].style.display = "none";
+                            }
+                        }
                     }
                 }
-            }
-        }
-    </script>
+            </script>-->
 
     <script>
         document.getElementById("openModalBtn").addEventListener("click", function () {
@@ -263,6 +265,38 @@
             myModal.show();
         });
     </script>
+
+    <script>
+        function resetFilter() {
+            document.getElementById('startDate').value = '';
+            document.getElementById('endDate').value = '';
+            window.location.href = 'ImportOrder'; // Load lại trang mà không có tham số lọc
+        }
+    </script>
+
+    <script>
+        // Hàm lấy giá trị tham số từ URL
+        function getQueryParam(param) {
+            const urlParams = new URLSearchParams(window.location.search);
+            return urlParams.get(param);
+        }
+
+        // Gán giá trị fromDate và toDate nếu có trong URL
+        document.getElementById("startDate").value = getQueryParam("fromDate") || "";
+        document.getElementById("endDate").value = getQueryParam("toDate") || "";
+    </script>
+
+    <!--    <script>
+            document.getElementById("searchInput").addEventListener("keypress", function (event) {
+                if (event.key === "Enter") {
+                    event.preventDefault();
+                    let searchValue = this.value.trim();
+                    if (searchValue !== "") {
+                        window.location.href = "ImportOrder?name=" + encodeURIComponent(searchValue);
+                    }
+                }
+            });
+        </script>-->
 
     <script>
         document.addEventListener("DOMContentLoaded", function () {

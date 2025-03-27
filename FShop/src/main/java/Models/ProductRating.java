@@ -20,8 +20,23 @@ public class ProductRating {
     private String comment;
     private boolean isDeleted;
     private boolean isRead;
+    private String fullName;
 
-    public ProductRating() {
+    public ProductRating(int star) {
+        this.star = star;
+    }
+
+    public ProductRating(int rateID, int customerID, int productID, int orderID, Date createdDate, int star, String comment, boolean isDeleted, boolean isRead, String fullName) {
+        this.rateID = rateID;
+        this.customerID = customerID;
+        this.productID = productID;
+        this.orderID = orderID;
+        this.createdDate = createdDate;
+        this.star = star;
+        this.comment = comment;
+        this.isDeleted = isDeleted;
+        this.isRead = isRead;
+        this.fullName = fullName;
     }
 
     public ProductRating(int rateID, int customerID, int productID, int orderID, Date createdDate, int star, String comment, boolean isDeleted, boolean isRead) {
@@ -34,6 +49,19 @@ public class ProductRating {
         this.comment = comment;
         this.isDeleted = isDeleted;
         this.isRead = isRead;
+    }
+   
+
+    
+    public ProductRating() {
+    }
+
+    public String getFullName() {
+        return fullName;
+    }
+
+    public void setFullName(String fullName) {
+        this.fullName = fullName;
     }
 
     public int getRateID() {

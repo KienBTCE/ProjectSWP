@@ -5,7 +5,6 @@
 package DAOs;
 
 import DB.DBContext;
-import Models.Order;
 import Models.OrderDetail;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -40,8 +39,63 @@ public class OrderDetailDAO {
         return od;
     }
 
+    public List<OrderDetail> getOrderDetail(String orderid) {
+
+        List<OrderDetail> list = new ArrayList<>();
+        String query = "SELECT * FROM OrderDetails as od\n"
+                + "join Products as p on p.ProductID = od.ProductID\n"
+                + "WHERE OrderID = ?";
+        try {
+            PreparedStatement pre = connector.prepareStatement(query);
+            pre.setString(1, orderid);
+            ResultSet rs = pre.executeQuery();
+            while (rs.next()) {
+                OrderDetail od = new OrderDetail(
+                        rs.getInt("OrderID"),
+                        rs.getInt("ProductID"),
+                        rs.getInt("Quantity"),
+                        rs.getLong("Price"),
+                        rs.getString("CategoryID"),
+                        rs.getString("FullName"),
+                        rs.getString("Image"));
+                list.add(od);
+            };
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+        return list;
+    }
+
+    public boolean getCustomerByProductID(int customerId, int productId) {
+        boolean isOk = false;
+        String query = "SELECT CASE "
+                + "WHEN NOT EXISTS (SELECT 1 FROM ProductRatings WHERE CustomerID = ? AND ProductID = ?) "
+                + "AND EXISTS (SELECT 1 FROM OrderDetails od "
+                + "JOIN Orders o ON od.OrderID = o.OrderID "
+                + "WHERE o.CustomerID = ? AND od.ProductID = ? AND o.Status = 4) "
+                + "THEN 1 ELSE 0 END AS CanReview;";
+
+        try {
+            PreparedStatement pre = connector.prepareStatement(query);
+            pre.setInt(1, customerId);
+            pre.setInt(2, productId);
+            pre.setInt(3, customerId);
+            pre.setInt(4, productId);
+            ResultSet rs = pre.executeQuery();
+            if (rs.next()) {
+                isOk = rs.getBoolean("CanReview");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return isOk;
+    }
+
     public static void main(String[] args) {
         OrderDetailDAO od = new OrderDetailDAO();
-        System.out.println(od.getOrderDetailOfEachOrder(2));
+        //System.out.println(od.getOrderDetailOfEachOrder(2));
+        for (OrderDetail order : od.getOrderDetail("3")) {
+            System.out.println(order.getPrice());
+        }
     }
 }

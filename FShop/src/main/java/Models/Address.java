@@ -12,10 +12,23 @@ public class Address {
 
     private int addressID;
     private int customerID;
-    private boolean isDefault;
+    private int isDefault;
     private String addressDetails;
 
     public Address() {
+    }
+
+    public Address(int customerID, int isDefault, String addressDetails) {
+        this.customerID = customerID;
+        this.isDefault = isDefault;
+        this.addressDetails = addressDetails;
+    }
+
+    public Address(int addressID, int customerID, int isDefault, String addressDetails) {
+        this.addressID = addressID;
+        this.customerID = customerID;
+        this.isDefault = isDefault;
+        this.addressDetails = addressDetails;
     }
 
     public Address(int addressID, String addressDetails) {
@@ -39,11 +52,11 @@ public class Address {
         this.customerID = customerID;
     }
 
-    public boolean isIsDefault() {
+    public int getIsDefault() {
         return isDefault;
     }
 
-    public void setIsDefault(boolean isDefault) {
+    public void setIsDefault(int isDefault) {
         this.isDefault = isDefault;
     }
 
@@ -54,5 +67,5 @@ public class Address {
     public void setAddressDetails(String addressDetails) {
         this.addressDetails = addressDetails;
     }
-    
+
 }

@@ -3,7 +3,7 @@
     Created on : Feb 27, 2025, 12:38:21 PM
     Author     : KienBTCE180180
 --%>
-
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
@@ -23,7 +23,7 @@
                 background: #FFFFFF;
                 box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.3);
                 border-radius: 10px;
-                height: 85px;
+                height: 60px;
             }
 
             .icon {
@@ -31,16 +31,30 @@
                 height: 40px;
                 border-radius: 50%;
                 object-fit: cover;
+                margin: 5px;
+            }
+            .fullname{
+                text-decoration: none;
+                font-weight: bold;
+                color: black;
             }
         </style>
     </head>
     <body>
         <div class="header">
-            <div style="margin-right: 30px">
-                <img style="float: left; margin-right: 15px;"
-                     src="assets/imgs/Dashboard/FF8D5F6D-1708-4455-81D8-5F4456F83F52_LE_auto_x2-min.png" alt="User Icon" class="icon">
-                <p style="display: flex; margin: 12px 0 0 0;">Hi, Kien</p>
-            </div>
+            <a href="ViewEmployeeProfile" style="text-decoration: none">
+                <div style="display: flex; align-items: center;">
+                    <c:choose>
+                        <c:when test="${!sessionScope.employee.getAvatar().equals('')}">
+                            <img class="icon" src="assets/imgs/EmployeeAvatar/${sessionScope.employee.getAvatar()}" >
+                        </c:when>
+                        <c:otherwise>
+                            <img  class="icon" src="assets/imgs/EmployeeAvatar/defauft_avatar.jpg">
+                        </c:otherwise>
+                    </c:choose>
+                    <p class="fullname" style="margin-top: 10px;">Hi, ${sessionScope.employee.getFullname()}</p>
+                </div>
+            </a>
         </div>
         <div class="table-navigate">
         </div>

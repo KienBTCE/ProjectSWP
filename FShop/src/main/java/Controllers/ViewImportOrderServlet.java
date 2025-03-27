@@ -4,12 +4,11 @@
  */
 package Controllers;
 
+import DAOs.EmployeeDAO;
 import DAOs.ImportOrderDAO;
-import DAOs.ProductDAO;
 import DAOs.SupplierDAO;
 import Models.ImportOrder;
 import java.io.IOException;
-import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
@@ -49,31 +48,55 @@ public class ViewImportOrderServlet extends HttpServlet {
 
         ImportOrderDAO importD = new ImportOrderDAO();
         SupplierDAO sd = new SupplierDAO();
+        EmployeeDAO ed = new EmployeeDAO();
         ArrayList<ImportOrder> importOrders;
-        
+
         String detailID = request.getParameter("id");
-        
+
         if (detailID != null) {
             int id = Integer.parseInt(detailID);
             ImportOrder importOrder = importD.getImportOrderDetailsByID(id);
-            
-            if (importOrder.getCompleted() == 0) {
-                response.sendRedirect("ImportStock?id=" + id);
-                return;
-            }
-            
+
+//            if (importOrder.getCompleted() == 0) {
+//                response.sendRedirect("UpdateImportOrder?id=" + id);
+//                return;
+//            }
             try {
                 request.setAttribute("importOrder", importOrder);
+                request.setAttribute("employee", ed.getEmployeeById(importOrder.getEmployeeId() + ""));
                 request.getRequestDispatcher("ImportOrderDetailsView.jsp").forward(request, response);
             } catch (NullPointerException e) {
                 System.out.println(e);
             }
-        }
-        
+        } else if (request.getParameter("fromDate") != null && request.getParameter("toDate") != null) {
+            try {
+                request.setAttribute("importOrders", importD.filterHistoryByDate(request.getParameter("fromDate"), request.getParameter("toDate")));
+                request.getRequestDispatcher("ImportOrderListView.jsp").forward(request, response);
+            } catch (NullPointerException e) {
+                System.out.println(e);
+            }
+        } //else if (request.getParameter("name") != null) {
+//            String name = request.getParameter("name");
+//            importOrders = importD.getImportOrderBySupplierName(name);
+//
+//            if (importOrders.isEmpty()) {
+//                importOrders = importD.getAllImportOrders();
+//            }
+//
+//            try {
+//                request.setAttribute("importOrders", importOrders);
+//                request.setAttribute("searchValue", name);
+//                request.setAttribute("suppliers", sd.getAllActivatedSuppliers());
+//                request.getRequestDispatcher("ImportOrderListView.jsp").forward(request, response);
+//            } catch (NullPointerException e) {
+//                System.out.println(e);
+//            }
+//        }
+
         importOrders = importD.getAllImportOrders();
         try {
             request.setAttribute("importOrders", importOrders);
-            request.setAttribute("suppliers", sd.getAllSuppliers());
+            request.setAttribute("suppliers", sd.getAllActivatedSuppliers());
             request.getRequestDispatcher("ImportOrderListView.jsp").forward(request, response);
         } catch (NullPointerException e) {
             System.out.println(e);

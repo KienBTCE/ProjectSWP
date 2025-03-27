@@ -46,8 +46,8 @@ CREATE TABLE Employees (
     PhoneNumber VARCHAR(15),
     Email VARCHAR(254),
     Gender CHAR(6),
-    CreatedDate DATETIME,
-	[Status] NVARCHAR(20),
+    CreatedDate DATE,
+	[Status] BIT,
     Avatar TEXT,
     RoleID INT,
     FOREIGN KEY (RoleID) REFERENCES Roles(RoleID)
@@ -62,6 +62,7 @@ CREATE TABLE Customers (
     Email VARCHAR(254),
     Gender CHAR(6),
     CreatedDate DATETIME,
+	GoogleID VARCHAR(254),
     IsBlock BIT,
     IsDeleted BIT,
     Avatar TEXT
@@ -78,10 +79,10 @@ CREATE TABLE Addresses (
 CREATE TABLE Suppliers (
     SupplierID INT PRIMARY KEY IDENTITY(1,1),
     TaxID VARCHAR(20) UNIQUE,
-    [Name] NVARCHAR(255) UNIQUE NOT NULL,
-    Email VARCHAR(254) UNIQUE,
-    PhoneNumber VARCHAR(15) UNIQUE,
-    [Address] VARCHAR(255) UNIQUE,
+    [Name] NVARCHAR(255) NOT NULL,
+    Email VARCHAR(254),
+    PhoneNumber VARCHAR(15),
+    [Address] VARCHAR(255),
     CreatedDate DATETIME,
     LastModify DATETIME,
     IsDeleted BIT,
@@ -108,6 +109,9 @@ CREATE TABLE Products (
 	IsDeleted BIT,
 	Price BIGINT,
     [Image] TEXT,
+	[Image1] TEXT,
+	[Image2] TEXT,
+	[Image3] TEXT,
     Quantity INT,
 	Stock INT
     FOREIGN KEY (BrandID) REFERENCES Brands(BrandID),
@@ -116,6 +120,8 @@ CREATE TABLE Products (
 
 CREATE TABLE Attributes (
     AttributeID INT PRIMARY KEY IDENTITY(1,1),
+	CategoryID INT,
+	FOREIGN KEY (CategoryID) REFERENCES Categories(CategoryID),
     [Name] NVARCHAR(100) NOT NULL
 );
 
@@ -128,6 +134,37 @@ CREATE TABLE AttributeDetails (
     FOREIGN KEY (ProductID) REFERENCES Products(ProductID)
 );
 
+-- Tạo bảng Voucher
+CREATE TABLE Vouchers (
+    VoucherID INT IDENTITY(1,1) PRIMARY KEY,
+    VoucherCode VARCHAR(10) UNIQUE NOT NULL,
+	VoucherValue INT NOT NULL,
+	VoucherType INT NOT NULL,
+    StartDate DATETIME NOT NULL,
+	EndDate DATETIME NOT NULL,
+	UsedCount INT,
+	MaxUsedCount INT,
+	MaxDiscountAmount INT,
+    MinOrderValue INT NOT NULL,
+    [Status] INT NOT NULL,
+    [Description] NTEXT,
+);
+
+-- Tạo bảng CustomerVoucher (liên kết giữa Customer và Voucher)
+CREATE TABLE CustomerVoucher (
+    CustomerID INT NOT NULL,
+    VoucherID INT NOT NULL,
+	ExpirationDate DATETIME,
+	Quantity INT,
+    FOREIGN KEY (CustomerID) REFERENCES Customers(CustomerID),
+    FOREIGN KEY (VoucherID) REFERENCES Vouchers(VoucherID)
+);
+
+CREATE TABLE OrderStatus (
+    ID INT PRIMARY KEY,
+    [Status]NVARCHAR(50) NOT NULL
+);
+
 CREATE TABLE Orders (
     OrderID INT PRIMARY KEY IDENTITY(1,1),
     CustomerID INT,
@@ -138,7 +175,9 @@ CREATE TABLE Orders (
     DeliveredDate DATETIME,
     [Status]INT,
     TotalAmount BIGINT,
-    FOREIGN KEY (CustomerID) REFERENCES Customers(CustomerID)
+    Discount INT,
+    FOREIGN KEY (CustomerID) REFERENCES Customers(CustomerID),
+    FOREIGN KEY ([Status]) REFERENCES OrderStatus(ID)
 );
 
 CREATE TABLE OrderDetails (
@@ -151,13 +190,9 @@ CREATE TABLE OrderDetails (
     FOREIGN KEY (ProductID) REFERENCES Products(ProductID)
 );
 
-CREATE TABLE OrderStatus (
-    ID INT PRIMARY KEY,
-    [Status]NVARCHAR(50) NOT NULL
-);
 
-CREATE TABLE ImportOrders (
-    IOID INT PRIMARY KEY IDENTITY(1,1),
+CREATE TABLE ImportStocks ( -- ImportOrders -> Imports -> ImportStocks
+    ImportID INT PRIMARY KEY IDENTITY(1,1), -- IOID -> ImportID
     EmployeeID INT,
     SupplierID INT,
     ImportDate DATETIME,
@@ -167,18 +202,16 @@ CREATE TABLE ImportOrders (
     FOREIGN KEY (SupplierID) REFERENCES Suppliers(SupplierID)
 );
 
-CREATE TABLE ImportOrderDetails (
-    IOID INT,
-    ProductID INT,
-    Quantity INT,
-    ImportPrice BIGINT,
-    PRIMARY KEY (IOID, ProductID),
-    FOREIGN KEY (IOID) REFERENCES ImportOrders(IOID),
-    FOREIGN KEY (ProductID) REFERENCES Products(ProductID)
+CREATE TABLE ImportStockDetails ( -- ImportOrderDetails -> ImportDetails -> ImportStockDetails
+    ImportID INT REFERENCES ImportStocks(ImportID), -- IOID -> ImportID
+    ProductID INT REFERENCES Products(ProductID),
+    PRIMARY KEY (ImportID, ProductID),
+    ImportQuantity INT, -- Quantity -> ImportQuantity
+    ImportPrice BIGINT
 );
 
 CREATE TABLE ProductRatings (
-    RateID INT PRIMARY KEY,
+    RateID INT IDENTITY(1,1) PRIMARY KEY,
     CustomerID INT,
     ProductID INT,
 	OrderID INT,
@@ -187,13 +220,13 @@ CREATE TABLE ProductRatings (
     Comment NVARCHAR(300),
     IsDeleted BIT,
     IsRead BIT,
-	FOREIGN KEY (OrderID) REFERENCES Orders(OrderID),
+    FOREIGN KEY (OrderID) REFERENCES Orders(OrderID),
     FOREIGN KEY (CustomerID) REFERENCES Customers(CustomerID),
     FOREIGN KEY (ProductID) REFERENCES Products(ProductID)
 );
 
 CREATE TABLE RatingReplies (
-    ReplyID INT PRIMARY KEY,
+    ReplyID INT IDENTITY (1,1) PRIMARY KEY,
     EmployeeID INT,
     RateID INT,
     Answer NVARCHAR(300),
@@ -210,6 +243,7 @@ CREATE TABLE Carts (
     FOREIGN KEY (CustomerID) REFERENCES Customers(CustomerID),
     FOREIGN KEY (ProductID) REFERENCES Products(ProductID)
 );
+
 
 /*******************************************************************************
    Schema for UI/UX Testing

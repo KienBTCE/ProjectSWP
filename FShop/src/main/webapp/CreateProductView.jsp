@@ -1,89 +1,147 @@
-<%-- 
-    Document   : CreateProductView
-    Created on : 26-Feb-2025, 17:30:55
-    Author     : kiuth
---%>
-
-<%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-
 <!DOCTYPE html>
-<html>
-<head>
-    <meta charset="UTF-8">
-    <title>Create Product</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    <style>
-        body {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            background: #f8f9fa;
-        }
-        .container {
-            background: white;
-            padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.1);
-            width: 50%;
-        }
-        .btn-submit {
-            background-color: #7D69FF;
-            color: white;
-            border: none;
-            padding: 10px 20px;
-            border-radius: 5px;
-            text-decoration: none;
-            width: 100%;
-        }
-        .btn-submit:hover {
-            background-color: #5a4edc;
-        }
-    </style>
-</head>
-<body>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Create Product</title>
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+        <style>
+            .content {
+                flex-grow: 1;
+                padding: 12px;
+                display: flex;
+                flex-direction: column;
+                gap: 20px;
+                margin-left: 250px;
+            }
+        </style>
+    </head>
+    <body>
+        <jsp:include page="SidebarDashboard.jsp"></jsp:include>
+            <div class="content">
+            <jsp:include page="HeaderDashboard.jsp"></jsp:include>
+                <div class="container-fluid">
+                    <div class="card shadow border-primary">
+                        <div class="card-header">
+                            <h3>Create New Product</h3>
+                        </div>
 
-<div class="container">
-    <h3 class="text-center">Create Product</h3>
-    <form action="CreateProductServlet" method="POST">
-        <div class="mb-3">
-            <label class="form-label">Category ID</label>
-            <input type="number" class="form-control" name="categoryId" required>
-        </div>
-        <div class="mb-3">
-            <label class="form-label">Brand ID</label>
-            <input type="number" class="form-control" name="brandId" required>
-        </div>
-        <div class="mb-3">
-            <label class="form-label">Model</label>
-            <input type="text" class="form-control" name="model" required>
-        </div>
-        <div class="mb-3">
-            <label class="form-label">Product Name</label>
-            <input type="text" class="form-control" name="fullName" required>
-        </div>
-        <div class="mb-3">
-            <label class="form-label">Description</label>
-            <textarea class="form-control" name="description" required></textarea>
-        </div>
-        <div class="mb-3">
-            <label class="form-label">Price</label>
-            <input type="number" class="form-control" name="price" required>
-        </div>
-        <div class="mb-3">
-            <label class="form-label">Image URL</label>
-            <input type="text" class="form-control" name="image">
-        </div>
-        <div class="mb-3">
-            <label class="form-label">Quantity</label>
-            <input type="number" class="form-control" name="quantity" required>
-        </div>
-        <button type="submit" class="btn-submit">Create Product</button>
-    </form>
-</div>
-
-</body>
+                        <div class="card-body">
+                            <form action="CreateProductServlet" method="post" enctype="multipart/form-data">
+                                <input type="hidden" name="categoryName" value="${categoryName}" />
+                            <!-- Horizontal Form Layout -->
+                            <div class="container-fluid">
+                                <!-- Row 1: Category, Brand, Model -->
+                                <div class="row g-3 align-items-center">
+                                    <div class="col-md-4">
+                                        <label class="form-label">Category</label>
+                                        <select class="form-select" name="categoryName" id="categoryName" required>
+                                            <c:forEach var="category" items="${categories}">
+                                                <option value="CreateProductServlet?name=${category}" ${category == categoryName ? 'selected' : ''}>${category}</option>
+                                            </c:forEach>
+                                        </select>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <label class="form-label">Brand</label>
+                                        <select class="form-select" name="brandName" required>
+                                            <c:forEach var="brand" items="${brands}">
+                                                <option value="${brand}">${brand}</option>
+                                            </c:forEach>
+                                        </select>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <label class="form-label">Model</label>
+                                        <input type="text" class="form-control" name="model" required />
+                                    </div>
+                                </div>
+                                <!-- Row 2: Full Name, Price, Is Deleted -->
+                                <div class="row g-3 align-items-center mt-2">
+                                    <div class="col-md-4">
+                                        <label class="form-label">Full Name</label>
+                                        <input type="text" class="form-control" name="fullName" required />
+                                    </div>
+                                    <div class="col-md-4">
+                                        <label class="form-label">Price</label>
+                                        <input type="number" class="form-control" name="price" required />
+                                    </div>
+                                    <div class="col-md-4">
+                                        <label class="form-label">Disable</label>
+                                        <select class="form-select" name="isDeleted">
+                                            <option value="1">Yes</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <!-- Row 3: Description -->
+                                <div class="row g-3 mt-2">
+                                    <div class="col-md-12">
+                                        <label class="form-label">Description</label>
+                                        <textarea class="form-control" name="description" rows="3" required></textarea>
+                                    </div>
+                                </div>
+                                <!-- Row 4: Attributes -->
+                                <div class="row g-3 mt-2">
+                                    <div class="col-md-12">
+                                        <label class="form-label">Attributes</label>
+                                        <c:if test="${not empty attributes}">
+                                            <div class="border p-3 rounded">
+                                                <c:forEach var="attr" items="${attributes}">
+                                                    <div class="row align-items-center mb-2">
+                                                        <div class="col-md-4">
+                                                            <label class="form-label fw-bold">${attr.attributeName}</label>
+                                                            <input type="hidden" name="attributeId" value="${attr.attributeId}" />
+                                                        </div>
+                                                        <div class="col-md-8">
+                                                            <input type="text" class="form-control" name="attributeInfor_${attr.attributeId}" 
+                                                                   placeholder="Enter ${attr.attributeName}" required />
+                                                        </div>
+                                                    </div>
+                                                </c:forEach>
+                                            </div>
+                                        </c:if>
+                                        <c:if test="${empty attributes}">
+                                            <p class="text-danger">No attributes available for the selected category.</p>
+                                        </c:if>
+                                    </div>
+                                </div>
+                                <!-- Row 5: Image Uploads -->
+                                <div class="row g-3 mt-2">
+                                    <div class="col-md-3">
+                                        <label class="form-label">Image 1</label>
+                                        <input type="file" class="form-control" name="txtP1" accept="image/*" required />
+                                    </div>
+                                    <div class="col-md-3">
+                                        <label class="form-label">Image 2</label>
+                                        <input type="file" class="form-control" name="txtP2" accept="image/*" />
+                                    </div>
+                                    <div class="col-md-3">
+                                        <label class="form-label">Image 3</label>
+                                        <input type="file" class="form-control" name="txtP3" accept="image/*" />
+                                    </div>
+                                    <div class="col-md-3">
+                                        <label class="form-label">Image 4</label>
+                                        <input type="file" class="form-control" name="txtP4" accept="image/*" />
+                                    </div>
+                                </div>
+                                <!-- Submit Button -->
+                                <div class="row g-3 mt-3">
+                                    <div class="col-md-12 text-end">
+                                        <button type="submit" class="btn btn-primary">Create Product</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>   
+        <script>
+            document.getElementById("categoryName").addEventListener("change", function () {
+                let url = this.value;
+                if (url) {
+                    window.location.href = url;
+                }
+            });
+        </script>
+    </body>
 </html>
-

@@ -5,7 +5,7 @@
 package Controllers;
 
 import DAOs.OrderDAO;
-import DAOs.OrderDetailsDAO;
+import DAOs.OrderDetailDAO;
 import Models.Order;
 import Models.OrderDetail;
 import java.io.IOException;
@@ -64,7 +64,7 @@ public class ViewOrderDetailServlet extends HttpServlet {
         OrderDAO oDAO = new OrderDAO();
         Order o = oDAO.getOrderByID(orderID);
 
-        OrderDetailsDAO odDAO = new OrderDetailsDAO();
+        OrderDetailDAO odDAO = new OrderDetailDAO();
         List<OrderDetail> list = odDAO.getOrderDetail(orderID);
         if (o.getFullName() != "") {
             request.setAttribute("dataDetail", list);

@@ -12,8 +12,9 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>F Shop</title>
+        <title>Employee Management</title>
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+        <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
         <style>
             body {
@@ -57,6 +58,7 @@
             .content {
                 flex-grow: 1;
                 padding: 12px;
+                margin-left: 250px;
             }
 
             .header {
@@ -105,68 +107,110 @@
                 transition: 0.3s;
             }
 
-            .search-box {
-                max-width: 300px;
-                margin-bottom: 10px;
-            }
-            
             .table-navigate{
                 display: flex;
                 justify-content: space-between;
             }
+            .search-form {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                margin-top: 20px;
+            }
+
+            .search-form input {
+                border-radius: 25px;
+                padding: 10px 15px;
+                border: 1px solid #ccc;
+                width: 250px;
+                font-size: 14px;
+                margin-right: 10px;
+                outline: none;
+            }
+
+            .search-form button {
+                background-color: #007bff;
+                border: none;
+                border-radius: 25px;
+                padding: 10px 15px;
+                cursor: pointer;
+            }
+
+            .search-form button i {
+                color: white;
+                font-size: 18px;
+            }
+
+            .search-form input:focus {
+                border-color: #0056b3;
+            }
+
+            .search-form button:hover {
+                background-color: #0056b3;
+            }
         </style>
     </head>
     <body>
-        <div class="sidebar">
-            <img src="assets/imgs/Dashboard/Group 1521.svg" class="logo-side-bar">
-            <h6><a href="#">Admin</a></h6>
-            <a href="Employee">Employee Management</a>
-            <a href="#">Statistic Management</a>
-        </div>
-        <div class="content">
-            <div class="header">
-                <div style="margin-right: 30px">
-                    <img style="float: left; margin-right: 15px;"
-                         src="#" alt="User Icon" class="icon">
-                    <p style="display: flex; margin: 12px 0 0 0;">Hi, ThNguyen</p>
-                </div>
+        <jsp:include page="SidebarDashboard.jsp"></jsp:include>
+            <div class="content">
+            <jsp:include page="HeaderDashboard.jsp"></jsp:include>
+                <br>
+                <div class="table-navigate">
+                    <form action="SearchEmployeeServlet" method="GET" class="search-form">
+                        <input type="text" name="query" value="${searchQuery}" placeholder="Search by Name...">
+                    <button type="submit"><i class="bx bx-search"></i></button>
+                </form>
+                <a href="AddEmployeeView.jsp" style="background-color: #4da3ff; color: white; text-decoration: none; padding: 1px 10px; border-radius: 5px; display: inline-flex; align-items: center; gap: 5px; cursor: pointer; margin-right: 10px;">
+                    <i class='bx bx-plus'></i> Add Employee
+                </a>
             </div>
-            <div class="table-navigate">
-                <input type="text" id="searchInput" class="form-control search-box" placeholder="Tìm kiếm theo tên..." onkeyup="filterTable()">
-                <button class="btn btn-detail" style="background-color: #BDF3BD; height: 100%">Create</button>
-            </div>
-
+            <br><!-- comment -->
             <div class="table-container">
                 <div>
-                    <h3>Employees</h3>
+                    <h3>Employee</h3>
                 </div>
-                <table class="table table-hover">
+                <table  class="table table-hover">
                     <thead>
                         <tr>
                             <th>Employee ID</th>
-                            <th>Role ID</th>
+                            <th>Role Name</th>
                             <th>Full Name</th>
-                            <th>Birthday</th>
-                            <th>Gender</th>
                             <th>Email</th>
-                            <th>Created Date</th>
                             <th>Status</th>
-                            <th>Action</th> <!-- Cột mới -->
+                            <th>Action</th>
                         </tr>
                     </thead>
-                    <tbody id="employeeTable">
-                        <c:forEach items="${listEmp}" var="e">
+                    <tbody>   
+                        <c:forEach items="${listE}" var="e">
                             <tr>
-                                <td>${e.getEmployeeId()}</td>
-                                <td>${e.getRoleId()}</td>
-                                <td>${e.getFullname()}</td>
-                                <td>${e.getBirthday()}</td>
-                                <td>${e.getGender()}</td>
-                                <td>${e.getEmail()}</td>
-                                <td>${e.getCreatedDate()}</td>
-                                <td>${e.getStatus()}</td>
+                                <td>${e.employeeId}</td>
+                                <c:forEach items="${listR}" var="r">
+                                    <c:if test="${e.roleId == r.roleId}">
+                                        <td>${r.roleName}</td>
+                                    </c:if>
+                                </c:forEach>
+                                <td>${e.fullname}</td>
+                                <td>${e.email}</td>
+                                <c:choose>
+                                    <c:when test="${e.status == 1}">
+                                        <td><span style="background-color: #28a745; color: white; padding: 5px 12px; border-radius: 15px; font-size: 12px; display: inline-flex; align-items: center; gap: 5px; text-align: center;">
+                                                <i class='bx bx-check-circle' style="font-size: 14px;"></i> Available
+                                            </span></td>
+                                        </c:when>
+                                        <c:otherwise>
+                                        <td><span style="background-color: #dc3545; color: white; padding: 5px 18px; border-radius: 15px; font-size: 12px; display: inline-flex; align-items: center; gap: 5px; text-align: center;">
+                                                <i class='bx bx-x-circle' style="font-size: 14px;"></i> Disable
+                                            </span></td>
+                                        </c:otherwise>
+                                    </c:choose>
                                 <td>
-                                    <a href="Employee?id=${e.getEmployeeId()}" class="btn btn-detail" style="background-color: #BDF3BD">Detail</a>
+                                    <a href="UpdateEmployeeServlet?id=${e.employeeId}" style="background-color: orange; color: white; text-decoration: none; padding: 3px 9px; border-radius: 5px; display: inline-block; cursor: pointer;">
+                                        <i class='bx bx-edit'></i> Update
+                                    </a>
+
+                                    <a href="ViewEmployeeServlet?id=${e.employeeId}" style="background-color: red; color: white; text-decoration: none; padding: 3px 9px; border-radius: 5px; display: inline-block; cursor: pointer;">
+                                        <i class='bx bx-detail'></i> Detail
+                                    </a>
                                 </td>
                             </tr>
                         </c:forEach>
@@ -174,23 +218,5 @@
                 </table>
             </div>
         </div>
-
-        <script>
-            function filterTable() {
-                let input = document.getElementById("searchInput");
-                let filter = input.value.toLowerCase();
-                let table = document.getElementById("employeeTable");
-                let rows = table.getElementsByTagName("tr");
-                for (let i = 0; i < rows.length; i++) {
-                    let nameCell = rows[i].getElementsByTagName("td")[1];
-                    if (nameCell) {
-                        let nameText = nameCell.textContent || nameCell.innerText;
-                        rows[i].style.display = nameText.toLowerCase().includes(filter) ? "" : "none";
-                    }
-                }
-            }
-        </script>
-
-    </div>
-</body>
+    </body>
 </html>

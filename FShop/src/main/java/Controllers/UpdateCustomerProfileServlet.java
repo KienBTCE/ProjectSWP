@@ -67,7 +67,8 @@ public class UpdateCustomerProfileServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        request.setAttribute("profilePage", "UpdateCustomerProfileView.jsp");
+        request.getRequestDispatcher("ProfileManagementView.jsp").forward(request, response);
     }
 
     /**
@@ -93,34 +94,69 @@ public class UpdateCustomerProfileServlet extends HttpServlet {
         String month = request.getParameter("month");
         String year = request.getParameter("year");
 
-        cus.setFullName(fullname);
-        cus.setPhoneNumber(phoneNumber);
-        cus.setGender(gender);
-        cus.setBirthday(year + "-" + month + "-" + day);
-        int rs = cusDAO.updateCustomerProfile(cus);
-        if (rs == 0) {
-            session.setAttribute("message", "Update customer fail!");
-        } else {
-            session.setAttribute("customer", cus);
-            session.setAttribute("message", "Update customer susscessfull!");
+        System.out.println(day + "   " + month + "       " + year);
+        if (!fullname.equals("")) {
+            cus.setFullName(fullname);
+        }
+        if (!phoneNumber.equals("")) {
+            cus.setPhoneNumber(phoneNumber);
+        }
+        if (gender != null && !gender.equals("")) {
+            cus.setGender(gender);
         }
 
-        //String filename = img.getSubmittedFileName();
-        //cusDAO.updateAvatar(cus.getId() + ".jpg", cus.getId());
+        if (!(day.equalsIgnoreCase("Day") && month.equalsIgnoreCase("Month") && year.equalsIgnoreCase("Year"))) {
+            if (day.equalsIgnoreCase("Day") || month.equalsIgnoreCase("Month") || year.equalsIgnoreCase("Year")) {
+                session.setAttribute("messageFail", "Please select a complete and valid date!");
+                response.sendRedirect("/viewCustomerProfile");
+                return;
+            }
+
+            try {
+                int dayInt = Integer.parseInt(day.trim());
+                int monthInt = Integer.parseInt(month.trim());
+                int yearInt = Integer.parseInt(year.trim());
+
+                if (dayInt < 1 || dayInt > 31 || monthInt < 1 || monthInt > 12 || yearInt < 1900 || yearInt > 2100) {
+                    session.setAttribute("messageFail", "Invalid date value!");
+                    response.sendRedirect("/viewCustomerProfile");
+                    return;
+                }
+
+                String dayStr = dayInt < 10 ? "0" + dayInt : String.valueOf(dayInt);
+                String monthStr = monthInt < 10 ? "0" + monthInt : String.valueOf(monthInt);
+
+                cus.setBirthday(yearInt + "-" + monthStr + "-" + dayStr);
+            } catch (NumberFormatException e) {
+                session.setAttribute("messageFail", "Invalid date format!");
+                response.sendRedirect("/viewCustomerProfile");
+                return;
+            }
+        }
+        String uploadPath = getServletContext().getRealPath("/");
+        uploadPath = uploadPath.replace("target", "src");
+        uploadPath = uploadPath.replace("FShop-1.0-SNAPSHOT", "main");
+        uploadPath += "webapp\\assets\\imgs\\CustomerAvatar\\";
+        System.out.println(uploadPath);
         if (img != null && img.getSize() > 0) {
             cus.setAvatar(cus.getId() + ".jpg");
-            for (Part part : request.getParts()) {
-                part.write("E:\\HocTap\\Ky5\\SWP\\Main\\ProjectSWP\\FShop\\src\\main\\webapp\\assets\\imgs\\CustomerAvatar\\" + cus.getId() + ".jpg");
-            }
+            img.write(uploadPath + cus.getId() + ".jpg");
             try {
-                Thread.sleep(2500); // 15 giây = 15000 mili giây
+                Thread.sleep(2500); // 2.5 giây
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
         }
 
-        request.setAttribute("profilePage", "CustomerProfileView.jsp");
-        request.getRequestDispatcher("ProfileManagementView.jsp").forward(request, response);
+        int rs = cusDAO.updateCustomerProfile(cus);
+        if (rs == 0) {
+            session.setAttribute("messageFail", "Update customer fail!");
+        } else {
+            session.setAttribute("customer", cus);
+            session.setAttribute("message", "Update customer successful!");
+        }
+
+        response.sendRedirect("/viewCustomerProfile");
     }
 
     /**
