@@ -13,6 +13,7 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 
 
@@ -66,9 +67,12 @@ public class CreateVoucherServlet extends HttpServlet {
         try {
             request.setCharacterEncoding("UTF-8");
 
-            String code = request.getParameter("voucherCode");
+            String code = request.getParameter("voucherCode").trim();
             if (code.length() > 10) {
                 request.setAttribute("error", "Voucher code must not exceed 10 characters.");
+                // Lưu lại các giá trị người dùng nhập vào
+                request.setAttribute("voucherCode", code);
+
                 request.getRequestDispatcher("CreateVoucherView.jsp").forward(request, response);
                 return;
             }
@@ -87,13 +91,34 @@ public class CreateVoucherServlet extends HttpServlet {
             LocalDateTime start = LocalDateTime.parse(rawStart, inputFormat);
             LocalDateTime end = LocalDateTime.parse(rawEnd, inputFormat);
 
+            // Kiểm tra nếu ngày kết thúc trước ngày bắt đầu
             if (end.isBefore(start)) {
                 request.setAttribute("error", "End Date must be after Start Date.");
+// Lưu lại các giá trị người dùng nhập vào
+                request.setAttribute("voucherCode", code);
+                request.setAttribute("voucherType", type);
+                request.setAttribute("voucherValue", value);
+                request.setAttribute("maxDiscountAmount", maxDiscount);
+                request.setAttribute("minOrderValue", minOrder);
+                request.setAttribute("startDate", rawStart);
+                request.setAttribute("endDate", rawEnd);
+
                 request.getRequestDispatcher("CreateVoucherView.jsp").forward(request, response);
                 return;
             }
-            if(type == 1 && value > 100){
-            request.setAttribute("error", "If the voucher type is percent, you cannot set a value greater than 100.");
+
+            // Kiểm tra nếu giá trị voucher lớn hơn 100 đối với loại voucher phần trăm
+            if (type == 1 && value >= 100) {
+                request.setAttribute("error", "If the voucher type is percent, you cannot set a value greater than 100.");
+                // Lưu lại các giá trị người dùng nhập vào
+                request.setAttribute("voucherCode", code);
+                request.setAttribute("voucherType", type);
+                request.setAttribute("voucherValue", value);
+                request.setAttribute("maxDiscountAmount", maxDiscount);
+                request.setAttribute("minOrderValue", minOrder);
+                request.setAttribute("startDate", rawStart);
+                request.setAttribute("endDate", rawEnd);
+
                 request.getRequestDispatcher("CreateVoucherView.jsp").forward(request, response);
                 return;
             }
@@ -105,22 +130,105 @@ public class CreateVoucherServlet extends HttpServlet {
             int status = Integer.parseInt(request.getParameter("status"));
             String desc = request.getParameter("description");
 
-            VoucherDAO dao = new VoucherDAO();
+            // Kiểm tra các giá trị số không âm
+            if (value < 0 || maxDiscount < 0 || minOrder < 0 || maxUsed < 0) {
+                // Lưu lại các giá trị người dùng nhập vào
+                request.setAttribute("voucherCode", code);
+                request.setAttribute("voucherType", type);
+                request.setAttribute("voucherValue", value);
+                request.setAttribute("maxDiscountAmount", maxDiscount);
+                request.setAttribute("minOrderValue", minOrder);
+                request.setAttribute("startDate", rawStart);
+                request.setAttribute("endDate", rawEnd);
+                request.setAttribute("maxUsedCount", maxUsed);
+                request.setAttribute("status", status);
+                request.setAttribute("description", desc);
 
-            if (dao.checkVoucherCodeExists(code)) {
-                request.setAttribute("error", "Voucher code '" + code + "' already exists!");
+                request.setAttribute("error", "Numeric values must be non-negative.");
                 request.getRequestDispatcher("CreateVoucherView.jsp").forward(request, response);
                 return;
             }
 
+            // Kiểm tra ngày bắt đầu và ngày kết thúc không phải trong quá khứ
+            LocalDateTime now = LocalDateTime.now(ZoneId.of("Asia/Bangkok"));
+            if (start.isBefore(now)) {
+                request.setAttribute("error", "Start Date must not be in the past.");
+                // Lưu lại các giá trị người dùng nhập vào
+                request.setAttribute("voucherCode", code);
+                request.setAttribute("voucherType", type);
+                request.setAttribute("voucherValue", value);
+                request.setAttribute("maxDiscountAmount", maxDiscount);
+                request.setAttribute("minOrderValue", minOrder);
+                request.setAttribute("startDate", rawStart);
+                request.setAttribute("endDate", rawEnd);
+                request.setAttribute("maxUsedCount", maxUsed);
+                request.setAttribute("status", status);
+                request.setAttribute("description", desc);
+
+                request.getRequestDispatcher("CreateVoucherView.jsp").forward(request, response);
+                return;
+            }
+            if (end.isBefore(now)) {
+                request.setAttribute("error", "End Date must not be in the past.");
+                // Lưu lại các giá trị người dùng nhập vào
+                request.setAttribute("voucherCode", code);
+                request.setAttribute("voucherType", type);
+                request.setAttribute("voucherValue", value);
+                request.setAttribute("maxDiscountAmount", maxDiscount);
+                request.setAttribute("minOrderValue", minOrder);
+                request.setAttribute("startDate", rawStart);
+                request.setAttribute("endDate", rawEnd);
+                request.setAttribute("maxUsedCount", maxUsed);
+                request.setAttribute("status", status);
+                request.setAttribute("description", desc);
+
+                request.getRequestDispatcher("CreateVoucherView.jsp").forward(request, response);
+                return;
+            }
+
+            // Kiểm tra mã voucher đã tồn tại
+            VoucherDAO dao = new VoucherDAO();
+            if (dao.checkVoucherCodeExists(code)) {
+                request.setAttribute("error", "Voucher code '" + code + "' already exists!");
+                // Lưu lại các giá trị người dùng nhập vào
+                request.setAttribute("voucherCode", code);
+                request.setAttribute("voucherType", type);
+                request.setAttribute("voucherValue", value);
+                request.setAttribute("maxDiscountAmount", maxDiscount);
+                request.setAttribute("minOrderValue", minOrder);
+                request.setAttribute("startDate", rawStart);
+                request.setAttribute("endDate", rawEnd);
+                request.setAttribute("maxUsedCount", maxUsed);
+                request.setAttribute("status", status);
+                request.setAttribute("description", desc);
+
+                request.getRequestDispatcher("CreateVoucherView.jsp").forward(request, response);
+                return;
+            }
+
+            // Tạo đối tượng voucher mới
             Voucher newVoucher = new Voucher(0, code, value, type, startDate, endDate,
                     0, maxUsed, maxDiscount, minOrder, status, desc);
 
+            // Chèn voucher vào cơ sở dữ liệu
             int count = dao.insertVoucher(newVoucher);
-            if(count>0){
-            response.sendRedirect("ViewVoucherListServlet?success=createsuccess");
-            }else{
-            response.sendRedirect("ViewVoucherListServlet?success=createfailed");
+            if (count > 0) {
+                response.sendRedirect("ViewVoucherListServlet?success=createsuccess");
+            } else {
+
+                // Lưu lại các giá trị người dùng nhập vào
+                request.setAttribute("voucherCode", code);
+                request.setAttribute("voucherType", type);
+                request.setAttribute("voucherValue", value);
+                request.setAttribute("maxDiscountAmount", maxDiscount);
+                request.setAttribute("minOrderValue", minOrder);
+                request.setAttribute("startDate", rawStart);
+                request.setAttribute("endDate", rawEnd);
+                request.setAttribute("maxUsedCount", maxUsed);
+                request.setAttribute("status", status);
+                request.setAttribute("description", desc);
+
+                response.sendRedirect("CreateVoucherServlet?success=createfailed");
             }
 
         } catch (Exception e) {

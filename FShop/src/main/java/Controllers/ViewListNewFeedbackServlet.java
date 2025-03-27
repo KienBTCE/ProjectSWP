@@ -65,7 +65,7 @@ public class ViewListNewFeedbackServlet extends HttpServlet {
         List<ProductRating> list;
         if (searchQuery != null && !searchQuery.trim().isEmpty()) {
             
-            list = prDAO.SearchProductRatingByCusID(searchQuery);
+            list = prDAO.SearchProductRatingByCusID(searchQuery.trim());
         } else {
 
             list = prDAO.getNewFeedback();

@@ -59,7 +59,7 @@ public class ProductRatingDAO {
                 + "WHERE C.FullName LIKE ?";
         try {
             PreparedStatement pre = connector.prepareStatement(query);
-            pre.setString(1, CustomerName);
+            pre.setString(1, "%" +CustomerName+"%");
             ResultSet rs = pre.executeQuery();
             while (rs.next()) {
                 ProductRating p = new ProductRating(
@@ -82,6 +82,14 @@ public class ProductRatingDAO {
         return list;
     }
 
+//    public static void main(String[] args) {
+//        ProductRatingDAO p = new ProductRatingDAO();
+//       List<ProductRating> l =  p.SearchProductRatingByCusID("tran");
+//        System.out.println("___________________________________-");
+//        for( ProductRating e : l){
+//            System.out.println(e.getFullName());
+//        }
+//    }
     public float getStarAverage(int productId) {
         float star = 0;
         String query = "SELECT COALESCE(ROUND(SUM(Star) * 1.0 / COUNT(Star), 0), 0) AS avs\n"

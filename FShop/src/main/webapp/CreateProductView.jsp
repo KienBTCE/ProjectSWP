@@ -14,6 +14,43 @@
                 flex-direction: column;
                 gap: 20px;
                 margin-left: 250px;
+                margin-top: 80px;
+            }
+
+            .header {
+                position: fixed;
+                top: 0;
+                left: 260px;
+                right: 10px;
+                margin-top: 10px;
+                z-index: 1000;
+            }
+
+
+            .icon {
+                width: 40px;
+                height: 40px;
+                border-radius: 50%;
+                object-fit: cover;
+            }
+
+            .logo-side-bar {
+                margin-left: 5%;
+                margin-bottom: 3%;
+            }
+            /* ========================================================= */
+            .hi {
+
+                position: fixed;
+                top: 0;
+                left: 267px;
+                right: 0;
+                background: white;
+                z-index: 1000;
+                display: flex;
+                align-items: flex-start;
+                padding: 15px;
+                border: 5px;
             }
 
             .error{
@@ -26,7 +63,9 @@
     <body>
         <jsp:include page="SidebarDashboard.jsp"></jsp:include>
             <div class="content">
-            <jsp:include page="HeaderDashboard.jsp"></jsp:include>
+                <div class="hi">
+                <jsp:include page="HeaderDashboard.jsp"></jsp:include>
+                </div>
                 <div class="container-fluid">
                     <div class="card shadow border-primary">
                         <div class="card-header">
