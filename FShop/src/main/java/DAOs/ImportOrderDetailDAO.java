@@ -151,7 +151,7 @@ public class ImportOrderDetailDAO {
 
         String query = "SELECT *\n"
                 + "FROM ImportStockDetails IOD\n"
-                + "JOIN ImportOrders IO ON IOD.ImportID = IO.ImportID\n"
+                + "JOIN ImportStocks IO ON IOD.ImportID = IO.ImportID\n"
                 + "JOIN Products P ON IOD.ProductID = P.ProductID\n"
                 + "WHERE CAST(IO.ImportDate AS DATE) = CAST(GETDATE() AS DATE)\n"
                 + "ORDER BY P.ProductID ASC";

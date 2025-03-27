@@ -32,7 +32,6 @@
                 padding: 20px;
                 text-align: center;
                 font-family: Arial, sans-serif;
-                background-color: #f8f9fa;
             }
             .chart-box {
                 background: white;
@@ -98,20 +97,22 @@
             }
 
             .content {
-                flex-grow: 1;
-                padding: 12px;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                margin-top: 60px;
                 margin-left: 250px;
+                padding: 20px;
             }
 
+            /* Giữ header cố định */
             .header {
-                display: flex;
-                justify-content: right;
-                align-items: center;
-                padding: 10px;
-                background: #FFFFFF;
-                box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.3);
-                border-radius: 10px;
-                height: 85px;
+                position: fixed;
+                top: 0;
+                left: 260px; /* vì sidebar chiếm 250px */
+                right: 10px;
+                margin-top: 10px;
+                z-index: 1000;
             }
 
             .icon {
@@ -231,14 +232,27 @@
                 display: inline-block;
                 padding: 5px 10px;
             }
-
-
+            .hi {
+                position: fixed;
+                top: 0;
+                left: 267px;
+                right: 0;
+                background: white;
+                z-index: 1000;
+                display: flex;
+                flex-direction: column;
+                align-items: flex-start;
+                padding: 18px;
+                border: 5px;
+            }
         </style>
     </head>
     <body>
         <jsp:include page="SidebarDashboard.jsp"></jsp:include>
             <div class="content">
-            <jsp:include page="HeaderDashboard.jsp"></jsp:include>
+                <div class="hi">
+                <jsp:include page="HeaderDashboard.jsp"></jsp:include>
+                </div>
                 <div class ="container">
                     <div class="chart-box">
                         <h3>Weekly Sales</h3>

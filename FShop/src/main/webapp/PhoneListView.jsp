@@ -209,7 +209,6 @@
             function updateSelectedValues() {
                 customPath = pathname;
                 const selectedBrands = Array.from(document.querySelectorAll('input[name="brand"]:checked')).map(checkbox => checkbox.value);
-
                 const selectedPrices = Array.from(document.querySelectorAll('input[name="price"]:checked')).map(checkbox => checkbox.value);
 
                 if (selectedBrands.length !== 0 && !customPath.includes("?")) {
