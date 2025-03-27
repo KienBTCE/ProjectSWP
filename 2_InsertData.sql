@@ -488,3 +488,43 @@ INSERT INTO OrderDetails (OrderID, ProductID, Quantity, Price)
 VALUES 
 (19, 7, 3, 60000000),  -- 3 Lenovo Legion Pro 5
 (19, 8, 1, 15000000);  -- 1 ASUS-TUF-A17
+UPDATE Products
+SET Image1 = 'MacBookProM4_02.jfif',
+    Image2 = 'MacBookProM4_03.jfif'
+WHERE ProductID = 1;
+
+UPDATE Products
+SET Image1 = 'SonyZ900_01.jfif',
+    Image2 = 'SonyZ900_02.jfif'
+WHERE ProductID = 3;
+
+
+UPDATE Products
+SET Image1 = 'Legion5_01.jfif',
+    Image2 = 'Legion5_02.jfif'
+WHERE ProductID = 7;
+
+UPDATE Products
+SET Image1 = 'DellG15_01.jpg',
+    Image2 = 'DellG15_02.jfif'
+WHERE ProductID = 10;
+
+
+UPDATE Products
+SET Image1 = 'HpOmen_01.jfif',
+    Image2 = 'HpOmen_02.jfif'
+WHERE ProductID = 13;
+
+
+UPDATE Products
+SET Image = 'Alienware.jfif', 
+    Image1 = 'Alienware_01.jfif',
+    Image2 = 'Alienware_02.jfif'
+WHERE ProductID = 18;
+
+
+UPDATE Products
+SET Image = 'AsusG14.jfif', 
+    Image1 = 'AsusG14_01.jfif',
+    Image2 = 'AsusG14_02.jfif'
+WHERE ProductID = 20;
