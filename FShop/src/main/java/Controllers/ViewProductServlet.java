@@ -17,10 +17,13 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -129,7 +132,7 @@ public class ViewProductServlet extends HttpServlet {
                 }
             }
             // ================================================================== Multi Filter
-
+            
             try {
                 ProductRatingDAO prDAO = new ProductRatingDAO();
                 ArrayList<ProductRating> stars = new ArrayList<>();
@@ -148,6 +151,7 @@ public class ViewProductServlet extends HttpServlet {
                 request.setAttribute("products", products);
                 request.setAttribute("brands", brands);
                 request.setAttribute("filters", filters);
+
                 request.getRequestDispatcher("ProductListView.jsp").forward(request, response);
             } catch (NullPointerException e) {
                 System.out.println(e);
@@ -192,8 +196,11 @@ public class ViewProductServlet extends HttpServlet {
 
                 for (String string : price.split(",")) {
                     switch (string.trim()) {
-                        case "20-25":
-                            priceFilters.add("20000000;25000000");
+                        case "5-15":
+                            priceFilters.add("5000000;15000000");
+                            break;
+                        case "15-25":
+                            priceFilters.add("15000000;25000000");
                             break;
                         case "25-30":
                             priceFilters.add("25000000;30000000");
@@ -325,8 +332,20 @@ public class ViewProductServlet extends HttpServlet {
 
                 for (String string : price.split(",")) {
                     switch (string.trim()) {
-                        case "20-25":
-                            priceFilters.add("20000000;25000000");
+                        case "100-500":
+                            priceFilters.add("100000;500000");
+                            break;
+                        case "500-1":
+                            priceFilters.add("500000;1000000");
+                            break;
+                        case "1-5":
+                            priceFilters.add("1000000;5000000");
+                            break;
+                        case "5-15":
+                            priceFilters.add("5000000;15000000");
+                            break;
+                        case "15-25":
+                            priceFilters.add("15000000;25000000");
                             break;
                         case "25-30":
                             priceFilters.add("25000000;30000000");
@@ -385,25 +404,24 @@ public class ViewProductServlet extends HttpServlet {
             }
         } else {
             products = pd.getAllProducts();
-            
+
             for (int i = 0; i < products.size(); i++) {
                 if (products.get(i).getStock() < 1) {
                     products.remove(i);
                 }
             }
-            
+
             ProductRatingDAO prDAO = new ProductRatingDAO();
             ArrayList<ProductRating> stars = new ArrayList<>();
             for (Product p : products) {
                 ProductRating star = prDAO.getStarAVG(p.getProductId());
-
                 stars.add(star);
-
             }
             try {
                 Map<Object, Object> dataMap = new HashMap<>();
                 dataMap.put("stars", stars);
                 dataMap.put("products", products);
+                
                 request.setAttribute("dataMap", dataMap);
                 request.setAttribute("products", products);
                 request.getRequestDispatcher("HomeView.jsp").forward(request, response);
@@ -411,7 +429,6 @@ public class ViewProductServlet extends HttpServlet {
                 System.out.println(e);
             }
         }
-
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

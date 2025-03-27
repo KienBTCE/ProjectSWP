@@ -363,7 +363,7 @@
                     <div class="frame-represent">
                         <img src="assets/imgs/Magazines/news-1.svg" width="235px" height="150px" alt="alt"/>
                         <div class="magazine-paragraph">
-                            <p style="width: 100%">
+                            <p style="width: 100%; text-align: justify; hyphens: auto;">
                                 If you’ve recently made a desktop PC or laptop purchase, you might want to consider adding peripherals to enhance your home office setup, your gaming rig, or your business workspace...
                             </p>
                         </div>
@@ -371,15 +371,15 @@
                     <div class="frame-represent">
                         <img src="assets/imgs/Magazines/news-2.svg" width="235px" height="150px" alt="alt"/>
                         <div class="magazine-paragraph">
-                            <p style="width: 100%">
-                                As a gamer, superior sound counts for a lot. You need to hear enemies tiptoeing up behind you for a sneak attack or a slight change in the atmospheric music signaling a new challenge or task...
+                            <p style="width: 100%; text-align: justify; hyphens: auto;">
+                                As a gamer, superior sound counts for a lot. You need to hear enemies tiptoeing up behind you for a sneak attack atmospheric music signaling a new challenge or task...
                             </p>
                         </div>
                     </div>
                     <div class="frame-represent">
                         <img src="assets/imgs/Magazines/news-3.svg" width="235px" height="150px" alt="alt"/>
                         <div class="magazine-paragraph">
-                            <p style="width: 100%">
+                            <p style="width: 100%; text-align: justify; hyphens: auto;">
                                 If you’ve recently made a desktop PC or laptop purchase, you might want to consider adding peripherals to enhance your home office setup, your gaming rig, or your business workspace...
                             </p>
                         </div>
@@ -387,7 +387,7 @@
                     <div class="frame-represent">
                         <img src="assets/imgs/Magazines/news-4.svg" width="235px" height="150px" alt="alt"/>
                         <div class="magazine-paragraph">
-                            <p style="width: 100%">
+                            <p style="width: 100%; text-align: justify; hyphens: auto;">
                                 If you’ve recently made a desktop PC or laptop purchase, you might want to consider adding peripherals to enhance your home office setup, your gaming rig, or your business workspace...
                             </p>
                         </div>
@@ -395,7 +395,7 @@
                     <div class="frame-represent">
                         <img src="assets/imgs/Magazines/news-5.svg" width="235px" height="150px" alt="alt"/>
                         <div class="magazine-paragraph">
-                            <p style="width: 100%">
+                            <p style="width: 100%; text-align: justify; hyphens: auto;">
                                 If you’ve recently made a desktop PC or laptop purchase, you might want to consider adding peripherals to enhance your home office setup, your gaming rig, or your business workspace...
                             </p>
                         </div>
