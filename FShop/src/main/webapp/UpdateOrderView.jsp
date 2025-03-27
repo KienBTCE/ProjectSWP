@@ -136,7 +136,7 @@
     <body>
         <div class="fixed-header"><jsp:include page="HeaderDashboard.jsp"></jsp:include>
                 <p></p>
-                
+
             </div>
 
             <div class="main-layout">
@@ -166,8 +166,15 @@
                                 <h3><i class="fa-solid fa-info-circle"></i> Order Information</h3>
                                 <p><strong>Order ID:</strong> <span>${data.orderID}</span></p>
                                 <p><strong>Order Date:</strong> <span>${data.orderDate}</span></p>
-                                <p><strong>Order Status:</strong> <span class="status-${data.status}">${data.status}</span></p>
-                                <p><strong>Total Amount:</strong> <span>${data.totalAmount}</span></p>
+                                <p><strong>Order Status:</strong> <span class="status-${data.status}">
+                                        <c:if test="${data.status == 1}">Waiting For Acceptance</c:if>
+                                        <c:if test="${data.status == 2}">Packaging</c:if>
+                                        <c:if test="${data.status == 3}">Waiting For Delivery</c:if>
+                                        <c:if test="${data.status == 4}">Delivered</c:if>
+                                        <c:if test="${data.status == 5}">Cancel</c:if>
+                                        </span>
+                                    </p>
+                                    <p><strong>Total Amount:</strong> <span>${data.totalAmount}</span></p>
                                 <p><strong>Discount:</strong> <span>${data.discount}</span></p>
                             </div>
 
@@ -203,15 +210,22 @@
                                 <form action="UpdateOrderServlet" method="POST">
                                     <input type="hidden" name="orderID" value="${data.orderID}" />
                                     <div class="dropdown">
-                                        <select name="update" id="orderStatus" onchange="disableOptions()">
+                                        <!--<select name="update" id="orderStatus" onchange="disableOptions()">-->
+                                        <select name="update" id="orderStatus" data-current="${data.status}">
+
                                             <option value="1" <c:if test="${data.status == 1}">selected</c:if>>Waiting For Acceptance</option>
                                             <option value="2" <c:if test="${data.status == 2}">selected</c:if>>Packaging</option>
                                             <option value="3" <c:if test="${data.status == 3}">selected</c:if>>Waiting For Delivery</option>
                                             <option value="4" <c:if test="${data.status == 4}">selected</c:if>>Delivered</option>
                                             <option value="5" <c:if test="${data.status == 5}">selected</c:if>>Cancel</option>
-                                        </select>
-                                    </div>
-                                    <button type="submit" class="btn btn-success"><i class="fa-solid fa-pen"></i> Update</button>
+                                            </select>
+                                        </div>
+                                        <!--<button type="submit" class="btn btn-success"><i class="fa-solid fa-pen"></i> Update</button>-->
+                                        <button type="submit" class="btn btn-success" 
+                                        <c:if test="${data.status == 4 || data.status == 5}">disabled</c:if>>
+                                        <i class="fa-solid fa-pen"></i> Update
+                                    </button>
+
                                 </form>
 
                             </div>
@@ -225,47 +239,53 @@
 
         <!-- JavaScript -->
         <script>
-            function confirmDelete() {
-                document.getElementById("confirmationModal").style.display = "flex";
-            }
-            document.getElementById("confirmBtn").onclick = function () {
-                document.getElementById("deleteForm").submit();
-            };
-            document.getElementById("cancelBtn").onclick = function () {
-                document.getElementById("confirmationModal").style.display = "none";
-            };
 
             function disableOptions() {
-                const status = document.getElementById('orderStatus').value; // Lấy giá trị trạng thái đã chọn
-                const options = document.getElementById('orderStatus').options;
+                const select = document.getElementById('orderStatus');
+                const currentStatus = parseInt(select.getAttribute('data-current')); // Trạng thái hiện tại
+                const options = select.options;
 
-                // Đảm bảo tất cả các tùy chọn đều được kích hoạt lại trước khi disable lại
+                // Reset tất cả
                 for (let i = 0; i < options.length; i++) {
                     options[i].disabled = false;
                 }
 
-                // Disable các trạng thái không hợp lệ
-                if (status === '3') { // Waiting For Delivery
-                    options[0].disabled = true; // Không thể chọn 'Waiting For Acceptance'
-                    options[1].disabled = true; // Không thể chọn 'Packaging'
-                    options[4].disabled = true; // Không thể chọn 'Cancel'
-                } else if (status === '2') { // Packaging
-                    options[0].disabled = true; // Không thể chọn 'Waiting For Acceptance'
-                    options[4].disabled = true; // Không thể chọn 'Cancel'
-                } else if (status === '4') { // Delivered
-                    options[0].disabled = true; // Không thể chọn 'Waiting For Acceptance'
-                    options[1].disabled = true; // Không thể chọn 'Packaging'
-                    options[2].disabled = true; // Không thể chọn 'Waiting For Delivery'
-                    options[4].disabled = true; // Không thể chọn 'Cancel'
-                } else if (status === '5') { // Cancel
-                    options[0].disabled = true; // Không thể chọn 'Waiting For Acceptance'
-                    options[1].disabled = true; // Không thể chọn 'Packaging'
-                    options[2].disabled = true; // Không thể chọn 'Waiting For Delivery'
-                    options[3].disabled = true; // Không thể chọn 'Delivered'
+                // Logic theo từng trạng thái hiện tại
+                switch (currentStatus) {
+                    case 1:
+                        // Trạng thái 5 (Cancel) chỉ cho phép khi đang ở 1 ⇒ hợp lệ
+                        break; // không disable gì cả
+                    case 2:
+                        options[0].disabled = true; // Không được chọn lại trạng thái 1
+                        break;
+                    case 3:
+                        options[0].disabled = true; // Không được chọn lại trạng thái 1
+                        options[1].disabled = true; // Không được chọn lại trạng thái 2
+                        break;
+                    case 4:
+                        options[0].disabled = true;
+                        options[1].disabled = true;
+                        options[2].disabled = true;
+                        options[4].disabled = true; // Cancel
+                        break;
+                    case 5:
+                        options[0].disabled = true;
+                        options[1].disabled = true;
+                        options[2].disabled = true;
+                        options[3].disabled = true;
+                        break;
+                }
+
+                // Ngoài ra, nếu trạng thái hiện tại khác 1 thì không cho phép chọn Cancel (5)
+                if (currentStatus !== 1) {
+                    options[4].disabled = true;
                 }
             }
 
 // Gọi disableOptions() khi trang tải
+//            document.addEventListener('DOMContentLoaded', function () {
+//                disableOptions();
+//            });
             document.addEventListener('DOMContentLoaded', function () {
                 disableOptions();
             });
