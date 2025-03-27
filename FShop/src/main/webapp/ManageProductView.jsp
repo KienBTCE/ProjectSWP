@@ -480,7 +480,7 @@
                             <td>${s.getCategoryName()}</td>
                             <td>${s.getBrandName()}</td>
                             <td>${s.getFullName()}</td>
-                            <td>${s.getPrice()}</td>
+                            <td>${s.getPriceFormatted()}</td>
                             <td>${s.getQuantity()}</td>
                             <td>
                                 <span class="badge ${s.getDeleted() == 1 ?  'bg-danger':'bg-success'}">
