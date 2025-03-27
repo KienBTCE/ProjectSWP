@@ -77,9 +77,9 @@ public class DeleteVoucherServlet extends HttpServlet {
         cdao.deleteCustomerVoucher(voucherID);
         int count = dao.deleteVoucher(voucherID);
         if(count>0){
-       response.sendRedirect("ViewVoucherListServlet?success=success");
+       response.sendRedirect("ViewVoucherListServlet?success=deletesuccess");
         }else{
-       response.sendRedirect("ViewVoucherListServlet?success=failed");
+       response.sendRedirect("ViewVoucherListServlet?success=deletefailed");
         }
 
     }

@@ -831,7 +831,7 @@
 
 
 
-
+                <c:if test="${not empty dataRating}">
                 <div id="feedbackContainer" class="feedback-section">
                     <div class="feedback-container">
                         <h3 class="feedback-title">PRODUCT REVIEW</h3>
@@ -850,6 +850,11 @@
                         </c:if>
 
                         <c:if test="${isOk}">
+                            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                                <i class="fa-solid fa-triangle-exclamation me-2"></i> Reminder: Only one comment is allowed per product!!!
+                                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                            </div>
+
                             <form id="reviewForm" method="POST" action="ProductDetailServlet">
                                 <input type="hidden" name="productId" value="${product.productId}">
                                 <input type="hidden" name="customerId" value="${customerId}">
@@ -964,6 +969,7 @@
                         </div>
                     </div>
                 </div>
+                    </c:if>
             </div>
 
 
