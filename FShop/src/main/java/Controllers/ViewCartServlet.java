@@ -75,14 +75,15 @@ public class ViewCartServlet extends HttpServlet {
             //List<Product> pList = p.getAllProducts();
             for (Cart cart : cartList) {
                 Product product = p.getProductByID(cart.getProductID());
-                if (product.getDeleted() != 1) {
+                System.out.println(product.getFullName() + " " + product.getDeleted());
+                if (product.getDeleted() == 0) {
                     if (product.getStock() == 0) {
                         cart.setQuantity(0);
                     } else if (product.getStock() > 0 && (product.getStock() < cart.getQuantity())) {
                         cart.setQuantity(product.getStock());
                         c.updateProductQuantity(cart.getProductID(), product.getStock(), cus.getId());
                     }
-                } else {
+                } else if (product.getDeleted() == 1) {
                     c.deleteProductOnCart(cart.getProductID(), cus.getId());
                 }
             }

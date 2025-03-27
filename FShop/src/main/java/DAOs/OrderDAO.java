@@ -114,7 +114,7 @@ public class OrderDAO {
             data += o.getTotalAmount() + "";
 
             PreparedStatement pre = connector.prepareStatement("Insert into [Orders] (CustomerID, FullName, PhoneNumber, [Address], TotalAmount, [Status], OrderedDate, Discount)"
-                    + " values (" + data + ", 1, GETUTCDATE(), ?)");
+                    + " values (" + data + ", 1, DATEADD(HOUR, 7, GETUTCDATE()), ?)");
             pre.setInt(1, o.getDiscount());
             pre.executeUpdate();
         } catch (SQLException e) {
@@ -171,7 +171,7 @@ public class OrderDAO {
         String query = "Update Orders SET Orders.Status= ? WHERE Orders.OrderID=?";
           String query2 = "UPDATE Orders\n"
                 + "SET Status = ?,\n"
-                + "    DeliveredDate = GETUTCDATE()\n"
+                + "    DeliveredDate = DATEADD(HOUR, 7, GETUTCDATE())\n"
                 + "WHERE OrderID = ?;";
         try {
             if(status == 4){

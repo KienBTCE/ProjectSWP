@@ -420,3 +420,71 @@ VALUES
 (1, 1, '2026-01-10', 5),
 (1, 2,'2026-01-10', 5),	
 (1, 3, '2026-01-10', 5);
+
+--Insert Product Rating
+INSERT INTO ProductRatings (CustomerID, ProductID, OrderID, CreatedDate, Star, Comment, IsDeleted, IsRead)
+VALUES
+(1, 1, 1, GETDATE(), 5, N'Excellent performance and build quality!', 0, 1),
+(2, 2, 2, GETDATE(), 4, N'Great phone but gets warm during gaming.', 0, 1),
+(3, 3, 3, GETDATE(), 3, N'Decent battery life, could be better.', 0, 1),
+(5, 5, 5, GETDATE(), 5, N'Highly satisfied with the product quality.', 0, 1),
+(6, 6, 6, GETDATE(), 2, N'The item had some scratches upon arrival.', 0, 1),
+(8, 8, 8, GETDATE(), 4, N'Sleek design and solid gaming performance.', 0, 1),
+(9, 9, 9, GETDATE(), 5, N'Smooth experience and fast delivery.', 0, 1),
+(10, 10, 10, GETDATE(), 3, N'Average performance for the price.', 0, 1);
+
+--Insert RatingReplies
+INSERT INTO RatingReplies (EmployeeID, RateID, Answer, IsRead)
+VALUES
+(3, 1, N'Thank you for your feedback! We appreciate your support.', 0),
+(3, 2, N'Sorry for the heating issue. We will look into it.', 0),
+(3, 3, N'Thank you! We’ll work on improving battery life.', 0),
+(3, 4, N'Glad to hear you’re happy with the product!', 1),
+(3, 5, N'Sorry for the inconvenience. We’ll review our packaging process.', 0),
+(3, 6, N'Thanks for your review. Enjoy your new device!', 1),
+(3, 7, N'We appreciate your trust and hope to serve you again.', 0),
+(3, 8, N'Thank you! We’re happy it met your expectations.', 1);
+
+-- Thêm đơn hàng 1 tháng trước
+INSERT INTO Orders (CustomerID, FullName, [Address], PhoneNumber, OrderedDate, DeliveredDate, Status, TotalAmount)
+VALUES 
+(1, 'Nguyen Van A', '123 Tech Street, District 1, Ho Chi Minh City', '0901234567', DATEADD(MONTH, -1, GETUTCDATE()), NULL, 5, 50000000);
+
+-- Chi tiết đơn hàng 1 tháng trước
+INSERT INTO OrderDetails (OrderID, ProductID, Quantity, Price)
+VALUES 
+(16, 1, 2, 50000000),  -- 2 Macbook Pro 14
+(16, 2, 3, 75000000);  -- 3 Galaxy S23 Ultra
+
+-- Thêm đơn hàng 3 tháng trước
+INSERT INTO Orders (CustomerID, FullName, [Address], PhoneNumber, OrderedDate, DeliveredDate, Status, TotalAmount)
+VALUES 
+(2, 'Tran Thi B', '456 Nguyen Du Street, District 3, Ho Chi Minh City', '0909876543', DATEADD(MONTH, -3, GETUTCDATE()), NULL, 5, 75000000);
+
+-- Chi tiết đơn hàng 3 tháng trước
+INSERT INTO OrderDetails (OrderID, ProductID, Quantity, Price)
+VALUES 
+(17, 3, 2, 20000000),  -- 2 Sony Vaio Z900
+(17, 4, 1, 12000000);  -- 1 ASUS TUF Gaming A17
+
+-- Thêm đơn hàng 6 tháng trước
+INSERT INTO Orders (CustomerID, FullName, [Address], PhoneNumber, OrderedDate, DeliveredDate, Status, TotalAmount)
+VALUES 
+(3, 'Le Minh C', '789 Le Lai Street, District 5, Ho Chi Minh City', '0912345678', DATEADD(MONTH, -6, GETUTCDATE()), NULL, 5, 25000000);
+
+-- Chi tiết đơn hàng 6 tháng trước
+INSERT INTO OrderDetails (OrderID, ProductID, Quantity, Price)
+VALUES 
+(18, 5, 2, 30000000),  -- 2 iPhone-16-Pro-Max
+(18, 6, 4, 40000000);  -- 4 Galaxy-S23
+
+-- Thêm đơn hàng 12 tháng trước
+INSERT INTO Orders (CustomerID, FullName, [Address], PhoneNumber, OrderedDate, DeliveredDate, Status, TotalAmount)
+VALUES 
+(4, 'Pham Thi D', '321 Pham Ngoc Thach, District 1, Ho Chi Minh City', '0923456789', DATEADD(MONTH, -12, GETUTCDATE()), NULL, 5, 12000000);
+
+-- Chi tiết đơn hàng 12 tháng trước
+INSERT INTO OrderDetails (OrderID, ProductID, Quantity, Price)
+VALUES 
+(19, 7, 3, 60000000),  -- 3 Lenovo Legion Pro 5
+(19, 8, 1, 15000000);  -- 1 ASUS-TUF-A17

@@ -23,16 +23,52 @@
                 gap: 20px;
                 margin-left: 250px;
             }
+            .error-message {
+                background-color: #f8d7da;
+                border: 1px solid #f5c6cb;
+                color: #721c24;
+                padding: 15px;
+                margin-bottom: 20px;
+                border-radius: 5px;
+                font-size: 16px;
+                font-weight: bold;
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+            }
+
+            .error-message .close-btn {
+                background-color: transparent;
+                border: none;
+                color: #721c24;
+                font-size: 20px;
+                cursor: pointer;
+            }
+
+            .error-message .close-btn:hover {
+                color: #f5c6cb;
+            }
         </style>
     </head>
     <body>
         <jsp:include page="SidebarDashboard.jsp"></jsp:include>
-        <div class="content">
+            <div class="content">
             <jsp:include page="HeaderDashboard.jsp"></jsp:include>
             <c:choose>
                 <c:when test="${product != null}">
                     <div class="container-fluid">
-                        <!-- Card bao b?c form update -->
+                        <%
+                            String error = (String) session.getAttribute("error");
+                            if (error != null) {
+                        %>
+                        <div class="error-message">
+                            <span><%= error%></span>
+                            <button class="close-btn" onclick="this.parentElement.style.display = 'none'">&times;</button>
+                        </div>
+                        <%
+                                session.removeAttribute("error"); // Xóa thông báo sau khi hi?n th?
+                            }
+                        %>
                         <div class="card shadow border-primary">
                             <div class="card-header">
                                 <h3>Update Product</h3>
@@ -42,7 +78,7 @@
                                     <!-- Hidden Fields -->
                                     <input type="hidden" name="id" value="${product.productId}" />
                                     <input type="hidden" name="currentImage" value="${product.image}" />
-                                    
+
                                     <!-- Row 1: Category, Brand, Full Name -->
                                     <div class="row g-3 align-items-center">
                                         <div class="col-md-4">
@@ -67,7 +103,25 @@
                                             <input type="text" class="form-control" name="fullName" value="${product.fullName}" required />
                                         </div>
                                     </div>
-                                    
+
+                                    <!-- Row 3: Price and Is Deleted -->
+                                    <div class="row g-3 mt-2">
+                                        <div class="col-md-4">
+                                            <label class="form-label">Price</label>
+                                            <input type="number" class="form-control" name="price" value="${product.price}" required />
+                                        </div>
+                                        <div class="col-md-4">
+                                            <label class="form-label">Is Deleted</label>
+                                            <select class="form-select" name="isDeleted">
+                                                <option value="0" ${product.deleted == 0 ? 'selected' : ''}>No</option>
+                                                <option value="1" ${product.deleted == 1 ? 'selected' : ''}>Yes</option>
+                                            </select>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <label class="form-label">Model</label>
+                                            <input type="text" class="form-control" name="model" value="${product.model}" required />
+                                        </div>
+                                    </div>
                                     <!-- Row 2: Description -->
                                     <div class="row g-3 mt-2">
                                         <div class="col-md-12">
@@ -75,22 +129,7 @@
                                             <textarea class="form-control" name="description" rows="3" required>${product.description}</textarea>
                                         </div>
                                     </div>
-                                    
-                                    <!-- Row 3: Price and Is Deleted -->
-                                    <div class="row g-3 mt-2">
-                                        <div class="col-md-6">
-                                            <label class="form-label">Price</label>
-                                            <input type="number" class="form-control" name="price" value="${product.price}" required />
-                                        </div>
-                                        <div class="col-md-6">
-                                            <label class="form-label">Is Deleted</label>
-                                            <select class="form-select" name="isDeleted">
-                                                <option value="0" ${product.deleted == 0 ? 'selected' : ''}>No</option>
-                                                <option value="1" ${product.deleted == 1 ? 'selected' : ''}>Yes</option>
-                                            </select>
-                                        </div>
-                                    </div>
-                                    
+
                                     <!-- Row 4: Attributes -->
                                     <div class="row g-3 mt-2">
                                         <div class="col-md-12">
@@ -116,7 +155,6 @@
                                             </c:if>
                                         </div>
                                     </div>
-                                    
                                     <!-- Row 5: Images Upload -->
                                     <div class="row g-3 mt-2">
                                         <!-- Image 1 -->
@@ -124,59 +162,76 @@
                                             <label class="form-label">Current Image</label>
                                             <c:if test="${not empty product.image}">
                                                 <div class="mb-2">
-                                                    <img src="${pageContext.request.contextPath}/assets/imgs/Products/${product.image}" 
+                                                    <img id="currentImage1" src="${pageContext.request.contextPath}/assets/imgs/Products/${product.image}" 
                                                          class="product-image img-thumbnail" alt="${product.fullName}">
                                                 </div>
                                             </c:if>
                                             <c:if test="${empty product.image}">
                                                 <p>No image uploaded.</p>
                                             </c:if>
-                                            <input type="file" class="form-control" name="txtPPic" accept="image/*"/>
+                                            <input type="file" class="form-control" name="txtPPic" accept="image/*" onchange="previewImage(event, 'currentImage1')"/>
                                         </div>
+
                                         <!-- Image 2 -->
                                         <div class="col-md-3">
                                             <label class="form-label">Current Image</label>
                                             <c:if test="${not empty product.image1}">
                                                 <div class="mb-2">
-                                                    <img src="${pageContext.request.contextPath}/assets/imgs/Products/${product.image1}" 
+                                                    <img id="currentImage2" src="${pageContext.request.contextPath}/assets/imgs/Products/${product.image1}" 
                                                          class="product-image img-thumbnail" alt="${product.fullName}">
                                                 </div>
                                             </c:if>
                                             <c:if test="${empty product.image1}">
                                                 <p>No image uploaded.</p>
                                             </c:if>
-                                            <input type="file" class="form-control" name="txtPPic1" accept="image/*"/>
+                                            <input type="file" class="form-control" name="txtPPic1" accept="image/*" onchange="previewImage(event, 'currentImage2')"/>
                                         </div>
+
                                         <!-- Image 3 -->
                                         <div class="col-md-3">
                                             <label class="form-label">Current Image</label>
                                             <c:if test="${not empty product.image2}">
                                                 <div class="mb-2">
-                                                    <img src="${pageContext.request.contextPath}/assets/imgs/Products/${product.image2}" 
+                                                    <img id="currentImage3" src="${pageContext.request.contextPath}/assets/imgs/Products/${product.image2}" 
                                                          class="product-image img-thumbnail" alt="${product.fullName}">
                                                 </div>
                                             </c:if>
                                             <c:if test="${empty product.image2}">
                                                 <p>No image uploaded.</p>
                                             </c:if>
-                                            <input type="file" class="form-control" name="txtPPic2" accept="image/*"/>
+                                            <input type="file" class="form-control" name="txtPPic2" accept="image/*" onchange="previewImage(event, 'currentImage3')"/>
                                         </div>
+
                                         <!-- Image 4 -->
                                         <div class="col-md-3">
                                             <label class="form-label">Current Image</label>
                                             <c:if test="${not empty product.image3}">
                                                 <div class="mb-2">
-                                                    <img src="${pageContext.request.contextPath}/assets/imgs/Products/${product.image3}" 
+                                                    <img id="currentImage4" src="${pageContext.request.contextPath}/assets/imgs/Products/${product.image3}" 
                                                          class="product-image img-thumbnail" alt="${product.fullName}">
                                                 </div>
                                             </c:if>
                                             <c:if test="${empty product.image3}">
                                                 <p>No image uploaded.</p>
                                             </c:if>
-                                            <input type="file" class="form-control" name="txtPPic3" accept="image/*"/>
+                                            <input type="file" class="form-control" name="txtPPic3" accept="image/*" onchange="previewImage(event, 'currentImage4')"/>
                                         </div>
                                     </div>
-                                    
+
+                                    <script>
+                                        function previewImage(event, imgId) {
+                                            const file = event.target.files[0]; // L?y file ?nh ?ã ch?n
+                                            if (file) {
+                                                const reader = new FileReader(); // ??i t??ng FileReader ?? ??c ?nh
+                                                reader.onload = function (e) {
+                                                    // L?y ?nh t? k?t qu? c?a FileReader và gán vào ?nh
+                                                    document.getElementById(imgId).src = e.target.result;
+                                                }
+                                                reader.readAsDataURL(file); // ??c file d??i d?ng data URL
+                                            }
+                                        }
+                                    </script>
+
                                     <!-- Row 6: Submit Buttons -->
                                     <div class="row g-3 mt-3">
                                         <div class="col-md-12 text-end">
@@ -186,7 +241,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                    
+
                                 </form>
                             </div>
                         </div>
