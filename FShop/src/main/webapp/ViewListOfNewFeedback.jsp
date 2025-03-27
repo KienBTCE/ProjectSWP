@@ -14,7 +14,7 @@
             }
             .container-feedback {
                 margin-left: 270px;
-                padding: 20px;
+                padding: 10px  20px;
                 width: calc(100% - 300px);
                 transition: all 0.3s ease;
             }
@@ -59,56 +59,55 @@
                 height: 100%;
             }
             /* Responsive cho màn hình nhỏ */
-            @media (max-width: 768px) {
+            /*@media (max-width: 768px) {*/
                 .container-feedback {
-                    margin-left: 0;
+                    margin-top: 0;
+                    margin-left: 240px;
                     width: 100%;
-                }
-            }
+                }/*
+
         </style>
     </head>
     <body>
         <!-- Sidebar được cố định ở góc trái -->
         <div class="sidebar-container">
-             <jsp:include page="SidebarDashboard.jsp"></jsp:include>
-        </div>
+            <jsp:include page="SidebarDashboard.jsp"></jsp:include>
+            </div>
 
-        
-     
-            
-            
 
             <div class="container-feedback">
-                <h2 class="text-center mb-4"><jsp:include page="HeaderDashboard.jsp"></jsp:include></h2>
-             <h3  font-weight="Bold">FEEDBACK</h3>
+                
+                <jsp:include page="HeaderDashboard.jsp"></jsp:include> 
+               
+                <h3  font-weight="Bold">FEEDBACK</h3>
             <c:if test="${empty ProductRating}">
-             <h3  font-weight="Bold">Have No Feedback.</h3>
+                <h3  font-weight="Bold">Have No Feedback.</h3>
             </c:if>
-             <c:if test="${param.success == 'created'}">
-                        <div class="alert alert-success alert-dismissible fade show" role="alert">
-                            <i class="fa-solid fa-circle-check me-2"></i> Create Reply successfully!
-                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                        </div>
-                    </c:if>
-                    <c:if test="${param.success == 'deleted'}">
-                        <div class="alert alert-success alert-dismissible fade show" role="alert">
-                            <i class="fa-solid fa-circle-check me-2"></i> Create Reply Unsuccessfully
-                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                        </div>
-                    </c:if>
-                <div class="card card-shadow p-4">
-                    <div class="table-responsive">
-                        <table class="table table-hover align-middle">
-                            <thead class="table-dark">
-                                <tr>
-                                    <th>#</th>
-                                    <th>Customer Name</th>
-                                    <th>Status</th>
-                                    <th>Star</th>
-                                    <th>Action</th>
-                                </tr>
-                            </thead>
-                            <tbody>
+            <c:if test="${param.success == 'created'}">
+                <div class="alert alert-success alert-dismissible fade show" role="alert">
+                    <i class="fa-solid fa-circle-check me-2"></i> Create Reply successfully!
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            </c:if>
+            <c:if test="${param.success == 'deleted'}">
+                <div class="alert alert-success alert-dismissible fade show" role="alert">
+                    <i class="fa-solid fa-circle-check me-2"></i> Create Reply Unsuccessfully
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            </c:if>
+            <div class="card card-shadow p-4">
+                <div class="table-responsive">
+                    <table class="table table-hover align-middle">
+                        <thead class="table-dark">
+                            <tr>
+                                <th>#</th>
+                                <th>Customer Name</th>
+                                <th>Status</th>
+                                <th>Star</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
                             <c:forEach items="${ProductRating}" var="rate" varStatus="loop">
                                 <tr class="${!rate.isRead ? 'new-feedback' : ''}">
                                     <td>${loop.index + 1}</td>
