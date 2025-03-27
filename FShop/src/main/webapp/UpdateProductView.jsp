@@ -22,7 +22,6 @@
                 flex-direction: column;
                 gap: 20px;
                 margin-left: 250px;
-                margin-top: 80px;
             }
             .error-message {
                 background-color: #f8d7da;
@@ -49,47 +48,12 @@
             .error-message .close-btn:hover {
                 color: #f5c6cb;
             }
-            .header {
-                position: fixed;
-                top: 0;
-                left: 260px; 
-                right: 10px;
-                margin-top: 10px;
-                z-index: 1000;
-            }
-
-            .hi {
-                position: fixed;
-                top: 0;
-                left: 267px;
-                right: 0;
-                background: white;
-                z-index: 1000;
-                display: flex;
-                flex-direction: column;
-                align-items: flex-start;
-                padding: 18px;
-                border: 5px;
-            }
-            .icon {
-                width: 40px;
-                height: 40px;
-                border-radius: 50%;
-                object-fit: cover;
-            }
-
-            .logo-side-bar {
-                margin-left: 5%;
-                margin-bottom: 3%;
-            }
         </style>
     </head>
     <body>
         <jsp:include page="SidebarDashboard.jsp"></jsp:include>
             <div class="content">
-                <div class="hi">
-                <jsp:include page="HeaderDashboard.jsp"></jsp:include>
-                </div>
+            <jsp:include page="HeaderDashboard.jsp"></jsp:include>
             <c:choose>
                 <c:when test="${product != null}">
                     <div class="container-fluid">
@@ -256,13 +220,13 @@
 
                                     <script>
                                         function previewImage(event, imgId) {
-                                            const file = event.target.files[0];
+                                            const file = event.target.files[0]; 
                                             if (file) {
-                                                const reader = new FileReader();
+                                                const reader = new FileReader(); 
                                                 reader.onload = function (e) {
                                                     document.getElementById(imgId).src = e.target.result;
                                                 }
-                                                reader.readAsDataURL(file);
+                                                reader.readAsDataURL(file); 
                                             }
                                         }
                                     </script>

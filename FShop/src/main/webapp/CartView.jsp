@@ -24,7 +24,6 @@
     <body>
         <jsp:include page="header.jsp"></jsp:include>
             <main>
-                <br>
                 <div class="container">
                     <div class="row">
                         <p><a style=" text-decoration: none;
@@ -202,9 +201,34 @@
                 <br>
                 <br>
             </div>
-
-
-
+              
+            <div style="background-color: #f5f7ff;">
+                <div class="container">
+                    <div class="row" style="text-align: center; padding: 30px; background-color: #f5f7ff;">
+                        <div class="col-md-4">
+                            <img src="./assets/imgs/ShoppingCartImg/headphone.jpg" alt="" width="70px">
+                            <h5>Product Support</h5>
+                            <p style="width: 70%; margin: 0 auto;">Up to 3 years on-site warranty available for your
+                                peace
+                                of mind.</p>
+                        </div>
+                        <div class="col-md-4">
+                            <img src="./assets/imgs/ShoppingCartImg/person.jpg" alt="" width="70px">
+                            <h5>Personal Account</h5>
+                            <p style="width: 70%; margin: 0 auto;">With big discounts, free delivery and a dedicated
+                                support
+                                specialist.</p>
+                        </div>
+                        <div class="col-md-4">
+                            <img src="./assets/imgs/ShoppingCartImg/tag.jpg" alt="" width="70px">
+                            <h5>Amazing Savings</h5>
+                            <p style="width: 70%; margin: 0 auto;">Up to 70% off new Products, you can be sure of
+                                the best
+                                price.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
 
             <div style="display: none;" class="popup" id="orderPopup">
                 <div class="popup-content">

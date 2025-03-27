@@ -164,7 +164,23 @@
                         <p class="text-sm text-center text-gray-600 mt-4">Already have an account? <a href="customerLogin" class="text-blue-500 hover:underline">Log in</a></p>
                     </div>
                 </div>
-                
+                <div class="features">
+                    <div class="feature-box">
+                        <img src="./assets/imgs/ShoppingCartImg/headphone.jpg" alt="head_phone"/>
+                        <h3>Product Support</h3>
+                        <p>Up to 3 years on-site warranty available for your peace of mind.</p>
+                    </div>
+                    <div class="feature-box">
+                        <img src="./assets/imgs/ShoppingCartImg/person.jpg" alt="personal"/>
+                        <h3>Personal Account</h3>
+                        <p>With big discounts, free delivery, and a dedicated support specialist.</p>
+                    </div>
+                    <div class="feature-box">
+                        <img src="./assets/imgs/ShoppingCartImg/tag.jpg" alt="tag"/>
+                        <h3>Amazing Savings</h3>
+                        <p>Up to 70% off new products, you can be sure of the best price.</p>
+                    </div>
+                </div>
                 <!-- Popup -->
                 <div class="popup" id="loginFailPopup">
                     <div class="popup-content">

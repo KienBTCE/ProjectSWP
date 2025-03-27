@@ -16,9 +16,8 @@ import jakarta.servlet.http.Part;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Paths;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
+
 
 @MultipartConfig(fileSizeThreshold = 1024 * 1024 * 2, // 2MB
         maxFileSize = 1024 * 1024 * 10, // 10MB
@@ -28,9 +27,11 @@ public class CreateProductServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String categoryName = request.getParameter("name");
+
         if (categoryName != null && !categoryName.isEmpty()) {
             CategoryDAO categoryDAO = new CategoryDAO();
             int categoryId = categoryDAO.getCategoryIdByName(categoryName);
+
             AttributeDAO attributeDAO = new AttributeDAO();
             List<Attribute> attributes = attributeDAO.getAttributesByCategoryID(categoryId);
             request.setAttribute("attributes", attributes);
@@ -52,7 +53,7 @@ public class CreateProductServlet extends HttpServlet {
         String categoryName = request.getParameter("categoryName");
         String brandName = request.getParameter("brandName");
         String model = request.getParameter("model");
-        String fullname = request.getParameter("fullname");
+        String fullName = request.getParameter("fullName");
         String description = request.getParameter("description");
         Long price = Long.parseLong(request.getParameter("price"));
         String image1 = processImageUpload(request, "txtP1");
@@ -161,6 +162,7 @@ public class CreateProductServlet extends HttpServlet {
 
         Product product = new Product(categoryName, brandName, model, fullname, description, isDeleted, price, image1, image2, image3, image4);
         int productId = productDAO.createProduct(product);
+      
         if (productId > 0) {
             String[] attributeIdList = request.getParameterValues("attributeId");
             for (String attributeId : attributeIdList) {
