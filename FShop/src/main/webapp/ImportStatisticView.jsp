@@ -119,7 +119,8 @@
         <jsp:include page="SidebarDashboard.jsp"></jsp:include>
             <div class="content">
             <jsp:include page="HeaderDashboard.jsp"></jsp:include>
-                <div class="container mt-5">
+                <!--<div class="container mt-5">-->
+                <div class="container" style="margin-top: 20px">
                     <h1 class="text-center" style="text-align: center;">Import Statistic</h1>
                     <div class="row">
                         <div class="col-md-6">

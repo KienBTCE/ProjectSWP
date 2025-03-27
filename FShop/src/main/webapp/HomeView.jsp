@@ -363,7 +363,8 @@
 
 
             <!--Commit 15694d5
-            --><div class="row">
+            -->
+            <!--<div class="row">
                 <h5 class="title-content">Follow us on Instagram for News, Offers & More</h5>
                 <div class="gap-section section-content">
                     <div class="frame-represent">
@@ -374,7 +375,7 @@
                             </p>
                         </div>
                     </div>
-                    <div class="frame-represent">
+                    <div class="frame-represent" style="padding: 10px">
                         <img src="assets/imgs/Magazines/news-2.svg" width="235px" height="150px" alt="alt"/>
                         <div class="magazine-paragraph">
                             <p style="width: 100%; text-align: justify; hyphens: auto;">
@@ -407,7 +408,7 @@
                         </div>
                     </div>
                 </div>
-            </div>
+            </div>-->
 
         </div>
         <jsp:include page="footer.jsp"></jsp:include>
