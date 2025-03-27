@@ -111,6 +111,16 @@ public class CartDAO {
         }
     }
 
+    public void deleteCartOfCustomer(int id) {
+        try {
+            PreparedStatement preparedStatement = connector.prepareStatement("Delete from Carts CustomerID = ?");
+            preparedStatement.setInt(1, id);
+            preparedStatement.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
     public static void main(String[] args) {
         CartDAO c = new CartDAO();
         System.out.println(c.getProductOfCart(1, 2).getQuantity());

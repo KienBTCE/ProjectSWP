@@ -94,7 +94,7 @@ public class ViewCartServlet extends HttpServlet {
                     "CartView.jsp").forward(request, response);
         } else {
             // your code about Cart guest
-            response.sendRedirect("CustomerLoginView.jsp");
+            response.sendRedirect("customerLogin");
         }
     }
 
