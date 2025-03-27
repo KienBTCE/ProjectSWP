@@ -450,15 +450,18 @@
                 </div>
             </div>
 
-            <!--Commit 15694d5
-            -->
-            <!--<div class="row">
-                <h5 class="title-content">Follow us on Instagram for News, Offers & More</h5>
-                <div class="gap-section section-content">
-                    <div class="frame-represent">
-                        <img src="assets/imgs/Magazines/news-1.svg" width="235px" height="150px" alt="alt"/>
-                        <div class="magazine-paragraph">
-                            <p style="width: 100%; text-align: justify; hyphens: auto;">
+            <div style="margin-bottom: 20px;">
+
+                <div>
+
+                    <h5 style="font-size: 18px; font-weight: bold; margin-bottom: 10px;">
+                        Follow us on Instagram for News, Offers & More
+                    </h5>
+
+                    <div style="display: flex; flex-wrap: wrap; gap: 30px;">
+                        <div style="width: 235px;">
+                            <img src="assets/imgs/Magazines/news-1.svg" width="235px" height="150px" alt="alt"/>
+                            <p style="text-align: justify; hyphens: auto; margin-top: 5px;">
                                 If you’ve recently made a desktop PC or laptop purchase, you might want to consider adding peripherals to enhance your home office setup, your gaming rig, or your business workspace...
                             </p>
                         </div>
