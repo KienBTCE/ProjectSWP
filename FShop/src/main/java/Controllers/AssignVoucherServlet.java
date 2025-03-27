@@ -70,7 +70,7 @@ public class AssignVoucherServlet extends HttpServlet {
             VoucherDAO vDAO = new VoucherDAO();
 
             Customer customer = cDAO.getCustomerById(customerId);
-            List<Voucher> vouchers = vDAO.getAllVoucher();
+            List<Voucher> vouchers = vDAO.getAllVoucherActivate();
 
             request.setAttribute("customer", customer);
             request.setAttribute("vouchers", vouchers);

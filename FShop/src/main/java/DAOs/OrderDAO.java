@@ -171,7 +171,7 @@ public class OrderDAO {
         String query = "Update Orders SET Orders.Status= ? WHERE Orders.OrderID=?";
           String query2 = "UPDATE Orders\n"
                 + "SET Status = ?,\n"
-                + "    DeliveredDate = GETUTCDATE()\n"
+                + "    DeliveredDate = DATEADD(HOUR, 7, GETUTCDATE())\n"
                 + "WHERE OrderID = ?;";
         try {
             if(status == 4){

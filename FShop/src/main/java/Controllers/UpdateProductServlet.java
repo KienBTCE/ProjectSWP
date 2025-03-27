@@ -122,6 +122,7 @@ public class UpdateProductServlet extends HttpServlet {
             ProductDAO productDAO = new ProductDAO();
             int id = Integer.parseInt(request.getParameter("id"));
             String fullName = request.getParameter("fullName");
+            String model = request.getParameter("model"); // Lấy model từ form
             String description = request.getParameter("description");
             long price = Long.parseLong(request.getParameter("price"));
             int isDeleted = Integer.parseInt(request.getParameter("isDeleted"));
@@ -134,7 +135,6 @@ public class UpdateProductServlet extends HttpServlet {
                 response.sendRedirect("ProductListServlet");
                 return;
             }
-
             // Xử lý upload file cho ảnh chính
             String photoPath = currentProduct.getImage();
             Part part = request.getPart("txtPPic");
@@ -196,13 +196,30 @@ public class UpdateProductServlet extends HttpServlet {
                 part3.write(fileSavePath);
                 photoPath3 = fileName;
             }
+            // Nếu model rỗng thì giữ model cũ
+            if (model == null || model.trim().isEmpty()) {
+                model = currentProduct.getModel();
+            }
+            // Sau khi lấy thông tin fullName và model
+            if (productDAO.checkDuplicateProduct(fullName, model, id)) {
+                request.getSession().setAttribute("error", "The product or model name already exists. It cannot be duplicated with other products!");
+                response.sendRedirect("UpdateProductServlet?id=" + id);
+                return; // Dừng update, redirect lại trang cập nhật
+            }
 
+            // Kiểm tra nếu giá <= 0
+            if (price <= 0) {
+                request.getSession().setAttribute("error", "Product price must be greater than 0.");
+                response.sendRedirect("UpdateProductServlet?id=" + id);
+                return; // Dừng việc cập nhật nếu giá không hợp lệ
+            }
             // Tạo đối tượng Product mới để update
             Product product = new Product();
             product.setProductId(id);
             product.setFullName(fullName);
             product.setDescription(description);
             product.setPrice(price);
+            product.setModel(model);
             product.setDeleted(isDeleted);
             product.setImage(photoPath);
             product.setImage1(photoPath1);
