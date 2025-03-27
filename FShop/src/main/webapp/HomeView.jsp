@@ -460,7 +460,7 @@
                         Follow us on Instagram for News, Offers & More
                     </h5>
 
-                    <div style="display: flex; flex-wrap: wrap; gap: 15px;">
+                    <div style="display: flex; flex-wrap: wrap; gap: 30px;">
                         <div style="width: 235px;">
                             <img src="assets/imgs/Magazines/news-1.svg" width="235px" height="150px" alt="alt"/>
                             <p style="text-align: justify; hyphens: auto; margin-top: 5px;">
