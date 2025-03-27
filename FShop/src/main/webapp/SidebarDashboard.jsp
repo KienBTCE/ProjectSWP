@@ -45,14 +45,13 @@
             .sidebar a:hover {
                 background: #7D69FF;
                 color: white;
-                width: 90%;
+                width: 100%;
                 font-weight: bold;
 
                 border-top-right-radius: 10px;
                 border-bottom-right-radius: 10px;
                 border-top-left-radius: 0;
                 border-bottom-left-radius: 0;
-
             }
 
             .header {
@@ -102,22 +101,22 @@
 
             <c:if test="${sessionScope.employee.getRoleId() == 3}">
                 <h6><a href="ViewOrderListServlet"> <i class="fas fa-box-open"></i>Order Management</a></h6>
-                <a href="ViewListNewFeedbackServlet"><i class="bi bi-chat-left-text"></i>Feedback Manegement</a>
+                <a href="ViewListNewFeedbackServlet"><i class="bi bi-chat-left-text"></i>Feedback Management</a>
 <!--                <a href="ViewOrderListServlet">
                     <i class="fas fa-box-open"></i>Order</a>-->
                     <a href="ViewVoucherListServlet"> <i class="fa-solid fa-ticket"></i>
-                    Voucher Manegement</a>
+                    Voucher Management</a>
                 <a href="CustomerListServlet"> <i class="bi bi-person"></i>
-                    Customer Manegement</a>
+                    Customer Management</a>
                 <a href="DeleteOrder.jsp"><i class="bi bi-trash"></i> Delete Order</a>
             </c:if>
             <c:if test="${sessionScope.employee.getRoleId() == 4}">
-                <h6><a href="Warehouse">Warehouse Management</a></h6>
-                <a href="ImportOrder">Import Stock Management</a>
-                <a href="Supplier">Supplier Management</a>
+                <h6><a href="Warehouse"><i class="fas fa-store"></i> Warehouse Management</a></h6>
+                <a href="ImportOrder"><i class="fas fa-box-open"></i> Import Stock Management</a>
+                <a href="Supplier"><i class="fas fa-users"></i> Supplier Management</a>
                 <!--<a href="#">Product Management</a>-->
-                <a href="ImportStatistic">Statistic Management</a>
-                <a href="#" class="export-btn" onclick="document.getElementById('exportForm').submit(); return false;">Export to Excel</a>
+                <a href="ImportStatistic"><i class="fas fa-chart-bar"></i> Statistic Management</a>
+                <a href="#" class="export-btn" onclick="document.getElementById('exportForm').submit(); return false;"><i class="bi bi-download"></i> Export to Excel</a>
 <form id="exportForm" action="ExportStock" method="POST" style="display: none;"></form>
 
             </c:if>
