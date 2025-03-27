@@ -147,6 +147,13 @@ INSERT INTO Products (ProductID, BrandID, CategoryID, Model, FullName, [Descript
 (34, 4, 6, 'Huawei-SuperCharge-Cable', 'Huawei SuperCharge USB-C Cable', 'Supports high-speed charging', 'huawei-supercharge.jpg', 450000, 0, 140),
 (35, 9, 6, 'Lenovo-Thunderbolt-4', 'Lenovo Thunderbolt 4 Cable', 'High-speed data and charging', 'lenovo-thunderbolt-4.jpg', 990000, 0, 120);
 
+
+--Mouse---
+INSERT INTO Products (ProductID, BrandID, CategoryID, Model, FullName, [Description], [Image],  Price, IsDeleted, Stock) VALUES
+(36, 8, 3, 'Asus TUF M3', 'Asus TUF M3 Gen 2', 'Equipped with an 8,000 DPI optical sensor for gaming, easily customizable with four different DPI levels', 'tuf-m3-gen-2-1.jpg', 420000, 0, 100),
+(37, 8, 3, 'Asus TUF M4', 'Asus TUF M4', 'Asus TUF M4 Wireless Gaming Mouse – Super light, smooth and sensitive', 'chuot-gaming-asus-tuf-m4_1_.jpg', 790000, 0, 80),
+(38, 1, 3, ' Apple Magic Mouse', 'Apple Magic Mouse 3 2024', 'Magic Mouse wireless with long-lasting rechargeable battery, more than a month of use per charge', 'chuot-apple-magic-mouse-3_1__2.jpg', 1990000, 0, 100),
+(39, 1, 3, ' Apple Magic Mouse', 'Apple Magic Mouse 2 2022', 'Modern, slim design creates a luxurious feel', 'magic_mouse_2022.jpg', 1500000, 0, 100);
 SET IDENTITY_INSERT Products OFF;
 
 -- Insert AttributeDetails for Headphone
@@ -175,6 +182,14 @@ VALUES
 (31, 23, 'USB-C to USB-C'), (32, 23, '1.5m'), (33, 23, 'Braided Nylon'),
 (31, 24, 'USB-C to USB-C'), (32, 24, '1m'), (33, 24, 'Fast-Charge Certified'),
 (31, 25, 'Thunderbolt 4'), (32, 25, '1.2m'), (33, 25, 'High-Speed Data Transfer');
+
+---- Insert AttributeDetails for Mouse
+INSERT INTO AttributeDetails (AttributeID, ProductID, AttributeInfor)
+VALUES
+(48, 36, 'USB to Type-C Cable'), (49, 36, 'Have'),
+(48, 37, 'USB Receiver, Bluetooth'), (49, 37, 'No'),
+(48, 38, 'Bluetooth'), (49, 38, 'No'),
+(48, 39, 'Bluetooth'), (49, 39, 'No');
 
 SET IDENTITY_INSERT Products OFF;
 
