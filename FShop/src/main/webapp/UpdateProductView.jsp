@@ -23,16 +23,52 @@
                 gap: 20px;
                 margin-left: 250px;
             }
+            .error-message {
+                background-color: #f8d7da;
+                border: 1px solid #f5c6cb;
+                color: #721c24;
+                padding: 15px;
+                margin-bottom: 20px;
+                border-radius: 5px;
+                font-size: 16px;
+                font-weight: bold;
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+            }
+
+            .error-message .close-btn {
+                background-color: transparent;
+                border: none;
+                color: #721c24;
+                font-size: 20px;
+                cursor: pointer;
+            }
+
+            .error-message .close-btn:hover {
+                color: #f5c6cb;
+            }
         </style>
     </head>
     <body>
         <jsp:include page="SidebarDashboard.jsp"></jsp:include>
-        <div class="content">
+            <div class="content">
             <jsp:include page="HeaderDashboard.jsp"></jsp:include>
             <c:choose>
                 <c:when test="${product != null}">
                     <div class="container-fluid">
-                        <!-- Card bao b?c form update -->
+                        <%
+                            String error = (String) session.getAttribute("error");
+                            if (error != null) {
+                        %>
+                        <div class="error-message">
+                            <span><%= error%></span>
+                            <button class="close-btn" onclick="this.parentElement.style.display = 'none'">&times;</button>
+                        </div>
+                        <%
+                                session.removeAttribute("error"); // Xóa thông báo sau khi hi?n th?
+                            }
+                        %>
                         <div class="card shadow border-primary">
                             <div class="card-header">
                                 <h3>Update Product</h3>
@@ -42,7 +78,7 @@
                                     <!-- Hidden Fields -->
                                     <input type="hidden" name="id" value="${product.productId}" />
                                     <input type="hidden" name="currentImage" value="${product.image}" />
-                                    
+
                                     <!-- Row 1: Category, Brand, Full Name -->
                                     <div class="row g-3 align-items-center">
                                         <div class="col-md-4">
@@ -67,7 +103,25 @@
                                             <input type="text" class="form-control" name="fullName" value="${product.fullName}" required />
                                         </div>
                                     </div>
-                                    
+
+                                    <!-- Row 3: Price and Is Deleted -->
+                                    <div class="row g-3 mt-2">
+                                        <div class="col-md-4">
+                                            <label class="form-label">Price</label>
+                                            <input type="number" class="form-control" name="price" value="${product.price}" required />
+                                        </div>
+                                        <div class="col-md-4">
+                                            <label class="form-label">Is Deleted</label>
+                                            <select class="form-select" name="isDeleted">
+                                                <option value="0" ${product.deleted == 0 ? 'selected' : ''}>No</option>
+                                                <option value="1" ${product.deleted == 1 ? 'selected' : ''}>Yes</option>
+                                            </select>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <label class="form-label">Model</label>
+                                            <input type="text" class="form-control" name="model" value="${product.model}" required />
+                                        </div>
+                                    </div>
                                     <!-- Row 2: Description -->
                                     <div class="row g-3 mt-2">
                                         <div class="col-md-12">
@@ -75,22 +129,7 @@
                                             <textarea class="form-control" name="description" rows="3" required>${product.description}</textarea>
                                         </div>
                                     </div>
-                                    
-                                    <!-- Row 3: Price and Is Deleted -->
-                                    <div class="row g-3 mt-2">
-                                        <div class="col-md-6">
-                                            <label class="form-label">Price</label>
-                                            <input type="number" class="form-control" name="price" value="${product.price}" required />
-                                        </div>
-                                        <div class="col-md-6">
-                                            <label class="form-label">Is Deleted</label>
-                                            <select class="form-select" name="isDeleted">
-                                                <option value="0" ${product.deleted == 0 ? 'selected' : ''}>No</option>
-                                                <option value="1" ${product.deleted == 1 ? 'selected' : ''}>Yes</option>
-                                            </select>
-                                        </div>
-                                    </div>
-                                    
+
                                     <!-- Row 4: Attributes -->
                                     <div class="row g-3 mt-2">
                                         <div class="col-md-12">
@@ -116,7 +155,7 @@
                                             </c:if>
                                         </div>
                                     </div>
-                                    
+
                                     <!-- Row 5: Images Upload -->
                                     <div class="row g-3 mt-2">
                                         <!-- Image 1 -->
@@ -176,7 +215,7 @@
                                             <input type="file" class="form-control" name="txtPPic3" accept="image/*"/>
                                         </div>
                                     </div>
-                                    
+
                                     <!-- Row 6: Submit Buttons -->
                                     <div class="row g-3 mt-3">
                                         <div class="col-md-12 text-end">
@@ -186,7 +225,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                    
+
                                 </form>
                             </div>
                         </div>
