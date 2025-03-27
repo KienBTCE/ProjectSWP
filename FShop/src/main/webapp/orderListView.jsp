@@ -168,6 +168,10 @@
                 background-color: #f44336;
                 color: white;
             }
+            .notifi {
+                font-weight: bold;
+                margin: 20px
+            }
         </style>
     </head>
     <body>
@@ -198,7 +202,7 @@
 
                
                 <c:if test="${empty data}">
-                    <h3  font-weight="Bold">Have No Order</h3>
+                    <h3 class="notifi" >Have No Order</h3>
                 </c:if>
 
                 <div class="order-container">
