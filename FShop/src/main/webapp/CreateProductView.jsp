@@ -15,6 +15,11 @@
                 gap: 20px;
                 margin-left: 250px;
             }
+            
+            .error{
+                color: red;
+                font-weight: bold;
+            }
         </style>
     </head>
     <body>
@@ -39,8 +44,9 @@
                                         <select class="form-select" name="categoryName" id="categoryName" required>
                                             <c:forEach var="category" items="${categories}">
                                                 <option value="CreateProductServlet?name=${category}" ${category == categoryName ? 'selected' : ''}>${category}</option>
-                                            </c:forEach>
+                                            </c:forEach>                                         
                                         </select>
+                                         <p></p>
                                     </div>
                                     <div class="col-md-4">
                                         <label class="form-label">Brand</label>
@@ -49,10 +55,12 @@
                                                 <option value="${brand}">${brand}</option>
                                             </c:forEach>
                                         </select>
+                                        <p></p>
                                     </div>
                                     <div class="col-md-4">
                                         <label class="form-label">Model</label>
                                         <input type="text" class="form-control" name="model" required />
+                                        <p class="error" >${errorMsg1}</p>
                                     </div>
                                 </div>
                                 <!-- Row 2: Full Name, Price, Is Deleted -->
@@ -60,16 +68,19 @@
                                     <div class="col-md-4">
                                         <label class="form-label">Full Name</label>
                                         <input type="text" class="form-control" name="fullName" required />
+                                        <p class="error" >${errorMsg2}</p>
                                     </div>
                                     <div class="col-md-4">
                                         <label class="form-label">Price</label>
                                         <input type="number" class="form-control" name="price" required />
+                                        <p class="error" >${errorMsg3}</p>
                                     </div>
                                     <div class="col-md-4">
                                         <label class="form-label">Disable</label>
                                         <select class="form-select" name="isDeleted">
                                             <option value="1">Yes</option>
                                         </select>
+                                        <p></p>
                                     </div>
                                 </div>
                                 <!-- Row 3: Description -->
