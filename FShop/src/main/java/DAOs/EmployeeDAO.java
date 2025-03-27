@@ -182,6 +182,34 @@ public class EmployeeDAO {
         return emp;
     }
 
+    public int blockEmployee(int id) {
+        int effectRows = 0;
+        String sql = "Update Employees SET Status = 0 WHERE EmployeeID = ?;";
+        try {
+            PreparedStatement pr = connector.prepareStatement(sql);
+            pr.setInt(1, id);
+            effectRows = pr.executeUpdate();
+        } catch (SQLException e) {
+            System.out.println(e);
+        }
+        return effectRows;
+    }
+
+    public int checkEmailActive(String email) {
+        String sql = "SELECT * FROM Employees WHERE Email = ? AND Status = 1";
+        try {
+            PreparedStatement pr = connector.prepareStatement(sql);
+            pr.setString(1, email);
+            ResultSet rs = pr.executeQuery();
+            if (rs.next()) {
+                return rs.getInt("EmployeeID");
+            }
+        } catch (SQLException e) {
+            System.out.println(e);
+        }
+        return 0;
+    }
+
     public int updateEmployeeProfile(Employee employee) {
         int effectRow = 0;
         String sql = "Update Employees SET FullName = ?, Birthday = ?, PhoneNumber = ?, Gender = ?, Avatar = ? WHERE EmployeeID = ?";
@@ -279,9 +307,7 @@ public class EmployeeDAO {
 
     public static void main(String[] args) {
         EmployeeDAO emDAO = new EmployeeDAO();
-        ArrayList<Employee> list = emDAO.getAllEmployees();
-        for (Employee employee : list) {
-            System.out.println(employee.getFullname());
-        }
+        int i = emDAO.blockEmployee(1);
+        System.out.println(i);
     }
 }
