@@ -85,7 +85,7 @@ public class RegisterServlet extends HttpServlet {
         CustomerDAO ctmDAO = new CustomerDAO();
         HttpSession session = request.getSession();
 
-        if (ctmDAO.checkEmailExisted(email) > 0) {
+        if (ctmDAO.checkEmailExisted(email) == 1) {
             session.setAttribute("message", "This email already exists!");
             request.getRequestDispatcher("RegisterView.jsp").forward(request, response);
             return;

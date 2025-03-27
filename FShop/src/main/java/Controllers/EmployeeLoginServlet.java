@@ -89,7 +89,7 @@ public class EmployeeLoginServlet extends HttpServlet {
             if (em.getStatus() == 1) {
                 session.setAttribute("employee", em);
 
-                loginEmail = new Cookie("employee" + em.getEmployeeId(), email + "_0");
+                loginEmail = new Cookie("employee_email", email + "_0");
                 loginEmail.setMaxAge(20 * 60);
                 loginEmail.setPath("/EmployeeLogin");
                 response.addCookie(loginEmail);
@@ -115,16 +115,15 @@ public class EmployeeLoginServlet extends HttpServlet {
             }
         } else {
             int id = emDAO.checkEmailActive(email);
-            if (id > 1) {
+            if (id > 0) {
                 int count = 0;
-                String emailCheck = "";
+
                 Cookie[] cookies = request.getCookies();
                 if (cookies != null) {
-
                     for (Cookie cookie : cookies) {
-                        if (("employee" + id).equals(cookie.getName())) {
+                        if ("employee_email".equals(cookie.getName())) {
                             String str[] = cookie.getValue().trim().split("_");
-                            emailCheck = str[0];
+
                             try {
                                 count = Integer.parseInt(str[1]);
                                 System.out.println("chuyen so " + str[1]);
@@ -139,12 +138,12 @@ public class EmployeeLoginServlet extends HttpServlet {
                     }
                 }
 
-                loginEmail = new Cookie("employee" + id, email + "_" + count);
+                loginEmail = new Cookie("employee_email", email + "_" + count);
                 loginEmail.setPath("/EmployeeLogin");
                 loginEmail.setMaxAge(20 * 60);
                 response.addCookie(loginEmail);
 
-                if (count > 4 && email.equals(emailCheck)) {
+                if (count > 4) {
                     System.out.println("id:" + id);
                     int i = emDAO.blockEmployee(id);
                     System.out.println("khoa" + i);
@@ -152,12 +151,10 @@ public class EmployeeLoginServlet extends HttpServlet {
                     response.sendRedirect("/EmployeeLogin");
                     return;
                 }
-
+                
                 session.setAttribute("message", "Incorrect password! You have " + (5 - count) + " login attempts left before your account is locked.");
-            } else if (id == 1) {
-                session.setAttribute("message", "Incorrect password!");
             } else {
-                session.setAttribute("message", "Your account is deactive!");
+                session.setAttribute("message", "Incorrect email or password!");
             }
 
             response.sendRedirect("/EmployeeLogin");

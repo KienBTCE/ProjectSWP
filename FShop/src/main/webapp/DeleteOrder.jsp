@@ -90,7 +90,7 @@
                 width: calc(100% - 250px); /* Chiều rộng trừ đi sidebar */
                 /*background-color: white;*/
                 z-index: 1050;
-                padding: 10px 10px;
+                padding: 10px 20px;
 
             }
 

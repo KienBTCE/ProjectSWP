@@ -166,24 +166,6 @@ public class VoucherDAO {
         }
         return false;
     }
-    
-public boolean checkDateToDelete(int voucherID) {
-    String sql = "SELECT " +
-                 "CASE WHEN EXISTS (" +
-                 "    SELECT 1 FROM Vouchers WHERE VoucherID = ? AND EndDate < GETDATE()" +
-                 ") THEN 1 ELSE 0 END AS IsExpired";
-    try (PreparedStatement pr = connector.prepareStatement(sql)) {
-        pr.setInt(1, voucherID);
-        ResultSet rs = pr.executeQuery();
-        if (rs.next()) {
-            int isExpired = rs.getInt("IsExpired");
-            return isExpired != 0; // hoặc return isExpired != 0;
-        }
-    } catch (SQLException e) {
-        System.out.println("Error checking expiration: " + e.getMessage());
-    }
-    return false;
-}
 
     public int insertVoucher(Voucher v) {
         String sql = "INSERT INTO Vouchers (VoucherCode, VoucherValue, VoucherType, StartDate, EndDate, "

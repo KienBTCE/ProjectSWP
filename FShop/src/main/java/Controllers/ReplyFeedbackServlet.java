@@ -90,9 +90,9 @@ public class ReplyFeedbackServlet extends HttpServlet {
                 int count = rrDAO.addRatingReply(emID, rateID, answer);
                 prDAO.updateisReadComment(rateID);
                  if(count>0){
-                    response.sendRedirect("/ViewFeedbackForManagerServlet?rateID="+rateID+"&success=success");
+                    response.sendRedirect("/ViewListNewFeedbackServlet?&success=created");
                  }else{
-                    response.sendRedirect("/ViewFeedbackForManagerServlet?rateID="+rateID+"&success=failed");
+                    response.sendRedirect("/ViewListNewFeedbackServlet?&success=deleted");
                  }
           
 

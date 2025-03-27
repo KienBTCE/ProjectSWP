@@ -168,7 +168,7 @@ public class CustomerDAO {
             pr.setString(1, email);
             ResultSet rs = pr.executeQuery();
             if (rs.next()) {
-                return rs.getInt("CustomerID");
+                return 1;
             }
         } catch (SQLException e) {
             System.out.println(e + " ");
@@ -182,7 +182,7 @@ public class CustomerDAO {
             pr.setString(1, email);
             ResultSet rs = pr.executeQuery();
             if (rs.next()) {
-                return rs.getInt("CustomerID");
+                return 1;
             }
         } catch (SQLException e) {
             System.out.println(e + " ");

@@ -23,7 +23,7 @@
                 position: fixed;
                 top: 0;
                 left: 250px; /* Điều chỉnh để tránh che sidebar */
-                width: calc(100% - 250px);  
+                width: calc(100% - 250px); /* Chiều rộng trừ đi sidebar */
                 /*background-color: white;*/
                 z-index: 1050;
                 padding: 10px 20px;
