@@ -46,7 +46,7 @@
 
             .content {
                 flex-grow: 1;
-                margin-left: 250px;
+                margin-left: 260px;
                 margin-top: 60px;
                 padding: 10px;
             }
@@ -55,6 +55,7 @@
                 padding: 14px 18px;
                 font-size: 15px;
                 vertical-align: middle;
+                
             }
 
             .order-table tr:hover {
@@ -64,6 +65,7 @@
             .btn {
                 font-size: 14px;
                 padding: 8px 14px;
+                margin-left: 10px;
             }
 
             .btn i {
@@ -76,6 +78,11 @@
 
             .action-buttons .btn {
                 margin-bottom: 5px;
+            }
+            .heading-title{
+                font-weight:bold;
+                margin-top: 10px;
+                margin-left: 10px
             }
         </style>
     </head>
@@ -91,7 +98,7 @@
             </div>
 
             <div class="content">
-                <h3  font-weight="Bold">Voucher</h3>
+                <h3   class="heading-title" >Voucher</h3>
                 <!-- Success Alerts -->
                 <c:if test="${param.success == 'createsuccess'}">
                     <div class="alert alert-success alert-dismissible fade show" role="alert">
@@ -100,10 +107,10 @@
                     </div>
                 </c:if>
                 <c:if test="${param.success == 'createfailed'}">   
-                     <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                                <i class="fa-solid fa-triangle-exclamation me-2"></i>  Voucher created Unsuccessfully!
-                                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                            </div>
+                    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                        <i class="fa-solid fa-triangle-exclamation me-2"></i>  Voucher created Unsuccessfully!
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
                 </c:if>
                 <c:if test="${param.success == 'deletesuccess'}">
                     <div class="alert alert-success alert-dismissible fade show" role="alert">
@@ -112,10 +119,10 @@
                     </div>
                 </c:if>
                 <c:if test="${param.success == 'deletefailed'}">
-                     <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                                <i class="fa-solid fa-triangle-exclamation me-2"></i>  Voucher deleted Unsuccessfully!
-                                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                            </div>
+                    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                        <i class="fa-solid fa-triangle-exclamation me-2"></i>  Voucher deleted Unsuccessfully!
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
                 </c:if>
                 <c:if test="${param.success == 'updatesuccess'}">
                     <div class="alert alert-success alert-dismissible fade show" role="alert">
@@ -124,10 +131,10 @@
                     </div>
                 </c:if>
                 <c:if test="${param.success == 'updatefailed'}">
-                     <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                                <i class="fa-solid fa-triangle-exclamation me-2"></i> Voucher update Unsuccessfully!
-                                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                            </div>
+                    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                        <i class="fa-solid fa-triangle-exclamation me-2"></i> Voucher update Unsuccessfully!
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
                 </c:if>
                 <c:if test="${param.success == 'deletefailedfordate'}">
                     <div class="alert alert-danger alert-dismissible fade show" role="alert">

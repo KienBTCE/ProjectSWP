@@ -58,14 +58,20 @@
                 z-index: 2000;
                 height: 100%;
             }
+                  .heading-title{
+                font-weight:bold;
+                margin-top: 10px;
+                margin-left: 10px
+                }
             /* Responsive cho màn hình nhỏ */
             /*@media (max-width: 768px) {*/
                 .container-feedback {
                     margin-top: 0;
-                    margin-left: 240px;
+                    margin-left: 250px;
                     width: 100%;
                 }/*
-
+                
+          
         </style>
     </head>
     <body>
@@ -79,7 +85,7 @@
                 
                 <jsp:include page="HeaderDashboard.jsp"></jsp:include> 
                
-                <h3  font-weight="Bold">FEEDBACK</h3>
+                <h3 class="heading-title"  >FEEDBACK</h3>
             <c:if test="${empty ProductRating}">
                 <h3  font-weight="Bold">Have No Feedback.</h3>
             </c:if>
