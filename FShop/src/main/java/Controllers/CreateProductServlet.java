@@ -62,7 +62,7 @@ public class CreateProductServlet extends HttpServlet {
         int isDeleted = Integer.parseInt(request.getParameter("isDeleted"));
 
         if (productDAO.isModelExists(model)) {
-            request.setAttribute("errorMsg1", "Model already exists. Please re-enter.");
+            request.setAttribute("errorMsg1", "Model already exists !");
             if (categoryName != null && !categoryName.isEmpty()) {
                 CategoryDAO categoryDAO = new CategoryDAO();
                 int categoryId = categoryDAO.getCategoryIdByName(categoryName);
@@ -94,7 +94,7 @@ public class CreateProductServlet extends HttpServlet {
             request.getRequestDispatcher("CreateProductView.jsp").forward(request, response);
             return;
         }else if(productDAO.isFullnameExists(fullname)){
-            request.setAttribute("errorMsg2", "Full Name already exists. Please re-enter.");
+            request.setAttribute("errorMsg2", "Full name already exists !");
             if (categoryName != null && !categoryName.isEmpty()) {
                 CategoryDAO categoryDAO = new CategoryDAO();
                 int categoryId = categoryDAO.getCategoryIdByName(categoryName);
@@ -177,6 +177,7 @@ public class CreateProductServlet extends HttpServlet {
 
     }
 
+     
     private String processImageUpload(HttpServletRequest request, String imageName) throws IOException, ServletException {
         Part imagePart = request.getPart(imageName);
         String fileName = Paths.get(imagePart.getSubmittedFileName()).getFileName().toString();
