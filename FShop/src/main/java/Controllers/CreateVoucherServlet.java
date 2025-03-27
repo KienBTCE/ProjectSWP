@@ -102,6 +102,11 @@ public class CreateVoucherServlet extends HttpServlet {
                 request.getRequestDispatcher("CreateVoucherView.jsp").forward(request, response);
                 return;
             }
+            if(type == 1 && value > 100){
+            request.setAttribute("error", "If the voucher type is percent, you cannot set a value greater than 100.");
+                request.getRequestDispatcher("CreateVoucherView.jsp").forward(request, response);
+                return;
+            }
 
             String startDate = start.format(sqlFormat);
             String endDate = end.format(sqlFormat);
