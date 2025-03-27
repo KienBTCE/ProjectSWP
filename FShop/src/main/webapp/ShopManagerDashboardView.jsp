@@ -32,11 +32,12 @@
                 margin-left: 250px;
             }
             .header {
-                display: flex;
-                justify-content: right;
-                align-items: center;
-                padding: 10px;
-                background: #FFFFFF;
+                position: fixed;
+                top: 0;
+                left: 260px; 
+                right: 10px;
+                margin-top: 10px;
+                z-index: 1000;
             }
             .card {
                 background: linear-gradient(135deg, #ff9a9e, #fad0c4);
@@ -67,9 +68,16 @@
             .container{
                 margin-top: 15px;
             }
-            
+
             .table-container1 {
                 margin-top: 35px;
+            }
+            .content {
+                display: flex;
+                flex-direction: column; 
+                align-items: center; 
+                margin-top: 60px;
+                padding: 20px;
             }
         </style>
     </head>
