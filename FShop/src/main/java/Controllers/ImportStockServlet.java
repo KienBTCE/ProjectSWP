@@ -274,8 +274,12 @@ public class ImportStockServlet extends HttpServlet {
 
             Supplier supTest = (Supplier) session.getAttribute("supplier");
             ArrayList<ImportOrderDetail> listTest = (ArrayList<ImportOrderDetail>) session.getAttribute("selectedProducts");
+            
+            System.out.println("in ra o day");
+            System.out.println(supTest == null);
+            System.out.println(listTest == null);
 
-            if (supTest != null && listTest != null) {
+            if (supTest == null || listTest == null) {
                 long sum = 0L;
                 for (ImportOrderDetail proDet : listTest) {
                     sum += proDet.getQuantity() * proDet.getImportPrice();
@@ -306,6 +310,7 @@ public class ImportStockServlet extends HttpServlet {
 //                response.sendRedirect("ImportOrder?id=" + impId);
                 response.sendRedirect("ImportOrder");
             } else {
+                System.out.println("OOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO");
                 String error = "Please select full";
 //            HttpSession session = request.getSession();
                 session.setAttribute("error", error);
