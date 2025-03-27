@@ -132,7 +132,7 @@ public class ViewProductServlet extends HttpServlet {
                 }
             }
             // ================================================================== Multi Filter
-            
+
             try {
                 ProductRatingDAO prDAO = new ProductRatingDAO();
                 ArrayList<ProductRating> stars = new ArrayList<>();
@@ -287,10 +287,11 @@ public class ViewProductServlet extends HttpServlet {
                 products.addAll(pd.getAllProductsByCategory("6"));
                 brands.addAll(pd.getAllBrandByCategory("Charging Cable"));
             } else {
+                products.addAll(pd.getAllProductsByCategory("3"));
                 products.addAll(pd.getAllProductsByCategory("4"));
                 products.addAll(pd.getAllProductsByCategory("5"));
                 products.addAll(pd.getAllProductsByCategory("6"));
-
+                brands.addAll(pd.getAllBrandByCategory("Mouse"));
                 brands.addAll(pd.getAllBrandByCategory("Headphone"));
                 brands.addAll(pd.getAllBrandByCategory("Charger"));
                 brands.addAll(pd.getAllBrandByCategory("Charging Cable"));
@@ -421,7 +422,7 @@ public class ViewProductServlet extends HttpServlet {
                 Map<Object, Object> dataMap = new HashMap<>();
                 dataMap.put("stars", stars);
                 dataMap.put("products", products);
-                
+
                 request.setAttribute("dataMap", dataMap);
                 request.setAttribute("products", products);
                 request.getRequestDispatcher("HomeView.jsp").forward(request, response);
