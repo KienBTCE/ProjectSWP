@@ -130,9 +130,9 @@ public class UpdateVoucherServlet extends HttpServlet {
             VoucherDAO dao = new VoucherDAO();
             int count = dao.updateVoucher(updated);
             if (count > 0) {
-                response.sendRedirect("ViewVoucherListServlet?success=success");
+                response.sendRedirect("ViewVoucherListServlet?success=updatesuccess");
             } else {
-                response.sendRedirect("ViewVoucherListServlet?success=failed");
+                response.sendRedirect("ViewVoucherListServlet?success=updatefailed");
             }
 
         } catch (Exception e) {
