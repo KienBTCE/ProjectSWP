@@ -129,6 +129,36 @@ public class ProductDAO {
 
         return list;
     }
+    
+     public boolean isModelExists(String model) {
+        String sql = "SELECT COUNT(*) FROM Products WHERE Model = ?";
+        try {
+            PreparedStatement pr = connector.prepareStatement(sql);
+            pr.setString(1, model);
+            ResultSet rs = pr.executeQuery();
+            if (rs.next()) {
+                return rs.getInt(1) > 0;
+            }
+        } catch (SQLException e) {
+            System.out.println(e);
+        }
+        return false;
+    }
+   
+     public boolean isFullnameExists(String fullName) {
+        String sql = "SELECT COUNT(*) FROM Products WHERE FullName = ?";
+        try {
+            PreparedStatement pr = connector.prepareStatement(sql);
+            pr.setString(1, fullName);
+            ResultSet rs = pr.executeQuery();
+            if (rs.next()) {
+                return rs.getInt(1) > 0;
+            }
+        } catch (SQLException e) {
+            System.out.println(e);
+        }
+        return false;
+    }
 
     public ArrayList<Product> findProductsByFilter(ArrayList<String> filters, String category) {
         ArrayList<Product> list = null;

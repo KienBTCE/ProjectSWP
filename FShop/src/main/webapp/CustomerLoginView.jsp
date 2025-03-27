@@ -143,36 +143,6 @@
                 }
             }
 
-            /* Popup styles */
-            .popup {
-                display: none;
-                position: fixed;
-                top: 0;
-                left: 0;
-                width: 100%;
-                height: 100%;
-                background-color: rgba(0, 0, 0, 0.5);
-                justify-content: center;
-                align-items: center;
-            }
-            .popup-content {
-                background-color: white;
-                padding: 30px;
-                border-radius: 8px;
-                text-align: center;
-                width: 300px;
-            }
-            .popup button {
-                background-color: #007bff;
-                color: white;
-                padding: 10px 20px;
-                border: none;
-                border-radius: 5px;
-                cursor: pointer;
-            }
-            .popup button:hover {
-                background-color: #0056b3;
-            }
         </style>
     </head>
     <body>
@@ -218,39 +188,33 @@
                     </div>
                 </div>
             </div>
-            <div class="features">
-                <div class="feature-box">
-                    <img src="./assets/imgs/ShoppingCartImg/headphone.jpg" alt="head_phone"/>
-                    <h3>Product Support</h3>
-                    <p>Up to 3 years on-site warranty available for your peace of mind.</p>
-                </div>
-                <div class="feature-box">
-                    <img src="./assets/imgs/ShoppingCartImg/person.jpg" alt="personal"/>
-                    <h3>Personal Account</h3>
-                    <p>With big discounts, free delivery, and a dedicated support specialist.</p>
-                </div>
-                <div class="feature-box">
-                    <img src="./assets/imgs/ShoppingCartImg/tag.jpg" alt="tag"/>
-                    <h3>Amazing Savings</h3>
-                    <p>Up to 70% off new products, you can be sure of the best price.</p>
-                </div>
-            </div>
 
             <!-- Popup -->
-            <div class="popup" id="loginFailPopup">
-                <div class="popup-content">
-                    <h3>${sessionScope.message}</h3>
-                <button onclick="closePopup()">Close</button>
-            </div>
+        <%
+            String message = (String) session.getAttribute("message");
+            System.out.println("Session message: " + message + request.getRequestURI());
+        %>
+        <%
+            if (message != null) {
+        %>
+        <div id="cookiesPopup1" style="position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 350px; display: flex; flex-direction: column; align-items: center; background-color: #fff; color: #000; text-align: center; border-radius: 20px; padding: 30px 30px 20px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); z-index: 1000;">
+            <button class="close" onclick="closePopup1()" style="width: 30px; font-size: 20px; color: #c0c5cb; align-self: flex-end; background-color: transparent; border: none; margin-bottom: 10px; cursor: pointer;">✖</button>
+            <img src="./assets/imgs/icon/fail.jpg" alt="fail-tick" style="width: 82px; margin-bottom: 15px; border-radius: 50%;" />
+            <p style="margin-bottom: 40px; font-size: 18px;">${sessionScope.message}</p>
+            <button class="accept" onclick="closePopup1()" style="background-color: red; border: none; border-radius: 5px; width: 200px; padding: 14px; font-size: 16px; color: white; box-shadow: 0px 6px 18px -5px red; cursor: pointer;">OK</button>
         </div>
 
-        <script>
-            function showPopup() {
-                document.getElementById("loginFailPopup").style.display = "flex";
-            }
 
-            function closePopup() {
-                document.getElementById("loginFailPopup").style.display = "none";
+        <div id="overlay" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0, 0, 0, 0.5); z-index: 999;"></div>
+        <%
+                session.setAttribute("message", null);
+            }
+        %>
+
+        <script>
+            function closePopup1() {
+                document.getElementById("cookiesPopup1").style.display = "none";
+                document.getElementById("overlay").style.display = "none";
             }
 
             // Show popup if login fails (you can trigger this with backend error)

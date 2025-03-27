@@ -52,6 +52,44 @@ public class ProductRatingDAO {
         return list;
     }
 
+    public List<ProductRating> SearchProductRatingByCusID(String CustomerName) {
+        List<ProductRating> list = new ArrayList<>();
+        String query = "SELECT * FROM ProductRatings AS PR\n"
+                + "JOIN Customers AS C ON C.CustomerID = PR.CustomerID\n"
+                + "WHERE C.FullName LIKE ?";
+        try {
+            PreparedStatement pre = connector.prepareStatement(query);
+            pre.setString(1, "%" +CustomerName+"%");
+            ResultSet rs = pre.executeQuery();
+            while (rs.next()) {
+                ProductRating p = new ProductRating(
+                        rs.getInt("RateID"),
+                        rs.getInt("CustomerID"),
+                        rs.getInt("ProductID"),
+                        rs.getInt("OrderID"),
+                        rs.getDate("CreatedDate"),
+                        rs.getInt("Star"),
+                        rs.getString("Comment"),
+                        rs.getBoolean("isDeleted"),
+                        rs.getBoolean("isRead"),
+                        rs.getString("FullName")
+                );
+                list.add(p);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return list;
+    }
+
+//    public static void main(String[] args) {
+//        ProductRatingDAO p = new ProductRatingDAO();
+//       List<ProductRating> l =  p.SearchProductRatingByCusID("tran");
+//        System.out.println("___________________________________-");
+//        for( ProductRating e : l){
+//            System.out.println(e.getFullName());
+//        }
+//    }
     public float getStarAverage(int productId) {
         float star = 0;
         String query = "SELECT COALESCE(ROUND(SUM(Star) * 1.0 / COUNT(Star), 0), 0) AS avs\n"
@@ -178,7 +216,7 @@ public class ProductRatingDAO {
             pre.setInt(2, productId);
             pre.setInt(3, star);
             pre.setString(4, comment);
-           count = pre.executeUpdate();
+            count = pre.executeUpdate();
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -204,7 +242,8 @@ public class ProductRatingDAO {
 
         return p;
     }
-       public boolean markReplyAsUnRead(int ReplyID) {
+
+    public boolean markReplyAsUnRead(int ReplyID) {
         String query = "UPDATE ProductRatings SET IsRead= 0 WHERE RateID = ?";
 
         try (

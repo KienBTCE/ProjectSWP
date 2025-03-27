@@ -81,25 +81,26 @@ public class CustomerLoginServlet extends HttpServlet {
         HttpSession session = request.getSession();
         CustomerDAO ctmDAO = new CustomerDAO();
         Cookie loginEmail = null;
+        int id = ctmDAO.checkEmailExisted(email);
 
-        if (ctmDAO.checkEmailExisted(email) != 1) {
+        if (id == 0) {
             session.setAttribute("message", "Account does not exist!");
             System.out.println("Email does not exist");
             request.getRequestDispatcher("CustomerLoginView.jsp").forward(request, response);
             return;
         }
 
-        if (ctmDAO.checkEmailExisted(email) == 1) {
+        if (id > 0) {
             Customer customer = ctmDAO.getCustomerLogin(email, password);
             if (customer == null) {
                 int count = 0;
-
+                String checkEmail = "";
                 Cookie[] cookies = request.getCookies();
                 if (cookies != null) {
                     for (Cookie cookie : cookies) {
-                        if ("email".equals(cookie.getName())) {
+                        if (("customer" + id).equals(cookie.getName())) {
                             String str[] = cookie.getValue().trim().split("_");
-
+                            checkEmail = str[0];
                             try {
                                 count = Integer.parseInt(str[1]);
                                 System.out.println("chuyen so " + str[1]);
@@ -110,18 +111,23 @@ public class CustomerLoginServlet extends HttpServlet {
                                 count = 0;
                             }
                             break;
-                            //System.out.println("email: " + cookie.getValue());
                         }
                     }
                 }
-                if (count > 4) {
+                if (count > 4 && checkEmail.equals(email)) {
                     ctmDAO.blockCustomer(email);
                     session.setAttribute("message", "Your account has been locked!");
                     request.getRequestDispatcher("CustomerLoginView.jsp").forward(request, response);
                     return;
                 }
+                
+                if (!checkEmail.equals(email)) {
+                    loginEmail = new Cookie(("customer" + id), email + "_0");
+                    loginEmail.setMaxAge(20 * 60);
+                    loginEmail.setPath("/customerLogin");
+                }
 
-                loginEmail = new Cookie("email", email + "_" + count);
+                loginEmail = new Cookie(("customer" + id), email + "_" + count);
                 loginEmail.setMaxAge(20 * 60);
                 loginEmail.setPath("/customerLogin");
                 response.addCookie(loginEmail);
@@ -139,7 +145,7 @@ public class CustomerLoginServlet extends HttpServlet {
                 session.setAttribute("message", "Your account has been locked!");
                 System.out.println("Account is blocked");
             } else {
-                loginEmail = new Cookie("email", email + "_0");
+                loginEmail = new Cookie(("customer" + customer.getId()), email + "_0");
                 loginEmail.setMaxAge(20 * 60);
                 loginEmail.setPath("/customerLogin");
                 response.addCookie(loginEmail);
