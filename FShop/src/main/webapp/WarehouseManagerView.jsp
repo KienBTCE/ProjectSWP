@@ -127,7 +127,7 @@
             <div class="content">
             <jsp:include page="HeaderDashboard.jsp"></jsp:include>
 
-                <div class="table-container">
+            <div class="table-container" style="margin-top: 20px">
                     <div>
                         <h3>Imported Products Today</h3>
                     </div>

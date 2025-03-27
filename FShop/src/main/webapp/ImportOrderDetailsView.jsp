@@ -125,12 +125,12 @@
         <jsp:include page="SidebarDashboard.jsp"></jsp:include>
             <div class="content">
             <jsp:include page="HeaderDashboard.jsp"></jsp:include>
+                <!--
                 <div class="table-navigate">
-                    <div class="table-navigate">
-                    </div>
-                </div>
+                    <div class="table-navigate"></div>
+                </div>-->
 
-                <div class="table-container">
+                <div class="table-container" style="margin-top: 20px">
                     <div>
                         <h3></h3>
                     </div>
@@ -160,7 +160,7 @@
                 </table>
             </div>
 
-            <div class="table-container">
+            <div class="table-container" style="margin-top: 20px">
                 <div>
                     <h3>Details</h3>
                 </div>
