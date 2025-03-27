@@ -20,9 +20,7 @@
         <!-- Font Awesome for icons -->
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
         <style>
-            .gap-section{
-                margin-bottom: 50px;
-            }
+
             .banner-content img{
                 width: 100%;
             }
@@ -35,7 +33,15 @@
                 align-items: center;
                 /*justify-content: space-around;*/
             }
-            .frame-represent{
+            .gap-section {
+                margin-bottom: 50px;
+                background: #f83f5e;
+                background-size: cover;
+                padding: 20px;
+                border-radius: 10px;
+                box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            }
+            .frame-represent {
                 display: flex;
                 flex-direction: column;
                 width: 234px;
@@ -43,21 +49,31 @@
                 text-align: center;
                 margin: 15px;
                 background: white;
-                border: 1px solid #F5F5F9;
+                border: 1px solid #ddd;
                 border-radius: 10px;
                 align-items: center;
                 justify-content: center;
-
                 text-decoration: none;
                 color: inherit;
-                transition: 0.3s;
+                box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+                transition: transform 0.3s ease, box-shadow 0.3s ease;
             }
 
             .frame-represent:hover {
-                opacity: 0.8;
-                text-decoration: none;
-                color: inherit;
-                transition: 0.3s;
+                transform: scale(1.05);
+                box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+                background-color: white !important;
+                opacity: 1; /* Đảm bảo không bị mờ */
+                text-decoration: none !important;
+            }
+
+            .productImg {
+                transition: transform 0.3s ease;
+                border-radius: 10px;
+            }
+
+            .productImg:hover {
+                transform: scale(1.1);
             }
 
             .view-content{
@@ -203,11 +219,13 @@
                                 <c:forEach items="${dataMap.products}" var="p" varStatus="status">
                                     <div class="col-md-3"> <!-- 4 sản phẩm mỗi dòng -->
                                         <a class="frame-represent" href="ProductDetailServlet?id=${p.getProductId()}">
-                                            <img src="assets/imgs/Products/${p.getImage()}" width="150px" height="150px" alt="alt"/>
-                                            <div class="star-rating">
-                                                <c:forEach var="j" begin="1" end="5">
+                                            <img class="productImg" src="assets/imgs/Products/${p.getImage()}" width="150px" height="150px" alt="alt"/>
+                                            <h6 style="height: 40px; margin-top: 20px;">${p.getFullName()}</h6>
+                                            <p style="font-weight: bold; color: red;">${p.getPriceFormatted()}</p>
+                                            <div class="star-rating" >
+                                                <c:forEach var="i" begin="1" end="5">
                                                     <c:choose>
-                                                        <c:when test="${dataMap.stars != null and dataMap.stars.size() > 0 and j <= dataMap.stars[status.index].getStar()}">
+                                                        <c:when test="${dataMap.stars != null and dataMap.stars.size() > 0 and i <= dataMap.stars[status.index].getStar()}">
                                                             <i class="fa fa-star"></i>
                                                         </c:when>
                                                         <c:otherwise>
@@ -215,10 +233,17 @@
                                                         </c:otherwise>
                                                     </c:choose>
                                                 </c:forEach>
+
                                             </div>
-                                            <h6>${p.getFullName()}</h6>
-                                            <c:if test="${p.getStock() > 1}">
-                                                <p>${p.getPriceFormatted()}</p>
+                                            <c:if test="${dataMap.stars[status.index].getStar()==0}">
+                                                <small>
+                                                    Not reviews yet.
+                                                </small>
+                                            </c:if>
+                                            <c:if test="${dataMap.stars[status.index].getStar()!=0}">
+                                                <small>
+                                                    <br>
+                                                </small>
                                             </c:if>
                                             <c:if test="${p.getStock() < 0}">
                                                 <p style="color: red; font-weight: bold;">SOLD OUT</p>

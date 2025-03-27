@@ -58,20 +58,65 @@
                 z-index: 2000;
                 height: 100%;
             }
-                  .heading-title{
+            .heading-title{
                 font-weight:bold;
                 margin-top: 10px;
                 margin-left: 10px
-                }
+            }
             /* Responsive cho màn hình nhỏ */
             /*@media (max-width: 768px) {*/
-                .container-feedback {
-                    margin-top: 0;
-                    margin-left: 250px;
-                    width: 100%;
-                }/*
-                
-          
+            .container-feedback {
+                margin-top: 220px;
+                margin-left: 250px;
+                width: 100%;
+            }
+            .search-container {
+                display: flex;
+                align-items: center;
+                width: 100%;
+                max-width: 300px; /* Giảm kích thước tối đa */
+                background: white;
+                border-radius: 13px; /* Bo góc mềm hơn */
+                overflow: hidden;
+                border: 2px solid #7D69FF;
+                margin-bottom: 15px;
+                margin-top: 10px;
+            }
+
+            .search-input {
+                flex: 1;
+                border: none;
+                outline: none;
+                padding: 8px 12px; /* Giảm padding để nhỏ hơn */
+                font-size: 14px; /* Giảm kích thước chữ */
+                color: #555;
+            }
+
+            .search-button {
+                border: none;
+                padding: 8px 12px; /* Giảm padding của nút */
+                cursor: pointer;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                color: white;
+                font-size: 14px;
+            }
+
+            .search-button:hover {
+                background: #6454cc;
+            }
+            .fixed-header {
+                position: fixed;
+                top: 0;
+                left: 260px; /* Điều chỉnh để tránh che sidebar */
+                width: calc(100% - 250px); /* Chiều rộng trừ đi sidebar */
+                background-color: white;
+                z-index: 1050;
+                padding: 10px 10px;
+                /*box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);*/
+            }
+
         </style>
     </head>
     <body>
@@ -82,13 +127,21 @@
 
 
             <div class="container-feedback">
-                
+                <div class="fixed-header">
                 <jsp:include page="HeaderDashboard.jsp"></jsp:include> 
-               
+                    <form action="ViewListNewFeedbackServlet" method="GET" class="search-container">
+                        <input type="text" name="search" id="searchInput" value="${searchQuery}" 
+                           placeholder="Search by Name, Phone..." class="search-input">
+                    <button type="submit" class="search-button">
+                        🔍
+                    </button>
+                </form>
                 <h3 class="heading-title"  >FEEDBACK</h3>
-            <c:if test="${empty ProductRating}">
-                <h3  font-weight="Bold">Have No Feedback.</h3>
-            </c:if>
+                <c:if test="${empty ProductRating}">
+                    <h3  font-weight="Bold">Have No Feedback.</h3>
+                </c:if>
+            </div>
+
             <c:if test="${param.success == 'created'}">
                 <div class="alert alert-success alert-dismissible fade show" role="alert">
                     <i class="fa-solid fa-circle-check me-2"></i> Create Reply successfully!
