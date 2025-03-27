@@ -316,14 +316,61 @@
                     </div>
                 </div>
             </div>
-
-            <div class="gap-section">
+                        
+               <div class="gap-section">
                 <h2 class="title-content" ><a href="Accessory Headphone">Headphone</a></h2>
                 <div class="row">
                     <div class=" section-content">
                         <c:set var="count" value="0" scope="page"></c:set>
                         <c:forEach items="${dataMap.products}" var="p" varStatus="status">
                             <c:if test="${count < 5 and p.getCategoryId() == 4}">
+                                <c:set var="count" value="${count + 1}" scope="page"></c:set>
+                                <a class="frame-represent" href="ProductDetailServlet?id=${p.getProductId()}">
+                                    <img class="productImg" src="assets/imgs/Products/${p.getImage()}" width="150px" height="150px" alt="alt"/>
+                                    <h6 style="height: 40px; margin-top: 20px;">${p.getFullName()}</h6>
+                                    <p style="font-weight: bold; color: red;">${p.getPriceFormatted()}</p>
+                                    <div class="star-rating" >
+                                        <c:forEach var="i" begin="1" end="5">
+                                            <c:choose>
+                                                <c:when test="${dataMap.stars != null and dataMap.stars.size() > 0 and i <= dataMap.stars[status.index].getStar()}">
+                                                    <i class="fa fa-star"></i>
+                                                </c:when>
+                                                <c:otherwise>
+                                                    <i class="fa fa-star text-muted"></i>
+                                                </c:otherwise>
+                                            </c:choose>
+                                        </c:forEach>
+
+                                    </div>
+                                    <c:if test="${dataMap.stars[status.index].getStar()==0}">
+                                        <small>
+                                            Not reviews yet.
+                                        </small>
+                                    </c:if>
+                                    <c:if test="${dataMap.stars[status.index].getStar()!=0}">
+                                        <small>
+                                            <br>
+                                        </small>
+                                    </c:if>
+
+                                </a>
+                            </c:if>
+                        </c:forEach>
+                    </div>
+                </div>
+            </div>      
+                  
+
+            <div class="gap-section">
+                <h2 class="title-content"><a href="Accessory">Mouse</a></h2>
+                <div class="row">
+
+                    <div class=" section-content">
+                        <c:set var="count" value="0" scope="page"></c:set>
+                        <c:forEach items="${dataMap.products}" var="p" varStatus="status">
+
+                            <c:if test="${count < 5 and p.getCategoryId() == 3}">
+
                                 <c:set var="count" value="${count + 1}" scope="page"></c:set>
                                 <a class="frame-represent" href="ProductDetailServlet?id=${p.getProductId()}">
                                     <img class="productImg" src="assets/imgs/Products/${p.getImage()}" width="150px" height="150px" alt="alt"/>
