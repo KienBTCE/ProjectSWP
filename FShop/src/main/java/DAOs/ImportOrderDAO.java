@@ -284,7 +284,7 @@ public class ImportOrderDAO {
     }
 
     public int importStock(int importId) {
-        String query = "UPDATE P SET P.Stock = P.Stock + D.Quantity FROM Products P INNER JOIN ImportOrderDetails D ON P.ProductID = D.ProductID WHERE D.ImportID = ?";
+        String query = "UPDATE P SET P.Stock = P.Stock + D.ImportQuantity FROM Products P INNER JOIN ImportStockDetails D ON P.ProductID = D.ProductID WHERE D.ImportID = ?";
 
         try {
             PreparedStatement ps = connector.prepareStatement(query);
