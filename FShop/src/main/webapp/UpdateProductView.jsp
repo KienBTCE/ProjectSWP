@@ -155,7 +155,6 @@
                                             </c:if>
                                         </div>
                                     </div>
-
                                     <!-- Row 5: Images Upload -->
                                     <div class="row g-3 mt-2">
                                         <!-- Image 1 -->
@@ -163,58 +162,75 @@
                                             <label class="form-label">Current Image</label>
                                             <c:if test="${not empty product.image}">
                                                 <div class="mb-2">
-                                                    <img src="${pageContext.request.contextPath}/assets/imgs/Products/${product.image}" 
+                                                    <img id="currentImage1" src="${pageContext.request.contextPath}/assets/imgs/Products/${product.image}" 
                                                          class="product-image img-thumbnail" alt="${product.fullName}">
                                                 </div>
                                             </c:if>
                                             <c:if test="${empty product.image}">
                                                 <p>No image uploaded.</p>
                                             </c:if>
-                                            <input type="file" class="form-control" name="txtPPic" accept="image/*"/>
+                                            <input type="file" class="form-control" name="txtPPic" accept="image/*" onchange="previewImage(event, 'currentImage1')"/>
                                         </div>
+
                                         <!-- Image 2 -->
                                         <div class="col-md-3">
                                             <label class="form-label">Current Image</label>
                                             <c:if test="${not empty product.image1}">
                                                 <div class="mb-2">
-                                                    <img src="${pageContext.request.contextPath}/assets/imgs/Products/${product.image1}" 
+                                                    <img id="currentImage2" src="${pageContext.request.contextPath}/assets/imgs/Products/${product.image1}" 
                                                          class="product-image img-thumbnail" alt="${product.fullName}">
                                                 </div>
                                             </c:if>
                                             <c:if test="${empty product.image1}">
                                                 <p>No image uploaded.</p>
                                             </c:if>
-                                            <input type="file" class="form-control" name="txtPPic1" accept="image/*"/>
+                                            <input type="file" class="form-control" name="txtPPic1" accept="image/*" onchange="previewImage(event, 'currentImage2')"/>
                                         </div>
+
                                         <!-- Image 3 -->
                                         <div class="col-md-3">
                                             <label class="form-label">Current Image</label>
                                             <c:if test="${not empty product.image2}">
                                                 <div class="mb-2">
-                                                    <img src="${pageContext.request.contextPath}/assets/imgs/Products/${product.image2}" 
+                                                    <img id="currentImage3" src="${pageContext.request.contextPath}/assets/imgs/Products/${product.image2}" 
                                                          class="product-image img-thumbnail" alt="${product.fullName}">
                                                 </div>
                                             </c:if>
                                             <c:if test="${empty product.image2}">
                                                 <p>No image uploaded.</p>
                                             </c:if>
-                                            <input type="file" class="form-control" name="txtPPic2" accept="image/*"/>
+                                            <input type="file" class="form-control" name="txtPPic2" accept="image/*" onchange="previewImage(event, 'currentImage3')"/>
                                         </div>
+
                                         <!-- Image 4 -->
                                         <div class="col-md-3">
                                             <label class="form-label">Current Image</label>
                                             <c:if test="${not empty product.image3}">
                                                 <div class="mb-2">
-                                                    <img src="${pageContext.request.contextPath}/assets/imgs/Products/${product.image3}" 
+                                                    <img id="currentImage4" src="${pageContext.request.contextPath}/assets/imgs/Products/${product.image3}" 
                                                          class="product-image img-thumbnail" alt="${product.fullName}">
                                                 </div>
                                             </c:if>
                                             <c:if test="${empty product.image3}">
                                                 <p>No image uploaded.</p>
                                             </c:if>
-                                            <input type="file" class="form-control" name="txtPPic3" accept="image/*"/>
+                                            <input type="file" class="form-control" name="txtPPic3" accept="image/*" onchange="previewImage(event, 'currentImage4')"/>
                                         </div>
                                     </div>
+
+                                    <script>
+                                        function previewImage(event, imgId) {
+                                            const file = event.target.files[0]; // L?y file ?nh ?ã ch?n
+                                            if (file) {
+                                                const reader = new FileReader(); // ??i t??ng FileReader ?? ??c ?nh
+                                                reader.onload = function (e) {
+                                                    // L?y ?nh t? k?t qu? c?a FileReader và gán vào ?nh
+                                                    document.getElementById(imgId).src = e.target.result;
+                                                }
+                                                reader.readAsDataURL(file); // ??c file d??i d?ng data URL
+                                            }
+                                        }
+                                    </script>
 
                                     <!-- Row 6: Submit Buttons -->
                                     <div class="row g-3 mt-3">
