@@ -242,7 +242,6 @@
                                 <c:set var="count" value="${count + 1}" scope="page"></c:set>
                                 <a class="frame-represent" href="ProductDetailServlet?id=${p.getProductId()}">
                                     <img class="productImg" src="assets/imgs/Products/${p.getImage()}" width="150px" height="150px" alt="alt"/>
-
                                     <h6 style="height: 40px; margin-top: 20px;">${p.getFullName()}</h6>
                                     <p style="font-weight: bold; color: red;">${p.getPriceFormatted()}</p>
                                     <div class="star-rating" >
