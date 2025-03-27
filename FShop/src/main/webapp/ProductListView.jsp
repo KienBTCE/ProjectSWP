@@ -67,8 +67,9 @@
 
             .filter-table{
                 width: 100%;
-                height: 500px;
+                height: 100%;
                 background-color: #F5F7FF;
+                margin-top: 1%;
             }
 
             .section-btn{
@@ -151,28 +152,28 @@
 
                             <form class="filter-form">
                                 <fieldset>
-                                    <legend style="font-size: 100%; font-weight: bold; cursor: pointer;" onclick="toggleFilter('brandFilter')">
+                                    <legend style="font-size: 100%; font-weight: bold; cursor: pointer;" > <!--onclick="toggleFilter('brandFilter')"-->
                                         Brands <span id="brandArrow">▼</span>
                                     </legend>
-                                    <div id="brandFilter" style="display: none;">
+                                    <div id="brandFilter" style="display: block;">
                                         <c:forEach items="${brands}" var="b">
                                             <label><input type="checkbox" name="brand" value="${b}" <c:if test="${fn:contains(filters, b)}">checked</c:if> >${b}</label>
                                             </c:forEach>
                                     </div>
                                 </fieldset>
                                 <fieldset>
-                                    <legend style="font-size: 100%; font-weight: bold; cursor: pointer;" onclick="toggleFilter('priceFilter')">
+                                    <legend style="font-size: 100%; font-weight: bold; cursor: pointer;"> <!-- onclick="toggleFilter('priceFilter')"-->
                                         Price <span id="priceArrow">▼</span>
                                     </legend>
                                     <c:if test="${uri == 'Laptop'}">
-                                        <div id="priceFilter" style="display: none">
+                                        <div id="priceFilter" style="display: block">
                                             <label><input type="checkbox" name="price" value="20-25" <c:if test="${fn:contains(filters, '20-25')}">checked</c:if> >20 - 25 million</label>
                                             <label><input type="checkbox" name="price" value="25-30" <c:if test="${fn:contains(filters, '25-30')}">checked</c:if> >25 - 30 million</label>
                                             <label><input type="checkbox" name="price" value="30-over" <c:if test="${fn:contains(filters, '30-over')}">checked</c:if> >Over 30 million</label>
                                             </div>
                                     </c:if>
                                     <c:if test="${uri == 'Smartphone'}">
-                                        <div id="priceFilter" style="display: none">
+                                        <div id="priceFilter" style="display: block">
                                             <label><input type="checkbox" name="price" value="5-15" <c:if test="${fn:contains(filters, '5-15')}">checked</c:if> >5 - 15 million</label>
                                             <label><input type="checkbox" name="price" value="15-25" <c:if test="${fn:contains(filters, '15-25')}">checked</c:if> >15 - 25 million</label>
                                             <label><input type="checkbox" name="price" value="25-30" <c:if test="${fn:contains(filters, '25-30')}">checked</c:if> >25 - 30 million</label>
@@ -180,7 +181,7 @@
                                             </div>
                                     </c:if>
                                     <c:if test="${uri != 'Smartphone' && uri != 'Laptop' && fn:length(uri) > 0}">
-                                        <div id="priceFilter" style="display: none">
+                                        <div id="priceFilter" style="display: block">
                                             <label><input type="checkbox" name="price" value="100-500" <c:if test="${fn:contains(filters, '100-500')}">checked</c:if> >100 - 500 hundred</label>
                                             <label><input type="checkbox" name="price" value="500-1" <c:if test="${fn:contains(filters, '500-1')}">checked</c:if> >500 hundred - 1 million</label>
                                             <label><input type="checkbox" name="price" value="1-5" <c:if test="${fn:contains(filters, '1-5')}">checked</c:if> >1 - 5 million</label>
@@ -367,6 +368,14 @@
             function toggleFilter(id) {
                 let filterDiv = document.getElementById(id);
                 let arrow = document.getElementById(id.replace('Filter', 'Arrow'));
+
+
+                /*=====================================================*/
+                const selectedBrands = Array.from(document.querySelectorAll('input[name="brand"]:checked')).map(checkbox => checkbox.value);
+                const selectedPrices = Array.from(document.querySelectorAll('input[name="price"]:checked')).map(checkbox => checkbox.value);
+
+                /*=====================================================*/
+
 
                 if (filterDiv.style.display === "none") {
                     filterDiv.style.display = "block";

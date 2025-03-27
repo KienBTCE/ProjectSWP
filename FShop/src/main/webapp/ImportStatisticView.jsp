@@ -113,12 +113,26 @@
                 border-radius: 8px;
                 box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
             }
+            .hi {
+                position: fixed;
+                top: 0;
+                left: 267px;
+                right: 0;
+                background: white;
+                z-index: 1000;
+                display: flex;
+                flex-direction: column;
+                align-items: flex-start;
+                padding: 18px;
+                border: 5px;
+            }
+
         </style>
     </head>
     <body>
         <jsp:include page="SidebarDashboard.jsp"></jsp:include>
             <div class="content">
-            <jsp:include page="HeaderDashboard.jsp"></jsp:include>
+                <jsp:include page="HeaderDashboard.jsp"></jsp:include>
                 <!--<div class="container mt-5">-->
                 <div class="container" style="margin-top: 20px">
                     <h1 class="text-center" style="text-align: center;">Import Statistic</h1>
