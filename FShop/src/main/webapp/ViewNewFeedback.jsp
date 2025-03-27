@@ -282,7 +282,8 @@
                     </div>
                     <div class="modal-body">
                         <p>Are you sure you want to delete this reply?</p>
-                        <input type="hidden" id="deleteReplyID">
+                        <input type="hidden" id="deleteReplyID"  value="${rate.rateID}">
+                         <!--<input type="hidden" name="rateID" value="${rate.rateID}">-->
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
