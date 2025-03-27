@@ -28,7 +28,6 @@
                 background: #FFFFFF;
                 color: black;
                 padding-top: 20px;
-                box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.3);
                 transform: translateZ(0);
                 position: relative;
                 z-index: 10;
@@ -58,20 +57,20 @@
 
             .content {
                 flex-grow: 1;
-                padding: 12px;
-                margin-left: 250px;
+                margin-left: 250px; /* Khoảng cách để không bị chồng lên sidebar */
+                margin-top: 150px;
+                padding: 20px;
+            }
+            /* Giữ header cố định */
+            .header {
+                position: fixed;
+                top: 0;
+                left: 260px; /* vì sidebar chiếm 250px */
+                right: 10px;
+                margin-top: 10px;
+                z-index: 1000;
             }
 
-            .header {
-                display: flex;
-                justify-content: right;
-                align-items: center;
-                padding: 10px;
-                background: #FFFFFF;
-                box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.3);
-                border-radius: 10px;
-                height: 85px;
-            }
 
             .icon {
                 width: 40px;
@@ -89,9 +88,9 @@
             .table-container {
                 background: white;
                 padding: 20px;
-                border-radius: 10px;
-                box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.1);
+                border-radius: 5px;
             }
+
 
             table {
                 border-radius: 10px;
@@ -109,8 +108,8 @@
             }
 
             .search-box {
-                max-width: 300px;
-                margin-bottom: 10px;
+                max-width: 500px;
+                margin-bottom: 5px;
             }
 
             .table-navigate{
@@ -138,17 +137,48 @@
                 display: inline-block;
                 padding: 5px 10px;
             }
+            .search-section {
+                position: fixed;
+                top: 85px;       /* Điều chỉnh theo chiều cao header nếu cần */
+                left: 280px;     /* Điều chỉnh theo chiều rộng sidebar */
+                right: 0;
+                background: white;
+                z-index: 999;
+                padding: 10px;
+            }
+
+            .hi {
+                position: fixed;
+                top: 0;
+                left: 267px; 
+                right: 0;
+                background: white;
+                z-index: 1000;
+                display: flex;
+                flex-direction: column;  
+                align-items: flex-start;
+                padding: 18px;
+                border: 5px;
+            }
+
+            .top-section {
+                display: flex;
+                gap: 10px;  /* khoảng cách giữa header và search */
+                align-items: center;
+                width: 100%;
+            }
+
             .search-container {
                 display: flex;
                 align-items: center;
-                width: 100%;
-                max-width: 300px; /* Giảm kích thước tối đa */
+                width: 90%;
+                max-width: 250px;  /* giới hạn kích thước tối đa */
                 background: white;
-                border-radius: 13px; /* Bo góc mềm hơn */
+                border-radius: 13px;
                 overflow: hidden;
                 border: 2px solid #7D69FF;
-                margin-bottom: 15px;
-                margin-top: 10px;
+                margin-top: 65px;
+                margin-bottom: 20px;
             }
 
             .search-input {
@@ -174,18 +204,25 @@
             .search-button:hover {
                 background: #6454cc;
             }
+            
+            .h3{
+                margin-left: 2px;
+            }
         </style>
     </head>
     <body>
         <jsp:include page="SidebarDashboard.jsp"></jsp:include>
             <div class="content">
-            <jsp:include page="HeaderDashboard.jsp"></jsp:include>
-                <form action="CustomerListServlet" method="get" class="search-container">
-                    <input type="text" name="txt" value="${param.txt}" placeholder="Search by name..." class="search-input">
-                <button type="submit" class="search-button">
-                    🔍
-                </button>
-            </form>
+                <div class="hi">
+                <jsp:include page="HeaderDashboard.jsp"></jsp:include>
+                    <form action="CustomerListServlet" method="get" class="search-container">
+                        <input type="text" name="txt" value="${param.txt}" placeholder="Search by name..." class="search-input">
+                    <button type="submit" class="search-button">
+                        🔍
+                    </button>
+                </form>
+                <h3 class="h3" font-weight="Bold">CUSTOMER</h3>
+            </div>
             <c:if test="${not empty message}">
                 <div class="alert alert-info" role="alert">
                     ${message}
@@ -197,7 +234,7 @@
                     <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                 </div>
             </c:if>
-                       <c:if test="${param.success == 'failed'}">
+            <c:if test="${param.success == 'failed'}">
                 <div class="alert alert-success alert-dismissible fade show" role="alert">
                     <i class="fa-solid fa-circle-check me-2"></i> Assigned voucher unsuccessfully!
                     <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
@@ -234,7 +271,7 @@
                                     <c:if test="${sessionScope.employee.getRoleId() == 3}">
                                         <a href="AssignVoucherServlet?Id=${s.getId()}" 
                                            class="btn btn-warning">
-                                           Voucher
+                                            Voucher
                                         </a>
                                     </c:if>
                                     <c:if test="${sessionScope.employee.getRoleId() == 2 }">
