@@ -160,6 +160,13 @@
                                     <label for="address" class="form-label">Address</label>
                                     <input name="address" type="text" class="form-control" id="address" required pattern="^[^,]+,\s[^,]+,\s[^,]+$" title="Address must have 3 parts separated by commas (e.g., 123 Tech Street, District 1, Ho Chi Minh City)">
                                 </div>
+                                <div class="mb-3">
+                                    <label for="status" class="form-label">Status</label>
+                                    <select name="status" id="status" class="form-select">
+                                        <option value="1">Active</option>
+                                        <option value="0">Inactive</option>
+                                    </select>
+                                </div>
                                 <button type="submit" class="btn btn-success">Save</button>
                             </form>
                         </div>

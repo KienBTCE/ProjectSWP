@@ -15,7 +15,7 @@
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Thống kê nhập hàng</title>
+        <title>Import Statistic</title>
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
         <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
         <style>
@@ -123,25 +123,25 @@
                     <h1 class="text-center">Import Statistic</h1>
                     <div class="row">
                         <div class="col-md-6">
-                            <h2>Sum of Import Order Date</h2>
+                            <h2>Daily Stock Import</h2>
                             <div class="chart-container">
                                 <canvas id="orderByDayChart"></canvas>
                             </div>
                         </div>
                         <div class="col-md-6">
-                            <h2>Sum of Import Order Month</h2>
+                            <h2>Monthly Stock Import</h2>
                             <div class="chart-container">
                                 <canvas id="orderByMonthChart"></canvas>
                             </div>
                         </div>
                         <div class="col-md-6">
-                            <h2>Sum of Import Order Supplier</h2>
+                            <h2>Stock Import by Supplier</h2>
                             <div class="chart-container">
                                 <canvas id="supplierChart"></canvas>
                             </div>
                         </div>
                         <div class="col-md-6">
-                            <h2>Sum of Import Order Product</h2>
+                            <h2>Stock Import by Product</h2>
                             <div class="chart-container">
                                 <canvas id="productChart"></canvas>
                             </div>

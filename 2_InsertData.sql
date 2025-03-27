@@ -111,12 +111,12 @@ INSERT INTO Products (ProductID, BrandID, CategoryID, Model, FullName, [Descript
 (8, 8, 1, 'ASUS-TUF-A17', 'ASUS TUF Gaming A17', 'Durable gaming laptop with strong performance and modern design', 'ASUS-TUF-Gaming-A17-FA706-600x600.jpg', 31909000, 1, 50),
 (9, 11, 1, 'MSI-Katana-A15', 'MSI Katana Gaming A15', 'Gaming laptop powered by AMD Ryzen 9 and RTX 4060 GPU', '5e0dkkrb-1411-msi-katana-gaming-a15-ai-b8vf-406ca-amd-ryzen-r9-8945hs-32gb-1tb-rtx-4060-8gb-15-6-144hz-fhd-new.jpg', 33909000, 1, 50),
 (10, 6, 1, 'Dell-G5511', 'Dell Gaming G5511', 'Gaming laptop with strong design and high performance', '45606_dell_gaming_5511_dark_grey_ha3.jpg', 35909000, 0, 50),
-(11, 4, 2, 'Xperia-1-III', 'Sony Xperia 1 III', 'Sony flagship phone with stunning OLED 4K display', 'sony-xperia-1-iii.jpg', 35999000, 0, 40),
-(12, 5, 2, 'Pixel-6-Pro', 'Google Pixel 6 Pro', 'Google flagship phone with Google Tensor chip', 'google-pixel-6-pro.jpg', 28999000, 0, 60),
+(11, 4, 2, 'Xperia-1-III', 'Sony Xperia 1 III', 'Sony flagship phone with stunning OLED 4K display', 'sony-xperia-1-iii.png', 35999000, 0, 40),
+(12, 5, 2, 'Pixel-6-Pro', 'Google Pixel 6 Pro', 'Google flagship phone with Google Tensor chip', '678582_684274_04_front_comping.jpg', 28999000, 0, 60),
 (13, 6, 1, 'HP-Omen-15', 'HP Omen 15', 'Powerful gaming laptop with AMD Ryzen 9', 'hp-omen-15.jpg', 42900000, 0, 35),
 (14, 3, 1, 'Acer-Predator-Helios-300', 'Acer Predator Helios 300', 'Gaming laptop with Intel i7 and RTX 3070', 'acer-predator-helios-300.jpg', 37999000, 1, 20),
-(15, 4, 2, 'Xiaomi-Redmi-Note-11', 'Xiaomi Redmi Note 11', 'Affordable smartphone with great performance', 'xiaomi-redmi-note-11.jpg', 7990000, 0, 100),
-(16, 2, 2, 'Samsung-Galaxy-A53', 'Samsung Galaxy A53', 'Mid-range smartphone with 5G and powerful camera', 'samsung-galaxy-a53.jpg', 18999000, 0, 75),
+(15, 4, 2, 'Xiaomi-Redmi-Note-11', 'Xiaomi Redmi Note 11', 'Affordable smartphone with great performance', 'Xiaomi-Redmi-11.jpg', 7990000, 0, 100),
+(16, 2, 2, 'Samsung-Galaxy-A53', 'Samsung Galaxy A53', 'Mid-range smartphone with 5G and powerful camera', 'samsung-galaxy-a53.png', 18999000, 0, 75),
 (17, 10, 1, 'Razer-Blade-15', 'Razer Blade 15', 'Premium gaming laptop with high performance', 'razer-blade-15.jpg', 47900000, 0, 25),
 (18, 9, 1, 'Alienware-X17', 'Alienware X17', 'High-end gaming laptop with Intel i9 and RTX 3080', 'alienware-x17.jpg', 59999000, 0, 10),
 (19, 11, 1, 'MSI-GS66', 'MSI GS66 Stealth', 'Slim gaming laptop with Intel i7 and RTX 3070', 'msi-gs66.jpg', 44999000, 1, 50),
@@ -377,7 +377,7 @@ INSERT INTO Employees (EmployeeID, FullName, Birthday, [Password], PhoneNumber, 
 (1, 'Nguyen Van A', '1990-01-01', '36fdba5968850579c0a89444f4ca4772', '0123456789', 'nguyenvana@example.com', 'Male', 1, GETDATE(), '', 1), -- Password là: User123@
 (2, 'Nguyen Van B', '1990-01-01', '36fdba5968850579c0a89444f4ca4772', '0123456788', 'nguyenvanb@example.com', 'Male', 1, GETDATE(), '', 2), -- Password là: User123@
 (3, 'Nguyen Van C', '1990-01-01', '36fdba5968850579c0a89444f4ca4772', '0123456789', 'nguyenvanc@example.com', 'Male', 1, GETDATE(), '', 3), -- Password là: User123@
-(4, 'Nguyen Van D', '1990-01-01', '36fdba5968850579c0a89444f4ca4772', '0123456789', 'nguyenvand@example.com', 'Male', 1, GETDATE(), '', 4); -- Password là: User123@
+(4, 'Bui Trung Kien', '1990-01-01', '36fdba5968850579c0a89444f4ca4772', '0123456789', 'nguyenvand@example.com', 'Male', 1, GETDATE(), '', 4); -- Password là: User123@
 
 SET IDENTITY_INSERT Employees OFF;
 
@@ -394,13 +394,13 @@ VALUES
 (1, 'Ap Tra Coi A, My Huong, My Tu, Soc Trang', 1);
 
 -- Insert Imports
-INSERT INTO Imports (EmployeeID, SupplierID, ImportDate, TotalCost, Completed)
+INSERT INTO ImportStocks (EmployeeID, SupplierID, ImportDate, TotalCost, Completed)
 VALUES
 (2, 1, GETDATE(), 2019500000, 1),
 (2, 2, GETDATE(), 51052500000, 1);
 
 -- Insert ImportDetails
-INSERT INTO ImportDetails (ImportID, ProductID, ImportQuantity, ImportPrice)
+INSERT INTO ImportStockDetails (ImportID, ProductID, ImportQuantity, ImportPrice)
 VALUES
 (1, 1, 50, 40390000),
 (2, 2, 50, 20120000),
