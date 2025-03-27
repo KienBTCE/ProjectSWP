@@ -178,7 +178,7 @@
                             </div>
                             <div class="info-item">
                                 <span class="info-label">Price:</span>
-                                <span class="info-value">${product.price}</span>
+                                <span class="info-value">${product.getPriceFormatted()}</span>
                             </div>
                             <div class="info-item">
                                 <span class="info-label">Description:</span>

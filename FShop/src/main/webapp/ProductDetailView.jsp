@@ -39,7 +39,7 @@
             /* Larger main image */
             .product-gallery .main-image {
                 width: 100%;
-                max-width: 600px; /* increased size */
+                max-width: 450px; /* increased size */
                 border: 2px solid #ddd;
                 border-radius: 8px;
                 display: block;

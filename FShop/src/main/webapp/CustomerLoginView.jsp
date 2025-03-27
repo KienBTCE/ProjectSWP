@@ -180,68 +180,69 @@
             <div class="container_a">
                 <p>Home > Login</p>
                 <h1>Customer Login</h1>
-
                 <div class="login-form">
                     <div class="form-box">
-                        <h2>Registered Customers</h2>
-                        <p>If you have an account, sign in with your email address.</p>
-                        <form action="customerLogin" method="post">
-                            <label for="email">Email</label>
-                            <input type="email" id="email" name="email" placeholder="Your Email" required>
+                    <%
+                        String successMessage = (String) session.getAttribute("successMessage");
+                        if (successMessage != null) {
+                    %>
+                    <script>
+        alert('<%= successMessage%>');
+                    </script>
+                    <%
+                            session.removeAttribute("successMessage");
+                        }
+                    %>
 
-                            <label for="password">Password</label>
-                            <input type="password" id="password" name="password" placeholder="Your Password" required>
+                    <h2>Registered Customers</h2>
+                    <p>If you have an account, sign in with your email address.</p>
+                    <form action="customerLogin" method="post">
+                        <label for="email">Email</label>
+                        <input type="email" id="email" name="email" placeholder="Your Email" required>
 
-                            <button class="summit" type="submit">Sign In</button>
-                            <a class="forgotpass" href="SendMailServlet">Forgot Your Password?</a>
-                            <div style="display: flex; align-items: center; text-align: center;">
-                                <hr style="flex: 1; border: none; border-top: 1px solid #ccc; margin: 0;">
-                                <span style="padding: 0 10px; color: #666; font-weight: bold;">OR</span>
-                                <hr style="flex: 1; border: none; border-top: 1px solid #ccc; margin: 0;">
-                            </div>
-                            <br>
-                            <a style="width: 100%" class="btn btn-danger" href="https://accounts.google.com/o/oauth2/auth?scope=email%20profile%20openid&redirect_uri=http://localhost:8080/GoogleLogin&response_type=code&client_id=1041129117035-jujhcv76iq77j9a3t75g3m451ku5b1lb.apps.googleusercontent.com&approval_prompt=force">
-                                <img src="./assets/imgs/icon/google.png" alt="Google" width="30px" height="30px"/> Login With Google Account
-                            </a>
-                        </form>
+                        <label for="password">Password</label>
+                        <input type="password" id="password" name="password" placeholder="Your Password" required>
 
-                    </div>
-                    <div class="form-box">
-                        <h2>New Customer?</h2>
-                        <p>Creating an account has many benefits:</p>
-                        <ul class="list_ul">
-                            <li>Check out faster</li>
-                            <li>Keep more than one address</li>
-                            <li>Track orders and more</li>
-                        </ul>
-                        <a href="/register" class="summit"> Create An Account</a>
-                    </div>
+                        <button class="summit" type="submit">Sign In</button>
+                        <a class="forgotpass" href="SendMailServlet">Forgot Your Password?</a>
+                        <div style="display: flex; align-items: center; text-align: center;">
+                            <hr style="flex: 1; border: none; border-top: 1px solid #ccc; margin: 0;">
+                            <span style="padding: 0 10px; color: #666; font-weight: bold;">OR</span>
+                            <hr style="flex: 1; border: none; border-top: 1px solid #ccc; margin: 0;">
+                        </div>
+                        <br>
+                        <a style="width: 100%" class="btn btn-danger" href="https://accounts.google.com/o/oauth2/auth?scope=email%20profile%20openid&redirect_uri=http://localhost:8080/GoogleLogin&response_type=code&client_id=1041129117035-jujhcv76iq77j9a3t75g3m451ku5b1lb.apps.googleusercontent.com&approval_prompt=force">
+                            <img src="./assets/imgs/icon/google.png" alt="Google" width="30px" height="30px"/> Login With Google Account
+                        </a>
+                    </form>
+
+                </div>
+                <div class="form-box">
+                    <h2>New Customer?</h2>
+                    <p>Creating an account has many benefits:</p>
+                    <ul class="list_ul">
+                        <li>Check out faster</li>
+                        <li>Keep more than one address</li>
+                        <li>Track orders and more</li>
+                    </ul>
+                    <a href="/register" class="summit"> Create An Account</a>
                 </div>
             </div>
-            <div class="features">
-                <div class="feature-box">
-                    <img src="./assets/imgs/ShoppingCartImg/headphone.jpg" alt="head_phone"/>
-                    <h3>Product Support</h3>
-                    <p>Up to 3 years on-site warranty available for your peace of mind.</p>
-                </div>
-                <div class="feature-box">
-                    <img src="./assets/imgs/ShoppingCartImg/person.jpg" alt="personal"/>
-                    <h3>Personal Account</h3>
-                    <p>With big discounts, free delivery, and a dedicated support specialist.</p>
-                </div>
-                <div class="feature-box">
-                    <img src="./assets/imgs/ShoppingCartImg/tag.jpg" alt="tag"/>
-                    <h3>Amazing Savings</h3>
-                    <p>Up to 70% off new products, you can be sure of the best price.</p>
-                </div>
-            </div>
+        </div>
 
-            <!-- Popup -->
-            <div class="popup" id="loginFailPopup">
-                <div class="popup-content">
-                    <h3>${sessionScope.message}</h3>
-                <button onclick="closePopup()">Close</button>
-            </div>
+        <!-- Popup -->
+        <%
+            String message = (String) session.getAttribute("message");
+            System.out.println("Session message: " + message + request.getRequestURI());
+        %>
+        <%
+            if (message != null) {
+        %>
+        <div id="cookiesPopup1" style="position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 350px; display: flex; flex-direction: column; align-items: center; background-color: #fff; color: #000; text-align: center; border-radius: 20px; padding: 30px 30px 20px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); z-index: 1000;">
+            <button class="close" onclick="closePopup1()" style="width: 30px; font-size: 20px; color: #c0c5cb; align-self: flex-end; background-color: transparent; border: none; margin-bottom: 10px; cursor: pointer;">✖</button>
+            <img src="./assets/imgs/icon/fail.jpg" alt="fail-tick" style="width: 82px; margin-bottom: 15px; border-radius: 50%;" />
+            <p style="margin-bottom: 40px; font-size: 18px;">${sessionScope.message}</p>
+            <button class="accept" onclick="closePopup1()" style="background-color: red; border: none; border-radius: 5px; width: 200px; padding: 14px; font-size: 16px; color: white; box-shadow: 0px 6px 18px -5px red; cursor: pointer;">OK</button>
         </div>
 
         <script>

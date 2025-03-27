@@ -120,7 +120,6 @@ public class RegisterServlet extends HttpServlet {
             sb.append("Dear ").append(fullName).append(",<br><br>");
             sb.append("Thank you for registering on our platform. Please use the OTP below to verify your email:<br>");
             sb.append("<h2>").append(otp).append("</h2>");
-            sb.append("This OTP is valid for 5 minutes.<br>");
             sb.append("If you did not request this, please ignore this email.<br><br>");
             sb.append("Best Regards,<br>");
             sb.append("<b>FShop Team</b>");

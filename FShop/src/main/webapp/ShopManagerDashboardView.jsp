@@ -11,7 +11,42 @@
     Map<String, Object> stats = (Map<String, Object>) request.getAttribute("stats");
     List<Map<String, Object>> newProducts = (List<Map<String, Object>>) request.getAttribute("newProducts");
 %>
+<style>
+    .header {
+        position: fixed;
+        top: 0;
+        left: 260px;
+        right: 10px;
+        margin-top: 10px;
+        z-index: 1000;
+    }
 
+
+    .icon {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        object-fit: cover;
+    }
+
+    .logo-side-bar {
+        margin-left: 5%;
+        margin-bottom: 3%;
+    }
+    .hi {
+        position: fixed;
+        top: 0;
+        left: 267px;
+        right: 0;
+        background: white;
+        z-index: 1000;
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        padding: 18px;
+        border: 5px;
+    }
+</style>
 <!DOCTYPE html>
 <html lang="en">
     <head>
@@ -34,7 +69,7 @@
             .header {
                 position: fixed;
                 top: 0;
-                left: 260px; 
+                left: 260px;
                 right: 10px;
                 margin-top: 10px;
                 z-index: 1000;
@@ -74,8 +109,8 @@
             }
             .content {
                 display: flex;
-                flex-direction: column; 
-                align-items: center; 
+                flex-direction: column;
+                align-items: center;
                 margin-top: 60px;
                 padding: 20px;
             }
@@ -84,7 +119,9 @@
     <body>
         <jsp:include page="SidebarDashboard.jsp"></jsp:include>
             <div class="content">
-            <jsp:include page="HeaderDashboard.jsp"></jsp:include>
+                <div class="hi">
+                <jsp:include page="HeaderDashboard.jsp"></jsp:include>
+                </div>
                 <div class="container">
                     <div class="row g-4">
                         <div class="col-md-4">

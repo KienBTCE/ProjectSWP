@@ -106,7 +106,7 @@
 
                                     <!-- Row 3: Price and Is Deleted -->
                                     <div class="row g-3 mt-2">
-                                        <div class="col-md-4">
+                                        <div class="col-md-4">                                      
                                             <label class="form-label">Price</label>
                                             <input type="number" class="form-control" name="price" value="${product.price}" required />
                                         </div>
