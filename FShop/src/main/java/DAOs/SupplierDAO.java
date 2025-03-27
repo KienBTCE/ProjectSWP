@@ -153,7 +153,7 @@ public class SupplierDAO {
 
     public int createSupplier(Supplier s) {
 
-        String query = "INSERT INTO Suppliers (TaxID, [Name], Email, PhoneNumber, Address, CreatedDate, LastModify, IsDeleted, IsActivate) VALUES (?, ?, ?, ?, ?, GETDATE(), GETDATE(), ?, ?)";
+        String query = "INSERT INTO Suppliers (TaxID, [Name], Email, PhoneNumber, Address, CreatedDate, LastModify, IsDeleted, IsActivate) VALUES (?, ?, ?, ?, ?, GETDATE(), GETDATE(), 0, ?)";
         try {
             PreparedStatement ps = connector.prepareStatement(query);
             ps.setString(1, s.getTaxId());
@@ -161,8 +161,7 @@ public class SupplierDAO {
             ps.setString(3, s.getEmail());
             ps.setString(4, s.getPhoneNumber());
             ps.setString(5, s.getAddress());
-            ps.setInt(6, 0);
-            ps.setInt(7, 1);
+            ps.setInt(6, s.getActivate());
 
             return ps.executeUpdate();
         } catch (SQLException e) {

@@ -33,7 +33,7 @@ public class ProductDAO {
     public ArrayList<Product> getAllProducts() {
         ArrayList<Product> list = new ArrayList<>();
 
-        String query = "SELECT * FROM Products WHERE IsDeleted = 0";
+        String query = "SELECT * FROM Products WHERE IsDeleted = 0 AND Stock > 0";
 
         try {
             PreparedStatement ps = connector.prepareStatement(query);
@@ -65,7 +65,7 @@ public class ProductDAO {
     public ArrayList<Product> getAllProductsByCategory(String category) {
         ArrayList<Product> list = new ArrayList<>();
 
-        String query = "SELECT *, B.Name AS BrandName FROM Products P JOIN Categories C ON P.CategoryID = C.CategoryID JOIN Brands B ON B.BrandID = P.BrandID WHERE C.CategoryID = ? AND P.IsDeleted = 0";
+        String query = "SELECT *, B.Name AS BrandName FROM Products P JOIN Categories C ON P.CategoryID = C.CategoryID JOIN Brands B ON B.BrandID = P.BrandID WHERE C.CategoryID = ? AND P.IsDeleted = 0 AND P.Stock > 0";
 
         try {
             PreparedStatement ps = connector.prepareStatement(query);
@@ -205,7 +205,7 @@ public class ProductDAO {
                 + "sp.FullName, sp.Price, sp.Stock, sp.isDeleted "
                 + "FROM Products sp "
                 + "JOIN Categories c ON sp.CategoryID = c.CategoryID "
-                + "JOIN Brands b ON sp.BrandID = b.BrandID";
+                + "JOIN Brands b ON sp.BrandID = b.BrandID ORDER BY IsDeleted";
 
         try ( PreparedStatement ps = connector.prepareStatement(query);  ResultSet rs = ps.executeQuery()) {
 
@@ -431,7 +431,7 @@ public class ProductDAO {
                 + "FROM Products sp "
                 + "JOIN Categories c ON sp.CategoryID = c.CategoryID "
                 + "JOIN Brands b ON sp.BrandID = b.BrandID "
-                + "WHERE sp.FullName LIKE ?";
+                + "WHERE sp.FullName LIKE ? AND sp.IsDeleted != 1 AND sp.Stock > 0 ORDER BY Price DESC";
 
         try ( PreparedStatement ps = connector.prepareStatement(query)) {
             ps.setString(1, "%" + keyword + "%");
@@ -447,6 +447,46 @@ public class ProductDAO {
                             rs.getInt("Stock"),
                             rs.getInt("isDeleted")
                     );
+                    p.setStock(rs.getInt("Stock"));
+                    p.setImage(rs.getString("Image"));
+                    list.add(p);
+                }
+
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(ProductDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return list;
+    }
+
+    public List<Product> sortProduct(String keyword, String sort) {
+        List<Product> list = new ArrayList<>();
+        String orderBy = "ASC";
+        if ("DESC".equalsIgnoreCase(sort)) {
+            orderBy = "DESC";
+        }
+        String query = "SELECT sp.ProductID, c.Name AS CategoryName, b.Name AS BrandName, "
+                + "sp.FullName, sp.Price, sp.Image, sp.Stock, sp.isDeleted, sp.Description, sp.Model "
+                + "FROM Products sp "
+                + "JOIN Categories c ON sp.CategoryID = c.CategoryID "
+                + "JOIN Brands b ON sp.BrandID = b.BrandID "
+                + "WHERE sp.FullName LIKE ? AND sp.IsDeleted != 1 AND sp.Stock > 0 ORDER BY Price " + orderBy;
+
+        try ( PreparedStatement ps = connector.prepareStatement(query)) {
+            ps.setString(1, "%" + keyword + "%");
+
+            try ( ResultSet rs = ps.executeQuery()) {
+                while (rs.next()) {
+                    Product p = new Product(
+                            rs.getInt("ProductID"),
+                            rs.getString("CategoryName"),
+                            rs.getString("BrandName"),
+                            rs.getString("FullName"),
+                            rs.getLong("Price"),
+                            rs.getInt("Stock"),
+                            rs.getInt("isDeleted")
+                    );
+                    p.setStock(rs.getInt("Stock"));
                     p.setImage(rs.getString("Image"));
                     list.add(p);
                 }
@@ -504,8 +544,7 @@ public class ProductDAO {
 
     public Map<String, Object> getDashboardStats() throws SQLException {
         Map<String, Object> stats = new HashMap<>();
-        String query
-                = "SELECT "
+        String query = "SELECT "
                 + "    (SELECT COUNT(*) FROM Customers) AS totalCustomers, "
                 + "    (SELECT COUNT(*) FROM Products) AS totalProducts, "
                 + "    (SELECT SUM(Stock) FROM Products) AS totalInventory, "
@@ -568,8 +607,8 @@ public class ProductDAO {
         String query
                 = "SELECT TOP 10 p.ProductID, p.FullName, c.Name AS Category, p.Price, io.ImportDate "
                 + "FROM Products p "
-                + "JOIN ImportOrderDetails iod ON p.ProductID = iod.ProductID "
-                + "JOIN ImportOrders io ON iod.IOID = io.IOID "
+                + "JOIN ImportDetails iod ON p.ProductID = iod.ProductID "
+                + "JOIN Imports io ON iod.ImportID = io.ImportID "
                 + "JOIN Categories c ON p.CategoryID = c.CategoryID "
                 + "ORDER BY io.ImportDate DESC";
 
@@ -638,9 +677,9 @@ public class ProductDAO {
                 + "FROM Products p "
                 + "JOIN Categories c ON p.CategoryID = c.CategoryID "
                 + "JOIN Brands b ON p.BrandID = b.BrandID "
-                + "WHERE p.ProductID IN (SELECT DISTINCT ProductID FROM ImportOrderDetails "
-                + "JOIN ImportOrders ON ImportOrderDetails.IOID = ImportOrders.IOID "
-                + "WHERE ImportOrders.ImportDate >= DATEADD(DAY, -7, GETDATE()))";
+                + "WHERE p.ProductID IN (SELECT DISTINCT ProductID FROM ImportDetails "
+                + "JOIN Imports ON ImportDetails.ImportID = Imports.ImportID "
+                + "WHERE Imports.ImportDate >= DATEADD(DAY, -7, GETDATE()))";
 
         try ( PreparedStatement ps = connector.prepareStatement(query)) {
             ResultSet rs = ps.executeQuery();
@@ -661,6 +700,24 @@ public class ProductDAO {
             e.printStackTrace();
         }
         return products;
+    }
+
+    public boolean checkDuplicateProduct(String fullName, String model, int productId) {
+        boolean exists = false;
+        String sql = "SELECT COUNT(*) FROM Products WHERE (fullName = ? OR model = ?) AND productId <> ?";
+        try ( PreparedStatement ps = connector.prepareStatement(sql)) {
+            ps.setString(1, fullName);
+            ps.setString(2, model);
+            ps.setInt(3, productId);
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                int count = rs.getInt(1);
+                exists = count > 0;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return exists;
     }
 
 }

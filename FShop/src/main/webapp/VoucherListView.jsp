@@ -118,12 +118,12 @@
                         <tr>
                             <th>ID</th>
                             <th>Code</th>
-                            <th>Type</th>
-                            <th>Max Discount</th>
-                            <th>Status</th>
                             <th>Value</th>
+                            <th>Max Discount</th>
                             <th>Start Date</th>
                             <th>End Date</th>
+                            <th>Status</th>
+                            <th>Type</th>        
                             <th>Actions</th>
                         </tr>
                     </thead>

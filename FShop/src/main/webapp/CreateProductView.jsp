@@ -66,7 +66,7 @@
                                         <input type="number" class="form-control" name="price" required />
                                     </div>
                                     <div class="col-md-4">
-                                        <label class="form-label">Is Deleted</label>
+                                        <label class="form-label">Disable</label>
                                         <select class="form-select" name="isDeleted">
                                             <option value="1">Yes</option>
                                         </select>

@@ -281,7 +281,7 @@ public class CustomerDAO {
     public ArrayList<Customer> getCustomerList() {
         ArrayList<Customer> list = new ArrayList<>();
 
-        String query = "SELECT CustomerID, FullName, Email, PhoneNumber, IsBlock FROM Customers;";
+        String query = "SELECT CustomerID, FullName, Email, PhoneNumber, IsBlock FROM Customers ORDER BY IsBlock;";
 
         try {
             PreparedStatement ps = connector.prepareStatement(query);

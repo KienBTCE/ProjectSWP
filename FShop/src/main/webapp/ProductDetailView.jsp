@@ -748,7 +748,7 @@
                                     <p><strong>Warranty:</strong> 12 months</p>
                                     <p><strong>Return Policy:</strong> 15 days if defective</p>
                                 </div>
-                                <c:if test="${not empty product.stock and product.stock>0}"> 
+                                <c:if test="${not empty product.stock and product.stock>0 and product.deleted==0}"> 
                                     <!-- Quantity Control -->
                                     <div class="my-3 d-flex align-items-center">
                                         <label for="quantity" class="me-2 fw-bold">Quantity:</label>
@@ -790,7 +790,11 @@
                                                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                             </div>
                                             <div class="modal-body text-dark">
-                                                <p>There are only <b>${product.getStock()}</b> products left in stock.</p>
+                                                Current quantity is not enough!
+                                                <br>
+                                                You can contact us by email:
+                                                <a href="mailto:kieuthy@gmail.com" class="text-primary">kieuthy@gmail.com</a>
+                                                to reserve.
                                             </div>
                                             <div class="modal-footer">
                                                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">OK</button>
@@ -798,7 +802,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                <c:if test="${not empty product.stock and product.stock>0}">      
+                                <c:if test="${not empty product.stock and product.stock>0 and product.deleted==0}">      
                                     <!-- Action Buttons -->
                                     <div class="action-buttons">
                                         <!-- Add to Cart form -->
