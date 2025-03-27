@@ -191,7 +191,7 @@
                             </div>
                             <div class="modal-body">
                                 <!-- Input Search -->
-                                <input type="text" id="searchSupplierInput" class="form-control mb-2" placeholder="Tìm kiếm nhà cung cấp...">
+                                <input type="text" id="searchSupplierInput" class="form-control mb-2" placeholder="Search supplier...">
 
                                 <!-- Bảng cuộn -->
                                 <div style="max-height: 400px; overflow-y: auto;">
@@ -327,7 +327,7 @@
                             </div>
                             <div class="modal-body">
                                 <!-- Input Search -->
-                                <input type="text" id="searchProductInput" class="form-control mb-2" placeholder="Tìm kiếm sản phẩm...">
+                                <input type="text" id="searchProductInput" class="form-control mb-2" placeholder="Search product...">
 
                                 <!-- Bảng cuộn -->
                                 <div style="max-height: 400px; overflow-y: auto;">
