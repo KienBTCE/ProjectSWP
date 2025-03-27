@@ -66,7 +66,7 @@
             /* Responsive cho màn hình nhỏ */
             /*@media (max-width: 768px) {*/
             .container-feedback {
-                margin-top: 0;
+                margin-top: 220px;
                 margin-left: 250px;
                 width: 100%;
             }
@@ -106,7 +106,16 @@
             .search-button:hover {
                 background: #6454cc;
             }
-
+            .fixed-header {
+                position: fixed;
+                top: 0;
+                left: 260px; /* Điều chỉnh để tránh che sidebar */
+                width: calc(100% - 250px); /* Chiều rộng trừ đi sidebar */
+                background-color: white;
+                z-index: 1050;
+                padding: 10px 10px;
+                /*box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);*/
+            }
 
         </style>
     </head>
@@ -128,68 +137,69 @@
                     </button>
                 </form>
                 <h3 class="heading-title"  >FEEDBACK</h3>
-                </div>
-                    <c:if test="${empty ProductRating}">
-                        <h3  font-weight="Bold">Have No Feedback.</h3>
-                    </c:if>
-                    <c:if test="${param.success == 'created'}">
-                        <div class="alert alert-success alert-dismissible fade show" role="alert">
-                            <i class="fa-solid fa-circle-check me-2"></i> Create Reply successfully!
-                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                        </div>
-                    </c:if>
-                    <c:if test="${param.success == 'deleted'}">
-                        <div class="alert alert-success alert-dismissible fade show" role="alert">
-                            <i class="fa-solid fa-circle-check me-2"></i> Create Reply Unsuccessfully
-                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                        </div>
-                    </c:if>
-                    <div class="card card-shadow p-4">
-                        <div class="table-responsive">
-                            <table class="table table-hover align-middle">
-                                <thead class="table-dark">
-                                    <tr>
-                                        <th>#</th>
-                                        <th>Customer Name</th>
-                                        <th>Status</th>
-                                        <th>Star</th>
-                                        <th>Action</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <c:forEach items="${ProductRating}" var="rate" varStatus="loop">
-                                        <tr class="${!rate.isRead ? 'new-feedback' : ''}">
-                                            <td>${loop.index + 1}</td>
-                                            <td>${rate.fullName}</td>
-                                            <td>
-                                                <span class="badge ${!rate.isRead ? 'bg-success' : 'bg-secondary'}">
-                                                    ${!rate.isRead ? "New" : "Old"}
-                                                </span>
-                                            </td>
-                                            <td>
-                                                <div class="star-rating">
-                                                    <c:forEach begin="1" end="${rate.star}" var="i">
-                                                        <i class="fas fa-star"></i> 
-                                                    </c:forEach>
-                                                    <c:forEach begin="${rate.star + 1}" end="5" var="i">
-                                                        <i class="far fa-star"></i> 
-                                                    </c:forEach>
-                                                </div>
-                                            </td>
-                                            <td>
-                                                <a href="ViewFeedbackForManagerServlet?rateID=${rate.rateID}" class="btn btn-primary btn-sm">
-                                                    <i class="fas fa-eye"></i> View Details
-                                                </a>
-                                            </td>
-                                        </tr>
-                                    </c:forEach>
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                </div>
+                <c:if test="${empty ProductRating}">
+                    <h3  font-weight="Bold">Have No Feedback.</h3>
+                </c:if>
+            </div>
 
-                <!-- Bootstrap JS -->
-                <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-                </body>
-                </html>
+            <c:if test="${param.success == 'created'}">
+                <div class="alert alert-success alert-dismissible fade show" role="alert">
+                    <i class="fa-solid fa-circle-check me-2"></i> Create Reply successfully!
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            </c:if>
+            <c:if test="${param.success == 'deleted'}">
+                <div class="alert alert-success alert-dismissible fade show" role="alert">
+                    <i class="fa-solid fa-circle-check me-2"></i> Create Reply Unsuccessfully
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            </c:if>
+            <div class="card card-shadow p-4">
+                <div class="table-responsive">
+                    <table class="table table-hover align-middle">
+                        <thead class="table-dark">
+                            <tr>
+                                <th>#</th>
+                                <th>Customer Name</th>
+                                <th>Status</th>
+                                <th>Star</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <c:forEach items="${ProductRating}" var="rate" varStatus="loop">
+                                <tr class="${!rate.isRead ? 'new-feedback' : ''}">
+                                    <td>${loop.index + 1}</td>
+                                    <td>${rate.fullName}</td>
+                                    <td>
+                                        <span class="badge ${!rate.isRead ? 'bg-success' : 'bg-secondary'}">
+                                            ${!rate.isRead ? "New" : "Old"}
+                                        </span>
+                                    </td>
+                                    <td>
+                                        <div class="star-rating">
+                                            <c:forEach begin="1" end="${rate.star}" var="i">
+                                                <i class="fas fa-star"></i> 
+                                            </c:forEach>
+                                            <c:forEach begin="${rate.star + 1}" end="5" var="i">
+                                                <i class="far fa-star"></i> 
+                                            </c:forEach>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <a href="ViewFeedbackForManagerServlet?rateID=${rate.rateID}" class="btn btn-primary btn-sm">
+                                            <i class="fas fa-eye"></i> View Details
+                                        </a>
+                                    </td>
+                                </tr>
+                            </c:forEach>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- Bootstrap JS -->
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    </body>
+</html>
