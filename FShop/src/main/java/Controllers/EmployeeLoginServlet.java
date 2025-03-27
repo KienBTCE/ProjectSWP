@@ -115,7 +115,7 @@ public class EmployeeLoginServlet extends HttpServlet {
             }
         } else {
             int id = emDAO.checkEmailActive(email);
-            if (id > 0) {
+            if (id > 1) {
                 int count = 0;
                 String emailCheck = "";
                 Cookie[] cookies = request.getCookies();
@@ -154,8 +154,10 @@ public class EmployeeLoginServlet extends HttpServlet {
                 }
 
                 session.setAttribute("message", "Incorrect password! You have " + (5 - count) + " login attempts left before your account is locked.");
+            } else if (id == 1) {
+                session.setAttribute("message", "Incorrect password!");
             } else {
-                session.setAttribute("message", "Incorrect email or password!");
+                session.setAttribute("message", "Your account is deactive!");
             }
 
             response.sendRedirect("/EmployeeLogin");
