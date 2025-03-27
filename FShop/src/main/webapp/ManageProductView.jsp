@@ -489,7 +489,6 @@
                 </tbody>
             </table>
             
-        <a href="CreateProductServlet" class="btn btn-add">Create Product</a>
         </div>
     </div>
 
