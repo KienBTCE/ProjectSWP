@@ -835,13 +835,19 @@
 
 
 
-                <c:if test="${not empty dataRating}">
                 <div id="feedbackContainer" class="feedback-section">
                     <div class="feedback-container">
                         <h3 class="feedback-title">PRODUCT REVIEW</h3>
                         <c:if test="${param.success == 'created'}">
                             <div class="alert alert-success alert-dismissible fade show" role="alert">
                                 <i class="fa-solid fa-circle-check me-2"></i> Creating Feedback successfully!
+                                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                            </div>
+                        </c:if>
+                        
+                           <c:if test="${empty dataRating}">
+                            <div class="alert alert-success alert-dismissible fade show" role="alert">
+                                <i class="fa-solid fa-circle-check me-2"></i>This product has no reviews yet. Be the first to share your experience!
                                 <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                             </div>
                         </c:if>
@@ -973,7 +979,7 @@
                         </div>
                     </div>
                 </div>
-                    </c:if>
+
             </div>
 
 
