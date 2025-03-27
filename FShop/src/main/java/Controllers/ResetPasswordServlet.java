@@ -12,6 +12,7 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
+import java.net.URLEncoder;
 
 /**
  *
@@ -76,19 +77,42 @@ public class ResetPasswordServlet extends HttpServlet {
         HttpSession session = request.getSession();
         String email = (String) session.getAttribute("resetEmail");
 
+        // Kiểm tra confirm password
         if (newPassword == null || confirmPassword == null || !newPassword.equals(confirmPassword)) {
             request.setAttribute("error", "Passwords do not match!");
             request.getRequestDispatcher("ResetPasswordView.jsp").forward(request, response);
             return;
         }
 
-        // Update password in the database
+        // Check: ít nhất 8 kí tự
+        if (newPassword.length() < 8) {
+            request.setAttribute("error", "Password must be at least 8 characters long!");
+            request.getRequestDispatcher("ResetPasswordView.jsp").forward(request, response);
+            return;
+        }
+
+        // Check: chứa ít nhất 1 kí tự in hoa
+        if (!newPassword.matches(".*[A-Z].*")) {
+            request.setAttribute("error", "Password must contain at least one uppercase letter!");
+            request.getRequestDispatcher("ResetPasswordView.jsp").forward(request, response);
+            return;
+        }
+
+        // Check: chứa ít nhất 1 kí tự đặc biệt (không phải chữ và số)
+        if (!newPassword.matches(".*[^a-zA-Z0-9].*")) {
+            request.setAttribute("error", "Password must contain at least one special character!");
+            request.getRequestDispatcher("ResetPasswordView.jsp").forward(request, response);
+            return;
+        }
+
         CustomerDAO userDAO = new CustomerDAO();
+        // Cập nhật mật khẩu mới trong database
         boolean success = userDAO.updatePassword(email, newPassword);
 
         if (success) {
             session.removeAttribute("otp");
             session.removeAttribute("resetEmail");
+            session.setAttribute("successMessage", "Password changed successfully!");
             response.sendRedirect("/customerLogin");
         } else {
             request.setAttribute("error", "An error occurred! Please try again.");

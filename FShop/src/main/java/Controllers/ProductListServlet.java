@@ -14,6 +14,8 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 /**
@@ -60,28 +62,40 @@ public class ProductListServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        // Lấy session và hiển thị message nếu có
         HttpSession session = request.getSession();
         String message = (String) session.getAttribute("message");
         if (message != null) {
             request.setAttribute("message", message);
-            session.removeAttribute("message"); // Xóa sau khi dùng xong
+            session.removeAttribute("message");
         }
+
+        final String sortBy = (request.getParameter("sortBy") == null
+                || (!request.getParameter("sortBy").equals("IsDeleted")
+                && !request.getParameter("sortBy").equals("Price")
+                && !request.getParameter("sortBy").equals("FullName")
+                && !request.getParameter("sortBy").equals("Stock")))
+                ? "IsDeleted" : request.getParameter("sortBy");
+
+        final String order = (request.getParameter("order") == null
+                || (!request.getParameter("order").equalsIgnoreCase("asc")
+                && !request.getParameter("order").equalsIgnoreCase("desc")))
+                ? "asc" : request.getParameter("order");
 
         ProductDAO pr = new ProductDAO();
         CategoryDAO catDAO = new CategoryDAO();
-        ArrayList<Product> products = new ArrayList<>();
 
-        // Lấy danh sách danh mục để hiển thị trong dropdown
+        // Lấy danh sách danh mục để hiển thị dropdown
         List<Category> categories = catDAO.getAllCategories();
         request.setAttribute("categories", categories);
 
-        // Lấy tham số từ request
+        // Lấy các tham số filter từ request
         String detailID = request.getParameter("id");
         String deleteID = request.getParameter("delete");
         String restoreID = request.getParameter("restore");
         String keyword = request.getParameter("txt");
         String selectedCategoryID = request.getParameter("categoryId");
-        String filterNewImport = request.getParameter("new_import"); // Lọc sản phẩm mới nhập
+        String filterNewImport = request.getParameter("new_import");
 
         // Xử lý xóa sản phẩm
         if (deleteID != null) {
@@ -123,7 +137,8 @@ public class ProductListServlet extends HttpServlet {
             return;
         }
 
-        // Xử lý lọc sản phẩm theo danh mục
+        // Lấy danh sách sản phẩm theo filter (nếu có) hoặc mặc định
+        ArrayList<Product> products = null;
         if (selectedCategoryID != null && !selectedCategoryID.isEmpty()) {
             try {
                 int categoryID = Integer.parseInt(selectedCategoryID);
@@ -133,20 +148,69 @@ public class ProductListServlet extends HttpServlet {
                 System.out.println("Lỗi: categoryID không hợp lệ - " + selectedCategoryID);
             }
         } else if (keyword != null && !keyword.trim().isEmpty()) {
-            // Tìm kiếm theo tên sản phẩm
             products = (ArrayList<Product>) pr.searchProductByName(keyword);
-        } else {
-            // Nếu không có bộ lọc nào, lấy toàn bộ danh sách sản phẩm
-            products = pr.getProductList();
-        }
-// Xử lý lọc sản phẩm mới nhập
-        if ("true".equals(filterNewImport)) {
+        } else if ("true".equals(filterNewImport)) {
             products = (ArrayList<Product>) pr.getNewImportedProducts();
             System.out.println("Số sản phẩm mới nhập: " + products.size());
+        } else {
+            products = pr.getProductList();
         }
+        // Áp dụng sort theo sortBy cho danh sách sản phẩm đã lấy (nếu danh sách khác null)
+        if (products != null && !products.isEmpty()) {
+            if ("Price".equals(sortBy)) {
+                Collections.sort(products, new Comparator<Product>() {
+                    @Override
+                    public int compare(Product p1, Product p2) {
+                        int cmp;
+                        if (p1.getPrice() < p2.getPrice()) {
+                            cmp = -1;
+                        } else if (p1.getPrice() > p2.getPrice()) {
+                            cmp = 1;
+                        } else {
+                            cmp = 0;
+                        }
+                        return "asc".equalsIgnoreCase(order) ? cmp : -cmp;
+                    }
+                });
+            } else if ("FullName".equals(sortBy)) {
+                Collections.sort(products, new Comparator<Product>() {
+                    @Override
+                    public int compare(Product p1, Product p2) {
+                        // Thêm null check cho FullName
+                        String name1 = p1.getFullName() == null ? "" : p1.getFullName();
+                        String name2 = p2.getFullName() == null ? "" : p2.getFullName();
+                        int cmp = name1.compareToIgnoreCase(name2);
+                        return "asc".equalsIgnoreCase(order) ? cmp : -cmp;
+                    }
+                });
+            } else if ("Stock".equals(sortBy)) {
+                Collections.sort(products, new Comparator<Product>() {
+                    @Override
+                    public int compare(Product p1, Product p2) {
+                        int cmp;
+                        if (p1.getStock() < p2.getStock()) {
+                            cmp = -1;
+                        } else if (p1.getStock() > p2.getStock()) {
+                            cmp = 1;
+                        } else {
+                            cmp = 0;
+                        }
+                        return "asc".equalsIgnoreCase(order) ? cmp : -cmp;
+                    }
+                });
+            } else { // Default: IsDeleted
+                Collections.sort(products, new Comparator<Product>() {
+                    @Override
+                    public int compare(Product p1, Product p2) {
+                        int cmp = p1.getDeleted() - p2.getDeleted();
+                        return "asc".equalsIgnoreCase(order) ? cmp : -cmp;
+                    }
+                });
+            }
+        }
+        // Đưa danh sách sản phẩm và các tham số khác về JSP
         request.setAttribute("products", products);
         request.getRequestDispatcher("ManageProductView.jsp").forward(request, response);
-
     }
 
     /**

@@ -150,12 +150,12 @@
             .hi {
                 position: fixed;
                 top: 0;
-                left: 267px; 
+                left: 267px;
                 right: 0;
                 background: white;
                 z-index: 1000;
                 display: flex;
-                flex-direction: column;  
+                flex-direction: column;
                 align-items: flex-start;
                 padding: 18px;
                 border: 5px;
@@ -204,9 +204,13 @@
             .search-button:hover {
                 background: #6454cc;
             }
-            
+
             .h3{
                 margin-left: 2px;
+            }
+            
+            .alert{
+                margin-top: 15px;
             }
         </style>
     </head>
@@ -223,26 +227,25 @@
                 </form>
                 <h3 class="h3" font-weight="Bold">CUSTOMER</h3>
             </div>
-            <c:if test="${not empty message}">
-                <div class="alert alert-info" role="alert">
-                    ${message}
-                </div>
-            </c:if>
-            <c:if test="${param.success == 'assigned'}">
-                <div class="alert alert-success alert-dismissible fade show" role="alert">
-                    <i class="fa-solid fa-circle-check me-2"></i> Assigned voucher successfully!
-                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                </div>
-            </c:if>
-            <c:if test="${param.success == 'failed'}">
-                <div class="alert alert-success alert-dismissible fade show" role="alert">
-                    <i class="fa-solid fa-circle-check me-2"></i> Assigned voucher unsuccessfully!
-                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                </div>
-            </c:if>
-
 
             <div class="table-container">
+                <c:if test="${not empty message}">
+                    <div class="alert alert-info" role="alert">
+                        ${message}
+                    </div>
+                </c:if>
+                <c:if test="${param.success == 'assigned'}">
+                    <div class="alert alert-success alert-dismissible fade show" role="alert">
+                        <i class="fa-solid fa-circle-check me-2"></i> Assigned voucher successfully!
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                </c:if>
+                <c:if test="${param.success == 'failed'}">
+                    <div class="alert alert-success alert-dismissible fade show" role="alert">
+                        <i class="fa-solid fa-circle-check me-2"></i> Assigned voucher unsuccessfully!
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                </c:if>
                 <table class="table table-hover">
                     <thead>
                         <tr>

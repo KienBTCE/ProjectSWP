@@ -320,13 +320,10 @@
                <div class="gap-section">
                 <h2 class="title-content" ><a href="Accessory Headphone">Headphone</a></h2>
                 <div class="row">
-
                     <div class=" section-content">
                         <c:set var="count" value="0" scope="page"></c:set>
                         <c:forEach items="${dataMap.products}" var="p" varStatus="status">
-
                             <c:if test="${count < 5 and p.getCategoryId() == 4}">
-
                                 <c:set var="count" value="${count + 1}" scope="page"></c:set>
                                 <a class="frame-represent" href="ProductDetailServlet?id=${p.getProductId()}">
                                     <img class="productImg" src="assets/imgs/Products/${p.getImage()}" width="150px" height="150px" alt="alt"/>
@@ -403,6 +400,47 @@
                                         </small>
                                     </c:if>
 
+                                </a>
+                            </c:if>
+                        </c:forEach>
+                    </div>
+                </div>
+            </div>
+
+            <div class="gap-section">
+                <h2 class="title-content" ><a href="Accessory Mouse">Mouse</a></h2>
+                <div class="row">
+                    <div class=" section-content">
+                        <c:set var="count" value="0" scope="page"></c:set>
+                        <c:forEach items="${dataMap.products}" var="p" varStatus="status">
+                            <c:if test="${count < 5 and p.getCategoryId() == 3}">
+                                <c:set var="count" value="${count + 1}" scope="page"></c:set>
+                                <a class="frame-represent" href="ProductDetailServlet?id=${p.getProductId()}">
+                                    <img class="productImg" src="assets/imgs/Products/${p.getImage()}" width="150px" height="150px" alt="alt"/>
+                                    <h6 style="height: 40px; margin-top: 20px;">${p.getFullName()}</h6>
+                                    <p style="font-weight: bold; color: red;">${p.getPriceFormatted()}</p>
+                                    <div class="star-rating" >
+                                        <c:forEach var="i" begin="1" end="5">
+                                            <c:choose>
+                                                <c:when test="${dataMap.stars != null and dataMap.stars.size() > 0 and i <= dataMap.stars[status.index].getStar()}">
+                                                    <i class="fa fa-star"></i>
+                                                </c:when>
+                                                <c:otherwise>
+                                                    <i class="fa fa-star text-muted"></i>
+                                                </c:otherwise>
+                                            </c:choose>
+                                        </c:forEach>
+                                    </div>
+                                    <c:if test="${dataMap.stars[status.index].getStar()==0}">
+                                        <small>
+                                            Not reviews yet.
+                                        </small>
+                                    </c:if>
+                                    <c:if test="${dataMap.stars[status.index].getStar()!=0}">
+                                        <small>
+                                            <br>
+                                        </small>
+                                    </c:if>
                                 </a>
                             </c:if>
                         </c:forEach>
@@ -497,22 +535,21 @@
                 </div>
             </div>
 
-            <!--Commit 15694d5
-            -->
-            <!--<div class="row">
-                <h5 class="title-content">Follow us on Instagram for News, Offers & More</h5>
-                <div class="gap-section section-content">
-                    <div class="frame-represent">
-                        <img src="assets/imgs/Magazines/news-1.svg" width="235px" height="150px" alt="alt"/>
-                        <div class="magazine-paragraph">
-                            <p style="width: 100%; text-align: justify; hyphens: auto;">
+            <div style="margin-bottom: 20px;">
+                <div>
+                    <h5 style="font-size: 18px; font-weight: bold; margin-bottom: 10px;">
+                        Follow us on Instagram for News, Offers & More
+                    </h5>
+
+                    <div style="display: flex; flex-wrap: wrap; gap: 30px;">
+                        <div style="width: 235px;">
+                            <img src="assets/imgs/Magazines/news-1.svg" width="235px" height="150px" alt="alt"/>
+                            <p style="text-align: justify; hyphens: auto; margin-top: 5px;">
                                 If you’ve recently made a desktop PC or laptop purchase, you might want to consider adding peripherals to enhance your home office setup, your gaming rig, or your business workspace...
                             </p>
                         </div>
-                    </div>
-                    <div class="frame-represent" style="padding: 10px">
-                        <img src="assets/imgs/Magazines/news-2.svg" width="235px" height="150px" alt="alt"/>
-                        <div class="magazine-paragraph">
+                        <div style="width: 235px;">
+                            <img src="assets/imgs/Magazines/news-2.svg" width="235px" height="150px" alt="alt"/>
                             <p style="width: 100%; text-align: justify; hyphens: auto;">
                                 As a gamer, superior sound counts for a lot. You need to hear enemies tiptoeing up behind you for a sneak attack atmospheric music signaling a new challenge or task...
                             </p>
@@ -537,9 +574,9 @@
                         </div>
                     </div>
                 </div>
-            </div>-->
-
+            </div>
         </div>
+
         <div style=""><jsp:include page="footer.jsp"></jsp:include></div>
 
         <script src="assets/js/bootstrap.min.js"></script>
