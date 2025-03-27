@@ -315,6 +315,19 @@ public class CustomerDAO {
         }
         return count;
     }
+    
+    public int blockCustomer(String email) {
+        int count = 0;
+        try {
+            String sql = "UPDATE Customers SET IsBlock = 1 WHERE Email = ? AND IsDeleted = 0";
+            PreparedStatement pst = connector.prepareStatement(sql);
+            pst.setString(1, email);
+            count = pst.executeUpdate();
+        } catch (SQLException ex) {
+            Logger.getLogger(CustomerDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return count;
+    }
 
     //restore customer - shop manager
     public int restoreCustomer(int Id) {
