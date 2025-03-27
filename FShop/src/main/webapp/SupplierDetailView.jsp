@@ -92,7 +92,7 @@
             <jsp:include page="HeaderDashboard.jsp"></jsp:include>
 
                 <div class="table-container">
-                    <h3>Supplier Detail</h3>
+                    <h3>Supplier Details</h3>
                     <table class="table table-bordered">
                     <c:choose>
                         <c:when test="${supplier != null}">

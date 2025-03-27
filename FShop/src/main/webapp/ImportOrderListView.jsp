@@ -200,7 +200,7 @@
 
             <div class="table-container">
                 <div>
-                    <h3>Import Order History</h3>
+                    <h3>Import Stock History</h3>
                     <!--<input type="text" id="searchInput" class="form-control search-box" placeholder="Find by name ..." value="${searchValue}">-->
                 </div>
 

@@ -64,7 +64,6 @@ public class ViewImportOrderServlet extends HttpServlet {
             try {
                 request.setAttribute("importOrder", importOrder);
                 request.setAttribute("employee", ed.getEmployeeById(importOrder.getEmployeeId() + ""));
-                System.out.println(ed.getEmployeeById(importOrder.getEmployeeId() + "").getFullname());
                 request.getRequestDispatcher("ImportOrderDetailsView.jsp").forward(request, response);
             } catch (NullPointerException e) {
                 System.out.println(e);

@@ -23,7 +23,7 @@ public class ImportOrderDetailDAO {
     Connection connector = db.getConnection();
 
     public int createImportOrderDetails(ArrayList<ImportOrderDetail> detailList) {
-        String query = "INSERT INTO ImportDetails (ImportID, ProductID, ImportQuantity, ImportPrice) VALUES";
+        String query = "INSERT INTO ImportStockDetails (ImportID, ProductID, ImportQuantity, ImportPrice) VALUES";
         ArrayList<String> values = new ArrayList<>();
 
         for (ImportOrderDetail d : detailList) {
@@ -55,7 +55,7 @@ public class ImportOrderDetailDAO {
     }
 
     public int createImportOrderDetail(ImportOrderDetail detail) {
-        String query = "INSERT INTO ImportDetails (ImportID, ProductID, ImportQuantity, ImportPrice) VALUES (?, ?, ?, ?)";
+        String query = "INSERT INTO ImportStockDetails (ImportID, ProductID, ImportQuantity, ImportPrice) VALUES (?, ?, ?, ?)";
 
         try {
             PreparedStatement ps = connector.prepareStatement(query);
@@ -74,7 +74,7 @@ public class ImportOrderDetailDAO {
     }
 
     public ArrayList<ImportOrderDetail> getDetailsById(int detailId) {
-        String query = "SELECT * FROM ImportDetails WHERE ImportID = ?";
+        String query = "SELECT * FROM ImportStockDetails WHERE ImportID = ?";
         ArrayList<ImportOrderDetail> list = null;
         try {
             PreparedStatement ps = connector.prepareStatement(query);
@@ -96,7 +96,7 @@ public class ImportOrderDetailDAO {
     }
 
     public int updateDetailById(ImportOrderDetail d) {
-        String query = "UPDATE ImportDetails SET ImportQuantity = ?, ImportPrice = ? WHERE ProductID = ?";
+        String query = "UPDATE ImportStockDetails SET ImportQuantity = ?, ImportPrice = ? WHERE ProductID = ?";
 
         try {
             PreparedStatement ps = connector.prepareStatement(query);
@@ -113,7 +113,7 @@ public class ImportOrderDetailDAO {
     }
 
     public int deleteDetailById(int productId, int importId) {
-        String query = "DELETE FROM ImportDetails WHERE ProductID = ? AND ImportID = ?";
+        String query = "DELETE FROM ImportStockDetails WHERE ProductID = ? AND ImportID = ?";
 
         try {
             PreparedStatement ps = connector.prepareStatement(query);
@@ -129,7 +129,7 @@ public class ImportOrderDetailDAO {
     }
 
     public long calculateTotalPrice(int importId) {
-        String query = "SELECT SUM(ImportPrice) AS TotalPrice FROM ImportDetails WHERE ImportID = ?";
+        String query = "SELECT SUM(ImportPrice) AS TotalPrice FROM ImportStockDetails WHERE ImportID = ?";
 
         try {
             PreparedStatement ps = connector.prepareStatement(query);
@@ -150,7 +150,7 @@ public class ImportOrderDetailDAO {
         ArrayList<ImportOrderDetail> list = new ArrayList<>();
 
         String query = "SELECT *\n"
-                + "FROM ImportDetails IOD\n"
+                + "FROM ImportStockDetails IOD\n"
                 + "JOIN ImportOrders IO ON IOD.ImportID = IO.ImportID\n"
                 + "JOIN Products P ON IOD.ProductID = P.ProductID\n"
                 + "WHERE CAST(IO.ImportDate AS DATE) = CAST(GETDATE() AS DATE)\n"

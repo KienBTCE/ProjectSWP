@@ -79,10 +79,10 @@ CREATE TABLE Addresses (
 CREATE TABLE Suppliers (
     SupplierID INT PRIMARY KEY IDENTITY(1,1),
     TaxID VARCHAR(20) UNIQUE,
-    [Name] NVARCHAR(255) UNIQUE NOT NULL,
-    Email VARCHAR(254) UNIQUE,
-    PhoneNumber VARCHAR(15) UNIQUE,
-    [Address] VARCHAR(255) UNIQUE,
+    [Name] NVARCHAR(255) NOT NULL,
+    Email VARCHAR(254),
+    PhoneNumber VARCHAR(15),
+    [Address] VARCHAR(255),
     CreatedDate DATETIME,
     LastModify DATETIME,
     IsDeleted BIT,
@@ -175,9 +175,9 @@ CREATE TABLE Orders (
     DeliveredDate DATETIME,
     [Status]INT,
     TotalAmount BIGINT,
-	Discount INT,
+    Discount INT,
     FOREIGN KEY (CustomerID) REFERENCES Customers(CustomerID),
-	FOREIGN KEY ([Status]) REFERENCES OrderStatus(ID)
+    FOREIGN KEY ([Status]) REFERENCES OrderStatus(ID)
 );
 
 CREATE TABLE OrderDetails (
@@ -191,7 +191,7 @@ CREATE TABLE OrderDetails (
 );
 
 
-CREATE TABLE Imports ( -- ImportOrders -> Imports
+CREATE TABLE ImportStocks ( -- ImportOrders -> Imports -> ImportStocks
     ImportID INT PRIMARY KEY IDENTITY(1,1), -- IOID -> ImportID
     EmployeeID INT,
     SupplierID INT,
@@ -202,13 +202,13 @@ CREATE TABLE Imports ( -- ImportOrders -> Imports
     FOREIGN KEY (SupplierID) REFERENCES Suppliers(SupplierID)
 );
 
-CREATE TABLE ImportDetails ( -- ImportOrderDetails -> ImportDetails
-    ImportID INT REFERENCES Imports(ImportID), -- IOID -> ImportID
+CREATE TABLE ImportStockDetails ( -- ImportOrderDetails -> ImportDetails -> ImportStockDetails
+    ImportID INT REFERENCES ImportStocks(ImportID), -- IOID -> ImportID
     ProductID INT REFERENCES Products(ProductID),
     PRIMARY KEY (ImportID, ProductID),
     ImportQuantity INT, -- Quantity -> ImportQuantity
     ImportPrice BIGINT
-)
+);
 
 CREATE TABLE ProductRatings (
     RateID INT IDENTITY(1,1) PRIMARY KEY,
@@ -220,7 +220,7 @@ CREATE TABLE ProductRatings (
     Comment NVARCHAR(300),
     IsDeleted BIT,
     IsRead BIT,
-	FOREIGN KEY (OrderID) REFERENCES Orders(OrderID),
+    FOREIGN KEY (OrderID) REFERENCES Orders(OrderID),
     FOREIGN KEY (CustomerID) REFERENCES Customers(CustomerID),
     FOREIGN KEY (ProductID) REFERENCES Products(ProductID)
 );

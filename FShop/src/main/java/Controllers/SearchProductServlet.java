@@ -9,14 +9,12 @@ import DAOs.ProductRatingDAO;
 import Models.Product;
 import Models.ProductRating;
 import java.io.IOException;
-import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -50,33 +48,62 @@ public class SearchProductServlet extends HttpServlet {
 //            out.println("</html>");
 //        }
         ProductDAO pd = new ProductDAO();
-        List<Product> products = pd.searchProductByName(request.getParameter("name"));
+        ArrayList<Product> products;
 
-        if (request.getParameter("name") != null) {
-            ArrayList<String> filters = new ArrayList<>();
-            try {
-                ProductRatingDAO prDAO = new ProductRatingDAO();
-                ArrayList<ProductRating> stars = new ArrayList<>();
-                for (Product p : products) {
-                    ProductRating star = prDAO.getStarAVG(p.getProductId());
+        products = (ArrayList<Product>) pd.searchProductByName(request.getParameter("name"));
+//            ArrayList<Product> products = (ArrayList<Product>) pd.searchProductByName(request.getParameter("name"));
 
-                    stars.add(star);
-
-                }
-                Map<Object, Object> dataMap = new HashMap<>();
-                dataMap.put("stars", stars);
-                dataMap.put("products", products);
-                request.setAttribute("dataMap", dataMap);
-                request.setAttribute("products", products);
-                request.setAttribute("filters", filters);
-                request.getRequestDispatcher("SearchProductListView.jsp").forward(request, response);
-            } catch (NullPointerException e) {
-                System.out.println(e);
+//            Collections.sort(products, new Comparator<Product>() {
+//                @Override
+//                public int compare(Product p1, Product p2) {
+//                    return Double.compare(p2.getPrice(), p1.getPrice()); // Sắp xếp giảm dần
+//                }
+//            });
+        // ================================================================== Sort
+        String sort = request.getParameter("sort");
+        if (sort != null) {
+            if (sort.equalsIgnoreCase("asc")) {
+                products = (ArrayList<Product>) pd.sortProduct(request.getParameter("name"), "ASC");
+//                    Collections.sort(products, new Comparator<Product>() {
+//                        @Override
+//                        public int compare(Product p1, Product p2) {
+//                            return Double.compare(p1.getPrice(), p2.getPrice()); // Sắp xếp tăng dần
+//                        }
+//                    });
+            } else if (sort.equalsIgnoreCase("desc")) {
+                products = (ArrayList<Product>) pd.sortProduct(request.getParameter("name"), "DESC");
+//                    Collections.sort(products, new Comparator<Product>() {
+//                        @Override
+//                        public int compare(Product p1, Product p2) {
+//                            return Double.compare(p2.getPrice(), p1.getPrice()); // Sắp xếp giảm dần
+//                        }
+//                    });
             }
+        }
+        // ================================================================== Sort
+
+        ProductRatingDAO prDAO = new ProductRatingDAO();
+        ArrayList<ProductRating> stars = new ArrayList<>();
+        for (Product p : products) {
+            ProductRating star = prDAO.getStarAVG(p.getProductId());
+            stars.add(star);
+        }
+        try {
+            Map<Object, Object> dataMap = new HashMap<>();
+            dataMap.put("stars", stars);
+            dataMap.put("products", products);
+
+            request.setAttribute("dataMap", dataMap);
+            request.setAttribute("products", products);
+            request.setAttribute("uri", "");
+//                request.getRequestDispatcher("SearchProductListView.jsp").forward(request, response);
+            request.getRequestDispatcher("ProductListView.jsp").forward(request, response);
+        } catch (NullPointerException e) {
+            System.out.println(e);
         }
     }
 
-    // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
+// <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
      * Handles the HTTP <code>GET</code> method.
      *

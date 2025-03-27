@@ -113,8 +113,8 @@
             </c:if>
             <c:if test="${sessionScope.employee.getRoleId() == 4}">
                 <h6><a href="Warehouse">Warehouse Management</a></h6>
-                <a href="ImportOrder">Import Order</a>
-                <a href="Supplier">Supplier</a>
+                <a href="ImportOrder">Import Stock Management</a>
+                <a href="Supplier">Supplier Management</a>
                 <!--<a href="#">Product Management</a>-->
                 <a href="ImportStatistic">Statistic Management</a>
                 <a href="#" class="export-btn" onclick="document.getElementById('exportForm').submit(); return false;">Export to Excel</a>
