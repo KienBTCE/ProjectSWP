@@ -166,24 +166,32 @@
             .filter-row {
                 display: flex;
                 align-items: center;
-                gap: 15px;
+                gap: 10px;
                 margin-bottom: 5px;
 
             }
 
             .filter-container {
-                margin-right: 10px;
+                margin-left: 155px;
                 display: flex;
                 align-items: center;
-                gap: 20px;
+                gap: 10px;
                 margin-bottom: 15px;
                 margin-top: 60px;
-                width: 200px;
-                margin-left: 400px;
+                width: 320px;
+            }
+
+            .filter-containers {
+                display: flex;
+                align-items: center;
+                gap: 10px;
+                margin-bottom: 15px;
+                margin-top: 60px;
+                width: 150px;
             }
 
             .form-select {
-                width: 220px;
+                width: 100px;
                 padding: 8px;
                 border-radius: 10px;
                 border: 2px solid #7D69FF;
@@ -196,7 +204,7 @@
                 gap: 8px;
                 font-size: 14px;
                 width: 300px;
-                margin-left: 50px
+                margin-left: 20px
             }
 
             .checkbox-container input {
@@ -233,7 +241,6 @@
                 color: white;
                 width: 90%;
                 font-weight: bold;
-
                 border-top-right-radius: 10px;
                 border-bottom-right-radius: 10px;
                 border-top-left-radius: 0;
@@ -241,11 +248,10 @@
 
             }
 
-            /* Giữ header cố định */
             .header {
                 position: fixed;
                 top: 0;
-                left: 260px; /* vì sidebar chiếm 250px */
+                left: 260px;
                 right: 10px;
                 margin-top: 10px;
                 z-index: 1000;
@@ -263,8 +269,6 @@
                 margin-left: 5%;
                 margin-bottom: 3%;
             }
-            /* ========================================================= */
-
 
             thead {
                 background: #7D69FF;
@@ -317,7 +321,6 @@
             }
 
             .hi {
-
                 position: fixed;
                 top: 0;
                 left: 267px;  /* điều chỉnh theo sidebar */
@@ -405,15 +408,26 @@
 
                     </div>
 
-                    <!-- Checkbox để lọc sản phẩm mới nhập -->
                     <form action="ProductListServlet" method="get" class="checkbox-container">
                         <input type="hidden" name="filter" value="new_import"> 
                         <input type="checkbox" id="new_import" name="new_import" value="true" ${param.new_import == 'true' ? 'checked' : ''} onchange="this.form.submit()">
                         <label for="new_import">Newly imported products</label>
                     </form>
+                    <form action="ProductListServlet" method="get" class="filter-container">
+                        <select name="sortBy" class="form-select" onchange="this.form.submit()">
+                            <option value="IsDeleted" ${param.sortBy == 'IsDeleted' ? 'selected' : ''}>Sort by Status</option>
+                            <option value="Price" ${param.sortBy == 'Price' ? 'selected' : ''}>Sort by Price</option>
+                            <option value="FullName" ${param.sortBy == 'FullName' ? 'selected' : ''}>Sort by Name</option>
+                        </select>
+                        <select name="order" class="form-select" onchange="this.form.submit()">
+                            <option value="asc" ${param.order == 'asc' ? 'selected' : ''}>Ascending</option>
+                            <option value="desc" ${param.order == 'desc' ? 'selected' : ''}>Descending</option>
+                        </select>
+                    </form>
+
 
                     <!-- FORM FILTER MỚI NHẬP -->
-                    <form action="ProductListServlet" method="get" class="filter-container">
+                    <form action="ProductListServlet" method="get" class="filter-containers">
                         <select name="categoryId" class="form-select" onchange="this.form.submit()">
                             <option value="">All Categories</option>
                             <c:forEach var="cat" items="${categories}">
@@ -440,14 +454,12 @@
             }
         </script>
 
-
-        <c:if test="${not empty message}">
-            <div class="alert alert-info" role="alert">
-                ${message}
-            </div>
-        </c:if>
-
         <div class="table-container">
+            <c:if test="${not empty message}">
+                <div class="alert alert-info" role="alert">
+                    ${message}
+                </div>
+            </c:if>
             <table class="table table-hover">
                 <thead>
                     <tr>
@@ -488,7 +500,7 @@
                     </c:forEach>
                 </tbody>
             </table>
-            
+
         </div>
     </div>
 
