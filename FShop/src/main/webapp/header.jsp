@@ -22,13 +22,18 @@
             header{
                 width: 100%;
                 height: 44px;
-                background-color: #D10000;
+                background-color: #e9efff;
+
+                top: 0;
+                left: 0;
+                z-index: 1000; /* Đảm bảo header nằm trên */
+                padding: 10px 0; /* Điều chỉnh padding nếu cần */
             }
             .header-container{
                 height: 100%;
             }
             .header-infor{
-                background-color: #D10000;
+                background-color: #e9efff;
                 padding: 0 !important;
                 height: 100%;
                 display: flex;
@@ -41,7 +46,8 @@
                 justify-content: center;
             }
             .text-header{
-                color: white;
+                color: #000b68;
+                font-weight: bold;
             }
             .infor-content p{
                 margin: 0;
@@ -57,18 +63,22 @@
             }
             .infor-content a, .nav-infor-content a{
                 text-decoration: none;
-                color: black;
+                color: white;
             }
             .infor-content a:hover, .nav-infor-content a:hover{
-                color: black;
+                color: white;
                 opacity: 0.6;
                 text-decoration: none;
             }
 
             nav{
                 width: 100%;
-                height: 92px;
+                height: 72px;
                 border-bottom: 1.5px solid rgba(0, 0, 1, 0.1);
+                background: #d10000;
+                top: 40px; /* Cách header một khoảng (tùy chỉnh) */
+                left: 0;
+                z-index: 999;
             }
             .nav-container{
                 height: 100%;
@@ -101,21 +111,22 @@
                 flex-direction: column;
             }
             .list-categories{
-                margin: 0;
+                margin: 0px ;
                 padding: 0;
                 width: 100%;
                 height: 100%;
                 list-style: none;
                 display: flex;
-                justify-content: space-between;
+                justify-content: space-around;
             }
             li a{
+                font-size: 19px;
                 text-decoration: none;
-                color: black;
+                color: white;
                 font-weight: bold;
             }
             li a:hover{
-                color: black;
+                color: white;
                 opacity: 0.7;
                 text-decoration: none;
             }
@@ -151,7 +162,9 @@
             .btn-notif:hover i {
                 color: #d10000;
             }
-
+            body {
+                padding-top: 110px; /* Tạo khoảng trống để tránh header che mất nội dung */
+            }
 
             @media all and (max-width: 1000px) {
                 .header-container .time-head, .phone-head {
@@ -170,9 +183,10 @@
                 }
             }
         </style>
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
     </head>
     <body>
-        <header>
+        <header style="position: fixed;">
             <div class="header-container container">
                 <div class="header-infor row">
                     <div class="infor-content time-head col-md-4">
@@ -183,17 +197,24 @@
                     </div>
                     <div class="infor-content phone-head col-md-4">
                         <p class="text-header">Call Us: (+84) 12 345 6789</p>
-                        <a href="#"><img src="assets/imgs/HeaderImgs/Vector-Header-FB.svg" alt="Facebook" style="width: 23px; height: 23px;"></a>
-                        <a href="#"><img src="assets/imgs/HeaderImgs/Vector-Header-IG.svg" alt="Instagram" style="width: 23px; height: 23px;"></a>
+                        <a href="#"><img src="assets/imgs/HeaderImgs/facebook.png" alt="Facebook" style="width: 23px; height: 23px;"></a>
+                        <a href="#"><img src="assets/imgs/HeaderImgs/instagram.png" alt="Instagram" style="width: 23px; height: 23px;"></a>
                     </div>
                 </div>
             </div>
         </header>
-        <nav>
+        <nav style="position: fixed;">
             <div class="nav-container container">
                 <div class="nav-infor row">
                     <div class="nav-infor-content col-md-4">
-                        <a href="/"><img src="assets/imgs/HeaderImgs/Vector-Header-Logo.svg" alt="Shop Logo" style="width: 50px; height: 50px;"></a>
+                        <a href="/">
+                            <div style="display: flex; column-gap: 10px; margin: 15px 0px 0px 0px">
+                                <svg width="34" height="41" viewBox="0 0 34 41" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M17.0331 0.945374L0.296875 10.8637V23.0708L17.0331 32.9891L30.4588 25.3596V28.9836L17.0331 36.9946L0.296875 26.8855V31.2725L17.0331 41L33.7693 31.2725V19.0653L20.3435 26.8855V23.0708L33.7693 15.0599V10.8637L17.0331 0.945374Z" fill="white"/>
+                                </svg>
+                                <p class="tieuDeHeader" style="color: white; font-size: 30px">FShop</p>
+                            </div>
+                        </a>
                     </div>
                     <div class="nav-infor-content list-cat col-md-4">
                         <ul class="list-categories">
@@ -210,20 +231,20 @@
                         <!--<input type="text" id="searchInput" class="form-control search-box" placeholder="Find by name ..." value="${searchValue}">-->
                     </div>
                     <div class="nav-infor-content col-md-4">
-                        <a><i class="ti-search" style="font-size: 150%; color: black;" id="searchIcon"></i></a>
+                        <a><i class="ti-search" style="font-size: 150%; color: white; margin-right: 10px;" id="searchIcon"></i></a>
                         <input style="display: flex; align-items: center; margin: 0" type="text" id="searchInput" class="form-control search-box" placeholder="Find by name ..." value="">
                         <div style="display: flex; align-items: center" onclick="">
                             <button type="button" class="btn-notif" data-bs-toggle="modal" data-bs-target="#notificationModal">
-                                <i class="ti-bell"></i>
+                                <i class="ti-bell" style="color: white;"></i>
                             </button>
                             <!--<i class="ti-search" style="font-size: 150%; color: black;"></i>-->
                             <div style="display: flex; align-items: center">
                                 <c:if test="${sessionScope.customer == null}">
-                                    <a href="cart"><i class="ti-shopping-cart" style="font-size: 150%; color: black;"></i></a>
+                                    <a href="cart"><i class="ti-shopping-cart" style="font-size: 150%; color: white;"></i></a>
                                     </c:if>
                                     <c:if test="${sessionScope.customer != null}">
-                                    <a href="cart"><i class="ti-shopping-cart" style="font-size: 150%; color: black;"></i></a>
-                                    <p>${sessionScope.numOfProCartOfCus}</p>
+                                    <a href="cart"><i class="ti-shopping-cart" style="font-size: 150%; color: white;"></i></a>
+                                    <p style="color: white;">${sessionScope.numOfProCartOfCus}</p>
                                 </c:if>
                             </div>
                             <div style="display: flex; align-items: center; font-size: 12px">
@@ -238,14 +259,27 @@
                                     </a>
                                 </c:if>
                                 <c:if test="${sessionScope.customer == null}">
-                                    <a class="btn btn-primary text-white" href="customerLogin">Login
+                                    <a class="text-white" href="customerLogin" style="">
+                                        <div style="display: flex; align-items: center; height: 50px; flex-direction: row; flex-wrap: wrap; padding-bottom: 10px; padding-top: 5px;">
+                                            <div style="">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-person-circle" viewBox="0 0 16 16">
+                                                <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0"/>
+                                                <path fill-rule="evenodd" d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8m8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1"/>
+                                                </svg>
+                                            </div>
+                                            <p style="color: white; font-size: 15px;">
+                                                Login
+                                            </p>
+                                        </div>
                                     </a>
-                                </c:if>
-                            </div>
+                                </div>
+                            </c:if>
                         </div>
                     </div>
                 </div>
+            </div>
         </nav>
+
         <div class="modal fade" id="notificationModal" tabindex="-1" aria-labelledby="notificationModalLabel" aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered">
                 <div class="modal-content">
@@ -369,5 +403,6 @@
                 document.getElementById("searchInput").value = getParameterByName("name");
             });
         </script>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
     </body>
 </html>

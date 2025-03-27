@@ -75,19 +75,18 @@
                         <div class="d-flex align-items-center h-custom-2 px-5 ms-xl-4 pt-5 pt-xl-0 mt-xl-n5">
 
                             <form style="width: 23rem;" action="EmployeeLogin" method="POST">
-                                <img src="./assets/imgs/Dashboard/Group 1521.svg" alt="alt"/>
 
                                 <h3 class="fw-normal mb-3 pb-3" style="letter-spacing: 1px; font-size: 40px; font-weight: bold;">Login</h3>
 
                                 <div data-mdb-input-init class="form-outline mb-4">
                                     <label class="form-label" for="form2Example18">Email address</label>
-                                    <input name="email" type="email" id="form2Example18" class="form-control form-control-lg" />
+                                    <input name="email" type="email" id="form2Example18" class="form-control form-control-lg" required/>
 
                                 </div>
 
                                 <div data-mdb-input-init class="form-outline mb-4">
                                     <label class="form-label" for="form2Example28">Password</label>
-                                    <input name="password" type="password" id="form2Example28" class="form-control form-control-lg" />
+                                    <input name="password" type="password" id="form2Example28" class="form-control form-control-lg" required/>
 
                                 </div>
 
@@ -100,9 +99,9 @@
                         </div>
 
                     </div>
-                    <div class="col-md-6">
-                        <img src="./assets/imgs/icon/shop.jpg"
-                             alt="Login image" width="500px" height="700px" style="object-fit: cover; object-position: left; margin-top: 10px; border-radius: 10px;">
+                    <div class="col-md-6" style="padding: 200px 0px 200px 0px;">
+                        <img src="./assets/imgs/Dashboard/Group 1521.svg"
+                             alt="Login image" width="100%" height="auto" style="object-fit: cover; object-position: left; margin-top: 10px; border-radius: 10px;">
                     </div>
                 </div>
             </div>
