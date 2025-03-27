@@ -607,8 +607,8 @@ public class ProductDAO {
         String query
                 = "SELECT TOP 10 p.ProductID, p.FullName, c.Name AS Category, p.Price, io.ImportDate "
                 + "FROM Products p "
-                + "JOIN ImportDetails iod ON p.ProductID = iod.ProductID "
-                + "JOIN Imports io ON iod.ImportID = io.ImportID "
+                + "JOIN ImportStockDetails iod ON p.ProductID = iod.ProductID "
+                + "JOIN ImportStocks io ON iod.ImportID = io.ImportID "
                 + "JOIN Categories c ON p.CategoryID = c.CategoryID "
                 + "ORDER BY io.ImportDate DESC";
 
@@ -677,9 +677,9 @@ public class ProductDAO {
                 + "FROM Products p "
                 + "JOIN Categories c ON p.CategoryID = c.CategoryID "
                 + "JOIN Brands b ON p.BrandID = b.BrandID "
-                + "WHERE p.ProductID IN (SELECT DISTINCT ProductID FROM ImportDetails "
-                + "JOIN Imports ON ImportDetails.ImportID = Imports.ImportID "
-                + "WHERE Imports.ImportDate >= DATEADD(DAY, -7, GETDATE()))";
+                + "WHERE p.ProductID IN (SELECT DISTINCT ProductID FROM ImportStockDetails "
+                + "JOIN ImportStocks ON ImportStockDetails.ImportID = ImportStocks.ImportID "
+                + "WHERE ImportStocks.ImportDate >= DATEADD(DAY, -7, GETDATE()))";
 
         try ( PreparedStatement ps = connector.prepareStatement(query)) {
             ResultSet rs = ps.executeQuery();

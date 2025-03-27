@@ -110,7 +110,6 @@
 
             .search-box {
                 max-width: 300px;
-                margin-bottom: 10px;
             }
 
             .table-navigate{
@@ -123,13 +122,54 @@
         <jsp:include page="SidebarDashboard.jsp"></jsp:include>
             <div class="content">
             <jsp:include page="HeaderDashboard.jsp"></jsp:include>
-                <div class="table-navigate">
-                    <!--<input type="text" id="searchInput" class="form-control search-box" placeholder="Find by name ..." onkeyup="searchTable()">-->
-                    <input type="text" id="searchInput" class="form-control search-box" placeholder="Find by name ..." value="${searchValue}">
-                <button class="btn btn-detail" data-bs-toggle="modal" data-bs-target="#createSupplierModal" style="background-color: #BDF3BD; height: 100%">Create</button>
-            </div>
-            <button class="btn btn-primary me-2" onclick="searchSupplier()">Search</button>
-            <button type="button" class="btn btn-secondary" onclick="resetSearch()">Reset</button>
+                <div class="table-container" style="margin-top: 20px">
+                    <div class="table-navigate">
+                        <h3>Suppliers</h3>
+                        <!--
+                        <input type="text" id="searchInput" class="form-control search-box" placeholder="Find by name ..." onkeyup="searchTable()">-->
+                        <button class="btn btn-detail" data-bs-toggle="modal" data-bs-target="#createSupplierModal" style="background-color: #BDF3BD; height: 100%;">Create</button>
+                    </div>
+
+                    <div class="table-navigate">
+                        <div class="table-navigate">
+                            <input type="text" id="searchInput" class="form-control search-box" placeholder="Find by name ..." value="${searchValue}">
+                        <button class="btn btn-primary me-2" onclick="searchSupplier()">Search</button>
+                        <button type="button" class="btn btn-secondary" onclick="resetSearch()">Reset</button>
+                    </div>
+                </div>
+
+                <table class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th>Tax ID</th>
+                            <th>Name</th>
+                            <th>Phone Number</th>
+                            <th>Email</th>
+                            <th>Address</th>
+                            <th>Status</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody id="supplierTable">
+                        <c:forEach items="${suppliers}" var="s">
+                            <tr>
+                                <td>${s.getTaxId()}</td>
+                                <td  style="word-wrap: break-word; white-space: normal; max-width: 200px;">${s.getName()}</td>
+                                <td>${s.getPhoneNumber()}</td>
+                                <td>${s.getEmail()}</td>
+                                <td>${s.getShortedAddress()}</td>
+                                <td>
+                                    <span class="badge ${s.getActivate() == 1 ? 'bg-success' : 'bg-danger'}">${s.getStatus()}</span>
+                                </td>
+                                <td>
+                                    <a href="Supplier?id=${s.getSupplierId()}" class="btn btn-detail" style="background-color: #BDF3BD">Detail</a>
+                                </td>
+                            </tr>
+                        </c:forEach>
+                    </tbody>
+                </table>
+            </div> 
+
             <!--          Start Modal Create Supplier            -->
             <div class="modal fade" id="createSupplierModal" tabindex="-1" aria-labelledby="createSupplierModalLabel" aria-hidden="true">
                 <div class="modal-dialog">
@@ -174,42 +214,6 @@
                 </div>
             </div>
             <!--          End Modal Create Supplier            -->
-
-            <div class="table-container">
-                <div>
-                    <h3>Suppliers</h3>
-                </div>
-                <table class="table table-hover">
-                    <thead>
-                        <tr>
-                            <th>Tax ID</th>
-                            <th>Name</th>
-                            <th>Phone Number</th>
-                            <th>Email</th>
-                            <th>Address</th>
-                            <th>Status</th>
-                            <th>Action</th>
-                        </tr>
-                    </thead>
-                    <tbody id="supplierTable">
-                        <c:forEach items="${suppliers}" var="s">
-                            <tr>
-                                <td>${s.getTaxId()}</td>
-                                <td  style="word-wrap: break-word; white-space: normal; max-width: 200px;">${s.getName()}</td>
-                                <td>${s.getPhoneNumber()}</td>
-                                <td>${s.getEmail()}</td>
-                                <td>${s.getShortedAddress()}</td>
-                                <td>
-                                    <span class="badge ${s.getActivate() == 1 ? 'bg-success' : 'bg-danger'}">${s.getStatus()}</span>
-                                </td>
-                                <td>
-                                    <a href="Supplier?id=${s.getSupplierId()}" class="btn btn-detail" style="background-color: #BDF3BD">Detail</a>
-                                </td>
-                            </tr>
-                        </c:forEach>
-                    </tbody>
-                </table>
-            </div> 
 
             <!-- Start Error Modal -->
             <div class="modal fade" id="errorModal" tabindex="-1" aria-labelledby="errorModalLabel" aria-hidden="true">

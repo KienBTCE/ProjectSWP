@@ -120,28 +120,28 @@
             <div class="content">
             <jsp:include page="HeaderDashboard.jsp"></jsp:include>
                 <div class="container mt-5">
-                    <h1 class="text-center">Import Statistic</h1>
+                    <h1 class="text-center" style="text-align: center;">Import Statistic</h1>
                     <div class="row">
                         <div class="col-md-6">
-                            <h2>Daily Stock Import</h2>
+                            <h2 style="text-align: center;">Daily Stock Import</h2>
                             <div class="chart-container">
                                 <canvas id="orderByDayChart"></canvas>
                             </div>
                         </div>
                         <div class="col-md-6">
-                            <h2>Monthly Stock Import</h2>
+                            <h2 style="text-align: center;">Monthly Stock Import</h2>
                             <div class="chart-container">
                                 <canvas id="orderByMonthChart"></canvas>
                             </div>
                         </div>
                         <div class="col-md-6">
-                            <h2>Stock Import by Supplier</h2>
+                            <h2 style="text-align: center;">Stock Import by Supplier</h2>
                             <div class="chart-container">
                                 <canvas id="supplierChart"></canvas>
                             </div>
                         </div>
                         <div class="col-md-6">
-                            <h2>Stock Import by Product</h2>
+                            <h2 style="text-align: center;">Stock Import by Product</h2>
                             <div class="chart-container">
                                 <canvas id="productChart"></canvas>
                             </div>

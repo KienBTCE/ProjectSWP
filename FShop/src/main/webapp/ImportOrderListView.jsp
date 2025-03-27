@@ -128,8 +128,15 @@
         <jsp:include page="SidebarDashboard.jsp"></jsp:include>
             <div class="content">
             <jsp:include page="HeaderDashboard.jsp"></jsp:include>
-
-                <div class="table-navigate">
+                <div class="table-container" style="margin-top: 20px">
+                    <div class="table-navigate">
+                        <h3>Import Stock History</h3>
+                        <button class="btn btn-detail" data-bs-toggle="modal" data-bs-target="#importOrderModal" style="background-color: #BDF3BD; height: 100%;" onclick="window.location.href = 'ImportStock'">Create</button>
+                        <!--<button id="openModalBtn" class="btn btn-detail" style="background-color: #BDF3BD; height: 100%">Create</button>-->
+                    </div>
+                    <!--
+                    <input type="text" id="searchInput" class="form-control search-box" placeholder="Find by name ..." value="${searchValue}">-->
+                <div class="table-navigate" style="margin-top: 20px">
                     <div class="table-navigate">
                         <form method="GET" action="ImportOrder" style="display: flex;">
                             <label for="startDate" class="me-2">From:</label>
@@ -143,65 +150,6 @@
                             <button type="button" class="btn btn-secondary" onclick="resetFilter()">Reset</button>
                         </form>
                     </div>
-
-                    <div class="table-navigate">
-                        <button class="btn btn-detail" data-bs-toggle="modal" data-bs-target="#importOrderModal" style="background-color: #BDF3BD; height: 100%" onclick="window.location.href = 'ImportStock'">Create</button>
-                        <!--<button id="openModalBtn" class="btn btn-detail" style="background-color: #BDF3BD; height: 100%">Create</button>-->
-                    </div>
-                </div>
-
-                <!--          Start Modal Select Supplier            -->
-                <div class="modal fade" id="createImportOrder" tabindex="-1" aria-labelledby="createImportOrderLabel" aria-hidden="true">
-                    <div class="modal-dialog modal-lg">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <h5 class="modal-title" id="createImportOrderLabel">Select Supplier</h5>
-                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                            </div>
-                            <div class="modal-body">
-                                <table class="table table-striped" id="supplierListTable">
-                                    <thead>
-                                        <tr>
-                                            <th>Tax ID</th>
-                                            <th>Company Name</th>
-                                            <th>Email</th>
-                                            <th>Phone</th>
-                                            <th>Address</th>
-                                            <th>Select</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                    <c:forEach items="${suppliers}" var="s">
-                                        <tr>
-                                            <td>${s.getTaxId()}</td>
-                                            <td  style="word-wrap: break-word; white-space: normal; max-width: 200px;">${s.getName()}</td>
-                                            <td>${s.getEmail()}</td>
-                                            <td>${s.getPhoneNumber()}</td>
-                                            <td>${s.getAddress()}</td>
-                                            <td>
-                                                <button class="btn btn-primary select-supplier" data-id="${s.getSupplierId()}">Select</button>
-                                            </td>
-                                        </tr>
-                                    </c:forEach>
-                                </tbody>
-                            </table>
-                        </div>
-                        <div class="modal-footer">
-                            <form id="importOrderForm" method="POST" action="CreateImportOrder">
-                                <input type="hidden" name="supplierId" id="selectedSupplierId">
-                                <button type="submit" class="btn btn-success" id="confirmSelection" disabled>Confirm</button>
-                            </form>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!--          End Modal Select Supplier            -->
-
-            <div class="table-container">
-                <div>
-                    <h3>Import Stock History</h3>
-                    <!--<input type="text" id="searchInput" class="form-control search-box" placeholder="Find by name ..." value="${searchValue}">-->
                 </div>
 
                 <table class="table table-hover">
@@ -230,6 +178,53 @@
                 </table>
             </div>
 
+            <!--          Start Modal Select Supplier            -->
+            <div class="modal fade" id="createImportOrder" tabindex="-1" aria-labelledby="createImportOrderLabel" aria-hidden="true">
+                <div class="modal-dialog modal-lg">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="createImportOrderLabel">Select Supplier</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <table class="table table-striped" id="supplierListTable">
+                                <thead>
+                                    <tr>
+                                        <th>Tax ID</th>
+                                        <th>Company Name</th>
+                                        <th>Email</th>
+                                        <th>Phone</th>
+                                        <th>Address</th>
+                                        <th>Select</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <c:forEach items="${suppliers}" var="s">
+                                        <tr>
+                                            <td>${s.getTaxId()}</td>
+                                            <td  style="word-wrap: break-word; white-space: normal; max-width: 200px;">${s.getName()}</td>
+                                            <td>${s.getEmail()}</td>
+                                            <td>${s.getPhoneNumber()}</td>
+                                            <td>${s.getAddress()}</td>
+                                            <td>
+                                                <button class="btn btn-primary select-supplier" data-id="${s.getSupplierId()}">Select</button>
+                                            </td>
+                                        </tr>
+                                    </c:forEach>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="modal-footer">
+                            <form id="importOrderForm" method="POST" action="CreateImportOrder">
+                                <input type="hidden" name="supplierId" id="selectedSupplierId">
+                                <button type="submit" class="btn btn-success" id="confirmSelection" disabled>Confirm</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!--          End Modal Select Supplier            -->
         </div>
     </div>
 
@@ -291,17 +286,17 @@
         document.getElementById("endDate").value = getQueryParam("toDate") || "";
     </script>
 
-<!--    <script>
-        document.getElementById("searchInput").addEventListener("keypress", function (event) {
-            if (event.key === "Enter") {
-                event.preventDefault();
-                let searchValue = this.value.trim();
-                if (searchValue !== "") {
-                    window.location.href = "ImportOrder?name=" + encodeURIComponent(searchValue);
+    <!--    <script>
+            document.getElementById("searchInput").addEventListener("keypress", function (event) {
+                if (event.key === "Enter") {
+                    event.preventDefault();
+                    let searchValue = this.value.trim();
+                    if (searchValue !== "") {
+                        window.location.href = "ImportOrder?name=" + encodeURIComponent(searchValue);
+                    }
                 }
-            }
-        });
-    </script>-->
+            });
+        </script>-->
 
     <script>
         document.addEventListener("DOMContentLoaded", function () {
