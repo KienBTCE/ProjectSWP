@@ -118,7 +118,7 @@ public class SendMailServlet extends HttpServlet {
             String emailContent = "<p>Dear Customer,</p>"
                     + "<p>We received a request to reset your password. Please use the OTP below to proceed:</p>"
                     + "<h2 style='color: blue;'>" + otp + "</h2>"
-                    + "<p>This OTP is valid for 10 minutes. Do not share this code with anyone.</p>"
+                    + "<p>Do not share this code with anyone.</p>"
                     + "<p>If you did not request this, please ignore this email.</p>"
                     + "<p>Best regards,<br>FShop</p>";
             email.setContent(emailContent);

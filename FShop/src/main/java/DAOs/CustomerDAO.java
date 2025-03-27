@@ -315,7 +315,7 @@ public class CustomerDAO {
         }
         return count;
     }
-    
+
     public int blockCustomer(String email) {
         int count = 0;
         try {
@@ -435,6 +435,23 @@ public class CustomerDAO {
             e.printStackTrace();
         }
         return customer;
+    }
+
+    public String getCurrentPassword(String email) {
+        String sql = "SELECT Password FROM Customers WHERE Email = ?";
+        try ( PreparedStatement ps = connector.prepareStatement(sql)) {
+
+            ps.setString(1, email);
+
+            try ( ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    return rs.getString("password");
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace(); // Gen Z: Debug kiểu "oopsie, có lỗi xảy ra!"
+        }
+        return null; // Nếu không tìm thấy hoặc có lỗi thì trả về null
     }
 
     public static void main(String[] args) {
