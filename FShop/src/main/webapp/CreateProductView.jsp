@@ -15,11 +15,12 @@
                 gap: 20px;
                 margin-left: 250px;
             }
-            
+
             .error{
                 color: red;
                 font-weight: bold;
             }
+
         </style>
     </head>
     <body>
@@ -31,7 +32,6 @@
                         <div class="card-header">
                             <h3>Create New Product</h3>
                         </div>
-
                         <div class="card-body">
                             <form action="CreateProductServlet" method="post" enctype="multipart/form-data">
                                 <input type="hidden" name="categoryName" value="${categoryName}" />
@@ -44,36 +44,36 @@
                                         <select class="form-select" name="categoryName" id="categoryName" required>
                                             <c:forEach var="category" items="${categories}">
                                                 <option value="CreateProductServlet?name=${category}" ${category == categoryName ? 'selected' : ''}>${category}</option>
-                                            </c:forEach>                                         
+                                            </c:forEach>
                                         </select>
-                                         <p></p>
+                                        <p></p>
                                     </div>
                                     <div class="col-md-4">
                                         <label class="form-label">Brand</label>
                                         <select class="form-select" name="brandName" required>
                                             <c:forEach var="brand" items="${brands}">
-                                                <option value="${brand}">${brand}</option>
+                                                <option value="${brand}" ${brand == brandName ? 'selected' : ''} >${brand}</option>
                                             </c:forEach>
                                         </select>
                                         <p></p>
                                     </div>
                                     <div class="col-md-4">
                                         <label class="form-label">Model</label>
-                                        <input type="text" class="form-control" name="model" required />
-                                        <p class="error" >${errorMsg1}</p>
-                                    </div>
+                                        <input type="text" class="form-control" name="model" value="${model != null ? model : ''}" required />
+                                        <p class="error">${errorMsg1}</p>
+                                    </div>                                       
                                 </div>
                                 <!-- Row 2: Full Name, Price, Is Deleted -->
                                 <div class="row g-3 align-items-center mt-2">
                                     <div class="col-md-4">
                                         <label class="form-label">Full Name</label>
-                                        <input type="text" class="form-control" name="fullName" required />
-                                        <p class="error" >${errorMsg2}</p>
+                                        <input type="text" class="form-control" name="fullname" value="${fullname != null ? fullname : ''}" required />
+                                        <p class="error">${errorMsg2}</p>
                                     </div>
                                     <div class="col-md-4">
                                         <label class="form-label">Price</label>
-                                        <input type="number" class="form-control" name="price" required />
-                                        <p class="error" >${errorMsg3}</p>
+                                        <input type="number" class="form-control" name="price" value="${price != null ? price : ''}" required />
+                                        <p class="error">${errorMsg3}</p>                        
                                     </div>
                                     <div class="col-md-4">
                                         <label class="form-label">Disable</label>
@@ -87,7 +87,7 @@
                                 <div class="row g-3 mt-2">
                                     <div class="col-md-12">
                                         <label class="form-label">Description</label>
-                                        <textarea class="form-control" name="description" rows="3" required></textarea>
+                                        <textarea class="form-control" name="description" rows="3" required>${description != null ? description : ''}</textarea>
                                     </div>
                                 </div>
                                 <!-- Row 4: Attributes -->
@@ -104,7 +104,7 @@
                                                         </div>
                                                         <div class="col-md-8">
                                                             <input type="text" class="form-control" name="attributeInfor_${attr.attributeId}" 
-                                                                   placeholder="Enter ${attr.attributeName}" required />
+                                                                   placeholder="Enter ${attr.attributeName}" value="${attributeMap[attr.attributeId] != null ? attributeMap[attr.attributeId] : ''}" required />
                                                         </div>
                                                     </div>
                                                 </c:forEach>
@@ -119,7 +119,7 @@
                                 <div class="row g-3 mt-2">
                                     <div class="col-md-3">
                                         <label class="form-label">Image 1</label>
-                                        <input type="file" class="form-control" name="txtP1" accept="image/*" required />
+                                        <input type="file" class="form-control" name="txtP1" value="${image1 != null ? image1 : ''}" accept="image/*" required />
                                     </div>
                                     <div class="col-md-3">
                                         <label class="form-label">Image 2</label>
