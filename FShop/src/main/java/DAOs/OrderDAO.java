@@ -114,7 +114,7 @@ public class OrderDAO {
             data += o.getTotalAmount() + "";
 
             PreparedStatement pre = connector.prepareStatement("Insert into [Orders] (CustomerID, FullName, PhoneNumber, [Address], TotalAmount, [Status], OrderedDate, Discount)"
-                    + " values (" + data + ", 1, GETUTCDATE(), ?)");
+                    + " values (" + data + ", 1, DATEADD(HOUR, 7, GETUTCDATE()), ?)");
             pre.setInt(1, o.getDiscount());
             pre.executeUpdate();
         } catch (SQLException e) {
