@@ -61,6 +61,38 @@ public class ProductDAO {
 
         return list;
     }
+    
+    public ArrayList<Product> getAllAvailabilityProducts() {
+        ArrayList<Product> list = new ArrayList<>();
+
+        String query = "SELECT * FROM Products";
+
+        try {
+            PreparedStatement ps = connector.prepareStatement(query);
+            ResultSet rs = ps.executeQuery();
+
+            while (rs.next()) {
+                list.add(new Product(
+                        rs.getInt("ProductID"),
+                        rs.getInt("BrandID"),
+                        rs.getInt("CategoryID"),
+                        rs.getString("Model"),
+                        rs.getString("FullName"),
+                        rs.getString("Description"),
+                        rs.getInt("IsDeleted"),
+                        rs.getLong("Price"),
+                        rs.getString("Image"),
+                        rs.getInt("Quantity"),
+                        rs.getInt("Stock")
+                ));
+            }
+            return list;
+        } catch (SQLException e) {
+            System.out.println(e);
+        }
+
+        return list;
+    }
 
     public ArrayList<Product> getAllProductsByCategory(String category) {
         ArrayList<Product> list = new ArrayList<>();
@@ -97,8 +129,8 @@ public class ProductDAO {
 
         return list;
     }
-    
-     public boolean isModelExists(String model) {
+
+    public boolean isModelExists(String model) {
         String sql = "SELECT COUNT(*) FROM Products WHERE Model = ?";
         try {
             PreparedStatement pr = connector.prepareStatement(sql);
@@ -112,8 +144,8 @@ public class ProductDAO {
         }
         return false;
     }
-   
-     public boolean isFullnameExists(String fullName) {
+
+    public boolean isFullnameExists(String fullName) {
         String sql = "SELECT COUNT(*) FROM Products WHERE FullName = ?";
         try {
             PreparedStatement pr = connector.prepareStatement(sql);
@@ -235,7 +267,7 @@ public class ProductDAO {
                 + "sp.FullName, sp.Price, sp.Stock, sp.isDeleted "
                 + "FROM Products sp "
                 + "JOIN Categories c ON sp.CategoryID = c.CategoryID "
-                + "JOIN Brands b ON sp.BrandID = b.BrandID ORDER BY IsDeleted";
+                + "JOIN Brands b ON sp.BrandID = b.BrandID ORDER BY IsDeleted DESC";
 
         try ( PreparedStatement ps = connector.prepareStatement(query);  ResultSet rs = ps.executeQuery()) {
 
@@ -748,6 +780,38 @@ public class ProductDAO {
             e.printStackTrace();
         }
         return exists;
+    }
+
+    public List<Product> getProductsSortedByStatus(String sortBy) {
+        List<Product> products = new ArrayList<>();
+        // Kiểm tra nếu sortBy là một giá trị hợp lệ
+        if (!sortBy.equals("IsDeleted") && !sortBy.equals("Price") && !sortBy.equals("FullName")) {
+            sortBy = "IsDeleted";  // Mặc định nếu giá trị không hợp lệ
+        }
+
+        String query = "SELECT sp.ProductID, c.Name AS CategoryName, b.Name AS BrandName, "
+                + "sp.FullName, sp.Price, sp.Stock, sp.isDeleted "
+                + "FROM Products sp "
+                + "JOIN Categories c ON sp.CategoryID = c.CategoryID "
+                + "JOIN Brands b ON sp.BrandID = b.BrandID "
+                + "ORDER BY " + sortBy;
+
+        try ( PreparedStatement ps = connector.prepareStatement(query);  ResultSet rs = ps.executeQuery()) {
+            while (rs.next()) {
+                products.add(new Product(
+                        rs.getInt("ProductID"),
+                        rs.getString("CategoryName"),
+                        rs.getString("BrandName"),
+                        rs.getString("FullName"),
+                        rs.getLong("Price"),
+                        rs.getInt("Stock"),
+                        rs.getInt("isDeleted")
+                ));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return products;
     }
 
 }

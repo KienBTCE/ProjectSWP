@@ -13,6 +13,7 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 
 /**
@@ -113,9 +114,27 @@ public class UpdateVoucherServlet extends HttpServlet {
             } else if (value < 0 || maxDiscount < 0 || minOrder < 0 || used < 0 || maxUsed < 0) {
                 request.setAttribute("error", "Numeric values must be non-negative.");
             }
+            if (type == 1 && value >= 100) {
+                request.setAttribute("error", "If the voucher type is percent, you cannot set a value greater than 100.");
+//                request.getRequestDispatcher("CreateVoucherView.jsp").forward(request, response);
+               
+            }
+             LocalDateTime now = LocalDateTime.now(ZoneId.of("Asia/Bangkok"));
+
+            if (start.isBefore(now)) {
+                request.setAttribute("error", "Start Date must not be in the past.");
+//                request.getRequestDispatcher("CreateVoucherView.jsp").forward(request, response);
+               
+            }
+             if (end.isBefore(now)) {
+                request.setAttribute("error", "End Date must not be in the past.");
+//                request.getRequestDispatcher("CreateVoucherView.jsp").forward(request, response);
+//                return;
+            }
 
             // Nếu có lỗi → quay lại form
             if (request.getAttribute("error") != null) {
+                // Trả lại đối tượng voucher với dữ liệu đã nhập
                 Voucher errorVoucher = new Voucher(voucherID, code, value, type,
                         rawStart, rawEnd, used, maxUsed, maxDiscount, minOrder, status, desc);
                 request.setAttribute("voucher", errorVoucher);
@@ -138,6 +157,8 @@ public class UpdateVoucherServlet extends HttpServlet {
         } catch (Exception e) {
             e.printStackTrace();
             request.setAttribute("error", "Something went wrong! Please check your inputs.");
+            // Trả lại dữ liệu voucher sau khi có lỗi
+            request.setAttribute("voucher", new Voucher());  // Trả về một đối tượng Voucher trống để form không bị trống.
             request.getRequestDispatcher("UpdateVoucherView.jsp").forward(request, response);
         }
     }

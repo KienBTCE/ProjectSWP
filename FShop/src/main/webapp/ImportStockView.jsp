@@ -299,12 +299,12 @@
 
                                 <div class="mb-3">
                                     <label for="inputQuantity" class="form-label">Quantity</label>
-                                    <input type="number" class="form-control" id="inputQuantity" min="1" required>
+                                    <input type="number" class="form-control" id="inputQuantity" min="1" onclick="resetHighlight()" required>
                                 </div>
 
                                 <div class="mb-3">
                                     <label for="inputPrice" class="form-label">Price</label>
-                                    <input type="number" class="form-control" id="inputPrice" min="1" required>
+                                    <input type="number" class="form-control" id="inputPrice" min="1" onclick="resetHighlight()" required>
                                 </div>
 
                                 <button type="button" class="btn btn-success" id="confirmProduct">Confirm</button>
@@ -549,12 +549,26 @@
                             alert("Please enter a valid quantity (min: 1).");
                             quantityInput.value = "";
                             quantityInput.focus();
+
+                            const selectedRow = this.closest("tr");
+                            // Bỏ highlight cho dòng được chọn
+                            selectedRow.classList.remove("table-success");
+                            // Bật nút Confirm
+                            confirmProductBtn.disabled = true;
+
                             return;
                         }
                         if (isNaN(productPrice) || productPrice < 1000) {
                             alert("Please enter a valid price (min: 1000).");
                             priceInput.value = "";
                             priceInput.focus();
+
+                            const selectedRow = this.closest("tr");
+                            // Bỏ highlight cho dòng được chọn
+                            selectedRow.classList.remove("table-success");
+                            // Bật nút Confirm
+                            confirmProductBtn.disabled = true;
+
                             return;
                         }
 
@@ -577,6 +591,23 @@
                         confirmProductBtn.disabled = false;
                     });
                 });
+            });
+        </script>
+
+        <script>
+            function resetHighlight() {
+                // Xóa highlight của tất cả các dòng đang có class "table-success"
+                document.querySelectorAll("tr.table-success").forEach(row => row.classList.remove("table-success"));
+            }
+
+// Lắng nghe sự kiện focus trên tất cả input trong bảng
+            document.addEventListener("focusin", function (event) {
+                if (event.target.classList.contains("product-quantity") || event.target.classList.contains("product-price")) {
+                    let row = event.target.closest("tr"); // Tìm thẻ <tr> chứa ô input
+                    if (row) {
+                        row.classList.remove("table-success"); // Xóa highlight của dòng đó
+                    }
+                }
             });
         </script>
 

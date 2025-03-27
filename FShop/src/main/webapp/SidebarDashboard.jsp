@@ -23,7 +23,7 @@
 
             .sidebar {
                 width: 250px;
-                height: 100%;
+                height: 98%;
                 background: #FFFFFF;
                 color: black;
                 padding-top: 20px;
