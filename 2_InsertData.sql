@@ -132,15 +132,15 @@ INSERT INTO Products (ProductID, BrandID, CategoryID, Model, FullName, [Descript
 (25, 10, 4, 'Acer-Predator-Galea-350', 'Acer Predator Galea 350', 'Gaming headset with surround sound', 'acer-predator-galea-350.jpg', 2590000, 0, 20);
 
 -- Chargers
-INSERT INTO Products (ProductID, BrandID, CategoryID, Model, FullName, [Description], [Image], Price, IsDeleted, Stock) VALUES 
-(26, 1, 5, 'Apple-20W-USB-C', 'Apple 20W USB-C Charger', 'Fast charging for iPhone and iPad', 'apple-20w-usb-c.jpg', 590000, 0, 100),
-(27, 2, 5, 'Samsung-25W-USB-C', 'Samsung 25W USB-C Charger', 'Super Fast Charging adapter', 'samsung-25w-usb-c.jpg', 690000, 0, 80),
-(28, 5, 5, 'Xiaomi-67W-SuperCharge', 'Xiaomi 67W Super Charge', 'High-speed charging adapter', 'xiaomi-67w.jpg', 890000, 0, 70),
-(29, 4, 5, 'Huawei-40W-SuperCharge', 'Huawei 40W Super Charge', 'Fast charging technology', 'huawei-40w.jpg', 790000, 0, 60),
-(30, 9, 5, 'Lenovo-65W-Charger', 'Lenovo 65W Laptop Charger', 'Fast charging for Lenovo laptops', 'lenovo-65w.jpg', 1290000, 0, 50);
+INSERT INTO Products (ProductID, BrandID, CategoryID, Model, FullName, [Description], [Image], [Image1], [Image2], Price, IsDeleted, Stock) VALUES 
+(26, 1, 5, 'Apple-20W-USB-C', 'Apple 20W USB-C Charger', 'Fast charging for iPhone and iPad', 'apple-20w-usb-c.jpg', 'adapter-20w-apple-5_1.png', 'adapter-20w-apple-5_1_1.png', 590000, 0, 100),
+(27, 2, 5, 'Samsung-25W-USB-C', 'Samsung 25W USB-C Charger', 'Super Fast Charging adapter', 'samsung-25w-usb-c.jpg', 'cu-sac-nhanh-samsung-25w-ep-t2510nbegww-2.png', 'cu-sac-nhanh-samsung-25w-ep-t2510nbegww-4.png', 690000, 0, 80),
+(28, 5, 5, 'Xiaomi-67W-SuperCharge', 'Xiaomi 67W Super Charge', 'High-speed charging adapter', 'xiaomi-67w.jpg','cu-sac-xiaomi-usb-a-gan-67w-kem-cap-type-c_3_.png', 'cu-sac-xiaomi-usb-a-gan-67w-kem-cap-type-c_4_.png', 890000, 0, 70),
+(29, 4, 5, 'Huawei-40W-SuperCharge', 'Huawei 40W Super Charge', 'Fast charging technology', 'huawei-40w.jpg','','', 790000, 0, 60),
+(30, 9, 5, 'Lenovo-65W-Charger', 'Lenovo 65W Laptop Charger', 'Fast charging for Lenovo laptops', 'lenovo-65w.jpg', '4X20M26268-560x450-02.61f5a0696c22551d.png','6hz00evh8lohwi8iag5nh0yoq8jh4t069238.png',1290000, 0, 50);
 
 -- Charging Cables
-INSERT INTO Products (ProductID, BrandID, CategoryID, Model, FullName, [Description], [Image], Price, IsDeleted, Stock) VALUES 
+INSERT INTO Products (ProductID, BrandID, CategoryID, Model, FullName, [Description], [Image],  Price, IsDeleted, Stock) VALUES 
 (31, 1, 6, 'Apple-USB-C-Lightning', 'Apple USB-C to Lightning Cable', 'Official Apple charging cable', 'apple-usb-c-lightning.jpg', 490000, 0, 200),
 (32, 2, 6, 'Samsung-USB-C-Cable', 'Samsung USB-C Cable 1m', 'Durable and fast-charging', 'samsung-usb-c.jpg', 290000, 0, 180),
 (33, 5, 6, 'Xiaomi-Braided-USB-C', 'Xiaomi Braided USB-C Cable', 'Reinforced and tangle-free', 'xiaomi-braided-usb-c.jpg', 390000, 0, 160),
