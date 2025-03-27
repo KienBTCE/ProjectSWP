@@ -220,14 +220,13 @@
 
                                     <script>
                                         function previewImage(event, imgId) {
-                                            const file = event.target.files[0]; // L?y file ?nh ?ã ch?n
+                                            const file = event.target.files[0]; 
                                             if (file) {
-                                                const reader = new FileReader(); // ??i t??ng FileReader ?? ??c ?nh
+                                                const reader = new FileReader(); 
                                                 reader.onload = function (e) {
-                                                    // L?y ?nh t? k?t qu? c?a FileReader và gán vào ?nh
                                                     document.getElementById(imgId).src = e.target.result;
                                                 }
-                                                reader.readAsDataURL(file); // ??c file d??i d?ng data URL
+                                                reader.readAsDataURL(file); 
                                             }
                                         }
                                     </script>
