@@ -358,23 +358,6 @@ public class ProductDAO {
         return result;
     }
 
-    public void addProductAttributes(Product product) {
-        String query = "INSERT INTO AttributeDetails (AttributeID, ProductID, AttributeInfor) "
-                + "VALUES (?, ?, ?)";
-
-        try ( PreparedStatement ps = connector.prepareStatement(query)) {
-            for (AttributeDetail attribute : product.getAttributeDetails()) {
-                ps.setInt(1, attribute.getAttributeId());
-                ps.setInt(2, product.getProductId());
-                ps.setString(3, attribute.getAttributeInfor());
-                ps.addBatch();
-            }
-            ps.executeBatch();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-    }
-
     public int updateProduct(Product p) {
         // Câu lệnh cập nhật sản phẩm
         String query = "UPDATE Products SET Model=?, FullName=?, Description=?, Price=?, Image=?, Image1=?, Image2=?, Image3=?, IsDeleted=?, "
@@ -561,8 +544,7 @@ public class ProductDAO {
 
     public Map<String, Object> getDashboardStats() throws SQLException {
         Map<String, Object> stats = new HashMap<>();
-        String query
-                = "SELECT "
+        String query = "SELECT "
                 + "    (SELECT COUNT(*) FROM Customers) AS totalCustomers, "
                 + "    (SELECT COUNT(*) FROM Products) AS totalProducts, "
                 + "    (SELECT SUM(Stock) FROM Products) AS totalInventory, "
@@ -625,8 +607,8 @@ public class ProductDAO {
         String query
                 = "SELECT TOP 10 p.ProductID, p.FullName, c.Name AS Category, p.Price, io.ImportDate "
                 + "FROM Products p "
-                + "JOIN ImportOrderDetails iod ON p.ProductID = iod.ProductID "
-                + "JOIN ImportOrders io ON iod.IOID = io.IOID "
+                + "JOIN ImportDetails iod ON p.ProductID = iod.ProductID "
+                + "JOIN Imports io ON iod.ImportID = io.ImportID "
                 + "JOIN Categories c ON p.CategoryID = c.CategoryID "
                 + "ORDER BY io.ImportDate DESC";
 
@@ -695,9 +677,9 @@ public class ProductDAO {
                 + "FROM Products p "
                 + "JOIN Categories c ON p.CategoryID = c.CategoryID "
                 + "JOIN Brands b ON p.BrandID = b.BrandID "
-                + "WHERE p.ProductID IN (SELECT DISTINCT ProductID FROM ImportOrderDetails "
-                + "JOIN ImportOrders ON ImportOrderDetails.IOID = ImportOrders.IOID "
-                + "WHERE ImportOrders.ImportDate >= DATEADD(DAY, -7, GETDATE()))";
+                + "WHERE p.ProductID IN (SELECT DISTINCT ProductID FROM ImportDetails "
+                + "JOIN Imports ON ImportDetails.ImportID = Imports.ImportID "
+                + "WHERE Imports.ImportDate >= DATEADD(DAY, -7, GETDATE()))";
 
         try ( PreparedStatement ps = connector.prepareStatement(query)) {
             ResultSet rs = ps.executeQuery();

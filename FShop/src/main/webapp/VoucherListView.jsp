@@ -91,18 +91,18 @@
             </div>
 
             <div class="content">
-                 <h3  font-weight="Bold">ORDER</h3>
+                <h3  font-weight="Bold">Voucher</h3>
                 <!-- Success Alerts -->
-                <c:if test="${param.success == 'created'}">
+                <c:if test="${param.success == 'success'}">
                     <div class="alert alert-success alert-dismissible fade show" role="alert">
                         <i class="fa-solid fa-circle-check me-2"></i> Voucher created successfully!
                         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                     </div>
                 </c:if>
 
-                <c:if test="${param.success == 'deleted'}">
+                <c:if test="${param.success == 'failed'}">
                     <div class="alert alert-success alert-dismissible fade show" role="alert">
-                        <i class="fa-solid fa-circle-check me-2"></i> Voucher deleted successfully!
+                        <i class="fa-solid fa-circle-check me-2"></i> Voucher deleted Unsuccessfully!
                         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                     </div>
                 </c:if>
@@ -118,12 +118,12 @@
                         <tr>
                             <th>ID</th>
                             <th>Code</th>
-                            <th>Type</th>
-                            <th>Max Discount</th>
-                            <th>Status</th>
                             <th>Value</th>
+                            <th>Max Discount</th>
                             <th>Start Date</th>
                             <th>End Date</th>
+                            <th>Status</th>
+                            <th>Type</th>        
                             <th>Actions</th>
                         </tr>
                     </thead>
@@ -132,9 +132,13 @@
                             <tr>
                                 <td>#${voucher.voucherID}</td>
                                 <td>${voucher.voucherCode}</td>
+                                <td>${voucher.voucherValue}</td>
+                                <td>${voucher.maxDiscountAmount}</td>
+                                <td>${voucher.startDate}</td><!-- comment -->
+                                <td>${voucher.endDate}</td>
                                 <td>
                                     <c:choose>
-                                        <c:when test="${voucher.voucherType == 0}">
+                                        <c:when test="${voucher.voucherType == 1}">
                                             <span class="badge bg-primary">Percent</span>
                                         </c:when>
                                         <c:otherwise>
@@ -142,7 +146,6 @@
                                         </c:otherwise>
                                     </c:choose>
                                 </td>
-                                <td>${voucher.maxDiscountAmount}</td>
                                 <td>
                                     <c:choose>
                                         <c:when test="${voucher.status == 1}">
@@ -153,9 +156,6 @@
                                         </c:otherwise>
                                     </c:choose>
                                 </td>
-                                <td>${voucher.voucherValue}</td>
-                                <td>${voucher.startDate}</td><!-- comment -->
-                                 <td>${voucher.endDate}</td>
                                 <td>
                                     <div class="d-flex flex-wrap gap-2">
                                         <a href="ViewVoucherDetailServlet?voucherID=${voucher.voucherID}" class="btn btn-outline-primary">

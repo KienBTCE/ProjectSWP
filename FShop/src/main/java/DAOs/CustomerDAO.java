@@ -164,7 +164,7 @@ public class CustomerDAO {
 
     public int checkEmailExisted(String email) {
         try {
-            PreparedStatement pr = connector.prepareStatement("SELECT * FROM Customers WHERE Email = ?;");
+            PreparedStatement pr = connector.prepareStatement("SELECT * FROM Customers WHERE Email = ? AND IsDeleted = 0;");
             pr.setString(1, email);
             ResultSet rs = pr.executeQuery();
             if (rs.next()) {

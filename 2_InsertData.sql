@@ -111,12 +111,12 @@ INSERT INTO Products (ProductID, BrandID, CategoryID, Model, FullName, [Descript
 (8, 8, 1, 'ASUS-TUF-A17', 'ASUS TUF Gaming A17', 'Durable gaming laptop with strong performance and modern design', 'ASUS-TUF-Gaming-A17-FA706-600x600.jpg', 31909000, 1, 50),
 (9, 11, 1, 'MSI-Katana-A15', 'MSI Katana Gaming A15', 'Gaming laptop powered by AMD Ryzen 9 and RTX 4060 GPU', '5e0dkkrb-1411-msi-katana-gaming-a15-ai-b8vf-406ca-amd-ryzen-r9-8945hs-32gb-1tb-rtx-4060-8gb-15-6-144hz-fhd-new.jpg', 33909000, 1, 50),
 (10, 6, 1, 'Dell-G5511', 'Dell Gaming G5511', 'Gaming laptop with strong design and high performance', '45606_dell_gaming_5511_dark_grey_ha3.jpg', 35909000, 0, 50),
-(11, 4, 2, 'Xperia-1-III', 'Sony Xperia 1 III', 'Sony flagship phone with stunning OLED 4K display', 'sony-xperia-1-iii.jpg', 35999000, 0, 40),
-(12, 5, 2, 'Pixel-6-Pro', 'Google Pixel 6 Pro', 'Google flagship phone with Google Tensor chip', 'google-pixel-6-pro.jpg', 28999000, 0, 60),
+(11, 4, 2, 'Xperia-1-III', 'Sony Xperia 1 III', 'Sony flagship phone with stunning OLED 4K display', 'sony-xperia-1-iii.png', 35999000, 0, 40),
+(12, 5, 2, 'Pixel-6-Pro', 'Google Pixel 6 Pro', 'Google flagship phone with Google Tensor chip', '678582_684274_04_front_comping.jpg', 28999000, 0, 60),
 (13, 6, 1, 'HP-Omen-15', 'HP Omen 15', 'Powerful gaming laptop with AMD Ryzen 9', 'hp-omen-15.jpg', 42900000, 0, 35),
 (14, 3, 1, 'Acer-Predator-Helios-300', 'Acer Predator Helios 300', 'Gaming laptop with Intel i7 and RTX 3070', 'acer-predator-helios-300.jpg', 37999000, 1, 20),
-(15, 4, 2, 'Xiaomi-Redmi-Note-11', 'Xiaomi Redmi Note 11', 'Affordable smartphone with great performance', 'xiaomi-redmi-note-11.jpg', 7990000, 0, 100),
-(16, 2, 2, 'Samsung-Galaxy-A53', 'Samsung Galaxy A53', 'Mid-range smartphone with 5G and powerful camera', 'samsung-galaxy-a53.jpg', 18999000, 0, 75),
+(15, 4, 2, 'Xiaomi-Redmi-Note-11', 'Xiaomi Redmi Note 11', 'Affordable smartphone with great performance', 'Xiaomi-Redmi-11.jpg', 7990000, 0, 100),
+(16, 2, 2, 'Samsung-Galaxy-A53', 'Samsung Galaxy A53', 'Mid-range smartphone with 5G and powerful camera', 'samsung-galaxy-a53.png', 18999000, 0, 75),
 (17, 10, 1, 'Razer-Blade-15', 'Razer Blade 15', 'Premium gaming laptop with high performance', 'razer-blade-15.jpg', 47900000, 0, 25),
 (18, 9, 1, 'Alienware-X17', 'Alienware X17', 'High-end gaming laptop with Intel i9 and RTX 3080', 'alienware-x17.jpg', 59999000, 0, 10),
 (19, 11, 1, 'MSI-GS66', 'MSI GS66 Stealth', 'Slim gaming laptop with Intel i7 and RTX 3070', 'msi-gs66.jpg', 44999000, 1, 50),
@@ -334,18 +334,21 @@ VALUES
 -- Insert Orders
 INSERT INTO Orders (CustomerID, FullName, [Address], PhoneNumber, OrderedDate, DeliveredDate, Status, TotalAmount)
 VALUES 
-(1, 'Nguyen Van A', '123 Tech Street, District 1, Ho Chi Minh City', '0901234567', '2024-01-01', NULL, 1, 50000000),
-(2, 'Tran Thi B', '456 Nguyen Du Street, District 3, Ho Chi Minh City', '0909876543', '2024-02-15', NULL, 1, 75000000),
-(3, 'Le Minh C', '789 Le Lai Street, District 5, Ho Chi Minh City', '0912345678', '2024-03-20', NULL, 2, 25000000),
+(1, 'Nguyen Van A', '123 Tech Street, District 1, Ho Chi Minh City', '0901234567', '2024-01-01', NULL, 4, 50000000),
+(2, 'Tran Thi B', '456 Nguyen Du Street, District 3, Ho Chi Minh City', '0909876543', '2024-02-15', NULL, 4, 75000000),
+(3, 'Le Minh C', '789 Le Lai Street, District 5, Ho Chi Minh City', '0912345678', '2024-03-20', NULL, 4, 25000000),
 (4, 'Pham Thi D', '321 Pham Ngoc Thach, District 1, Ho Chi Minh City', '0923456789', '2024-04-05', NULL, 3, 12000000),
-(5, 'Hoang Minh E', '654 Ha Noi Street, Hai Ba Trung, Hanoi', '0934567890', '2024-05-10', NULL, 1, 30000000),
-(6, 'Nguyen Thi F', '112 Mai Thi Luu, District 3, Ho Chi Minh City', '0945678901', '2024-06-15', NULL, 1, 40000000),
+(5, 'Hoang Minh E', '654 Ha Noi Street, Hai Ba Trung, Hanoi', '0934567890', '2024-05-10', NULL, 4, 30000000),
+(6, 'Nguyen Thi F', '112 Mai Thi Luu, District 3, Ho Chi Minh City', '0945678901', '2024-06-15', NULL, 4, 40000000),
 (7, 'Pham Minh G', '234 Ly Tu Trong, District 1, Ho Chi Minh City', '0956789012', '2024-07-01', NULL, 2, 60000000),
-(8, 'Hoang Thi H', '567 Le Duan, District 5, Ho Chi Minh City', '0967890123', '2024-08-12', NULL, 1, 15000000),
-(9, 'Le Thi I', '678 Bach Dang, District 7, Ho Chi Minh City', '0978901234', '2024-09-08', NULL, 1, 55000000),
-(10, 'Nguyen Minh J', '890 Pham Hung, District 8, Ho Chi Minh City', '0989012345', '2024-10-22', NULL, 3, 20000000),
-(11, 'Pham Thi K', '123 Bui Thi Xuan, District 1, Ho Chi Minh City', '0990123456', '2024-11-18', NULL, 2, 45000000),
-(12, 'Le Minh L', '456 Huynh Tan Phat, District 7, Ho Chi Minh City', '0902345678', '2024-12-05', NULL, 1, 35000000);
+(8, 'Hoang Thi H', '567 Le Duan, District 5, Ho Chi Minh City', '0967890123', '2024-08-12', NULL, 4, 15000000),
+(9, 'Le Thi I', '678 Bach Dang, District 7, Ho Chi Minh City', '0978901234', '2024-09-08', NULL, 4, 55000000),
+(10, 'Nguyen Minh J', '890 Pham Hung, District 8, Ho Chi Minh City', '0989012345', '2024-10-22', NULL, 4, 20000000),
+(11, 'Pham Thi K', '123 Bui Thi Xuan, District 1, Ho Chi Minh City', '0990123456', '2024-11-18', NULL, 4, 45000000),
+(12, 'Le Minh Hoo', '456 Huynh Tan Phat, District 7, Ho Chi Minh City', '0902345678', '2024-12-05', NULL, 4, 35000000),
+(12, 'Le Minh Hoo', '456 Huynh Tan Phat, District 7, Ho Chi Minh City', '0902345678', '2024-12-05', NULL, 4, 35000000),
+(12, 'Le Minh Hoo', '456 Huynh Tan Phat, District 7, Ho Chi Minh City', '0902345678', '2024-12-05', NULL, 4, 35000000),
+(12, 'Le Minh Hoo', '456 Huynh Tan Phat, District 7, Ho Chi Minh City', '0902345678', '2024-12-05', NULL, 4, 35000000);
 
 
 INSERT INTO OrderDetails (OrderID, ProductID, Quantity, Price)
@@ -361,7 +364,10 @@ VALUES
 (9, 9, 3, 55000000),
 (10, 10, 2, 20000000),
 (11, 11, 5, 45000000),
-(12, 12, 2, 35000000);
+(12, 12, 2, 35000000),
+(13, 12, 2, 35000000),
+(14, 12, 2, 35000000),
+(15, 12, 2, 35000000);
 
 
 -- Insert Employees
@@ -402,11 +408,11 @@ VALUES
 
 INSERT INTO Vouchers (VoucherCode, VoucherValue, VoucherType, StartDate, EndDate, UsedCount, MaxUsedCount, MaxDiscountAmount, MinOrderValue, Status, [Description])
 VALUES 
+('NEWUSER', 50000, 0, '2025-03-01', '2025-12-31', 0, NULL, NULL, 100000, 1, N'50,000 VND discount for new customers on orders from 100,000 VND'),
 ('DISCOUNT10', 10, 1, '2025-03-01', '2025-03-31', 0, 100, 50000, 200000, 1, N'10% discount up to 50,000 VND for orders from 200,000 VND'),
-('FREESHIP', 30000, 0, '2025-03-05', '2025-04-05', 0, 500, NULL, 150000, 1, N'30,000 VND off shipping fee for orders from 150,000 VND'),
 ('VIP50', 50000, 0, '2025-03-10', '2025-04-10', 0, 50, NULL, 500000, 1, N'50,000 VND discount for orders from 500,000 VND'),
-('FLASHSALE', 20, 1, '2025-03-15', '2025-03-20', 0, 200, 70000, 300000, 1, N'20% discount up to 70,000 VND for orders from 300,000 VND'),
-('NEWUSER', 50000, 0, '2025-03-01', '2025-12-31', 0, NULL, NULL, 100000, 1, N'50,000 VND discount for new customers on orders from 100,000 VND');
+('FLASHSALE', 20, 1, '2025-03-15', '2025-03-20', 0, 200, 70000, 300000, 1, N'20% discount up to 70,000 VND for orders from 300,000 VND');
+
 
 -- Assign vouchers to Customer with ID = 1
 INSERT INTO CustomerVoucher (CustomerID, VoucherID, ExpirationDate, Quantity)

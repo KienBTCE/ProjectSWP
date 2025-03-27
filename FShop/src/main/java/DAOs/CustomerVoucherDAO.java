@@ -10,6 +10,9 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Timestamp;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -42,8 +45,8 @@ public class CustomerVoucherDAO {
         return list;
     }
 
-
-    public void assignVoucherToCustomer(int customerID, int voucherID, int quantity, String expirationDate) {
+    public int assignVoucherToCustomer(int customerID, int voucherID, int quantity, String expirationDate) {
+        int count = 0;
         String sql = "INSERT INTO CustomerVoucher (CustomerID, VoucherID, Quantity, ExpirationDate) VALUES (?, ?, ?, ?)";
         try ( PreparedStatement ps = connector.prepareStatement(sql)) {
             ps.setInt(1, customerID);
@@ -54,10 +57,11 @@ public class CustomerVoucherDAO {
             } else {
                 ps.setNull(4, java.sql.Types.TIMESTAMP);
             }
-            ps.executeUpdate();
+            count = ps.executeUpdate();
         } catch (SQLException e) {
             System.out.println("Assign voucher error: " + e.getMessage());
         }
+        return count;
     }
 
     public boolean isVoucherAlreadyAssigned(int customerID, int voucherID) {
@@ -72,6 +76,7 @@ public class CustomerVoucherDAO {
         }
         return false;
     }
+
     public CustomerVoucher getVoucherById(int customerID, int voucherID) {
         CustomerVoucher voucher = null;
         try {
@@ -117,8 +122,21 @@ public class CustomerVoucherDAO {
         }
 
     }
+        public void deleteVoucherByVoucherID( int voucherID) {
+        try {
+            String sql = "Delete from CustomerVoucher Where  VoucherID = ?";
+            PreparedStatement pre = connector.prepareStatement(sql);
+            pre.setInt(1, voucherID);
+            pre.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
 
-    public void increaseVoucher( int voucherID) {
+
+    }
+
+
+    public void increaseVoucher(int voucherID) {
         try {
             String sql = "Update Vouchers SET UsedCount = UsedCount + 1 WHERE VoucherID = ?";
             PreparedStatement pre = connector.prepareStatement(sql);
@@ -129,11 +147,33 @@ public class CustomerVoucherDAO {
         }
     }
 
-    public static void main(String[] args) {
-        CustomerVoucherDAO c = new CustomerVoucherDAO();
-        List<CustomerVoucher> list = c.getVoucherOfCustomer(1);
-        for (CustomerVoucher customerVoucher : list) {
-            System.out.println(customerVoucher.getVoucherCode() + " " + customerVoucher.getMaxDiscountAmount());
+        public int deleteCustomerVoucher(int voucherID) {
+        int count = 0;
+        String sql = "DELETE FROM CustomerVoucher WHERE VoucherID = ?;";
+        try ( PreparedStatement ps = connector.prepareStatement(sql)) {
+            ps.setInt(1, voucherID);
+            count = ps.executeUpdate();
+        } catch (SQLException e) {
+            System.out.println("Delete error: " + e.getMessage());
         }
+        return count;
+        }
+
+    public static void main(String[] args) {
+        CustomerVoucherDAO cv = new CustomerVoucherDAO();
+        List<CustomerVoucher> list = cv.getVoucherOfCustomer(13);
+        for (CustomerVoucher customerVoucher : list) {
+            System.out.println(customerVoucher.getVoucherCode() + " " + customerVoucher.getExpirationDate());
+        }
+       // cv.assignVoucherToCustomer(13, 1, 1, null);
+
     }
+
+//    public static void main(String[] args) {
+//        CustomerVoucherDAO c = new CustomerVoucherDAO();
+//        List<CustomerVoucher> list = c.getVoucherOfCustomer(1);
+//        for (CustomerVoucher customerVoucher : list) {
+//            System.out.println(customerVoucher.getVoucherCode() + " " + customerVoucher.getMaxDiscountAmount());
+//        }
+//    }
 }

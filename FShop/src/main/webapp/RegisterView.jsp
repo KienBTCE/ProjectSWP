@@ -207,6 +207,7 @@
                             let isValid = true;
                             const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@#$%!&*?]).{8,}$/;
 
+                            // Kiểm tra mật khẩu có đúng format không
                             if (!passwordRegex.test(password)) {
                                 passwordRules.textContent = "Password must be at least 8 characters, include one uppercase, one lowercase, one number, and one special character.";
                                 isValid = false;
@@ -214,6 +215,13 @@
                                 passwordRules.textContent = "";
                             }
 
+                            // Kiểm tra mật khẩu có quá dài không
+                            if (password.length > 50) {
+                                passwordRules.textContent = "Password is too long, it must be shorter than 50 characters.";
+                                isValid = false;
+                            }
+
+                            // Kiểm tra xác nhận mật khẩu
                             if (password !== confirmPassword) {
                                 passwordError.textContent = "Password and Confirm Password do not match.";
                                 isValid = false;
@@ -221,10 +229,12 @@
                                 passwordError.textContent = "";
                             }
 
+                            // Nếu có lỗi, chặn việc submit form
                             if (!isValid) {
                                 event.preventDefault();
                             }
                         });
+
                         function showPopup() {
                             document.getElementById("loginFailPopup").style.display = "flex";
                         }

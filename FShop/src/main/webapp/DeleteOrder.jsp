@@ -143,7 +143,6 @@
                 <p>You will be redirected to the main page shortly.</p>
             </div>
         </div>
-
         <script>
             // Hàm hiển thị modal preview sau khi lấy danh sách đơn hàng cần xóa
             function previewOrders() {
@@ -171,16 +170,18 @@
                 })
                         .then(response => response.text())
                         .then(data => {
-                            // Ẩn modal preview
                             document.getElementById("previewModal").style.display = "none";
-                            // Hiển thị modal thành công
-                            document.getElementById("successModal").style.display = "flex";
-                            // Chờ 3 giây rồi chuyển hướng về trang chính (update URL theo thực tế)
-                            setTimeout(() => {
-                                window.location.href = "ViewOrderListServlet";
-                            }, 2000);
+
+                            if (data.trim() === "success") {
+                                document.getElementById("successModal").style.display = "flex";
+                                setTimeout(() => {
+                                    window.location.href = "ViewOrderListServlet";
+                                }, 2000);
+                            } else {
+                                alert("No orders were deleted. Please check the timeframe or try again.");
+                            }
                         })
-                        .catch(error => console.error("Error deleting orders:", error));
+
             };
 
             // Khi người dùng nhấn Cancel trong modal preview

@@ -173,7 +173,7 @@
 
                                     </div>
                                 </div>
-                                <a href="ViewOrderHistory" class="menu-item">📦 Orders</a>
+                                <a href="ViewOrderHistory" class="menu-item">📦 Order</a>
                             </ul>
                         </div>
                     </div>
@@ -248,9 +248,34 @@
                 session.setAttribute("message", null);
             }
         %>
+
+        <%
+            String messageFail = (String) session.getAttribute("messageFail");
+            System.out.println("Session message: " + message + request.getRequestURI());
+        %>
+        <%
+            if (messageFail != null) {
+        %>
+        <div id="cookiesPopup1" style="position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 350px; display: flex; flex-direction: column; align-items: center; background-color: #fff; color: #000; text-align: center; border-radius: 20px; padding: 30px 30px 20px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); z-index: 1000;">
+            <button class="close" onclick="closePopup1()" style="width: 30px; font-size: 20px; color: #c0c5cb; align-self: flex-end; background-color: transparent; border: none; margin-bottom: 10px; cursor: pointer;">✖</button>
+            <img src="./assets/imgs/icon/fail.jpg" alt="fail-tick" style="width: 82px; margin-bottom: 15px; border-radius: 50%;" />
+            <p style="margin-bottom: 40px; font-size: 18px;">${sessionScope.messageFail}</p>
+            <button class="accept" onclick="closePopup1()" style="background-color: red; border: none; border-radius: 5px; width: 200px; padding: 14px; font-size: 16px; color: white; box-shadow: 0px 6px 18px -5px red; cursor: pointer;">OK</button>
+        </div>
+
+
+        <div id="overlay" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0, 0, 0, 0.5); z-index: 999;"></div>
+        <%
+                session.setAttribute("messageFail", null);
+            }
+        %>
         <script>
             function closePopup() {
                 document.getElementById("cookiesPopup").style.display = "none";
+                document.getElementById("overlay").style.display = "none";
+            }
+            function closePopup1() {
+                document.getElementById("cookiesPopup1").style.display = "none";
                 document.getElementById("overlay").style.display = "none";
             }
             function openDeleteAccountModal() {
@@ -287,7 +312,7 @@
                 }
             }
 
-        
+
             document.getElementById('deleteAccountForm').addEventListener('submit', function (event) {
                 const password = document.getElementById('confirmPassword').value;
                 if (!password) {

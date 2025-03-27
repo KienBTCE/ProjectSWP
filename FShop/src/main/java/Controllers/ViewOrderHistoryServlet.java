@@ -75,9 +75,6 @@ public class ViewOrderHistoryServlet extends HttpServlet {
             for (Order order : list) {
                 listOD.add(od.getOrderDetailOfEachOrder(order.getOrderID()));
             }
-            for (OrderDetail orderDetail : listOD) {
-                System.out.println(orderDetail.getImage());
-            }
             session.setAttribute("orderList", list);
             session.setAttribute("orderDetailList", listOD);
             request.setAttribute("profilePage", "OrdersHistoryView.jsp");

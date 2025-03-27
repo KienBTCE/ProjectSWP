@@ -91,6 +91,74 @@ public class AssignVoucherServlet extends HttpServlet {
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
      */
+//    @Override
+//    protected void doPost(HttpServletRequest request, HttpServletResponse response)
+//            throws ServletException, IOException {
+//        try {
+//            int customerID = Integer.parseInt(request.getParameter("customerID"));
+//            int voucherID = Integer.parseInt(request.getParameter("voucherID"));
+//            int quantity = Integer.parseInt(request.getParameter("quantity"));
+//            String rawExpire = request.getParameter("expirationDate");
+//
+//            String expirationDate = null;
+//            LocalDateTime now = LocalDateTime.now();
+//
+//            if (quantity <= 0) {
+//                throw new Exception("Quantity must be greater than 0.");
+//            }
+//
+//            if (rawExpire != null && !rawExpire.isEmpty()) {
+//                LocalDateTime dt = LocalDateTime.parse(rawExpire, DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm"));
+//                if (dt.isBefore(now)) {
+//                    throw new Exception("Expiration date must be after the current time.");
+//                }
+//                expirationDate = dt.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
+//            }
+//
+//            CustomerVoucherDAO cvDAO = new CustomerVoucherDAO();
+//            if (cvDAO.isVoucherAlreadyAssigned(customerID, voucherID)) {
+//                throw new Exception("The customer has been issued this voucher.");
+//            }
+//            VoucherDAO vDAO = new VoucherDAO();
+//            Voucher voucher = vDAO.getVoucher(voucherID); 
+//
+//            // Nếu voucher không tồn tại, báo lỗi
+//            if (voucher == null) {
+//                throw new Exception("Voucher not found.");
+//            }
+//            // Convert ExpirationDate string thành LocalDateTime để so sánh
+//            LocalDateTime expirationDateTime = LocalDateTime.parse(expirationDate, DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
+//            String sd = voucher.getStartDate();
+//            String ed =  voucher.getEndDate();
+//            LocalDateTime startDate = LocalDateTime.parse(voucher.getStartDate(), DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSS"));
+//            LocalDateTime endDate = LocalDateTime.parse(voucher.getEndDate(), DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSS"));
+//
+//            // Kiểm tra ngày hết hạn có nằm trong khoảng ngày của voucher không
+//            if (expirationDateTime.isBefore(startDate) || expirationDateTime.isAfter(endDate)) {
+//                throw new Exception("Expiration date must be between the voucher's start and end date.");
+//            }
+//
+//            int count = cvDAO.assignVoucherToCustomer(customerID, voucherID, quantity, expirationDate);
+//            if (count > 0) {
+//                response.sendRedirect("CustomerListServlet?success=assigned");
+//            } else {
+//                response.sendRedirect("CustomerListServlet?success=failed");
+//            }
+//
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//            request.setAttribute("error", e.getMessage());
+//
+//            CustomerDAO cDAO = new CustomerDAO();
+//            VoucherDAO vDAO = new VoucherDAO();
+//
+//            int id = Integer.parseInt(request.getParameter("customerID"));
+//            request.setAttribute("customer", cDAO.getCustomerById(id));
+//            request.setAttribute("vouchers", vDAO.getAllVoucher());
+//
+//            request.getRequestDispatcher("AssignVoucherView.jsp").forward(request, response);
+//        }
+//    }
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -105,9 +173,15 @@ public class AssignVoucherServlet extends HttpServlet {
 
             if (quantity <= 0) {
                 throw new Exception("Quantity must be greater than 0.");
+            }else  if(quantity >2){
+             throw new Exception("Quantity must be smaller than 3.");
             }
 
             if (rawExpire != null && !rawExpire.isEmpty()) {
+                
+                rawExpire = rawExpire.replaceAll("\\.0$", "");
+
+                
                 LocalDateTime dt = LocalDateTime.parse(rawExpire, DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm"));
                 if (dt.isBefore(now)) {
                     throw new Exception("Expiration date must be after the current time.");
@@ -115,20 +189,54 @@ public class AssignVoucherServlet extends HttpServlet {
                 expirationDate = dt.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
             }
 
+           
             CustomerVoucherDAO cvDAO = new CustomerVoucherDAO();
             if (cvDAO.isVoucherAlreadyAssigned(customerID, voucherID)) {
                 throw new Exception("The customer has been issued this voucher.");
             }
 
-            cvDAO.assignVoucherToCustomer(customerID, voucherID, quantity, expirationDate);
+         
+            VoucherDAO vDAO = new VoucherDAO();
+            Voucher voucher = vDAO.getVoucher(voucherID);
+            
+            int limit = (voucher.getMaxUsedCount()-voucher.getUsedCount());
+            if(quantity > limit ){ 
+                throw new Exception("Voucher not enough.");
+            }
+            
+            if (voucher == null) {
+                throw new Exception("Voucher not found.");
+            }
 
-            response.sendRedirect("CustomerListServlet?success=assigned");
+           
+            LocalDateTime expirationDateTime = LocalDateTime.parse(expirationDate, DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
+
+           
+            String startDateString = voucher.getStartDate().split("\\.")[0];
+            String endDateString = voucher.getEndDate().split("\\.")[0];
+
+// Chuyển đổi chuỗi thành LocalDateTime với đúng định dạng
+            LocalDateTime startDate = LocalDateTime.parse(startDateString, DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
+            LocalDateTime endDate = LocalDateTime.parse(endDateString, DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
+
+            // Kiểm tra ngày hết hạn có nằm trong khoảng ngày của voucher không
+            if (expirationDateTime.isBefore(startDate) || expirationDateTime.isAfter(endDate)) {
+                throw new Exception("Expiration date must be between the voucher's start and end date.");
+            }
+
+            // Gán voucher cho khácah hàng
+            int count = cvDAO.assignVoucherToCustomer(customerID, voucherID, quantity, expirationDate);
+            if (count > 0) {
+                response.sendRedirect("CustomerListServlet?success=assigned");
+            } else {
+                response.sendRedirect("CustomerListServlet?success=failed");
+            }
 
         } catch (Exception e) {
             e.printStackTrace();
             request.setAttribute("error", e.getMessage());
 
-            // Nạp lại thông tin customer + voucher
+            // Reload lại thông tin customer và voucher
             CustomerDAO cDAO = new CustomerDAO();
             VoucherDAO vDAO = new VoucherDAO();
 

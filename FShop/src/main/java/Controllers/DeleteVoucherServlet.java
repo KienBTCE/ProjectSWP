@@ -4,6 +4,7 @@
  */
 package Controllers;
 
+import DAOs.CustomerVoucherDAO;
 import DAOs.VoucherDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -72,8 +73,14 @@ public class DeleteVoucherServlet extends HttpServlet {
             throws ServletException, IOException {
         int voucherID = Integer.parseInt(request.getParameter("voucherID"));
         VoucherDAO dao = new VoucherDAO();
-        dao.deleteVoucher(voucherID);
-       response.sendRedirect("ViewVoucherListServlet?success=deleted");
+        CustomerVoucherDAO cdao = new CustomerVoucherDAO();
+        cdao.deleteCustomerVoucher(voucherID);
+        int count = dao.deleteVoucher(voucherID);
+        if(count>0){
+       response.sendRedirect("ViewVoucherListServlet?success=success");
+        }else{
+       response.sendRedirect("ViewVoucherListServlet?success=failed");
+        }
 
     }
 

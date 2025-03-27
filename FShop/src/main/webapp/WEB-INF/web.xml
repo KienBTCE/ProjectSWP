@@ -3,6 +3,10 @@
     <welcome-file-list>
         <welcome-file>/</welcome-file>
     </welcome-file-list>
+    <servlet-mapping>
+        <servlet-name>ViewProductServlet</servlet-name>
+        <url-pattern>/</url-pattern>
+    </servlet-mapping>
     <servlet>
         <servlet-name>UpdateProductServlet</servlet-name>
         <servlet-class>Controllers.UpdateProductServlet</servlet-class>
@@ -208,6 +212,22 @@
         <servlet-class>Controllers.OrderReportServlet</servlet-class>
     </servlet>
     <servlet>
+        <servlet-name>PreviewDeleteOrderServlet</servlet-name>
+        <servlet-class>Controllers.PreviewDeleteOrderServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>UpdateEmployeeServlet</servlet-name>
+        <url-pattern>/UpdateEmployeeServlet</url-pattern>
+    </servlet-mapping>
+    <servlet>
+        <servlet-name>AddEmployeeServlet</servlet-name>
+        <servlet-class>Controllers.AddEmployeeServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>AddEmployeeServlet</servlet-name>
+        <url-pattern>/AddEmployeeServlet</url-pattern>
+    </servlet-mapping>
+    <servlet>
         <servlet-name>ViewEmployeeServlet</servlet-name>
         <servlet-class>Controllers.ViewEmployeeServlet</servlet-class>
     </servlet>
@@ -220,16 +240,12 @@
         <servlet-class>Controllers.NotificationServlet</servlet-class>
     </servlet>
     <servlet>
-        <servlet-name>AddEmployeeServlet</servlet-name>
-        <servlet-class>Controllers.AddEmployeeServlet</servlet-class>
+        <servlet-name>SearchEmployeeServlet</servlet-name>
+        <servlet-class>Controllers.SearchEmployeeServlet</servlet-class>
     </servlet>
     <servlet-mapping>
-        <servlet-name>UpdateEmployeeServlet</servlet-name>
-        <url-pattern>/UpdateEmployeeServlet</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>AddEmployeeServlet</servlet-name>
-        <url-pattern>/AddEmployeeServlet</url-pattern>
+        <servlet-name>SearchEmployeeServlet</servlet-name>
+        <url-pattern>/SearchEmployeeServlet</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>ViewEmployeeServlet</servlet-name>
@@ -258,10 +274,6 @@
     <servlet-mapping>
         <servlet-name>default</servlet-name>
         <url-pattern>/assets/*</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>ViewProductServlet</servlet-name>
-        <url-pattern>/</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>CustomerListServlet</servlet-name>
@@ -446,6 +458,10 @@
     <servlet-mapping>
         <servlet-name>OrderReportServlet</servlet-name>
         <url-pattern>/OrderReportServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>PreviewDeleteOrderServlet</servlet-name>
+        <url-pattern>/PreviewDeleteOrderServlet</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>30</session-timeout>

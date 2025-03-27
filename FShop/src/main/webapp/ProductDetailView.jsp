@@ -657,6 +657,11 @@
 
             }
 
+            .hethang{
+                color: red;
+                font-weight: bold;
+            }
+
         </style>
     </head>
     <body>
@@ -665,7 +670,9 @@
                 <div class="container">
                 <c:choose>
                     <c:when test="${product != null}">
+
                         <div class="product-container row">
+
                             <!-- Image section -->
                             <div class="col-md-6 product-gallery d-flex flex-column align-items-center">
                                 <c:set var="mainImage" value="${product.image}" />
@@ -734,21 +741,25 @@
 
                                 <!-- Shipping info / Policy -->
                                 <div class="shipping-info">
+                                    <c:if test="${product.stock<=0}">
+                                        <h5 class="hethang">Product is temporarily out of stock</h5>
+                                    </c:if>
                                     <p><strong>Shipping:</strong> Free nationwide shipping</p>
                                     <p><strong>Warranty:</strong> 12 months</p>
                                     <p><strong>Return Policy:</strong> 15 days if defective</p>
                                 </div>
-
-                                <!-- Quantity Control -->
-                                <div class="my-3 d-flex align-items-center">
-                                    <label for="quantity" class="me-2 fw-bold">Quantity:</label>
-                                    <div class="quantity-controls">
-                                        <button type="button" onclick="decreaseQuantity()">-</button>
-                                        <input type="number" id="quantity" name="quantity" value="1" min="1" 
-                                               max="${product.getStock()}" oninput="validateQuantity()">
-                                        <button type="button" onclick="increaseQuantity()">+</button>
+                                <c:if test="${not empty product.stock and product.stock>0}"> 
+                                    <!-- Quantity Control -->
+                                    <div class="my-3 d-flex align-items-center">
+                                        <label for="quantity" class="me-2 fw-bold">Quantity:</label>
+                                        <div class="quantity-controls">
+                                            <button type="button" onclick="decreaseQuantity()">-</button>
+                                            <input type="number" id="quantity" name="quantity" value="1" min="1" 
+                                                   max="${product.getStock()}" oninput="validateQuantity()">
+                                            <button type="button" onclick="increaseQuantity()">+</button>
+                                        </div>
                                     </div>
-                                </div>
+                                </c:if>
                                 <!-- Bootstrap Modal -->
                                 <div class="modal fade" id="quantityWarningModal" tabindex="-1" aria-labelledby="warningModalLabel" aria-hidden="true">
                                     <div class="modal-dialog">
@@ -787,29 +798,28 @@
                                         </div>
                                     </div>
                                 </div>
-                                <!-- Action Buttons -->
-                                <div class="action-buttons">
-                                    <!-- Add to Cart form -->
-                                    <form action="AddToCart?productID=${product.productId}" method="POST">
-                                        <input type="hidden" name="quantity" id="quantityInputHidden" value="1">
-                                        <button id="addToCartBtn" type="submit" class="btn btn-add-cart">
-                                            <i class="fas fa-shopping-cart me-1"></i> Add to Cart
-                                        </button>
-                                    </form>
-                                    <!-- Buy Now form -->
-                                    <form action="order" method="POST">
-                                        <input type="hidden" name="quantity" id="quantityInputHiddenBuyNow" value="1">
-                                        <input type="hidden" name="orderUrl" value="buyNow">
-                                        <input type="hidden" name="productSelected" value="${product.productId}">
-                                        <input type="hidden" name="buyProductAction" value="checkout">
-                                        <button id="buyNowBtn" type="submit" class="btn btn-buy-now">
-                                            <i class="fas fa-bolt me-1"></i> Buy Now
-                                        </button>
-                                    </form>
-                                </div>
-
-
-
+                                <c:if test="${not empty product.stock and product.stock>0}">      
+                                    <!-- Action Buttons -->
+                                    <div class="action-buttons">
+                                        <!-- Add to Cart form -->
+                                        <form action="AddToCart?productID=${product.productId}" method="POST">
+                                            <input type="hidden" name="quantity" id="quantityInputHidden" value="1">
+                                            <button id="addToCartBtn" type="submit" class="btn btn-add-cart">
+                                                <i class="fas fa-shopping-cart me-1"></i> Add to Cart
+                                            </button>
+                                        </form>
+                                        <!-- Buy Now form -->
+                                        <form action="order" method="POST">
+                                            <input type="hidden" name="quantity" id="quantityInputHiddenBuyNow" value="1">
+                                            <input type="hidden" name="orderUrl" value="buyNow">
+                                            <input type="hidden" name="productSelected" value="${product.productId}">
+                                            <input type="hidden" name="buyProductAction" value="checkout">
+                                            <button id="buyNowBtn" type="submit" class="btn btn-buy-now">
+                                                <i class="fas fa-bolt me-1"></i> Buy Now
+                                            </button>
+                                        </form>
+                                    </div>
+                                </c:if>
 
                             </div>
                         </div>
@@ -825,6 +835,20 @@
                 <div id="feedbackContainer" class="feedback-section">
                     <div class="feedback-container">
                         <h3 class="feedback-title">PRODUCT REVIEW</h3>
+                        <c:if test="${param.success == 'created'}">
+                            <div class="alert alert-success alert-dismissible fade show" role="alert">
+                                <i class="fa-solid fa-circle-check me-2"></i> Creating Feedback successfully!
+                                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                            </div>
+                        </c:if>
+
+                        <c:if test="${param.success == 'deleted'}">
+                            <div class="alert alert-success alert-dismissible fade show" role="alert">
+                                <i class="fa-solid fa-circle-check me-2"></i> Creating Feedback successfully!
+                                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                            </div>
+                        </c:if>
+
                         <c:if test="${isOk}">
                             <form id="reviewForm" method="POST" action="ProductDetailServlet">
                                 <input type="hidden" name="productId" value="${product.productId}">

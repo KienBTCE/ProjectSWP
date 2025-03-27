@@ -175,9 +175,9 @@ CREATE TABLE Orders (
     DeliveredDate DATETIME,
     [Status]INT,
     TotalAmount BIGINT,
-	Discount INT,
+    Discount INT,
     FOREIGN KEY (CustomerID) REFERENCES Customers(CustomerID),
-	FOREIGN KEY ([Status]) REFERENCES OrderStatus(ID)
+    FOREIGN KEY ([Status]) REFERENCES OrderStatus(ID)
 );
 
 CREATE TABLE OrderDetails (
@@ -220,7 +220,7 @@ CREATE TABLE ProductRatings (
     Comment NVARCHAR(300),
     IsDeleted BIT,
     IsRead BIT,
-	FOREIGN KEY (OrderID) REFERENCES Orders(OrderID),
+    FOREIGN KEY (OrderID) REFERENCES Orders(OrderID),
     FOREIGN KEY (CustomerID) REFERENCES Customers(CustomerID),
     FOREIGN KEY (ProductID) REFERENCES Products(ProductID)
 );

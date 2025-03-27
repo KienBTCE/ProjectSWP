@@ -102,6 +102,11 @@ public class CreateVoucherServlet extends HttpServlet {
                 request.getRequestDispatcher("CreateVoucherView.jsp").forward(request, response);
                 return;
             }
+            if(type == 1 && value > 100){
+            request.setAttribute("error", "If the voucher type is percent, you cannot set a value greater than 100.");
+                request.getRequestDispatcher("CreateVoucherView.jsp").forward(request, response);
+                return;
+            }
 
             String startDate = start.format(sqlFormat);
             String endDate = end.format(sqlFormat);
@@ -121,8 +126,12 @@ public class CreateVoucherServlet extends HttpServlet {
             Voucher newVoucher = new Voucher(0, code, value, type, startDate, endDate,
                     0, maxUsed, maxDiscount, minOrder, status, desc);
 
-            dao.insertVoucher(newVoucher);
-            response.sendRedirect("ViewVoucherListServlet?success=created");
+            int count = dao.insertVoucher(newVoucher);
+            if(count>0){
+            response.sendRedirect("ViewVoucherListServlet?success=success");
+            }else{
+            response.sendRedirect("ViewVoucherListServlet?success=failed");
+            }
 
         } catch (Exception e) {
             e.printStackTrace();

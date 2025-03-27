@@ -86,7 +86,7 @@
                 box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.1);
             }
 
-
+      
             /*Table*/
             .table-container {
                 max-height: 400px;
@@ -157,7 +157,7 @@
                 max-width: 100%;
                 height: 100%;
             }
-
+            
             .hearderChart{
                 text-align: center;
             }
@@ -188,7 +188,7 @@
             <div class="content">
             <jsp:include page="HeaderDashboard.jsp"></jsp:include>
                 <div class="container mt-2">   
-
+                   
                     <div class="table-navigate">
                         <form action="SearchInventoryServlet" method="GET" class="search-form">
                             <input type="text" name="query" value="${searchQuery}" placeholder="Search by Name...">
@@ -210,39 +210,41 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <c:forEach items="${listI}" var="i">
-                                <tr>
-                                    <td>${i.categoryName}</td>
-                                    <td>${i.brandName}</td>
-                                    <td>${i.model}</td>
-                                    <td>${i.fullName}</td>
-                                    <td>${i.stockQuantity}</td>
-                                    <td>${i.supplierName}</td>
-                                    <td><fmt:formatDate value="${i.importDate}" pattern="dd/MM/yyyy" /></td>
-                                    <td>${i.productImportPrice}</td>
-                                </tr>
-                            </c:forEach>
+                            <c:if test="${not empty searchQuery}">
+                                <c:forEach items="${listI}" var="i">
+                                    <tr>
+                                        <td>${i.categoryName}</td>
+                                        <td>${i.brandName}</td>
+                                        <td>${i.model}</td>
+                                        <td>${i.fullName}</td>
+                                        <td>${i.stockQuantity}</td>
+                                        <td>${i.supplierName}</td>
+                                        <td><fmt:formatDate value="${i.importDate}" pattern="dd/MM/yyyy" /></td>
+                                        <td>${i.productImportPrice}</td>
+                                    </tr>
+                                </c:forEach>
+                            </c:if>
                         </tbody>
                     </table>
                 </div>
-                <div class="row mt-4 g-2">
-                    <div class="col-md-5 chart-container">
-                        <h5 class="hearderChart">Inventory - Laptops</h5>
-                        <canvas id="inventoryLaptopChart" class="inventory-laptop-chart"></canvas>
-                        <div class="nav-buttons">
-                            <button id="prevPageLaptop"><i class='bx bx-chevron-left'></i></button>
-                            <button id="nextPageLaptop"><i class='bx bx-chevron-right'></i></button>
+                         <div class="row mt-4 g-2">
+                        <div class="col-md-5 chart-container">
+                            <h5 class="hearderChart">Inventory - Laptops</h5>
+                            <canvas id="inventoryLaptopChart" class="inventory-laptop-chart"></canvas>
+                            <div class="nav-buttons">
+                                <button id="prevPageLaptop"><i class='bx bx-chevron-left'></i></button>
+                                <button id="nextPageLaptop"><i class='bx bx-chevron-right'></i></button>
+                            </div>
+                        </div>
+                        <div class="col-md-5 chart-container">
+                            <h5 class="hearderChart">Inventory - Phones</h5>
+                            <canvas id="inventoryPhoneChart"></canvas>
+                            <div class="nav-buttons">
+                                <button id="prevPagePhone"><i class='bx bx-chevron-left'></i></button>
+                                <button id="nextPagePhone"><i class='bx bx-chevron-right'></i></button>
+                            </div>
                         </div>
                     </div>
-                    <div class="col-md-5 chart-container">
-                        <h5 class="hearderChart">Inventory - Phones</h5>
-                        <canvas id="inventoryPhoneChart"></canvas>
-                        <div class="nav-buttons">
-                            <button id="prevPagePhone"><i class='bx bx-chevron-left'></i></button>
-                            <button id="nextPagePhone"><i class='bx bx-chevron-right'></i></button>
-                        </div>
-                    </div>
-                </div>
             </div>
             <script>
                 //Laptop

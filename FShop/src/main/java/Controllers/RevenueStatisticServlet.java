@@ -11,7 +11,6 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import java.io.PrintWriter;
 import java.util.ArrayList;
 
 /**
@@ -23,19 +22,22 @@ public class RevenueStatisticServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        RevenueStatisticDAO revenueDAO = new RevenueStatisticDAO();
+        RevenueStatisticDAO revenueStatisticDAO = new RevenueStatisticDAO();
         String timePeriod = request.getParameter("timePeriod");
         ArrayList<RevenueStatistic> revenueData = new ArrayList<>();
-
+        ArrayList<RevenueStatistic> listRevenuePhone = revenueStatisticDAO.getRevenuePhone();
+        ArrayList<RevenueStatistic> listRevenueLaptop = revenueStatisticDAO.getRevenueLaptop();
         if ("day".equalsIgnoreCase(timePeriod)) {
-            revenueData = revenueDAO.getRevenueByDay();
+            revenueData = revenueStatisticDAO.getRevenueByDay();
         } else if ("month".equalsIgnoreCase(timePeriod)) {
-            revenueData = revenueDAO.getRevenueByMonth();
+            revenueData = revenueStatisticDAO.getRevenueByMonth();
         } else if ("year".equalsIgnoreCase(timePeriod)) {
-            revenueData = revenueDAO.getRevenueByYear();
+            revenueData = revenueStatisticDAO.getRevenueByYear();
         }
         request.setAttribute("time", timePeriod);
         request.setAttribute("revenueData", revenueData);
+        request.setAttribute("listRevenuePhone", listRevenuePhone);
+        request.setAttribute("listRevenueLaptop", listRevenueLaptop);
         request.getRequestDispatcher("RevenueStatisticView.jsp").forward(request, response);
     }
 

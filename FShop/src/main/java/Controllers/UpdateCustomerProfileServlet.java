@@ -107,7 +107,7 @@ public class UpdateCustomerProfileServlet extends HttpServlet {
 
         if (!(day.equalsIgnoreCase("Day") && month.equalsIgnoreCase("Month") && year.equalsIgnoreCase("Year"))) {
             if (day.equalsIgnoreCase("Day") || month.equalsIgnoreCase("Month") || year.equalsIgnoreCase("Year")) {
-                session.setAttribute("message", "Please select a complete and valid date!");
+                session.setAttribute("messageFail", "Please select a complete and valid date!");
                 response.sendRedirect("/viewCustomerProfile");
                 return;
             }
@@ -118,7 +118,7 @@ public class UpdateCustomerProfileServlet extends HttpServlet {
                 int yearInt = Integer.parseInt(year.trim());
 
                 if (dayInt < 1 || dayInt > 31 || monthInt < 1 || monthInt > 12 || yearInt < 1900 || yearInt > 2100) {
-                    session.setAttribute("message", "Invalid date value!");
+                    session.setAttribute("messageFail", "Invalid date value!");
                     response.sendRedirect("/viewCustomerProfile");
                     return;
                 }
@@ -128,7 +128,7 @@ public class UpdateCustomerProfileServlet extends HttpServlet {
 
                 cus.setBirthday(yearInt + "-" + monthStr + "-" + dayStr);
             } catch (NumberFormatException e) {
-                session.setAttribute("message", "Invalid date format!");
+                session.setAttribute("messageFail", "Invalid date format!");
                 response.sendRedirect("/viewCustomerProfile");
                 return;
             }
@@ -150,7 +150,7 @@ public class UpdateCustomerProfileServlet extends HttpServlet {
 
         int rs = cusDAO.updateCustomerProfile(cus);
         if (rs == 0) {
-            session.setAttribute("message", "Update customer fail!");
+            session.setAttribute("messageFail", "Update customer fail!");
         } else {
             session.setAttribute("customer", cus);
             session.setAttribute("message", "Update customer successful!");

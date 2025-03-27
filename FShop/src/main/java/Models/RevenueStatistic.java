@@ -18,6 +18,13 @@ public class RevenueStatistic {
     private int totalOrder;
     private long totalRevenue;
     private int totalProductsSold;
+    private int month;
+    private long revenue;
+    
+    public RevenueStatistic(int month, long revenue) {
+        this.month = month;
+        this.revenue = revenue;
+    }
 
     public RevenueStatistic(Date orderDate, int totalOrder, long totalRevenue, int totalProductsSold) {
         this.orderDate = orderDate;
@@ -89,6 +96,22 @@ public class RevenueStatistic {
 
     public void setOrderYear(int orderYear) {
         this.orderYear = orderYear;
+    }
+
+    public int getMonth() {
+        return month;
+    }
+
+    public void setMonth(int month) {
+        this.month = month;
+    }
+
+    public long getRevenue() {
+        return revenue;
+    }
+
+    public void setRevenue(long revenue) {
+        this.revenue = revenue;
     }
     
     

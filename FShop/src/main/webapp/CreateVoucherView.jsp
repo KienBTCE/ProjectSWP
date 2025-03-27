@@ -22,7 +22,7 @@
                 background-color: white;
                 z-index: 1050;
                 padding: 10px 20px;
-                box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+                /*box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);*/
             }
 
             .sidebar-container {
@@ -33,7 +33,7 @@
                 height: 100vh;
                 background-color: white;
                 z-index: 1100;
-                padding-top: 60px;
+             
             }
 
             .main-layout {
@@ -42,7 +42,7 @@
 
             .content {
                 flex-grow: 1;
-                margin-left: 250px;
+                margin-left: 750px;;
                 margin-top: 120px;
                 padding: 20px;
             }
@@ -77,8 +77,8 @@
                     <div class="mb-3">
                         <label class="form-label">Type</label>
                         <select name="voucherType" class="form-select">
-                            <option value="0">Percent (%)</option>
-                            <option value="1">Fixed Price</option>
+                            <option value="1">Percent (%)</option>
+                            <option value="0">Fixed Price</option>
                         </select>
                     </div>
 
@@ -128,7 +128,7 @@
                     <button type="submit" class="btn btn-success">
                         <i class="fa-solid fa-plus"></i> Create
                     </button>
-                    <a href="ViewVoucherListServlet" class="btn btn-secondary">Cancel</a>
+<!--                    <a href="ViewVoucherListServlet" class="btn btn-secondary">Cancel</a>-->
                 </form>
             </div>
         </div>
