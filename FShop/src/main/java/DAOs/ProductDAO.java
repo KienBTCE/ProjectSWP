@@ -205,7 +205,7 @@ public class ProductDAO {
                 + "sp.FullName, sp.Price, sp.Stock, sp.isDeleted "
                 + "FROM Products sp "
                 + "JOIN Categories c ON sp.CategoryID = c.CategoryID "
-                + "JOIN Brands b ON sp.BrandID = b.BrandID";
+                + "JOIN Brands b ON sp.BrandID = b.BrandID ORDER BY IsDeleted";
 
         try ( PreparedStatement ps = connector.prepareStatement(query);  ResultSet rs = ps.executeQuery()) {
 
