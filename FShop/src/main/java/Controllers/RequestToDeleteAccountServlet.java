@@ -4,6 +4,7 @@
  */
 package Controllers;
 
+import DAOs.CartDAO;
 import DAOs.CustomerDAO;
 import DAOs.OrderDAO;
 import Models.Customer;
@@ -129,10 +130,11 @@ public class RequestToDeleteAccountServlet extends HttpServlet {
         HttpSession session = request.getSession();
         CustomerDAO cusDAO = new CustomerDAO();
         Customer cus = (Customer) session.getAttribute("customer");
-
+        CartDAO c = new CartDAO();
         if (password != null) {
             if (cusDAO.cofirmPassword(cus.getId(), password) > 0) {
                 if (cusDAO.requestToDeleteAccount(cus.getId()) > 0) {
+                    c.deleteCartOfCustomer(cus.getId());
                     response.sendRedirect("/Logout");
                 } else {
                     session.setAttribute("messageFail", "Delete is not suscess!");
@@ -148,6 +150,7 @@ public class RequestToDeleteAccountServlet extends HttpServlet {
             String OTP = (String) session.getAttribute("otp");
             if (confirmOTP.equals(OTP)) {
                 if (cusDAO.requestToDeleteAccount(cus.getId()) > 0) {
+                    c.deleteCartOfCustomer(cus.getId());
                     response.sendRedirect("/Logout");
                 } else {
                     session.setAttribute("message", "Delete was not successful!");

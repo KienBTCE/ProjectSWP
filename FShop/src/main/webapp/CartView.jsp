@@ -36,7 +36,9 @@
                             <div class="col-md-8">
                                 <table style="width: 100%; border-collapse: collapse; ">
                                     <tr style="height: 60px;">
-                                        <th class="th" style="width: 3%;"></th>
+                                        <th class="th" style="width: 3%;">
+                                            <input type="checkbox" id="selectAll" onclick="toggleAll(this)">
+                                        </th>
                                         <th class="th" style="width: 17%;">Item</th>
                                         <th class="th" style="width: 34%;"></th>
                                         <th class="th" style="width: 13%;">Price</th>
@@ -50,7 +52,7 @@
                                             <c:if test="${p.getQuantity() > 0}">
                                                 <tr>
                                                     <td>
-                                                        <input type="checkbox" name="cartSelected" value="${p.getProductID()}">
+                                                        <input type="checkbox" name="cartSelected" class="cartSelected" value="${p.getProductID()}">
                                                     </td>
                                                     <td class="th"><img
                                                             src="./assets/imgs/Products/${p.getImage()}"
@@ -200,7 +202,7 @@
                 <br>
                 <br>
             </div>
-            
+
 
 
 
@@ -283,6 +285,13 @@
                     showMessage(true);
             <% }%>
                 };
+                function toggleAll(source) {
+                    let checkboxes = document.querySelectorAll('.cartSelected');
+                    checkboxes.forEach(checkbox => {
+                        checkbox.checked = source.checked;
+                    });
+                    updateTotal();
+                }
                 function showMessage(show) {
                     if (show) {
                         var warningModal = new bootstrap.Modal(document.getElementById('updatePopup'));
