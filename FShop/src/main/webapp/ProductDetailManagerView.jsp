@@ -20,92 +20,222 @@
             body {
                 background-color: #f8f9fa;
                 font-family: 'Montserrat', sans-serif;
+
             }
+            /* Tạo khung sản phẩm đẹp và rõ ràng */
             .product-card {
+                margin-top: 300px;
                 background: #fff;
-                overflow: hidden;
+                border-radius: 8px;
+                box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+                padding: 60px;
                 margin: 40px auto;
                 max-width: 1200px;
+                margin-left: 300px;
             }
+
+            /* Khung thông tin sản phẩm */
             .card-body {
-                padding: 20px 40px;
+                padding: 20px;
             }
+
             .product-content {
+                margin-left: 250px;
                 display: flex;
                 flex-wrap: wrap;
             }
-            /* Left: Product Images */
+
+            /* Hình ảnh sản phẩm */
             .product-images {
                 flex: 1 1 40%;
-                padding: 20px;
+                padding: 10px;
                 text-align: center;
             }
+
             .main-image {
                 width: 100%;
                 max-width: 500px;
-                border: 3px solid #7D69FF;
+                border: 2px solid #ddd;
                 border-radius: 8px;
                 margin-bottom: 20px;
-                transition: transform 0.3s;
+                transition: transform 0.3s ease;
             }
+
             .main-image:hover {
-                transform: scale(1.03);
+                transform: scale(1.05);
             }
+
             .product-gallery {
                 display: flex;
                 justify-content: center;
                 gap: 10px;
                 flex-wrap: wrap;
             }
+
             .product-gallery img {
                 width: 70px;
                 height: 70px;
                 object-fit: cover;
-                border: 2px solid #ccc;
+                border: 1px solid #ddd;
                 border-radius: 4px;
                 cursor: pointer;
-                transition: transform 0.2s, border-color 0.2s;
+                transition: transform 0.2s ease, border-color 0.2s ease;
             }
+
             .product-gallery img:hover {
                 transform: scale(1.1);
                 border-color: #7D69FF;
             }
-            /* Right: Product Information */
+
+            /* Thông tin sản phẩm */
             .product-info {
                 flex: 1 1 60%;
                 padding: 20px;
             }
+
             .product-info h2 {
                 font-size: 2.2rem;
                 font-weight: 700;
-                color: #7D69FF;
+                color: #333;
                 margin-bottom: 20px;
+                text-transform: capitalize;
             }
+
+            /* Định dạng thông tin thuộc tính */
             .info-item {
-                margin-bottom: 15px;
-                font-size: 1rem;
+                background-color: #f9f9f9;
+                padding: 12px;
+                border-radius: 6px;
+                margin-bottom: 10px;
+                transition: background-color 0.3s ease;
             }
+
+            /* Thuộc tính quan trọng (giá, trạng thái) */
+            .info-item.important {
+                background-color: #e7f1ff;
+                border-left: 5px solid #007bff;
+            }
+
+            .info-item.important:hover {
+                background-color: #d1e7ff;
+            }
+
+            /* Các thuộc tính phụ (như mô tả, category) */
+            .info-item.secondary {
+                background-color: #f4f4f4;
+                border-left: 5px solid #6c757d;
+            }
+
+            .info-item.secondary:hover {
+                background-color: #e9ecef;
+            }
+
+            /* Các thông tin chi tiết */
             .info-label {
-                font-weight: 700;
-                color: #6c757d;
+                font-weight: 600;
+                color: #555;
             }
+
             .info-value {
                 color: #333;
             }
-            .badge {
-                font-size: 1rem;
-                padding: 0.5em 0.75em;
-            }
-            .back-btn {
-                margin-top: 20px;
-            }
-            .content {
-                flex-grow: 1;
-                padding: 12px;
-                display: flex;
-                flex-direction: column;
 
-                margin-left: 250px;
+            /* Thuộc tính danh sách (Attributes) */
+            .info-item ul {
+                list-style-type: none;
+                padding-left: 0;
+            }
+
+            .info-item ul li {
+                background-color: #f1f1f1;
+                padding: 8px 15px;
+                border-radius: 8px;
+                margin-bottom: 8px;
+                transition: background-color 0.3s ease, transform 0.3s ease;
+            }
+
+            .info-item ul li:hover {
+                background-color: #7D69FF;
+                color: white;
+                transform: scale(1.05);
+            }
+
+            /* Mobile responsive */
+            @media (max-width: 768px) {
+                .product-content {
+                    flex-direction: column;
+                }
+
+                .product-images,
+                .product-info {
+                    flex: 1 1 100%;
+                }
+            }
+            /* Phần hiển thị thuộc tính */
+            .info-item ul {
+                list-style-type: none;
+                padding: 0;
+                margin: 0;
+            }
+
+            .info-item ul li {
+                background-color: #f1f1f1; /* Màu nền nhẹ */
+                padding: 8px 15px;
+                border-radius: 8px;
+                margin-bottom: 8px;
+                transition: background-color 0.3s ease, transform 0.3s ease; /* Thêm hiệu ứng hover */
+            }
+
+            .info-item ul li:hover {
+                background-color: #7D69FF; /* Màu nền khi hover */
+                color: white; /* Đổi màu chữ khi hover */
+                transform: scale(1.05); /* Tăng kích thước một chút khi hover */
+            }
+
+            .info-item ul li strong {
+                color: #333;
+                font-weight: bold;
+            }
+
+            .info-item ul li span {
+                color: #555;
+            }
+
+            /* Giữ header cố định */
+            .header {
+                position: fixed;
+                top: 0;
+                left: 260px; /* vì sidebar chiếm 250px */
+                right: 10px;
+                margin-top: 10px;
+                z-index: 1000;
+            }
+
+
+            .icon {
+                width: 40px;
+                height: 40px;
+                border-radius: 50%;
+                object-fit: cover;
+            }
+
+            .logo-side-bar {
+                margin-left: 5%;
+                margin-bottom: 3%;
+            }
+            /* ========================================================= */
+            .hi {
+
+                position: fixed;
+                top: 0;
+                left: 267px;  /* điều chỉnh theo sidebar */
+                right: 0;
+                background: white;
+                z-index: 1000;
+                display: flex;
+                align-items: flex-start; /* hoặc center, tùy ý mày */
+                padding: 15px;
+                border: 5px;
             }
         </style>
     </head>
@@ -113,8 +243,10 @@
         <jsp:include page="SidebarDashboard.jsp"></jsp:include>
 
             <div class="content">
-
-            <jsp:include page="HeaderDashboard.jsp"></jsp:include>
+                <div class="hi">
+                <jsp:include page="HeaderDashboard.jsp"></jsp:include>
+                </div>
+                <!-- Product Detail Card -->
                 <div class="product-card">
                     <div class="card-body">
                         <div class="product-content row">
@@ -195,6 +327,7 @@
                 </div>
             </div>
         </div>
+
         <!-- JavaScript: Swap Main Image -->
         <script>
             function swapImage(img) {
@@ -204,6 +337,7 @@
                 img.src = tempSrc;
             }
         </script>
+
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     </body>
 </html>
