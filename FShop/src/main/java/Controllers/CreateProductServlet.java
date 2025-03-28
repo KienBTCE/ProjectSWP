@@ -16,7 +16,9 @@ import jakarta.servlet.http.Part;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Paths;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 
 @MultipartConfig(fileSizeThreshold = 1024 * 1024 * 2, // 2MB
@@ -80,7 +82,7 @@ public class CreateProductServlet extends HttpServlet {
             request.setAttribute("categoryName", categoryName);
             request.setAttribute("brandName", brandName);
             request.setAttribute("model", model);
-            request.setAttribute("fullname", fullname);
+            request.setAttribute("fullname", fullName);
             request.setAttribute("description", description);
             request.setAttribute("price", price);
             request.setAttribute("image1", image1);
@@ -94,7 +96,7 @@ public class CreateProductServlet extends HttpServlet {
             request.setAttribute("attributeMap", attributeMap);
             request.getRequestDispatcher("CreateProductView.jsp").forward(request, response);
             return;
-        } else if (productDAO.isFullnameExists(fullname)) {
+        } else if (productDAO.isFullnameExists(fullName)) {
             request.setAttribute("errorMsg2", "Full name already exists !");
             if (categoryName != null && !categoryName.isEmpty()) {
                 CategoryDAO categoryDAO = new CategoryDAO();
@@ -112,7 +114,7 @@ public class CreateProductServlet extends HttpServlet {
             request.setAttribute("categoryName", categoryName);
             request.setAttribute("brandName", brandName);
             request.setAttribute("model", model);
-            request.setAttribute("fullname", fullname);
+            request.setAttribute("fullname", fullName);
             request.setAttribute("description", description);
             request.setAttribute("price", price);
             request.setAttribute("image1", image1);
@@ -144,7 +146,7 @@ public class CreateProductServlet extends HttpServlet {
             request.setAttribute("categoryName", categoryName);
             request.setAttribute("brandName", brandName);
             request.setAttribute("model", model);
-            request.setAttribute("fullname", fullname);
+            request.setAttribute("fullname", fullName);
             request.setAttribute("description", description);
             request.setAttribute("price", price);
             request.setAttribute("image1", image1);
@@ -160,7 +162,7 @@ public class CreateProductServlet extends HttpServlet {
             return;
         }
 
-        Product product = new Product(categoryName, brandName, model, fullname, description, isDeleted, price, image1, image2, image3, image4);
+        Product product = new Product(categoryName, brandName, model, fullName, description, isDeleted, price, image1, image2, image3, image4);
         int productId = productDAO.createProduct(product);
       
         if (productId > 0) {
