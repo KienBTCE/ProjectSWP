@@ -24,11 +24,6 @@
                 border-radius: 5px;
                 display: flex;
                 padding: 30px;
-                z-index: 900;
-                position: fixed;
-                margin-top: 70px;
-                width: 63.5%;
-                margin-left: 440px;
             }
 
             .nav a {
@@ -63,15 +58,6 @@
                 <a href="#" class="tab-link" onclick="showTab('delivered', this)">Delivered</a>
                 <a href="#" class="tab-link" onclick="showTab('canceled', this)">Cancelled</a>
             </nav>
-        </div>
-        <div style="width: 100%; background: rgba(231, 220, 220, 0);">
-            <br>
-        </div>
-        <div style="width: 100%; background: rgba(231, 220, 220, 0);">
-            <br>
-        </div>
-        <div style="width: 100%; background: rgba(231, 220, 220, 0);">
-            <br>
         </div>
         <div style="width: 100%; background: rgba(231, 220, 220, 0);">
             <br>

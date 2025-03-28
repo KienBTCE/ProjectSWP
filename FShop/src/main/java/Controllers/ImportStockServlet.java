@@ -106,7 +106,7 @@ public class ImportStockServlet extends HttpServlet {
                 HttpSession session = request.getSession();
                 ArrayList<Product> products = (ArrayList<Product>) session.getAttribute("products");
                 if (products == null) {
-                    products = pd.getAllProducts();
+                    products = pd.getAllAvailabilityProducts();
                     session.setAttribute("products", products);
                 }
 //                request.setAttribute("selectedProducts", detailList);
@@ -132,13 +132,6 @@ public class ImportStockServlet extends HttpServlet {
         HttpSession session = request.getSession();
 //        ArrayList<Product> products = pd.getAllProducts();
 
-        Supplier s = (Supplier) session.getAttribute("supplier");
-
-        if (s == null) {
-            s = new Supplier();
-            session.setAttribute("supplier", s);
-        }
-
 //        Supplier s = null;
 //        ArrayList<ImportOrderDetail> detailList = null;
         ArrayList<ImportOrderDetail> detailList = (ArrayList<ImportOrderDetail>) session.getAttribute("selectedProducts");
@@ -149,11 +142,17 @@ public class ImportStockServlet extends HttpServlet {
 
         ArrayList<Product> products = (ArrayList<Product>) session.getAttribute("products");
         if (products == null) {
-            products = pd.getAllProducts();
+            products = pd.getAllAvailabilityProducts();
             session.setAttribute("products", products);
         }
 
         if (request.getParameter("supplierId") != null) {
+            Supplier s = (Supplier) session.getAttribute("supplier");
+
+            if (s == null) {
+                s = new Supplier();
+                session.setAttribute("supplier", s);
+            }
             s = sd.getSupplierByID(Integer.parseInt(request.getParameter("supplierId")));
 
 //            HttpSession session = request.getSession();
@@ -274,12 +273,13 @@ public class ImportStockServlet extends HttpServlet {
 
             Supplier supTest = (Supplier) session.getAttribute("supplier");
             ArrayList<ImportOrderDetail> listTest = (ArrayList<ImportOrderDetail>) session.getAttribute("selectedProducts");
-            
-            System.out.println("in ra o day");
+
+            System.out.println("supllier bang null");
             System.out.println(supTest == null);
+            System.out.println("product bang null");
             System.out.println(listTest == null);
 
-            if (supTest == null || listTest == null) {
+            if (supTest != null && listTest != null && !listTest.isEmpty()) {
                 long sum = 0L;
                 for (ImportOrderDetail proDet : listTest) {
                     sum += proDet.getQuantity() * proDet.getImportPrice();
@@ -302,21 +302,13 @@ public class ImportStockServlet extends HttpServlet {
                 session.removeAttribute("selectedProducts");
                 session.removeAttribute("supplier");
 
-//            selectedProducts = null;
-//            products = null; // check
-//            detailList.clear();
-//            s = null;
-//            sum = 0L;
-//                response.sendRedirect("ImportOrder?id=" + impId);
                 response.sendRedirect("ImportOrder");
             } else {
                 System.out.println("OOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO");
                 String error = "Please select full";
-//            HttpSession session = request.getSession();
                 session.setAttribute("error", error);
                 response.sendRedirect("ImportStock");
             }
-
         }
     }
 

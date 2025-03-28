@@ -86,9 +86,7 @@
                                 <th style="width: 20%; padding: 12px 8px; text-align: right;">Price</th>
                                 <th style="width: 12%; padding: 12px 8px; text-align: center;">Qty</th>
                                 <th style="width: 21%; padding: 12px 8px; text-align: right;">Subtotal</th>
-                                    <c:if test="${sessionScope.order.getStatus() == 4}">
-                                    <th style="width: 5%; padding: 12px 8px; text-align: right;">Review</th>
-                                    </c:if>
+                                <th style="width: 5%; padding: 12px 8px; text-align: right;">Review</th>
                             </tr>
                             <c:set var="subtotal" value="0"></c:set>
                             <c:forEach items="${sessionScope.orderDetail}" var="od">
@@ -102,14 +100,7 @@
                                     <td style="padding: 12px 8px; text-align: right; font-weight: 600; color: #2a9d8f;">
                                         <fmt:formatNumber value="${od.getPrice() * od.getQuantity()}" type="currency"/>
                                     </td>
-                                    <c:if test="${sessionScope.order.getStatus() == 4}">
-
-                                        <td style="padding: 12px 8px;">
-                                            <a style="text-decoration: none; color: black;" href="ProductDetailServlet?id=${od.getProductID()}" >
-                                                <img src="./assets/imgs/icon/review.png"} alt="" style="width: 35px; border-radius: 1px;">  
-                                            </a>
-                                        </td>
-                                    </c:if>
+                                     <td style="padding: 12px 8px;"> <a style="text-decoration: none; color: black;" href="ProductDetailServlet?id=${od.getProductID()}" ><img src="./assets/imgs/icon/review.png"} alt="" style="width: 35px; border-radius: 1px;">  </a></td>
                                 </tr>
                                 <c:set var="subtotal" value="${subtotal + (od.getPrice() * od.getQuantity())}"></c:set>
                             </c:forEach>

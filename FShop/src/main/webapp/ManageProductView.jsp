@@ -77,8 +77,8 @@
                 padding: 20px;
             }
             .table-container {
-                margin-left: 220px;
-                margin-top: 170px;
+                margin-left: 77px;
+                margin-top: 150px;
                 background: white;
                 padding: 20px;
                 border-radius: 10px;
@@ -109,7 +109,6 @@
                 width: 150px;
                 align-items: center;
                 margin-bottom: 10px;
-                margin-left: 900px;
             }
             .btn-delete {
                 border: none;
@@ -439,12 +438,11 @@
                     </form>
 
                 </div>
-                <div class="he d-flex align-items-center gap-1" >
+                <div class="he" >
                     <h3 font-weight="Bold">PRODUCT</h3>
-                    <a href="CreateProductServlet" class="btn btn-add">Create Product</a>
                 </div>
             </div>
-            <
+            <a href="CreateProductServlet" class="btn btn-add">Create Product</a>
         </div>
         <script>
             function debugForm() {
@@ -500,7 +498,6 @@
                     </c:forEach>
                 </tbody>
             </table>
-
         </div>
     </div>
 

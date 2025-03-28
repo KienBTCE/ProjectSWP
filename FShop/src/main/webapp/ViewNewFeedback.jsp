@@ -138,7 +138,7 @@
                 width: calc(100% - 250px); /* Chiều rộng trừ đi sidebar */
                 /*background-color: white;*/
                 z-index: 1050;
-                padding: 10px 10px;
+                padding: 10px 20px;
                 /*box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);*/
             }
             .banner{
@@ -150,9 +150,7 @@
     <body>
 
         <jsp:include page="SidebarDashboard.jsp"></jsp:include>
-        <div class="fixed-header">
-        <jsp:include page="HeaderDashboard.jsp"></jsp:include> 
-        </div>
+        <div class="fixed-header"><jsp:include page="HeaderDashboard.jsp"></jsp:include> </div>
             <div class="main-content">
                 <div class="banner">
                     <h2 class="text-center mb-4"  >Customer Reviews</h2>
@@ -282,8 +280,7 @@
                     </div>
                     <div class="modal-body">
                         <p>Are you sure you want to delete this reply?</p>
-                        <input type="hidden" id="deleteReplyID"  value="${rate.rateID}">
-                         <!--<input type="hidden" name="rateID" value="${rate.rateID}">-->
+                        <input type="hidden" id="deleteReplyID">
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>

@@ -22,11 +22,11 @@
             .fixed-header {
                 position: fixed;
                 top: 0;
-                left: 260px; /* Điều chỉnh để tránh che sidebar */
+                left: 250px; /* Điều chỉnh để tránh che sidebar */
                 width: calc(100% - 250px); /* Chiều rộng trừ đi sidebar */
                 background-color: white;
                 z-index: 1050;
-                padding: 10px 10px;
+                padding: 10px 20px;
                 /*box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);*/
             }
 
@@ -49,9 +49,9 @@
 
             .content {
                 flex-grow: 1;
-                margin-left: 260px; /* Khoảng cách để không bị chồng lên sidebar */
-                margin-top: 160px;
-                padding: 10px;
+                margin-left: 250px; /* Khoảng cách để không bị chồng lên sidebar */
+                margin-top: 150px;
+                padding: 20px;
             }
 
             /* Căn chỉnh layout header */
@@ -124,7 +124,7 @@
             .order-table {
                 width: 100%;
                 border-collapse: collapse;
-                margin-top: 30px;
+                margin-top: 20px;
             }
 
             .order-table th, .order-table td {
@@ -168,10 +168,6 @@
                 background-color: #f44336;
                 color: white;
             }
-            .notifi {
-                font-weight: bold;
-                margin: 20px
-            }
         </style>
     </head>
     <body>
@@ -202,7 +198,7 @@
 
                
                 <c:if test="${empty data}">
-                    <h3 class="notifi" >Have No Order</h3>
+                    <h3  font-weight="Bold">Have No Order</h3>
                 </c:if>
 
                 <div class="order-container">

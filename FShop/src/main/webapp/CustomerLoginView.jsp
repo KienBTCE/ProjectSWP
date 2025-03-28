@@ -143,6 +143,36 @@
                 }
             }
 
+            /* Popup styles */
+            .popup {
+                display: none;
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background-color: rgba(0, 0, 0, 0.5);
+                justify-content: center;
+                align-items: center;
+            }
+            .popup-content {
+                background-color: white;
+                padding: 30px;
+                border-radius: 8px;
+                text-align: center;
+                width: 300px;
+            }
+            .popup button {
+                background-color: #007bff;
+                color: white;
+                padding: 10px 20px;
+                border: none;
+                border-radius: 5px;
+                cursor: pointer;
+            }
+            .popup button:hover {
+                background-color: #0056b3;
+            }
         </style>
     </head>
     <body>
@@ -215,17 +245,13 @@
             <button class="accept" onclick="closePopup1()" style="background-color: red; border: none; border-radius: 5px; width: 200px; padding: 14px; font-size: 16px; color: white; box-shadow: 0px 6px 18px -5px red; cursor: pointer;">OK</button>
         </div>
 
-
-        <div id="overlay" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0, 0, 0, 0.5); z-index: 999;"></div>
-        <%
-                session.setAttribute("message", null);
-            }
-        %>
-
         <script>
-            function closePopup1() {
-                document.getElementById("cookiesPopup1").style.display = "none";
-                document.getElementById("overlay").style.display = "none";
+            function showPopup() {
+                document.getElementById("loginFailPopup").style.display = "flex";
+            }
+
+            function closePopup() {
+                document.getElementById("loginFailPopup").style.display = "none";
             }
 
             // Show popup if login fails (you can trigger this with backend error)

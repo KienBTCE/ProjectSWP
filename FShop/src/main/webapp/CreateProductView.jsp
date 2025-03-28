@@ -14,66 +14,27 @@
                 flex-direction: column;
                 gap: 20px;
                 margin-left: 250px;
-                margin-top: 80px;
             }
-
-            .header {
-                position: fixed;
-                top: 0;
-                left: 260px;
-                right: 10px;
-                margin-top: 10px;
-                z-index: 1000;
-            }
-
-
-            .icon {
-                width: 40px;
-                height: 40px;
-                border-radius: 50%;
-                object-fit: cover;
-            }
-
-            .logo-side-bar {
-                margin-left: 5%;
-                margin-bottom: 3%;
-            }
-            /* ========================================================= */
-            .hi {
-
-                position: fixed;
-                top: 0;
-                left: 267px;
-                right: 0;
-                background: white;
-                z-index: 1000;
-                display: flex;
-                align-items: flex-start;
-                padding: 15px;
-                border: 5px;
-            }
-
-            .error{
-                color: red;
-                font-weight: bold;
-            }
-
         </style>
     </head>
     <body>
         <jsp:include page="SidebarDashboard.jsp"></jsp:include>
             <div class="content">
-                <div class="hi">
-                <jsp:include page="HeaderDashboard.jsp"></jsp:include>
-                </div>
+            <jsp:include page="HeaderDashboard.jsp"></jsp:include>
                 <div class="container-fluid">
-                    <div class="card shadow border-primary">
-                        <div class="card-header">
-                            <h3>Create New Product</h3>
-                        </div>
-                        <div class="card-body">
-                            <form action="CreateProductServlet" method="post" enctype="multipart/form-data">
-                                <input type="hidden" name="categoryName" value="${categoryName}" />
+                <c:if test="${not empty successMessage}">
+                    <div class="alert alert-success alert-dismissible fade show" role="alert">
+                        ${successMessage}
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                </c:if>
+                <div class="card shadow border-primary">
+                    <div class="card-header">
+                        <h3>Create New Product</h3>
+                    </div>
+                    <div class="card-body">
+                        <form action="CreateProductServlet" method="post" enctype="multipart/form-data">
+                            <input type="hidden" name="categoryName" value="${categoryName}" />
                             <!-- Horizontal Form Layout -->
                             <div class="container-fluid">
                                 <!-- Row 1: Category, Brand, Model -->
@@ -85,48 +46,42 @@
                                                 <option value="CreateProductServlet?name=${category}" ${category == categoryName ? 'selected' : ''}>${category}</option>
                                             </c:forEach>
                                         </select>
-                                        <p></p>
                                     </div>
                                     <div class="col-md-4">
                                         <label class="form-label">Brand</label>
                                         <select class="form-select" name="brandName" required>
                                             <c:forEach var="brand" items="${brands}">
-                                                <option value="${brand}" ${brand == brandName ? 'selected' : ''} >${brand}</option>
+                                                <option value="${brand}">${brand}</option>
                                             </c:forEach>
                                         </select>
-                                        <p></p>
                                     </div>
                                     <div class="col-md-4">
                                         <label class="form-label">Model</label>
-                                        <input type="text" class="form-control" name="model" value="${model != null ? model : ''}" required />
-                                        <p class="error">${errorMsg1}</p>
-                                    </div>                                       
+                                        <input type="text" class="form-control" name="model" required />
+                                    </div>
                                 </div>
                                 <!-- Row 2: Full Name, Price, Is Deleted -->
                                 <div class="row g-3 align-items-center mt-2">
                                     <div class="col-md-4">
                                         <label class="form-label">Full Name</label>
-                                        <input type="text" class="form-control" name="fullname" value="${fullname != null ? fullname : ''}" required />
-                                        <p class="error">${errorMsg2}</p>
+                                        <input type="text" class="form-control" name="fullName" required />
                                     </div>
                                     <div class="col-md-4">
                                         <label class="form-label">Price</label>
-                                        <input type="number" class="form-control" name="price" value="${price != null ? price : ''}" required />
-                                        <p class="error">${errorMsg3}</p>                        
+                                        <input type="number" class="form-control" name="price" required />
                                     </div>
                                     <div class="col-md-4">
                                         <label class="form-label">Disable</label>
                                         <select class="form-select" name="isDeleted">
                                             <option value="1">Yes</option>
                                         </select>
-                                        <p></p>
                                     </div>
                                 </div>
                                 <!-- Row 3: Description -->
                                 <div class="row g-3 mt-2">
                                     <div class="col-md-12">
                                         <label class="form-label">Description</label>
-                                        <textarea class="form-control" name="description" rows="3" required>${description != null ? description : ''}</textarea>
+                                        <textarea class="form-control" name="description" rows="3" required></textarea>
                                     </div>
                                 </div>
                                 <!-- Row 4: Attributes -->
@@ -143,7 +98,7 @@
                                                         </div>
                                                         <div class="col-md-8">
                                                             <input type="text" class="form-control" name="attributeInfor_${attr.attributeId}" 
-                                                                   placeholder="Enter ${attr.attributeName}" value="${attributeMap[attr.attributeId] != null ? attributeMap[attr.attributeId] : ''}" required />
+                                                                   placeholder="Enter ${attr.attributeName}" required />
                                                         </div>
                                                     </div>
                                                 </c:forEach>
@@ -158,7 +113,7 @@
                                 <div class="row g-3 mt-2">
                                     <div class="col-md-3">
                                         <label class="form-label">Image 1</label>
-                                        <input type="file" class="form-control" name="txtP1" value="${image1 != null ? image1 : ''}" accept="image/*" required />
+                                        <input type="file" class="form-control" name="txtP1" accept="image/*" required />
                                     </div>
                                     <div class="col-md-3">
                                         <label class="form-label">Image 2</label>
@@ -186,6 +141,19 @@
             </div>
         </div>   
         <script>
+
+            setTimeout(function () {
+                let alertBox = document.querySelector(".alert");
+                if (alertBox) {
+                    alertBox.style.transition = "opacity 0.5s ease";
+                    alertBox.style.opacity = "0";
+                    setTimeout(() => {
+                        alertBox.remove();
+                        window.location.href = "ProductListServlet";
+                    }, 500);
+                }
+            }, 1500);
+
             document.getElementById("categoryName").addEventListener("change", function () {
                 let url = this.value;
                 if (url) {
