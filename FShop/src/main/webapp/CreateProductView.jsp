@@ -22,19 +22,13 @@
             <div class="content">
             <jsp:include page="HeaderDashboard.jsp"></jsp:include>
                 <div class="container-fluid">
-                <c:if test="${not empty successMessage}">
-                    <div class="alert alert-success alert-dismissible fade show" role="alert">
-                        ${successMessage}
-                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                    </div>
-                </c:if>
-                <div class="card shadow border-primary">
-                    <div class="card-header">
-                        <h3>Create New Product</h3>
-                    </div>
-                    <div class="card-body">
-                        <form action="CreateProductServlet" method="post" enctype="multipart/form-data">
-                            <input type="hidden" name="categoryName" value="${categoryName}" />
+                    <div class="card shadow border-primary">
+                        <div class="card-header">
+                            <h3>Create New Product</h3>
+                        </div>
+                        <div class="card-body">
+                            <form action="CreateProductServlet" method="post" enctype="multipart/form-data">
+                                <input type="hidden" name="categoryName" value="${categoryName}" />
                             <!-- Horizontal Form Layout -->
                             <div class="container-fluid">
                                 <!-- Row 1: Category, Brand, Model -->
@@ -141,19 +135,6 @@
             </div>
         </div>   
         <script>
-
-            setTimeout(function () {
-                let alertBox = document.querySelector(".alert");
-                if (alertBox) {
-                    alertBox.style.transition = "opacity 0.5s ease";
-                    alertBox.style.opacity = "0";
-                    setTimeout(() => {
-                        alertBox.remove();
-                        window.location.href = "ProductListServlet";
-                    }, 500);
-                }
-            }, 1500);
-
             document.getElementById("categoryName").addEventListener("change", function () {
                 let url = this.value;
                 if (url) {

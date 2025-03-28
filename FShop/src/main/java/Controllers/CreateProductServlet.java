@@ -96,7 +96,8 @@ public class CreateProductServlet extends HttpServlet {
             request.setAttribute("attributeMap", attributeMap);
             request.getRequestDispatcher("CreateProductView.jsp").forward(request, response);
             return;
-        } else if (productDAO.isFullnameExists(fullName)) {
+
+        }else if(productDAO.isFullnameExists(fullName)){
             request.setAttribute("errorMsg2", "Full name already exists !");
             if (categoryName != null && !categoryName.isEmpty()) {
                 CategoryDAO categoryDAO = new CategoryDAO();
@@ -128,7 +129,7 @@ public class CreateProductServlet extends HttpServlet {
             request.setAttribute("attributeMap", attributeMap);
             request.getRequestDispatcher("CreateProductView.jsp").forward(request, response);
             return;
-        } else if (price < 0) {
+        }else if (price < 0){
             request.setAttribute("errorMsg3", "Price must be greater than 0. Please re-enter");
             if (categoryName != null && !categoryName.isEmpty()) {
                 CategoryDAO categoryDAO = new CategoryDAO();
@@ -159,7 +160,7 @@ public class CreateProductServlet extends HttpServlet {
             }
             request.setAttribute("attributeMap", attributeMap);
             request.getRequestDispatcher("CreateProductView.jsp").forward(request, response);
-            return;
+            return;           
         }
 
         Product product = new Product(categoryName, brandName, model, fullName, description, isDeleted, price, image1, image2, image3, image4);
@@ -173,8 +174,7 @@ public class CreateProductServlet extends HttpServlet {
                 AttributeDetail attributeDetail = new AttributeDetail(attrId, productId, attributeInfor, null);
                 productDAO.addAttributeDetail(attributeDetail);
             }
-            request.setAttribute("successMessage", "Product created successfully!");
-            request.getRequestDispatcher("CreateProductView.jsp").forward(request, response);
+            response.sendRedirect("ProductListServlet?success=Product created successfully");
         } else {
             request.setAttribute("errorMsg", "Product creation failed");
             request.getRequestDispatcher("CreateProductView.jsp").forward(request, response);
@@ -182,6 +182,7 @@ public class CreateProductServlet extends HttpServlet {
 
     }
 
+     
     private String processImageUpload(HttpServletRequest request, String imageName) throws IOException, ServletException {
         Part imagePart = request.getPart(imageName);
         String fileName = Paths.get(imagePart.getSubmittedFileName()).getFileName().toString();

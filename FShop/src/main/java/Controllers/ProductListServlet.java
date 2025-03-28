@@ -13,6 +13,7 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -206,16 +207,6 @@ public class ProductListServlet extends HttpServlet {
                         return "asc".equalsIgnoreCase(order) ? cmp : -cmp;
                     }
                 });
-            }
-            // Auto disable sản phẩm nếu stock <= 0 và sản phẩm chưa bị disable
-            if (products != null && !products.isEmpty()) {
-                for (Product product : products) {
-                    if (product.getQuantity() <= 0 && product.getDeleted() == 0) { // chưa bị disable
-                        pr.deleteProduct(product.getProductId()); // gọi hàm disable
-                        product.setDeleted(1); // cập nhật trạng thái trong list (nếu cần hiển thị)
-                        System.out.println("Auto disable product: " + product.getFullName());
-                    }
-                }
             }
         }
         // Đưa danh sách sản phẩm và các tham số khác về JSP
